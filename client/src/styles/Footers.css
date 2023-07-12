@@ -1,0 +1,10 @@
+.main-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: green;
+    height: fit-content;
+    display: flex;
+    gap: 30px;
+    padding: 30px;
+}
