@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch index.ts",
+    "lint": "eslint src --ext .ts --fix"
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^1.2.0",
