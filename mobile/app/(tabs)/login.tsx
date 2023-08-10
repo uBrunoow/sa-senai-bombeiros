@@ -3,7 +3,10 @@ import React from 'react'
 import Icon from '@expo/vector-icons/Feather'
 import { Ionicons } from '@expo/vector-icons'
 
-export default function NewMemory() {
+export default function Login({ navigation }) {
+  const handleRouter = () => {
+    navigation.navigate('home')
+  }
   return (
     <View className=" flex-1 items-center justify-between ">
       {/* Top Bar */}
@@ -54,7 +57,10 @@ export default function NewMemory() {
           {/* Div do botão para avançar */}
           <View className="items-center justify-center">
             {/* Botão para avançar */}
-            <TouchableOpacity className=" items-center justify-center rounded-[7px] bg-[#A00E00] px-[30px] py-[13px]">
+            <TouchableOpacity
+              className=" items-center justify-center rounded-[7px] bg-[#A00E00] px-[30px] py-[13px]"
+              onPress={handleRouter}
+            >
               <Text className=" text-[21px] font-normal leading-[21px] text-offwhite">
                 AVANÇAR
               </Text>
