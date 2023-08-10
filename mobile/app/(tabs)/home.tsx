@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import NOARLogo from '../src/assets/logo-noar.svg'
+import NOARLogo from '../../src/assets/logo-noar.svg'
 import Icon from '@expo/vector-icons/Feather'
 
 export default function App() {
