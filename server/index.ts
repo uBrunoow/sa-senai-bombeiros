@@ -1,5 +1,18 @@
+import jwt from '@fastify/jwt'
 import fastify from 'fastify'
+import cors from '@fastify/cors'
+import { authRoutes } from './routes/public/auth' // Rota de login
 const app = fastify() // Dar para a const app todas as informações do Fastify
+
+app.register(cors, {
+  origin: true,
+})
+
+app.register(jwt, {
+  secret: 'bombeiros',
+})
+
+app.register(authRoutes)
 
 app
   .listen({
