@@ -16,14 +16,17 @@ export async function registerRoutes(app: FastifyInstance) {
       confirmPassword: z.string(),
     })
 
+    // Pegar as informações vindo do front-end
     const { email, name, password, confirmPassword } = registerSchema.parse(
       req.body,
     )
 
+    // Validação de dados
     if (!email || !name || !password || !confirmPassword) {
       return res.status(422).send({ msg: '🟡 Credenciais inválidas' })
     }
 
+    // Comparação entre a senha e o confirmar senha
     if (password !== confirmPassword) {
       return res.status(422).send({ msg: '🟡 Credenciais não batem' })
     }
