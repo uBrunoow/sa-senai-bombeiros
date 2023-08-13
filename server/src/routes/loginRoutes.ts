@@ -1,19 +1,9 @@
 import { FastifyInstance } from 'fastify'
-import { z } from 'zod'
 import { prisma } from '../lib/prisma'
+import { loginSchema } from '../schemas/userSchemas'
 
 export async function loginRoutes(app: FastifyInstance) {
   app.post('/api/users/login', async (req, res) => {
-    const loginSchema = z.object({
-      email: z
-        .string({
-          required_error: 'Email is required',
-          invalid_type_error: 'Email must be a string',
-        })
-        .email(),
-      password: z.string(),
-    })
-
     // Faz uma requisição do body para pegar o email e a senha
     const { email, password } = loginSchema.parse(req.body)
 
@@ -22,6 +12,7 @@ export async function loginRoutes(app: FastifyInstance) {
       return res.status(422).send({ msg: '🟡 Credenciais inválidas' })
     }
 
+    // Buscar o usuário no banco de dados e se não existir retornar um erro
     const user = await prisma.user.findUnique({
       where: {
         email,
@@ -32,9 +23,18 @@ export async function loginRoutes(app: FastifyInstance) {
       return res.status(401).send({ msg: '🔴 Credenciais inválidas' })
     }
 
+    // Comparar a senha fornecida pelo usuário com a senha criptografada armazenada
+    const passwordMatches = await app.bcrypt.compare(password, user.password)
+
+    if (!passwordMatches) {
+      return res.status(401).send({ msg: '🔴 Credenciais inválidas' })
+    }
+
+    // Realizar o JWT Token
     const token = app.jwt.sign(
       {
         userId: user.id,
+        name: user.name,
         email: user.email,
       },
       {
@@ -42,6 +42,10 @@ export async function loginRoutes(app: FastifyInstance) {
       },
     )
 
-    return res.send({ token, user: { id: user.id, email: user.email } })
+    return res.send({
+      token,
+      user: { id: user.id, email: user.email },
+      login: { msg: '🟢 Usuário logado com sucesso.' },
+    })
   })
 }

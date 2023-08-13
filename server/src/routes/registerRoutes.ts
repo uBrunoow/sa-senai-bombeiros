@@ -1,21 +1,9 @@
 import { FastifyInstance } from 'fastify'
-import { z } from 'zod'
 import { prisma } from '../lib/prisma'
+import { registerSchema } from '../schemas/userSchemas'
 
 export async function registerRoutes(app: FastifyInstance) {
   app.post('/api/users/register', async (req, res) => {
-    const registerSchema = z.object({
-      email: z
-        .string({
-          required_error: 'Email is required',
-          invalid_type_error: 'Email must be a string',
-        })
-        .email(),
-      name: z.string(),
-      password: z.string(),
-      confirmPassword: z.string(),
-    })
-
     // Pegar as informações vindo do front-end
     const { email, name, password, confirmPassword } = registerSchema.parse(
       req.body,
@@ -30,6 +18,7 @@ export async function registerRoutes(app: FastifyInstance) {
     if (password !== confirmPassword) {
       return res.status(422).send({ msg: '🟡 Credenciais não batem' })
     }
+
     // Verificar se o email já está cadastrado
     const userExists = await prisma.user.findUnique({
       where: {
@@ -41,15 +30,21 @@ export async function registerRoutes(app: FastifyInstance) {
       return res.status(409).send({ msg: '🔴 Email já cadastrado' })
     }
 
+    // Criptografar a senha antes de armazená-la no banco de dados
+    const hashedPassword = await app.bcrypt.hash(password)
+
     // Criar um novo usuário no banco de dados
     const newUser = await prisma.user.create({
       data: {
         email,
         name,
-        password,
+        password: hashedPassword,
       },
     })
 
-    return res.send({ msg: '🟢 Usuário registrado com sucesso', user: newUser })
+    return res.send({
+      msg: '🟢 Usuário registrado com sucesso.',
+      user: newUser,
+    })
   })
 }
