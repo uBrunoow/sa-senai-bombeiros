@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
-import { prisma } from '../lib/prisma'
+import { prisma } from '../../lib/prisma'
 
-export async function deleteRoutes(app: FastifyInstance) {
+export async function userDeleteRoutes(app: FastifyInstance) {
   app.delete('/api/users/delete/:id', async (req, res) => {
     const { id } = req.params as { id: string } // Buscar o id do usuário
 

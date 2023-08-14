@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { prisma } from '../lib/prisma'
+import { prisma } from '../../lib/prisma'
 
 export async function findRoutes(app: FastifyInstance) {
   // Rota para pegar todos os usuários

@@ -1,12 +1,14 @@
 import jwt from '@fastify/jwt'
 import fastify from 'fastify'
 import cors from '@fastify/cors'
-import { registerRoutes } from './src/routes/registerRoutes'
-import { loginRoutes } from './src/routes/loginRoutes'
-import { updateRoutes } from './src/routes/updateRoutes'
-import { deleteRoutes } from './src/routes/deleteRoutes'
-import { findOneRoutes, findRoutes } from './src/routes/findRoutes'
+import { userRegisterRoutes } from './src/routes/users/registerRoutes'
+import { userLoginRoutes } from './src/routes/users/loginRoutes'
+import { userUpdateRoutes } from './src/routes/users/updateRoutes'
+import { userDeleteRoutes } from './src/routes/users/deleteRoutes'
+import { userFindOneRoutes, userFindRoutes } from './src/routes/users/findRoutes'
+import { reportCreate } from './src/routes/reports/create'
 import bcrypt from 'fastify-bcrypt' // Importe o plugin aqui
+import { register } from 'fastify-zod'
 
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
@@ -15,17 +17,18 @@ app.register(cors, {
 })
 
 app.register(jwt, {
-  secret: 'bombeiros',
+  secret: 'bombeiro',
 })
 
 app.register(bcrypt)
 
-app.register(registerRoutes)
-app.register(loginRoutes)
-app.register(updateRoutes)
-app.register(deleteRoutes)
-app.register(findRoutes)
-app.register(findOneRoutes)
+app.register(userRegisterRoutes)
+app.register(userLoginRoutes)
+app.register(userUpdateRoutes)
+app.register(userDeleteRoutes)
+app.register(userFindOneRoutes)
+app.register(userFindRoutes)
+app.register(reportCreate)
 
 app
   .listen({

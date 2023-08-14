@@ -1,17 +1,22 @@
-import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import NOARLogo from '../../src/assets/logo-noar.svg'
 import Icon from '@expo/vector-icons/Feather'
+import MainButton from '../components/Botao'
 
 export default function App({ navigation }) {
   return (
     <View className=" flex-1 items-center justify-between bg-offwhite ">
       <View className="h-[67px] w-full bg-[#A00E00]" />
-      <View className="h-[425px] w-[339px] shrink-0 flex-col items-center justify-center gap-[34px] ">
+      <View
+        className=" h-[425px]  w-full shrink-0 flex-col items-center justify-between
+       gap-[34px] bg-red-200"
+      >
         <NOARLogo className=" h-[147px] w-[148px] shrink-0" />
         <Text className="text-[32px] font-normal leading-[32px] text-[#202020]">
           Bem Vindo(a)!
         </Text>
+        <MainButton></MainButton>
+
         <Text className=" text-center text-[14px] font-normal leading-[22.4px] text-[#000]">
           Bravos heróis que arriscam suas vidas todos os dias para proteger
           comunidades e salvar vidas.Os bombeiros estão na linha de frente em

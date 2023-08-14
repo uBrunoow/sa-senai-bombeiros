@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify'
-import { prisma } from '../lib/prisma'
-import { registerSchema } from '../schemas/userSchemas'
+import { prisma } from '../../lib/prisma'
+import { registerSchema } from '../../schemas/userSchemas'
 
-export async function registerRoutes(app: FastifyInstance) {
+export async function userRegisterRoutes(app: FastifyInstance, opts: any, done: Function) {
   app.post('/api/users/register', async (req, res) => {
     // Pegar as informações vindo do front-end
     const { email, name, password, confirmPassword } = registerSchema.parse(
@@ -47,4 +47,6 @@ export async function registerRoutes(app: FastifyInstance) {
       user: newUser,
     })
   })
+
+  done()
 }

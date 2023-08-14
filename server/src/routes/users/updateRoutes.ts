@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify'
-import { prisma } from '../lib/prisma'
-import { updateSchema } from '../schemas/userSchemas'
+import { prisma } from '../../lib/prisma'
+import { updateSchema } from '../../schemas/userSchemas'
 
-export async function updateRoutes(app: FastifyInstance) {
+export async function userUpdateRoutes(app: FastifyInstance, opts: any, done: Function) {
   app.put('/api/users/update/:id', async (req, res) => {
     const { id } = req.params as { id: string } // Buscar o id do usuário
 
@@ -63,4 +63,6 @@ export async function updateRoutes(app: FastifyInstance) {
 
     return res.send({ msg: '🟢 Usuário atualizado com sucesso.', updatedUser })
   })
+
+  done()
 }
