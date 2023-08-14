@@ -1,13 +1,13 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import NOARLogo from '../../src/assets/logo-noar.svg'
 import Icon from '@expo/vector-icons/Feather'
 
-export default function App() {
+export default function App({ navigation }) {
   return (
-    <View className=" flex-1 items-center justify-between ">
+    <View className=" flex-1 items-center justify-between bg-offwhite ">
       <View className="h-[67px] w-full bg-[#A00E00]" />
-      <View className="h-[425px] w-[339px] shrink-0 flex-col items-center justify-center gap-[34px]">
+      <View className="h-[425px] w-[339px] shrink-0 flex-col items-center justify-center gap-[34px] ">
         <NOARLogo className=" h-[147px] w-[148px] shrink-0" />
         <Text className="text-[32px] font-normal leading-[32px] text-[#202020]">
           Bem Vindo(a)!
@@ -20,10 +20,13 @@ export default function App() {
         </Text>
       </View>
       <View className="relative h-[67px] w-full items-center bg-[#A00E00]">
-        <View className="absolute top-[-50px] h-[100px] w-[100px] items-center justify-center rounded-full bg-white">
-          <View className="h-[66px] w-[66px] items-center justify-center rounded-full bg-[#A00E00]">
+        <View className="absolute top-[-50px] h-[100px] w-[100px] items-center justify-center rounded-full bg-offwhite">
+          <TouchableOpacity
+            className="h-[66px] w-[66px] items-center justify-center rounded-full bg-[#A00E00]"
+            onPress={() => navigation.navigate('login')}
+          >
             <Icon name="plus" size={50} color="#fff" />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

@@ -4,7 +4,7 @@ import { View, Text } from 'react-native'
 export default function App() {
   return (
     <View>
-      <Text>Pa</Text>
+      <Text>Relatório</Text>
     </View>
   )
 }

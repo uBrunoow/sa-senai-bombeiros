@@ -9,13 +9,13 @@ export default function Routes() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="login"
-        component={login}
+        name="home"
+        component={home}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="home"
-        component={home}
+        name="login"
+        component={login}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
