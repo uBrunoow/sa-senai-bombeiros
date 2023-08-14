@@ -16,9 +16,21 @@ model User {
 }
 
 model Report {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  owner     User     @relation(fields: [ownerId], references: [id])
-  ownerId   Int
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime? @updatedAt
+  reportDate    DateTime?
+  name          String?
+  gender        Boolean?
+  age           Int?
+  cpf           String?
+  phone         String?
+  reportPlace   String?
+  bloodPressure Int?
+  bodyTemp      Int?
+  bodyPulse     Int?
+  breathing     Int?
+  saturation    Int?
+  owner         User      @relation(fields: [ownerId], references: [id])
+  ownerId       Int
 }
