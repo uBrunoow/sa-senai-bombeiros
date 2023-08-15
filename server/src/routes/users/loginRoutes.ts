@@ -2,7 +2,11 @@ import { FastifyInstance } from 'fastify'
 import { prisma } from '../../lib/prisma'
 import { loginSchema } from '../../schemas/userSchemas'
 
-export async function userLoginRoutes(app: FastifyInstance, opts: any, done: Function) {
+export async function userLoginRoutes(
+  app: FastifyInstance,
+  opts: any,
+  done: Function,
+) {
   app.post('/api/users/login', async (req, res) => {
     // Faz uma requisição do body para pegar o email e a senha
     const { email, password } = loginSchema.parse(req.body)
@@ -49,5 +53,5 @@ export async function userLoginRoutes(app: FastifyInstance, opts: any, done: Fun
     })
   })
 
-  done() 
+  done()
 }

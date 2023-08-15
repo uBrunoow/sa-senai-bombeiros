@@ -4,12 +4,14 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  StyleSheet,
 } from 'react-native'
 import React, { useState } from 'react'
 import Icon from '@expo/vector-icons/Feather'
 import { AntDesign } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import loginUser from '../../src/api/loginUser'
+import Header from '../components/Header'
 
 export default function Login({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
@@ -30,7 +32,7 @@ export default function Login({ navigation }) {
 
     const response = await loginUser(email, password)
     if (response && response.user) {
-      navigation.navigate('home')
+      navigation.navigate('ocorrencia')
       console.log(response)
     }
 
@@ -45,7 +47,7 @@ export default function Login({ navigation }) {
     >
       <View className=" h-screen items-center justify-between ">
         {/* Top Bar */}
-        <View className="h-[67px] w-full bg-[#A00E00]" />
+        <Header />
         {/* Div pai do conteúdo da página */}
         <View className=" h-[370] w-[347px] shrink-0 flex-col items-center justify-between p-[10px]">
           {/* Div do texto escrito login com o ícone de user */}
@@ -58,7 +60,10 @@ export default function Login({ navigation }) {
             </Text>
           </View>
           {/* Div da parte de login */}
-          <View className=" w-full rounded-[14px] bg-white px-[17px] py-[30px] shadow-2xl ">
+          <View
+            style={styles.boxShadow}
+            className=" w-full rounded-[14px] bg-white px-[17px] py-[30px]"
+          >
             {/* Div que engloba o cpf e a senha */}
             <View className="h-[152px] flex-col items-center justify-between">
               <View className="relative h-[76px] gap-[5px]">
@@ -113,3 +118,12 @@ export default function Login({ navigation }) {
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  boxShadow: {
+    shadowColor: 'rgba(0, 0, 0, 0.25)',
+    shadowOpacity: 0,
+    shadowRadius: 4,
+    textShadowOffset: { width: 8, height: 2 },
+  },
+})
