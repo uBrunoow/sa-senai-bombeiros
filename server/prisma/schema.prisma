@@ -16,46 +16,37 @@ model User {
 }
 
 model Report {
-  id                        Int                        @id @default(autoincrement())
-  createdAt                 DateTime                   @default(now())
-  updatedAt                 DateTime?                  @updatedAt
-  reportDate                DateTime?
-  name                      String?
-  gender                    Int?
-  age                       Int?
-  cpf                       String?
-  phone                     String?
-  reportPlace               String?
-  bloodPressure             Int?
-  bodyTemp                  Int?
-  bodyPulse                 Int?
-  breathing                 Int?
-  saturation                Int?
-  owner                     User                       @relation(fields: [ownerId], references: [id])
-  ownerId                   Int
-  CheckedPreHospitalMethods CheckedPreHospitalMethod[]
+  id                 Int                 @id @default(autoincrement())
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime?           @updatedAt
+  reportDate         DateTime?
+  name               String?
+  gender             Int?
+  age                Int?
+  cpf                String?
+  phone              String?
+  reportPlace        String?
+  bloodPressure      Int?
+  bodyTemp           Int?
+  bodyPulse          Int?
+  breathing          Int?
+  saturation         Int?
+  owner              User                @relation(fields: [ownerId], references: [id])
+  ownerId            Int
+  PreHospitalMethods PreHospitalMethod[]
+  Symptons           Symptons[]
+}
+
+model PreHospitalMethod {
+  id            Int    @id @default(autoincrement())
+  description   String
+  reportOwner   Report @relation(fields: [ReportOwnerId], references: [id])
+  ReportOwnerId Int
 }
 
 model Symptons {
-  id   Int    @id @default(autoincrement())
-  name String
-}
-
-model CheckedPreHospitalMethod {
-  id                  Int                @id @default(autoincrement())
-  preHospitalMethodId Int
-  preHospitalMethod   PreHospitalMethods @relation(fields: [preHospitalMethodId], references: [id])
-  Report              Report?            @relation(fields: [reportId], references: [id])
-  reportId            Int?
-}
-
-model PreHospitalMethods {
-  id                       Int                        @id @default(autoincrement())
-  description              String
-  CheckedPreHospitalMethod CheckedPreHospitalMethod[]
-}
-
-model VictimWasOptions {
-  id   Int    @id @default(autoincrement())
-  name String
+  id            Int    @id @default(autoincrement())
+  description   String
+  reportOwner   Report @relation(fields: [ReportOwnerId], references: [id])
+  ReportOwnerId Int
 }

@@ -5,16 +5,39 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Icon from '@expo/vector-icons/Feather'
+import { AntDesign } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import loginUser from '../../src/api/loginUser'
 
 export default function Login({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
 
-  const handleRouter = () => {
-    navigation.navigate('home')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleChangeEmail = (value) => {
+    setEmail(value)
   }
+
+  const handleChangePassword = (value) => {
+    setPassword(value)
+  }
+
+  const handleLoginUser = async (e) => {
+    e.preventDefault()
+
+    const response = await loginUser(email, password)
+    if (response && response.user) {
+      navigation.navigate('home')
+      console.log(response)
+    }
+
+    setEmail('')
+    setPassword('')
+  }
+
   return (
     <ScrollView
       className="flex-1"
@@ -38,12 +61,16 @@ export default function Login({ navigation }) {
           <View className=" w-full rounded-[14px] bg-white px-[17px] py-[30px] shadow-2xl ">
             {/* Div que engloba o cpf e a senha */}
             <View className="h-[152px] flex-col items-center justify-between">
-              <View className="h-[76px] gap-[5px]">
+              <View className="relative h-[76px] gap-[5px]">
                 <Text className=" text-[21px] font-normal leading-[21px] text-preto">
                   CPF
                 </Text>
                 {/* Input do texto para cpf */}
-                <TextInput className=" w-[290px] items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]" />
+                <TextInput
+                  className=" w-[290px] items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]"
+                  onChangeText={handleChangeEmail}
+                  value={email}
+                />
               </View>
 
               <View className="h-[76px] gap-[5px]">
@@ -51,24 +78,28 @@ export default function Login({ navigation }) {
                   Senha
                 </Text>
                 {/* Input do texto para senha */}
-                <View className=" items-center justify-center">
+                <View className=" relative items-center justify-center">
                   <TextInput
                     placeholder="___.___.___-__"
+                    secureTextEntry
+                    onChangeText={handleChangePassword}
+                    value={password}
                     className=" w-[290px] items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]"
                   />
+                  <TouchableOpacity className="absolute right-5">
+                    <AntDesign name="eye" size={24} color="black" />
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
             {/* Div da linha */}
-            <View className="my-[20px] h-[1px] w-full bg-black">
-              <Text>1</Text>
-            </View>
+            <View className="my-[20px] h-[1px] w-full bg-black"></View>
             {/* Div do botão para avançar */}
             <View className="items-center justify-center">
               {/* Botão para avançar */}
               <TouchableOpacity
                 className=" items-center justify-center rounded-[7px] bg-[#A00E00] px-[30px] py-[13px]"
-                onPress={handleRouter}
+                onPress={handleLoginUser}
               >
                 <Text className=" text-[21px] font-normal leading-[21px] text-offwhite">
                   AVANÇAR

@@ -5,10 +5,11 @@ import { userRegisterRoutes } from './src/routes/users/registerRoutes'
 import { userLoginRoutes } from './src/routes/users/loginRoutes'
 import { userUpdateRoutes } from './src/routes/users/updateRoutes'
 import { userDeleteRoutes } from './src/routes/users/deleteRoutes'
-import { userFindOneRoutes, userFindRoutes } from './src/routes/users/findRoutes'
-import { reportCreate } from './src/routes/reports/create'
+import {
+  userFindOneRoutes,
+  userFindRoutes,
+} from './src/routes/users/findRoutes'
 import bcrypt from 'fastify-bcrypt' // Importe o plugin aqui
-import { register } from 'fastify-zod'
 
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
@@ -28,7 +29,6 @@ app.register(userUpdateRoutes)
 app.register(userDeleteRoutes)
 app.register(userFindOneRoutes)
 app.register(userFindRoutes)
-app.register(reportCreate)
 
 app
   .listen({
