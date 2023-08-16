@@ -14,7 +14,6 @@ export default function Ocorrencia() {
     >
       <View>
         <Header />
-        <Text>Ocorrencia</Text>
         <Grouper title="Introdução" desc="Dados da vítima, tipo ocorr..." />
         <Grouper
           title="Anamnese de Emergência"
