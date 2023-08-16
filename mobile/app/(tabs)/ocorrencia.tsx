@@ -3,6 +3,8 @@ import React from 'react'
 import Header from '../components/Header'
 import Grouper from '../components/Grouper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Footer from '../components/Footer'
+import { FontAwesome5 } from '@expo/vector-icons'
 
 export default function Ocorrencia() {
   const { bottom, top } = useSafeAreaInsets()
@@ -14,6 +16,12 @@ export default function Ocorrencia() {
     >
       <View>
         <Header />
+        <View className="mb-[40px] mt-[34px] flex-row items-center justify-center">
+          <FontAwesome5 name="fire" size={24} color="#A00E00" />
+          <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
+            Ocorrência
+          </Text>
+        </View>
         <Grouper title="Introdução" desc="Dados da vítima, tipo ocorr..." />
         <Grouper
           title="Anamnese de Emergência"
@@ -38,6 +46,7 @@ export default function Ocorrencia() {
         />
         <Grouper title="Finalização" desc="Observações, objetos..." />
       </View>
+      <Footer />
     </ScrollView>
   )
 }
