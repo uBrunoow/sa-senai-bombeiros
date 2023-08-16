@@ -62,7 +62,7 @@ export default function Login({ navigation }) {
           {/* Div da parte de login */}
           <View
             style={styles.boxShadow}
-            className=" w-full rounded-[14px] bg-white px-[17px] py-[30px]"
+            className=" w-full rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
           >
             {/* Div que engloba o cpf e a senha */}
             <View className="h-[152px] flex-col items-center justify-between">
@@ -113,7 +113,7 @@ export default function Login({ navigation }) {
             </View>
           </View>
         </View>
-        <View className="h-[67px] w-full bg-[#A00E00]" />
+        <View className="h-[67px] w-full bg-[#A00E00]"></View>
       </View>
     </ScrollView>
   )
@@ -121,7 +121,7 @@ export default function Login({ navigation }) {
 
 const styles = StyleSheet.create({
   boxShadow: {
-    shadowColor: 'rgba(0, 0, 0, 0.25)',
+    shadowColor: 'rgb(0, 0, 0)',
     shadowOpacity: 0,
     shadowRadius: 4,
     textShadowOffset: { width: 8, height: 2 },
