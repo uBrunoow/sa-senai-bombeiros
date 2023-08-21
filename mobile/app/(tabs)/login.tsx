@@ -69,7 +69,7 @@ export default function Login({ navigation }) {
             <View className="h-[152px] flex-col items-center justify-between">
               <View className="relative h-[76px] gap-[5px]">
                 <Text className=" text-[21px] font-normal leading-[21px] text-preto">
-                  CPF
+                  E-mail
                 </Text>
                 {/* Input do texto para cpf */}
                 <TextInput

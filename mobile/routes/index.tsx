@@ -15,8 +15,8 @@ export default function Routes() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Anamnese"
-        component={Anamnese}
+        name="home"
+        component={home}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -25,13 +25,13 @@ export default function Routes() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="anamnese-gestacional"
-        component={AnamneseGestacional}
+        name="anamnese"
+        component={Anamnese}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="home"
-        component={home}
+        name="anamnese-gestacional"
+        component={AnamneseGestacional}
         options={{ headerShown: false }}
       />
       <Stack.Screen
