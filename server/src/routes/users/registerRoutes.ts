@@ -13,7 +13,14 @@ export async function userRegisterRoutes(
       registerSchema.parse(req.body)
 
     // Validação de dados
-    if (!email || !name || !password || !confirmPassword) {
+    if (
+      !email ||
+      !name ||
+      !password ||
+      !confirmPassword ||
+      !gender ||
+      !isActive
+    ) {
       return res.status(422).send({ msg: '🟡 Credenciais inválidas' })
     }
 
@@ -41,6 +48,8 @@ export async function userRegisterRoutes(
       data: {
         email,
         name,
+        gender,
+        isActive,
         password: hashedPassword,
       },
     })
