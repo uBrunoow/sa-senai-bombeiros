@@ -18,37 +18,132 @@ model User {
 }
 
 model Report {
-  id                 Int                 @id @default(autoincrement())
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime?           @updatedAt
-  reportDate         DateTime?
-  name               String?
-  gender             Int?
-  age                Int?
-  cpf                String?
-  phone              String?
-  reportPlace        String?
-  bloodPressure      Int?
-  bodyTemp           Int?
-  bodyPulse          Int?
-  breathing          Int?
-  saturation         Int?
-  owner              User                @relation(fields: [ownerId], references: [id])
-  ownerId            Int
-  PreHospitalMethods PreHospitalMethod[]
-  Symptons           Symptons[]
+  id                       Int                        @id @default(autoincrement())
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime?                  @updatedAt
+  reportDate               DateTime?
+  name                     String?
+  gender                   Int?
+  age                      Int?
+  cpf                      String?
+  phone                    String?
+  reportPlace              String?
+  bloodPressure            Int?
+  bodyTemp                 Int?
+  bodyPulse                Int?
+  breathing                Int?
+  saturation               Int?
+  owner                    User                       @relation(fields: [ownerId], references: [id])
+  ownerId                  Int
+  PreHospitalMethods       PreHospitalMethod[]
+  Symptoms                 Symptoms[]
+  GestationalAnamnesis     GestationalAnamnesis[]
+  Anamnesis                Anamnesis[]
+  SuspectProblems          SuspectProblems[]
+  Report_PreHospitalMethod Report_PreHospitalMethod[]
+  Report_Symptoms          Report_Symptoms[]
+  Glasglow                 Glasglow[]
+}
+
+//  Tabela N para N entre relatório e método pré-hospitalar
+model Report_PreHospitalMethod {
+  id                       Int               @id @default(autoincrement())
+  preHospitalMethodOwner   PreHospitalMethod @relation(fields: [PreHospitalMethodOwnerId], references: [id])
+  reportOwner              Report            @relation(fields: [ReportOwnerId], references: [id])
+  PreHospitalMethodOwnerId Int
+  ReportOwnerId            Int
+
+  @@unique([ReportOwnerId, PreHospitalMethodOwnerId])
+}
+
+//  Tabela N para N entre relatório e sintoma
+model Report_Symptoms {
+  id              Int      @id @default(autoincrement())
+  symptomsOwner   Symptoms @relation(fields: [SymptomsOwnerId], references: [id])
+  reportOwner     Report   @relation(fields: [ReportOwnerId], references: [id])
+  SymptomsOwnerId Int
+  ReportOwnerId   Int
+
+  @@unique([ReportOwnerId, SymptomsOwnerId])
 }
 
 model PreHospitalMethod {
-  id            Int    @id @default(autoincrement())
-  description   String
-  reportOwner   Report @relation(fields: [ReportOwnerId], references: [id])
-  ReportOwnerId Int
+  id                       Int                        @id @default(autoincrement())
+  description              String
+  reportOwner              Report                     @relation(fields: [ReportOwnerId], references: [id])
+  ReportOwnerId            Int
+  Report_PreHospitalMethod Report_PreHospitalMethod[]
 }
 
-model Symptons {
-  id            Int    @id @default(autoincrement())
-  description   String
-  reportOwner   Report @relation(fields: [ReportOwnerId], references: [id])
-  ReportOwnerId Int
+model Symptoms {
+  id              Int               @id @default(autoincrement())
+  description     String
+  reportOwner     Report            @relation(fields: [ReportOwnerId], references: [id])
+  ReportOwnerId   Int
+  Report_Symptoms Report_Symptoms[]
+}
+
+model GestationalAnamnesis {
+  id                  Int      @id @default(autoincrement())
+  gestationalPeriod   DateTime
+  PreNatal            Boolean
+  DoctorName          String
+  Complications       String
+  NumberSon           Int
+  ContractionSchedule DateTime
+  Duration            DateTime
+  Interval            DateTime
+  HiPressure          Boolean
+  BagRuptured         Boolean
+  VisualInspection    Boolean
+  Childbirth          Boolean
+  BabyGender          String
+  BornHour            DateTime
+  BabyName            String
+  FinalRemarks        String
+  reportOwner         Report   @relation(fields: [ReportOwnerId], references: [id])
+  ReportOwnerId       Int
+}
+
+model Anamnesis {
+  id                 Int     @id @default(autoincrement())
+  SignsAndSymptoms   String
+  HappenedTimes      Boolean
+  SinceHappened      String
+  HealthProblem      Boolean
+  HealthProlemsWhich String
+  Medication         Boolean
+  MedicationWhich    String
+  HourMedication     String
+  Allergies          Boolean
+  AllergiesWhich     String
+  IngestedFood       Boolean
+  WhatTimeFood       String
+  FinalRemarks       String
+  reportOwner        Report  @relation(fields: [ReportOwnerId], references: [id])
+  ReportOwnerId      Int
+}
+
+model Glasglow {
+  id             Int    @id @default(autoincrement())
+  reportOwner    Report @relation(fields: [ReportOwnerId], references: [id])
+  ReportOwnerId  Int
+  eyeOpening     Int
+  verbalResponse Int
+  motorResponse  Int
+}
+
+model SuspectProblems {
+  id           Int                    @id @default(autoincrement())
+  classOwner   SuspectProblemsClasses @relation(fields: [classOwnerId], references: [id])
+  classOwnerId Int
+  name         String
+  Report       Report?                @relation(fields: [reportId], references: [id])
+  reportId     Int?
+}
+
+model SuspectProblemsClasses {
+  id              Int               @id @default(autoincrement())
+  name            String
+  SuspectProblems SuspectProblems[]
 }

@@ -4,8 +4,8 @@ import { loginSchema } from '../../schemas/userSchemas'
 
 export async function userLoginRoutes(
   app: FastifyInstance,
-  opts: any,
-  done: Function,
+  opts: fastifyNullOpts,
+  done: fastifyDoneFunction,
 ) {
   app.post('/api/users/login', async (req, res) => {
     // Faz uma requisição do body para pegar o email e a senha

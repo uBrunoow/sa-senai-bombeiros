@@ -5,6 +5,7 @@ import Grouper from '../components/Grouper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Footer from '../components/Footer'
 import { FontAwesome5 } from '@expo/vector-icons'
+import MainButton from '../components/MainButton'
 
 export default function Ocorrencia() {
   const { bottom, top } = useSafeAreaInsets()
@@ -45,6 +46,7 @@ export default function Ocorrencia() {
           desc="Período gestação, pré-natal..."
         />
         <Grouper title="Finalização" desc="Observações, objetos..." />
+        <MainButton innerText="FINALIZAR" />
       </View>
       <Footer />
     </ScrollView>
