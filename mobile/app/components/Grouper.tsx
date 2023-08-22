@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from 'react-native'
 import React from 'react'
-import { Feather } from '@expo/vector-icons'
+import { Feather, AntDesign } from '@expo/vector-icons'
 
 type Grouperprops = {
   title: string
@@ -9,6 +9,19 @@ type Grouperprops = {
 }
 
 export default function Grouper(props: Grouperprops) {
+  let color = '#0AC800' // Default green color
+  let icon = <Feather name="check" size={30} color="white" /> // Default icon
+
+  if (props.isCompleted === 0) {
+    color = 'white' // White color for 0
+    icon = <Feather name="check" size={30} color="white" /> // Default icon
+  } else if (props.isCompleted >= 1 && props.isCompleted <= 3) {
+    color = 'orange' // Orange color for 1 to 3
+    icon = <AntDesign name="minus" size={40} color="white" />
+  } else if (props.isCompleted === 4) {
+    icon = <Feather name="check" size={30} color="white" /> // Change icon for 4
+  }
+
   return (
     <View
       style={styles.boxShadow}
@@ -23,10 +36,10 @@ export default function Grouper(props: Grouperprops) {
       <View className="w-1/6 items-center justify-between">
         <View
           id="colorContainer"
-          style={styles.colorContainer}
+          style={[styles.colorContainer, { backgroundColor: color }]}
           className="aspect-square w-[40px] items-center justify-center rounded-full"
         >
-          <Feather name="check" size={30} color="white" />
+          {icon}
         </View>
         <Text className="text-center text-lg">{props.isCompleted}/4</Text>
       </View>
@@ -42,6 +55,10 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 8, height: 2 },
   },
   colorContainer: {
-    backgroundColor: '#0AC800',
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
   },
 })
