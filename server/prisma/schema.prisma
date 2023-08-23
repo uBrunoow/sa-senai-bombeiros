@@ -23,7 +23,7 @@ model Report {
   updatedAt                DateTime?                  @updatedAt
   reportDate               DateTime?
   name                     String?
-  gender                   Int?
+  gender                   String?
   age                      Int?
   cpf                      String?
   phone                    String?

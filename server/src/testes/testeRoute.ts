@@ -7,7 +7,7 @@ export async function testeRoute(app: FastifyInstance) {
     const testeSchema = z.object({
       reportDate: z.string(),
       age: z.number(),
-      gender: z.number(),
+      gender: z.string(),
       name: z.string(),
       cpf: z.string(),
       phone: z.string(),
@@ -37,19 +37,19 @@ export async function testeRoute(app: FastifyInstance) {
 
     const newReport = await prisma.report.create({
       data: {
-        age,
-        gender,
-        name,
+        age: 16,
+        gender: 'Masculino',
+        name: 'TesteReport',
         reportDate: parsedReportDate,
         ownerId: 1,
-        cpf,
-        phone,
-        reportPlace,
-        bloodPressure,
-        bodyTemp,
-        bodyPulse,
-        breathing,
-        saturation,
+        cpf: '031.220.120-65',
+        phone: '(47) 984007754',
+        reportPlace: 'Algum Lugar Ae',
+        bloodPressure: 123,
+        bodyTemp: 123,
+        bodyPulse: 123,
+        breathing: 123,
+        saturation: 123,
       },
     })
 
