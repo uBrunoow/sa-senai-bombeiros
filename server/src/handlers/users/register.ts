@@ -1,16 +1,25 @@
+import { FastifyInstance } from 'fastify'
 import { prisma } from '../../lib/prisma'
 import { registerSchema } from '../../schemas/userSchemas'
 
 export async function registerHandler(
   req: FastifyRequest,
   res: FastifyResponse,
+  app: FastifyInstance,
 ) {
   // Pegar as informações vindo do front-end
   const { email, name, gender, isActive, password, confirmPassword } =
     registerSchema.parse(req.body)
 
   // Validação de dados
-  if (!email || !name || !password || !confirmPassword) {
+  if (
+    !email ||
+    !name ||
+    !password ||
+    !confirmPassword ||
+    !gender ||
+    !isActive
+  ) {
     return res.status(422).send({ msg: '🟡 Credenciais inválidas' })
   }
 
@@ -38,6 +47,8 @@ export async function registerHandler(
     data: {
       email,
       name,
+      gender,
+      isActive,
       password: hashedPassword,
     },
   })

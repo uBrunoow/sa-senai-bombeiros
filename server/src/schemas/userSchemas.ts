@@ -16,6 +16,8 @@ export const updateSchema = z.object({
   email: z.string().optional(),
   password: z.string().optional(),
   name: z.string().optional(),
+  gender: z.string().optional(),
+  isActive: z.boolean().optional(),
 })
 
 // Registrar usuário schema

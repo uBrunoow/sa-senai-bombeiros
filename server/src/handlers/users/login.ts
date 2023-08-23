@@ -1,7 +1,12 @@
+import { FastifyInstance } from 'fastify'
 import { prisma } from '../../lib/prisma'
 import { loginSchema } from '../../schemas/userSchemas'
 
-export async function loginHandler(req: FastifyRequest, res: FastifyResponse) {
+export async function loginHandler(
+  req: FastifyRequest,
+  res: FastifyResponse,
+  app: FastifyInstance,
+) {
   // Faz uma requisição do body para pegar o email e a senha
   const { email, password } = loginSchema.parse(req.body)
 

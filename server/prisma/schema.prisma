@@ -19,7 +19,7 @@ model User {
 
 model Report {
   id                       Int                        @id @default(autoincrement())
-  createdAt                DateTime                   @default(now())
+  createdAt                DateTime?                  @default(now())
   updatedAt                DateTime?                  @updatedAt
   reportDate               DateTime?
   name                     String?
