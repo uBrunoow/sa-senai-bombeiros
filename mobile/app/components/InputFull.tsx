@@ -10,7 +10,7 @@ type InputTprops = {
 
 export default function InputFull(props: InputTprops) {
   const numberOfLines = props.isBig ? 4 : 1
-  const inputMinHeight = props.isBig ? 'min-h-100' : 'min-h-25'
+  // const inputMinHeight = props.isBig ? 'min-h-100' : 'min-h-25'
 
   return (
     <View className="justfy-between m-auto w-5/6 flex-1 items-center">

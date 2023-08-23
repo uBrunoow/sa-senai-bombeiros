@@ -1,14 +1,21 @@
+import { FastifyInstance } from 'fastify'
 import { prisma } from '../../lib/prisma'
 import { updateSchema } from '../../schemas/userSchemas'
 
-export async function updateHandler(req: FastifyRequest, res: FastifyResponse) {
+export async function updateHandler(
+  req: FastifyRequest,
+  res: FastifyResponse,
+  app: FastifyInstance,
+) {
   const { id } = req.params as { id: string } // Buscar o id do usuário
 
   // Faz uma requisição do body para pegar o email senha e nome
-  const { email, password, name } = updateSchema.parse(req.body)
+  const { email, password, name, gender, isActive } = updateSchema.parse(
+    req.body,
+  )
 
   // Validação dos dados recebidos
-  if (!email && !password && !name) {
+  if (!email && !password && !name && !gender && !isActive) {
     return res
       .status(400)
       .send({ message: '🔴 Nenhuma informação foi fornecida' })
@@ -32,6 +39,8 @@ export async function updateHandler(req: FastifyRequest, res: FastifyResponse) {
     email?: string
     password?: string
     name?: string
+    gender?: string
+    isActive?: boolean
   } = {}
 
   // Se tiver um email, atualizar o email
@@ -49,6 +58,16 @@ export async function updateHandler(req: FastifyRequest, res: FastifyResponse) {
   // Se tiver um nome, atualizar o nome
   if (name) {
     updatedUserData.name = name
+  }
+
+  // Se tiver um genero, atualizar o genero
+  if (gender) {
+    updatedUserData.gender = gender
+  }
+
+  // Se tiver um isActive, atualizar o isActive
+  if (isActive) {
+    updatedUserData.isActive = isActive
   }
 
   // Atualizar o usuário buscando pelo ID

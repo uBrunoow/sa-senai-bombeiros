@@ -72,7 +72,7 @@ export default function Ocorrencia({ navigation }) {
           <Grouper
             title="Finalização"
             desc="Observações, objetos..."
-            isCompleted={2}
+            isCompleted={0}
           />
         </TouchableOpacity>
         <MainButton innerText="FINALIZAR" />

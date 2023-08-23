@@ -8,7 +8,6 @@ import MainButton from '../components/MainButton'
 import YesOrNo from '../components/YesOrNo'
 import GestationPeriod from '../components/GestationPeriod'
 import InputFull from '../components/InputFull'
-import Grouper from '../components/Grouper'
 
 export default function AnamneseGestacional() {
   const { bottom, top } = useSafeAreaInsets()
