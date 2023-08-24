@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 
 type YesOrNoProps = {
@@ -6,17 +6,38 @@ type YesOrNoProps = {
 }
 
 export default function YesOrNo(props: YesOrNoProps) {
+  const [selectedOption, setSelectedOption] = useState<'SIM' | 'NÃO' | null>(
+    null,
+  )
+
   return (
-    <View className="m-auto mb-4 w-4/6 flex-row flex-wrap justify-around">
-      <Text className="mb-2 w-full text-center text-lg">{props.Question}</Text>
+    <View className="m-auto flex-row flex-wrap items-center justify-center">
+      <Text className="w-5/6 text-center text-lg">{props.Question}</Text>
       <TouchableOpacity
-        style={(styles.button, styles.selected)}
-        className="border"
+        style={[
+          styles.button,
+          selectedOption === 'SIM' ? styles.selected : null,
+        ]}
+        onPress={() => setSelectedOption('SIM')}
       >
-        <Text className="text-white">SIM</Text>
+        <Text
+          style={selectedOption === 'SIM' ? styles.whiteText : styles.blackText}
+        >
+          SIM
+        </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} className="border">
-        <Text>NÃO</Text>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          selectedOption === 'NÃO' ? styles.selected : null,
+        ]}
+        onPress={() => setSelectedOption('NÃO')}
+      >
+        <Text
+          style={selectedOption === 'NÃO' ? styles.whiteText : styles.blackText}
+        >
+          NÃO
+        </Text>
       </TouchableOpacity>
     </View>
   )
@@ -24,21 +45,25 @@ export default function YesOrNo(props: YesOrNoProps) {
 
 const styles = StyleSheet.create({
   button: {
-    paddingRight: 50,
-    paddingLeft: 50,
-    paddingTop: 7,
-    paddingBottom: 7,
+    paddingVertical: 7,
+    paddingHorizontal: 50,
     borderRadius: 5,
-    borderColor: 'rgba(0,0,0,0.28)',
+    borderColor: 'rgba(0, 0, 0, 0.28)',
+    borderWidth: 1,
+    marginVertical: 5,
+    marginHorizontal: 15,
   },
-
   selected: {
-    paddingRight: 50,
-    paddingLeft: 50,
-    paddingTop: 7,
-    paddingBottom: 7,
     backgroundColor: '#A00E00',
-    borderRadius: 5,
-    borderColor: 'rgba(0,0,0,0.28)',
+    borderColor: 'rgba(0, 0, 0, 0.28)',
+  },
+  blackText: {
+    color: '#000000',
+  },
+  whiteText: {
+    color: '#FFFFFF',
+  },
+  buttonText: {
+    color: 'black',
   },
 })

@@ -5,6 +5,8 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import InputFull from '../components/InputFull'
 import YesOrNo from '../components/YesOrNo'
+import { AntDesign } from '@expo/vector-icons'
+import MainButton from '../components/MainButton'
 
 export default function Anamnese() {
   const { bottom, top } = useSafeAreaInsets()
@@ -17,9 +19,14 @@ export default function Anamnese() {
       <View>
         <Header />
         <View className="justfy-between aling-items w-347 h-1203 mb-4 flex-1">
-          <Text>Anamnese</Text>
+          <View className="mb-[25px] mt-[34px] flex-row items-center justify-center">
+            <AntDesign name="questioncircle" size={24} color="#A00E00" />
+            <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
+              Ocorrência
+            </Text>
+          </View>
           <View className="justfy-between aling-items w-347 h-1041 flex-1">
-            <InputFull title="Sinais e Sintomas" />
+            <InputFull title="Sinais e Sintomas" isBig={true} />
             <View className="just-between aling-items flex-1">
               <YesOrNo Question="Aconteceu outras vezes?" />
             </View>
@@ -46,8 +53,9 @@ export default function Anamnese() {
                 <InputFull title="Que Horas" isCalendar={true} />
               </View>
             </View>
-            <InputFull title="Observações Finais" />
+            <InputFull title="Observações Finais" isBig={true} />
           </View>
+          <MainButton innerText={'VOLTAR'}></MainButton>
         </View>
         <Footer />
       </View>
