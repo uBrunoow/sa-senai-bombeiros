@@ -13,6 +13,8 @@ import { testeRoute } from './src/testes/testeRoute'
 import { criarSintomas } from './src/testes/criarSintomas'
 import bcrypt from 'fastify-bcrypt' // Importe o plugin aqui
 import { criarSintomas2 } from './src/testes/criarSintoma2'
+import { criarGlasgow } from './src/testes/criarGlasgow'
+import { criarAnamneses } from './src/testes/criarAnamnesis'
 
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
@@ -35,6 +37,8 @@ app.register(userFindRoutes)
 app.register(testeRoute)
 app.register(criarSintomas)
 app.register(criarSintomas2)
+app.register(criarGlasgow)
+app.register(criarAnamneses)
 
 app
   .listen({
