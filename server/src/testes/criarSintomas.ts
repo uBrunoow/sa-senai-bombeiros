@@ -10,7 +10,7 @@ export async function criarSintomas(app: FastifyInstance) {
 
     const { description } = sintomaSchema.parse(req.body)
 
-    const existingSintoma = await prisma.symptoms.findFirst({
+    const existingSintoma = await prisma.preHospitalMethod.findFirst({
       where: {
         description,
       },
@@ -22,7 +22,7 @@ export async function criarSintomas(app: FastifyInstance) {
       })
     }
 
-    const newSintoma = await prisma.symptoms.create({
+    const newSintoma = await prisma.preHospitalMethod.create({
       data: {
         description,
         ReportOwnerId: 1,

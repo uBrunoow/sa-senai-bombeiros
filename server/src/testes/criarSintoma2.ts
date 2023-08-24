@@ -11,16 +11,13 @@ export async function criarSintomas2(app: FastifyInstance) {
 
     const { reportOwnerId, symptomsOwnerId } = sintomaSchema.parse(req.body)
 
-    const newSintoma = await prisma.report_Symptoms.create({
+    const newSintoma = await prisma.report_PreHospitalMethod.create({
       data: {
         reportOwner: {
           connect: { id: reportOwnerId },
         },
-        symptomsOwner: {
+        preHospitalMethodOwner: {
           connect: { id: symptomsOwnerId },
-        },
-        include: {
-          reportOwner: true, // Incluir as informações do relatório
         },
       },
     })
