@@ -12,6 +12,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import loginUser from '../../src/api/loginUser'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 export default function Login({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
@@ -68,7 +69,7 @@ export default function Login({ navigation }) {
             <View className="h-[152px] flex-col items-center justify-between">
               <View className="relative h-[76px] gap-[5px]">
                 <Text className=" text-[21px] font-normal leading-[21px] text-preto">
-                  CPF
+                  E-mail
                 </Text>
                 {/* Input do texto para cpf */}
                 <TextInput
@@ -113,7 +114,7 @@ export default function Login({ navigation }) {
             </View>
           </View>
         </View>
-        <View className="h-[67px] w-full bg-[#A00E00]"></View>
+        <Footer />
       </View>
     </ScrollView>
   )

@@ -1,7 +1,11 @@
 import { FastifyInstance } from 'fastify'
 import { prisma } from '../../lib/prisma'
 
-export async function userFindRoutes(app: FastifyInstance, opts: any, done: Function) {
+export async function userFindRoutes(
+  app: FastifyInstance,
+  opts: fastifyNullOpts,
+  done: fastifyDoneFunction,
+) {
   // Rota para pegar todos os usuários
   app.get('/api/users', async (req, res) => {
     const allUsers = await prisma.user.findMany()
@@ -14,7 +18,11 @@ export async function userFindRoutes(app: FastifyInstance, opts: any, done: Func
   done()
 }
 
-export async function userFindOneRoutes(app: FastifyInstance, opts: any, done: Function) {
+export async function userFindOneRoutes(
+  app: FastifyInstance,
+  opts: fastifyNullOpts,
+  done: fastifyDoneFunction,
+) {
   // Rota para pegar um usuário específico pelo ID
   app.get('/api/users/:id', async (req, res) => {
     const { id } = req.params as { id: string }

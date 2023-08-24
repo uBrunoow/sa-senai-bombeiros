@@ -9,7 +9,10 @@ import {
   userFindOneRoutes,
   userFindRoutes,
 } from './src/routes/users/findRoutes'
+import { testeRoute } from './src/testes/testeRoute'
+import { criarSintomas } from './src/testes/criarSintomas'
 import bcrypt from 'fastify-bcrypt' // Importe o plugin aqui
+import { criarSintomas2 } from './src/testes/criarSintoma2'
 
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
@@ -29,6 +32,9 @@ app.register(userUpdateRoutes)
 app.register(userDeleteRoutes)
 app.register(userFindOneRoutes)
 app.register(userFindRoutes)
+app.register(testeRoute)
+app.register(criarSintomas)
+app.register(criarSintomas2)
 
 app
   .listen({
