@@ -19,9 +19,6 @@ export async function criarSintomas2(app: FastifyInstance) {
         symptomsOwner: {
           connect: { id: symptomsOwnerId },
         },
-        include: {
-          reportOwner: true, // Incluir as informações do relatório
-        },
       },
     })
     return res.send({
