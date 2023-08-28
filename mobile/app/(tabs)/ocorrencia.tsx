@@ -24,24 +24,31 @@ export default function Ocorrencia({ navigation }) {
           </Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate(`introducao`)}>
-          <Grouper title="Introdução" desc="Dados da vítima, tipo ocorr..." />
+          <Grouper
+            title="Introdução"
+            desc="Dados da vítima, tipo ocorr..."
+            isCompleted={4}
+          />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate(`anamnese`)}>
           <Grouper
             title="Anamnese de Emergência"
             desc="Sinais e sintomas, observações..."
+            isCompleted={2}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate(`info-paciente`)}>
           <Grouper
             title="Info. do paciente"
             desc="Aval. paciente, sinais vitais..."
+            isCompleted={0}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate(`local-traumas`)}>
           <Grouper
             title="Localizações da Fratura"
             desc="Local dos traumas, tipo trau..."
+            isCompleted={0}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -50,6 +57,7 @@ export default function Ocorrencia({ navigation }) {
           <Grouper
             title="Info. de Transporte"
             desc="Condução, condição transp..."
+            isCompleted={0}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -58,6 +66,7 @@ export default function Ocorrencia({ navigation }) {
           <Grouper
             title="Info. Hospitalares"
             desc="Procedimentos efetuados..."
+            isCompleted={0}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -66,6 +75,7 @@ export default function Ocorrencia({ navigation }) {
           <Grouper
             title="Anamnese Gestacional"
             desc="Período gestação, pré-natal..."
+            isCompleted={0}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate(`finalizacao`)}>

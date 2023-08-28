@@ -8,7 +8,18 @@ export async function userFindRoutes(
 ) {
   // Rota para pegar todos os usuários
   app.get('/api/users', async (req, res) => {
-    const allUsers = await prisma.user.findMany()
+    const allUsers = await prisma.user.findMany({
+      include: {
+        Reports: {
+          include: {
+            Symptoms: true,
+            PreHospitalMethods: true,
+            Anamnesis: true,
+            GestationalAnamnesis: true,
+          },
+        },
+      },
+    })
     return res.send({
       msg: `🟢 Usuários localizado com sucesso.`,
       allUsers,
@@ -31,6 +42,14 @@ export async function userFindOneRoutes(
     const user = await prisma.user.findUnique({
       where: {
         id: parseInt(id),
+      },
+      include: {
+        Reports: {
+          include: {
+            Symptoms: true,
+            PreHospitalMethods: true,
+          },
+        },
       },
     })
 
