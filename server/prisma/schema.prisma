@@ -42,7 +42,7 @@ model Report {
   SuspectProblems          SuspectProblems[]
   Report_PreHospitalMethod Report_PreHospitalMethod[]
   Report_Symptoms          Report_Symptoms[]
-  // Glasglow                 Glasglow[]
+  Glasglow                 Glasglow[]
 }
 
 //  Tabela N para N entre relatório e método pré-hospitalar
@@ -124,32 +124,14 @@ model Anamnesis {
   ReportOwnerId      Int
 }
 
-// model Glasglow {
-//   id                    Int            @id @default(autoincrement())
-//   reportOwner           Report         @relation(fields: [ReportOwnerId], references: [id])
-//   eyeOpeningOwner       GlasglowClass  @relation(fields: [eyeOpeningOwnerId], references: [id], name: "eyeOpeningRelation")
-//   verbalResponseOwner   GlasglowClass  @relation(fields: [verbalResponseOwnerId], references: [id], name: "verbalResponseRelation")
-//   motorResponseOwner    GlasglowClass  @relation(fields: [motorResponseOwnerId], references: [id], name: "motorResponseRelation")
-//   ReportOwnerId         Int
-//   eyeOpeningOwnerId     Int
-//   verbalResponseOwnerId Int
-//   motorResponseOwnerId  Int
-//   GlasglowClass         GlasglowClass? @relation(fields: [glasglowClassId], references: [id])
-//   glasglowClassId       Int?
-//   GlasglowClass         GlasglowClass? @relation(fields: [glasglowClassId], references: [id])
-//   glasglowClassId       Int?
-//   GlasglowClass         GlasglowClass? @relation(fields: [glasglowClassId], references: [id])
-//   glasglowClassId       Int?
-// }
-
-// model GlasglowClass {
-//   id             Int        @id @default(autoincrement())
-//   score          Int
-//   description    String
-//   eyeOpening     Glasglow[] @relation(name: "eyeOpeningRelation")
-//   verbalResponse Glasglow[] @relation(name: "verbalResponseRelation")
-//   motorResponse  Glasglow[] @relation(name: "motorResponseRelation")
-// }
+model Glasglow {
+  id                    Int    @id @default(autoincrement())
+  reportOwner           Report @relation(fields: [ReportOwnerId], references: [id])
+  ReportOwnerId         Int
+  eyeOpeningOwnerId     Int
+  verbalResponseOwnerId Int
+  motorResponseOwnerId  Int
+}
 
 model SuspectProblems {
   id           Int                    @id @default(autoincrement())
