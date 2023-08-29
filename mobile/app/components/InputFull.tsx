@@ -2,13 +2,13 @@ import { View, Text, TextInput } from 'react-native'
 import React from 'react'
 import { Entypo } from '@expo/vector-icons'
 
-type InputTprops = {
+type InputProps = {
   title: string
   isCalendar?: boolean
   isBig?: Boolean
 }
 
-export default function InputFull(props: InputTprops) {
+export default function InputFull(props: InputProps) {
   return (
     <View className="justfy-between m-auto my-2 w-5/6 flex-1 items-center">
       <Text className="text-lg">{props.title}</Text>

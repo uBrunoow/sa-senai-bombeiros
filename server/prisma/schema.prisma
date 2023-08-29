@@ -133,19 +133,35 @@ model Glasglow {
   motorResponseOwnerId  Int
 }
 
+// model SuspectProblems {
+//   id           Int                    @id @default(autoincrement())
+//   classOwner   SuspectProblemsClasses @relation(fields: [classOwnerId], references: [id])
+//   classOwnerId Int
+//   name         String
+//   Report       Report?                @relation(fields: [reportId], references: [id])
+//   reportId     Int?
+// }
+
+// model SuspectProblemsClasses {
+//   id              Int               @id @default(autoincrement())
+//   name            String
+//   SuspectProblems SuspectProblems[]
+// }
+
 model SuspectProblems {
-  id           Int                    @id @default(autoincrement())
-  classOwner   SuspectProblemsClasses @relation(fields: [classOwnerId], references: [id])
-  classOwnerId Int
-  name         String
-  Report       Report?                @relation(fields: [reportId], references: [id])
-  reportId     Int?
+  id       Int        @id @default(autoincrement())
+  Problem  Problems[]
+  Another  String
+  Report   Report?    @relation(fields: [reportId], references: [id])
+  reportId Int?
 }
 
-model SuspectProblemsClasses {
-  id              Int               @id @default(autoincrement())
-  name            String
-  SuspectProblems SuspectProblems[]
+model Problems {
+  id                Int              @id @default(autoincrement())
+  Name              String
+  Description       String
+  SuspectProblems   SuspectProblems? @relation(fields: [suspectProblemsId], references: [id])
+  suspectProblemsId Int?
 }
 
 model CinematicAvaliation {

@@ -51,6 +51,7 @@ export async function reportFindOneRoutes(
         SuspectProblems: true,
         Report_PreHospitalMethod: true,
         Report_Symptoms: true,
+        Glasglow: true,
         _count: true,
       },
     })

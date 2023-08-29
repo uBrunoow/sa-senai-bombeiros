@@ -9,7 +9,7 @@ import {
   userFindOneRoutes,
   userFindRoutes,
 } from './src/routes/users/findRoutes'
-import { testeRoute } from './src/testes/testeRoute'
+import { registerReportRoutes } from './src/routes/reports/registerReports'
 import { criarSintomas } from './src/testes/criarSintomas'
 import bcrypt from 'fastify-bcrypt' // Importe o plugin aqui
 import { criarSintomas2 } from './src/testes/criarSintoma2'
@@ -38,13 +38,13 @@ app.register(userUpdateRoutes)
 app.register(userDeleteRoutes)
 app.register(userFindOneRoutes)
 app.register(userFindRoutes)
-app.register(testeRoute)
 app.register(criarSintomas)
 app.register(criarSintomas2)
 app.register(criarGlasgow)
 app.register(criarAnamneses)
 app.register(reportsFindRoutes)
 app.register(reportFindOneRoutes)
+app.register(registerReportRoutes)
 
 app
   .listen({
