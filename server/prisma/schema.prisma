@@ -40,9 +40,9 @@ model Report {
   GestationalAnamnesis     GestationalAnamnesis[]
   Anamnesis                Anamnesis[]
   SuspectProblems          SuspectProblems[]
+  Glasglow                 Glasglow[]
   Report_PreHospitalMethod Report_PreHospitalMethod[]
   Report_Symptoms          Report_Symptoms[]
-  Glasglow                 Glasglow[]
 }
 
 //  Tabela N para N entre relatório e método pré-hospitalar

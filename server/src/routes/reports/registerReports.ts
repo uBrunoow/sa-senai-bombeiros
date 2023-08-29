@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../../lib/prisma'
 
-export async function registerReportRoutes(app: FastifyInstance) {
+export async function Glasglow(app: FastifyInstance) {
   app.post('/api/reports', async (req, res) => {
     const testeSchema = z.object({
       reportDate: z.string(),
