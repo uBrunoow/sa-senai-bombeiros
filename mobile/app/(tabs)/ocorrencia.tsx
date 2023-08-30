@@ -23,28 +23,40 @@ export default function Ocorrencia({ navigation }) {
             Ocorrência
           </Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate(`introducao`)}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(`introducao`)}
+          activeOpacity={0.7}
+        >
           <Grouper
             title="Introdução"
             desc="Dados da vítima, tipo ocorr..."
             isCompleted={4}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate(`anamnese`)}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(`anamnese`)}
+          activeOpacity={0.7}
+        >
           <Grouper
             title="Anamnese de Emergência"
             desc="Sinais e sintomas, observações..."
             isCompleted={2}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate(`info-paciente`)}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(`info-paciente`)}
+          activeOpacity={0.7}
+        >
           <Grouper
             title="Info. do paciente"
             desc="Aval. paciente, sinais vitais..."
             isCompleted={0}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate(`local-traumas`)}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(`local-traumas`)}
+          activeOpacity={0.7}
+        >
           <Grouper
             title="Localizações da Fratura"
             desc="Local dos traumas, tipo trau..."
@@ -53,6 +65,7 @@ export default function Ocorrencia({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate(`info-transporte`)}
+          activeOpacity={0.7}
         >
           <Grouper
             title="Info. de Transporte"
@@ -62,6 +75,7 @@ export default function Ocorrencia({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate(`info-hospitalares`)}
+          activeOpacity={0.7}
         >
           <Grouper
             title="Info. Hospitalares"
@@ -71,6 +85,7 @@ export default function Ocorrencia({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate(`anamnese-gestacional`)}
+          activeOpacity={0.7}
         >
           <Grouper
             title="Anamnese Gestacional"
@@ -78,7 +93,10 @@ export default function Ocorrencia({ navigation }) {
             isCompleted={0}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate(`finalizacao`)}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(`finalizacao`)}
+          activeOpacity={0.7}
+        >
           <Grouper
             title="Finalização"
             desc="Observações, objetos..."
