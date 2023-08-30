@@ -1,17 +1,17 @@
 import jwt from '@fastify/jwt'
 import fastify from 'fastify'
 import cors from '@fastify/cors'
+import bcrypt from 'fastify-bcrypt' // Importe o plugin aqui
 import { userRegisterRoutes } from './src/routes/users/registerRoutes'
 import { userLoginRoutes } from './src/routes/users/loginRoutes'
 import { userUpdateRoutes } from './src/routes/users/updateRoutes'
 import { userDeleteRoutes } from './src/routes/users/deleteRoutes'
+import { registerReportRoutes } from './src/routes/reports/registerReports'
 import {
   userFindOneRoutes,
   userFindRoutes,
 } from './src/routes/users/findRoutes'
-import { registerReportRoutes } from './src/routes/reports/registerReports'
 import { criarSintomas } from './src/testes/criarSintomas'
-import bcrypt from 'fastify-bcrypt' // Importe o plugin aqui
 import { criarSintomas2 } from './src/testes/criarSintoma2'
 import { criarGlasgow } from './src/testes/criarGlasgow'
 import { criarAnamneses } from './src/testes/criarAnamnesis'
