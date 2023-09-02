@@ -1,9 +1,10 @@
 import { z } from 'zod'
 
-export const bodySchema = z.object({
-  name: z.string(),
-  gender: z.boolean(),
+export const reportSchema = z.object({
+  reportDate: z.string(),
   age: z.number(),
+  gender: z.string(),
+  name: z.string(),
   cpf: z.string(),
   phone: z.string(),
   reportPlace: z.string(),
@@ -13,3 +14,19 @@ export const bodySchema = z.object({
   breathing: z.number(),
   saturation: z.number(),
 })
+
+export const reportsUpdateSchema = z.object({
+  reportDate: z.string(),
+  age: z.number(),
+  gender: z.string(),
+  name: z.string(),
+  cpf: z.string(),
+  phone: z.string(),
+  reportPlace: z.string(),
+  bloodPressure: z.number(),
+  bodyTemp: z.number(),
+  bodyPulse: z.number(),
+  breathing: z.number(),
+  saturation: z.number(),
+})
+

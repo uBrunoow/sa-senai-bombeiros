@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { prisma } from '../../lib/prisma'
-import { updateSchema } from '../../schemas/userSchemas'
+import { reportsUpdateSchema } from '../../schemas/reportSchemas'
 
 export async function userUpdateRoutes(
   app: FastifyInstance,
@@ -11,10 +11,25 @@ export async function userUpdateRoutes(
     const { id } = req.params as { id: string } // Buscar o id do usuário
 
     // Faz uma requisição do body para pegar o email senha e nome
-    const { email, password, name } = updateSchema.parse(req.body)
+    const {       
+      age,
+      gender,
+      name,
+      reportDate,
+      cpf,
+      phone,
+      reportPlace,
+      bloodPressure,
+      bodyTemp,
+      bodyPulse,
+      breathing,
+      saturation, 
+    } = reportsUpdateSchema.parse(req.body)
+
+    const parsedReportDate = new Date(reportDate)
 
     // Validação dos dados recebidos
-    if (!email && !password && !name) {
+    if (!age && !gender && !name && !cpf &&!phone &&!reportPlace &&!bloodPressure &&!bodyTemp &&!bodyPulse &&!bodyPulse &&!breathing &&!saturation) {
       return res
         .status(400)
         .send({ message: '🔴 Nenhuma informação foi fornecida' })
