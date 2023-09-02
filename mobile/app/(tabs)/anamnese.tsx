@@ -7,6 +7,7 @@ import InputFull from '../components/InputFull'
 import YesOrNo from '../components/YesOrNo'
 import { AntDesign } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
+import InputClock from '../components/InputClock'
 
 export default function Anamnese() {
   const { bottom, top } = useSafeAreaInsets()
@@ -40,7 +41,8 @@ export default function Anamnese() {
             </View>
             {/* TERMINAR ESSA PÁGINA!!! */}
             <InputFull title="Quais?" />
-            <InputFull title="Horário Ultima Med." isCalendar={true} />
+            {/* <InputFull title="Horário Ultima Med." isCalendar={true} /> */}
+            <InputClock title="Horário Ultima Med." />
             <View className="just-between aling-items flex-1">
               <YesOrNo Question="Tem alguma alergia?" />
             </View>

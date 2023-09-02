@@ -13,8 +13,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import loginUser from '../../src/api/loginUser'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { setToken, setUser } from '../../src/stores/authSlice'
+import { useDispatch } from 'react-redux'
 
 export default function Login({ navigation }) {
+  const dispatch = useDispatch()
   const { bottom, top } = useSafeAreaInsets()
 
   const [email, setEmail] = useState('')
@@ -33,6 +36,10 @@ export default function Login({ navigation }) {
 
     const response = await loginUser(email, password)
     if (response && response.user) {
+      dispatch(setToken(response.token))
+      dispatch(setUser(response.user))
+
+      // Redirecione o usuário para a tela 'ocorrencia'
       navigation.navigate('ocorrencia')
       console.log(response)
     }

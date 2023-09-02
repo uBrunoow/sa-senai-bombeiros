@@ -1,4 +1,4 @@
-import { View, ScrollView, Text } from 'react-native'
+import { View, ScrollView, Text, Pressable } from 'react-native'
 import React from 'react'
 import Header from '../components/Header'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -9,7 +9,7 @@ import YesOrNo from '../components/YesOrNo'
 import GestationPeriod from '../components/GestationPeriod'
 import InputFull from '../components/InputFull'
 
-export default function AnamneseGestacional() {
+export default function AnamneseGestacional({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
 
   return (
@@ -34,7 +34,9 @@ export default function AnamneseGestacional() {
         <YesOrNo Question="Foi feito inspeção visual?"></YesOrNo>
         {/* TERMINAR ESSA PÁGINA!!! */}
         <YesOrNo Question="Parto realizado?"></YesOrNo>
-        <MainButton innerText="VOLTAR"></MainButton>
+        <Pressable onPress={() => navigation.navigate(`ocorrencia`)}>
+          <MainButton innerText="VOLTAR"></MainButton>
+        </Pressable>
       </View>
       <Footer />
     </ScrollView>
