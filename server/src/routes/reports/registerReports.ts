@@ -1,11 +1,9 @@
 import { FastifyInstance } from 'fastify'
-import { z } from 'zod'
 import { prisma } from '../../lib/prisma'
 import { reportSchema } from '../../schemas/reportSchemas'
 
 export async function registerReportRoutes(app: FastifyInstance) {
   app.post('/api/reports', async (req, res) => {
-
     const {
       age,
       gender,

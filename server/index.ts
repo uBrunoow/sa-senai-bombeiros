@@ -2,19 +2,27 @@ import jwt from '@fastify/jwt'
 import fastify from 'fastify'
 import cors from '@fastify/cors'
 import bcrypt from 'fastify-bcrypt' // Importe o plugin aqui
+
+// Users
 import { userRegisterRoutes } from './src/routes/users/registerRoutes'
 import { userLoginRoutes } from './src/routes/users/loginRoutes'
 import { userUpdateRoutes } from './src/routes/users/updateRoutes'
 import { userDeleteRoutes } from './src/routes/users/deleteRoutes'
-import { registerReportRoutes } from './src/routes/reports/registerReports'
 import {
   userFindOneRoutes,
   userFindRoutes,
 } from './src/routes/users/findRoutes'
+
+// Teste
 import { criarSintomas } from './src/testes/criarSintomas'
 import { criarSintomas2 } from './src/testes/criarSintoma2'
 import { criarGlasgow } from './src/testes/criarGlasgow'
 import { criarAnamneses } from './src/testes/criarAnamnesis'
+
+// Reports
+import { registerReportRoutes } from './src/routes/reports/registerReports'
+import { reportsUpdateRoutes } from './src/routes/reports/updateReports'
+import { reportsDeleteRoutes } from './src/routes/reports/deleteReports'
 import {
   reportsFindRoutes,
   reportFindOneRoutes,
@@ -45,6 +53,8 @@ app.register(criarAnamneses)
 app.register(reportsFindRoutes)
 app.register(reportFindOneRoutes)
 app.register(registerReportRoutes)
+app.register(reportsUpdateRoutes)
+app.register(reportsDeleteRoutes)
 
 app
   .listen({
