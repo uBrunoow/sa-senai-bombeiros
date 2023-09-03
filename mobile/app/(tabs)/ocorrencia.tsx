@@ -21,11 +21,9 @@ export default function Ocorrencia({ navigation }) {
   const dispatch = useDispatch()
 
   const handleLogout = () => {
-    // Despache a ação de logout para limpar o token
     dispatch({ type: 'LOGOUT' })
 
-    // Redirecione o usuário para a página de login (opcional)
-    navigation.navigate('login')
+    navigation.navigate('home')
   }
 
   return (
@@ -121,7 +119,7 @@ export default function Ocorrencia({ navigation }) {
             isCompleted={0}
           />
         </TouchableOpacity>
-        <Pressable onPress={() => navigation.navigate(``)}>
+        <Pressable onPress={() => navigation.navigate(`home`)}>
           <MainButton innerText="FINALIZAR" />
         </Pressable>
         <Button title="Logout" onPress={handleLogout} />

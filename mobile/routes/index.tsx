@@ -2,7 +2,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import home from '../app/(tabs)/home'
 import Login from '../app/(tabs)/login'
-import { useSelector } from 'react-redux'
 import Anamnese from '../app/(tabs)/anamnese'
 import AnamneseGestacional from '../app/(tabs)/anamneseGestacional'
 import InfoPaciente from '../app/(tabs)/infoPaciente'
@@ -12,33 +11,19 @@ import Ocorrencia from '../app/(tabs)/ocorrencia'
 
 const Stack = createNativeStackNavigator()
 
-interface RootState {
-  auth: {
-    token: string
-  }
-}
-
 export default function Routes() {
-  const token = useSelector((state: RootState) => state.auth.token)
-
-  if (!token) {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen
-          name="home"
-          component={home}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    )
-  }
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="home"
+        component={home}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="ocorrencia"
         component={Ocorrencia}

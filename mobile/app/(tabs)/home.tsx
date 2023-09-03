@@ -5,16 +5,12 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../src/stores/stores'
 
 export default function App({ navigation }) {
-  // Use o useSelector para acessar o estado de autenticação
   const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
 
-  // Função para lidar com o clique no botão
   const handleButtonClick = () => {
     if (isLoggedIn) {
-      // Se o usuário estiver logado, navegue para a página de ocorrência
       navigation.navigate('ocorrencia')
     } else {
-      // Se o usuário não estiver logado, navegue para a página de login
       navigation.navigate('login')
     }
   }
