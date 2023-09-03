@@ -19,8 +19,6 @@ const authReducer = (state = initialState, action: AuthAction): AuthState => {
     case 'SAVE_TOKEN':
       expirationDate = new Date()
       expirationDate.setDate(expirationDate.getDate() + 30)
-
-      // Salvar o token e a data de expiração no AsyncStorage
       AsyncStorage.setItem('authToken', action.payload)
       AsyncStorage.setItem('tokenExpirationDate', expirationDate.toISOString())
 
@@ -30,7 +28,6 @@ const authReducer = (state = initialState, action: AuthAction): AuthState => {
         tokenExpirationDate: expirationDate,
       }
     case 'LOGOUT':
-      // Limpar o token e a data de expiração do AsyncStorage
       AsyncStorage.removeItem('authToken')
       AsyncStorage.removeItem('tokenExpirationDate')
 
