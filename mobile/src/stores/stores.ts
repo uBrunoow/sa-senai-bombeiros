@@ -1,15 +1,22 @@
-// store.js
-import { createStore, applyMiddleware } from 'redux'
+// store.ts
+import { configureStore } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk' // Middleware para ações assíncronas (opcional)
-import rootReducer from '../reducers/authReducer' // Importe o seu rootReducer
+import authReducer from '../reducers/authReducer' // Importe o seu authReducer
 
-// Configuração do middleware (pode ser estendida conforme necessário)
-const middleware = [thunk]
+// Defina o estado da raiz
+export interface RootState {
+  auth: {
+    token: string
+  }
+}
 
-// Crie o store Redux
-const store = createStore(
-  rootReducer, // Seu rootReducer
-  applyMiddleware(...middleware), // Aplicar middleware (se necessário)
-)
+// Crie a store Redux com a função configureStore
+const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    // Adicione outros reducers aqui, se houver
+  },
+  middleware: [thunk], // Middleware (se necessário)
+})
 
 export default store

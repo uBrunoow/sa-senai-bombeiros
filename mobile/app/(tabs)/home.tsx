@@ -1,8 +1,23 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import NOARLogo from '../../src/assets/logo-noar.svg'
 import Icon from '@expo/vector-icons/Feather'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../src/stores/stores'
 
 export default function App({ navigation }) {
+  // Use o useSelector para acessar o estado de autenticação
+  const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
+
+  // Função para lidar com o clique no botão
+  const handleButtonClick = () => {
+    if (isLoggedIn) {
+      // Se o usuário estiver logado, navegue para a página de ocorrência
+      navigation.navigate('ocorrencia')
+    } else {
+      // Se o usuário não estiver logado, navegue para a página de login
+      navigation.navigate('login')
+    }
+  }
   return (
     <View className=" flex-1 items-center justify-between">
       <View className="h-[67px] w-full bg-[#A00E00]" />
@@ -23,7 +38,7 @@ export default function App({ navigation }) {
         <View className="absolute top-[-50px] h-[100px] w-[100px] items-center justify-center rounded-full bg-offwhite">
           <TouchableOpacity
             className="h-[66px] w-[66px] items-center justify-center rounded-full bg-[#A00E00]"
-            onPress={() => navigation.navigate('login')}
+            onPress={handleButtonClick}
           >
             <Icon name="plus" size={50} color="#fff" />
           </TouchableOpacity>

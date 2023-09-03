@@ -9,7 +9,6 @@ import InfoPaciente from '../app/(tabs)/infoPaciente'
 import Introducao from '../app/(tabs)/introducao'
 import LocalTraumas from '../app/(tabs)/localTraumas'
 import Ocorrencia from '../app/(tabs)/ocorrencia'
-import { useAuthMiddleware } from '../src/middlewares/authMiddleware'
 
 const Stack = createNativeStackNavigator()
 
@@ -20,12 +19,9 @@ interface RootState {
 }
 
 export default function Routes() {
-  const { checkAuth } = useAuthMiddleware()
-
   const token = useSelector((state: RootState) => state.auth.token)
 
   if (!token) {
-    // Se o token não estiver presente, redirecione o usuário para a tela de login
     return (
       <Stack.Navigator>
         <Stack.Screen
@@ -43,6 +39,11 @@ export default function Routes() {
   }
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="ocorrencia"
+        component={Ocorrencia}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="anamnese"
         component={Anamnese}
@@ -66,11 +67,6 @@ export default function Routes() {
       <Stack.Screen
         name="local-traumas"
         component={LocalTraumas}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ocorrencia"
-        component={Ocorrencia}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
