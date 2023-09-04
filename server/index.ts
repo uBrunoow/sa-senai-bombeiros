@@ -28,6 +28,12 @@ import {
   reportFindOneRoutes,
 } from './src/routes/reports/findReports'
 
+// Symptoms
+import { registerSymptomsRoutes } from './src/routes/reports/Symptoms/registerSymptoms'
+
+// Anamnesis
+import { registerAnamneseRoutes } from './src/routes/reports/Anamnesis/registerAnamesis'
+
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
 app.register(cors, {
@@ -55,6 +61,8 @@ app.register(reportFindOneRoutes)
 app.register(registerReportRoutes)
 app.register(reportsUpdateRoutes)
 app.register(reportsDeleteRoutes)
+app.register(registerSymptomsRoutes)
+app.register(registerAnamneseRoutes)
 
 app
   .listen({

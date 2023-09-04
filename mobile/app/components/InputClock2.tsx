@@ -7,7 +7,7 @@ type InputClockProps = {
   title?: string
 }
 
-const InputClock = (props: InputClockProps) => {
+const InputClock2 = (props: InputClockProps) => {
   const [date, setDate] = useState(new Date())
   const [showPicker, setShowPicker] = useState(false)
   const [timeMedication, setTimeMedication] = useState('')
@@ -60,4 +60,4 @@ const InputClock = (props: InputClockProps) => {
   )
 }
 
-export default InputClock
+export default InputClock2

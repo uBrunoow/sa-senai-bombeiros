@@ -8,6 +8,7 @@ import YesOrNo from '../components/YesOrNo'
 import { AntDesign } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
 import InputClock from '../components/InputClock'
+import InputClock2 from '../components/InputClock2'
 
 export default function Anamnese() {
   const { bottom, top } = useSafeAreaInsets()
@@ -52,7 +53,8 @@ export default function Anamnese() {
                 <YesOrNo Question="Ingeriu alimento/líquido nas últimas 6 horas?" />
               </View>
               <View className="just-between aling-items flex-1">
-                <InputFull title="Que Horas" isCalendar={true} />
+                {/* <InputFull title="Que Horas" isCalendar={true} /> */}
+                <InputClock2 title="Que horas?" />
               </View>
             </View>
             <InputFull title="Observações Finais" isBig={true} />
