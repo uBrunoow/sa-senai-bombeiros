@@ -38,12 +38,10 @@ export default function Login({ navigation }) {
     const response = await loginUser(email, password)
     if (response && response.user) {
       dispatch(saveToken(response.token))
-
-      // Redirecione o usuário para a tela 'ocorrencia'
       navigation.navigate('ocorrencia')
-      console.log(response)
     }
 
+    console.log(response.user.id)
     setEmail('')
     setPassword('')
   }
