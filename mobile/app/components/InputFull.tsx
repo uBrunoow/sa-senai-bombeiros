@@ -1,7 +1,6 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TextInput } from 'react-native'
+import React from 'react'
 import { Entypo } from '@expo/vector-icons'
-import DateTimePicker from '@react-native-community/datetimepicker'
 
 type InputProps = {
   title: string
@@ -10,20 +9,6 @@ type InputProps = {
 }
 
 export default function InputFull(props: InputProps) {
-  // const [date, setDate] = useState(new Date())
-  // const [showDatePicker, setShowDatePicker] = useState(false)
-
-  // const handleDateChange = (event, selectedDate) => {
-  //   setShowDatePicker(false)
-
-  //   if (selectedDate) {
-  //     setDate(selectedDate)
-  //   }
-  // }
-
-  // const showPicker = () => {
-  //   setShowDatePicker(true)
-  // }
   return (
     <View className="justfy-between m-auto my-2 w-5/6 flex-1 items-center">
       <Text className="text-lg">{props.title}</Text>
@@ -46,9 +31,6 @@ export default function InputFull(props: InputProps) {
                 size={20}
                 color="black"
               />
-              {/* <TouchableOpacity onPress={showPicker}>
-                <Text>Select Date</Text>
-              </TouchableOpacity> */}
             </>
           )}
         </TextInput>
