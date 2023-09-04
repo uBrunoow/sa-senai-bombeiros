@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { TextInput, Text, View, Platform, Pressable } from 'react-native'
 import DateTimePickerAndroid from '@react-native-community/datetimepicker'
+import React, { useState } from 'react'
+import { TextInput, Text, View, Pressable, Platform } from 'react-native'
 
 export default function GestationPeriod() {
   const [date, setDate] = useState(new Date())
@@ -16,6 +16,7 @@ export default function GestationPeriod() {
   const toggleDatePicker2 = () => {
     setShowPicker2(!showPicker2)
   }
+
 
   const onDateStartChange = (event, selectedDate) => {
     setShowPicker1(Platform.OS === 'ios')
@@ -35,7 +36,7 @@ export default function GestationPeriod() {
     }
   }
   return (
-    <View className=" m-auto mb-4 w-4/6 flex-row flex-wrap justify-around">
+    <View className=" m-auto mb-4 w-4/6 flex-col flex-wrap justify-around">
       <Text className="mb-2 w-full text-center text-lg">
         Período de Gestação
       </Text>
@@ -45,7 +46,7 @@ export default function GestationPeriod() {
             value={date}
             mode="date"
             display="default"
-            onChange={onDateStartChange}
+            onChange={onDateEndChange}
           />
         </>
       )}
@@ -54,27 +55,28 @@ export default function GestationPeriod() {
           value={date}
           mode="date"
           display="default"
-          onChange={onDateEndChange}
+          onChange={onDateStartChange}
         />
       )}
-
+      <Pressable onPress={toggleDatePicker2}>
+        <TextInput
+          className=" flex-1 rounded-lg border px-2"
+          placeholder="Data de ínicio"
+          editable={false}
+          value={dateStart}
+          onChangeText={setDateStart}
+        ></TextInput>
+      </Pressable>
       <Pressable onPress={toggleDatePicker1}>
         <TextInput
           className=" flex-1 rounded-lg border px-2"
-          placeholder="Data de início"
-          editable={false}
-          value={dateStart}
-        />
-      </Pressable>
-      <Text className="mx-5 text-lg"> - </Text>
-      <Pressable onPress={toggleDatePicker2}>
-        <TextInput
-          className="flex-1 rounded-lg border px-2"
-          placeholder="Data de térm."
+          placeholder="Data de término"
           editable={false}
           value={dateEnd}
-        ></TextInput>
-      </Pressable>
+          onChangeText={setDateEnd}
+        />
+       </Pressable>
+      )}
     </View>
   )
 }
