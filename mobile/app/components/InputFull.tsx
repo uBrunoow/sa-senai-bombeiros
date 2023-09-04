@@ -23,7 +23,7 @@ export default function InputFull(props: InputProps) {
             paddingHorizontal: 9,
           }}
         >
-          {props.isCalendar && (
+          {/* {props.isCalendar && (
             <>
               <Entypo
                 className="absolute right-0 m-5"
@@ -32,7 +32,7 @@ export default function InputFull(props: InputProps) {
                 color="black"
               />
             </>
-          )}
+          )} */}
         </TextInput>
       </View>
     </View>

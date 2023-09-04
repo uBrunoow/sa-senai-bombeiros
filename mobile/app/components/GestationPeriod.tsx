@@ -17,28 +17,24 @@ export default function GestationPeriod() {
     setShowPicker2(!showPicker2)
   }
 
-  const onDateEndChange = (event, selectedDate) => {
-    setShowPicker1(Platform.OS === 'ios') // Exibe o seletor apenas no Android
-    if (selectedDate) {
-      setDate(selectedDate)
-      const formattedDate = selectedDate.toLocaleDateString('pt-BR') // Altere o 'pt-BR' para seu locale desejado
-      setDateEnd(formattedDate)
-    }
-  }
 
   const onDateStartChange = (event, selectedDate) => {
-    setShowPicker2(Platform.OS === 'ios') // Exibe o seletor apenas no Android
+    setShowPicker1(Platform.OS === 'ios')
     if (selectedDate) {
       setDate(selectedDate)
-      const formattedDate = selectedDate.toLocaleDateString('pt-BR') // Altere o 'pt-BR' para seu locale desejado
+      const formattedDate = selectedDate.toLocaleDateString('pt-BR')
       setDateStart(formattedDate)
     }
   }
 
-  // const exemploReqBackend = () => {
-  //   const response = await (ROTA_API(formatarData))
-  // }
-
+  const onDateEndChange = (event, selectedDate) => {
+    setShowPicker2(Platform.OS === 'ios')
+    if (selectedDate) {
+      setDate(selectedDate)
+      const formattedDate = selectedDate.toLocaleDateString('pt-BR')
+      setDateEnd(formattedDate)
+    }
+  }
   return (
     <View className=" m-auto mb-4 w-4/6 flex-col flex-wrap justify-around">
       <Text className="mb-2 w-full text-center text-lg">
@@ -78,8 +74,9 @@ export default function GestationPeriod() {
           editable={false}
           value={dateEnd}
           onChangeText={setDateEnd}
-        ></TextInput>
-      </Pressable>
+        />
+       </Pressable>
+      )}
     </View>
   )
 }

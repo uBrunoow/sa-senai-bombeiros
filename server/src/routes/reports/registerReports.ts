@@ -1,24 +1,9 @@
 import { FastifyInstance } from 'fastify'
-import { z } from 'zod'
 import { prisma } from '../../lib/prisma'
+import { reportSchema } from '../../schemas/reportSchemas'
 
 export async function registerReportRoutes(app: FastifyInstance) {
   app.post('/api/reports', async (req, res) => {
-    const testeSchema = z.object({
-      reportDate: z.string(),
-      age: z.number(),
-      gender: z.string(),
-      name: z.string(),
-      cpf: z.string(),
-      phone: z.string(),
-      reportPlace: z.string(),
-      bloodPressure: z.number(),
-      bodyTemp: z.number(),
-      bodyPulse: z.number(),
-      breathing: z.number(),
-      saturation: z.number(),
-    })
-
     const {
       age,
       gender,
@@ -32,7 +17,7 @@ export async function registerReportRoutes(app: FastifyInstance) {
       bodyPulse,
       breathing,
       saturation,
-    } = testeSchema.parse(req.body)
+    } = reportSchema.parse(req.body)
     const parsedReportDate = new Date(reportDate)
 
     const newReport = await prisma.report.create({

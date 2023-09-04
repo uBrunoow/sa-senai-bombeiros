@@ -1,4 +1,11 @@
-import { View, ScrollView, Text, TouchableOpacity } from 'react-native'
+import {
+  View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  Pressable,
+  Button,
+} from 'react-native'
 import React from 'react'
 import Header from '../components/Header'
 import Grouper from '../components/Grouper'
@@ -6,9 +13,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Footer from '../components/Footer'
 import { FontAwesome5 } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
+import { useDispatch } from 'react-redux'
 
 export default function Ocorrencia({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
+
+  const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' })
+
+    navigation.navigate('home')
+  }
 
   return (
     <ScrollView
@@ -103,7 +119,10 @@ export default function Ocorrencia({ navigation }) {
             isCompleted={0}
           />
         </TouchableOpacity>
-        <MainButton innerText="FINALIZAR" />
+        <Pressable onPress={() => navigation.navigate(`home`)}>
+          <MainButton innerText="FINALIZAR" />
+        </Pressable>
+        <Button title="Logout" onPress={handleLogout} />
       </View>
       <Footer />
     </ScrollView>

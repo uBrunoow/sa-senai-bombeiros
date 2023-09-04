@@ -31,10 +31,10 @@ export async function reportsDeleteRoutes(
     })
 
     // Redefinir IDs após a exclusão
-    const remainingReports = await prisma.reports.findMany()
+    const remainingReports = await prisma.report.findMany()
     await Promise.all(
-        remainingReports.map(async (user, index) => {
-        await prisma.reports.update({
+      remainingReports.map(async (user, index) => {
+        await prisma.report.update({
           where: {
             id: user.id,
           },
