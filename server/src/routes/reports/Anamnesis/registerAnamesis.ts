@@ -18,6 +18,7 @@ export async function registerAnamneseRoutes(app: FastifyInstance) {
       IngestedFood,
       WhatTimeFood,
       FinalRemarks,
+      ReportOwnerId,
     } = registerAnamnese.parse(req.body)
 
     const newAnamneses = await prisma.anamnesis.create({
@@ -35,7 +36,7 @@ export async function registerAnamneseRoutes(app: FastifyInstance) {
         IngestedFood,
         WhatTimeFood,
         FinalRemarks,
-        ReportOwnerId: 2,
+        ReportOwnerId,
       },
     })
 

@@ -14,4 +14,5 @@ export const registerAnamnese = z.object({
   IngestedFood: z.boolean(),
   WhatTimeFood: z.string(),
   FinalRemarks: z.string(),
+  ReportOwnerId: z.number(),
 })
