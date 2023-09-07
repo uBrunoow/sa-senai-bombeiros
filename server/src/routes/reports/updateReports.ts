@@ -112,14 +112,17 @@ export async function reportsUpdateRoutes(
     }
 
     // Atualizar o usuário buscando pelo ID
-    const updatedUser = await prisma.report.update({
+    const updatedReport = await prisma.report.update({
       where: {
         id: parseInt(id),
       },
       data: updatedReportData,
     })
 
-    return res.send({ msg: '🟢 Usuário atualizado com sucesso.', updatedUser })
+    return res.send({
+      msg: '🟢 Usuário atualizado com sucesso.',
+      updatedReport,
+    })
   })
 
   done()
