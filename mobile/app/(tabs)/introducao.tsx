@@ -24,8 +24,8 @@ export default function Introducao() {
         </View>
         <View className=" flex-1 flex-row">
           <View className=" items-centerjustify-around w-3/6 flex-col  border">
-            <Text>DATA</Text>
-            <TextInput> |DATA|</TextInput>
+            <Text>Data ocorr.</Text>
+            <TextInput>__/__/____</TextInput>
           </View>
           <View className=" w-3/6 items-center justify-between border">
             <Options title="Sexo"></Options>

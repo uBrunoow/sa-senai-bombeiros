@@ -29,7 +29,7 @@ const InputClock = (props: InputClockProps) => {
   }
 
   return (
-    <View className="justfy-between m-auto my-2 w-5/6 flex-1 items-center ">
+    <View className="justfy-between m-auto my-2 w-5/6 flex-1 items-center">
       <Text className="text-lg">{props.title}</Text>
       {showPicker && (
         <>
@@ -41,18 +41,13 @@ const InputClock = (props: InputClockProps) => {
           />
         </>
       )}
-      <View className="mb-4 mt-2 w-5/6 rounded-lg">
-        <Pressable onPress={toggleDatePicker} className="relative ">
+      <View className="mb-3 mt-2 w-5/6">
+        <Pressable onPress={toggleDatePicker}>
           <TextInput
-            className=" realtive flex-1 rounded-lg border px-2 text-black"
+            className="content-center rounded-lg border p-1 px-2 text-black"
             placeholder="00:00"
             editable={false}
             value={timeMedication}
-            style={{
-              textAlignVertical: 'top',
-              paddingVertical: 6,
-              paddingHorizontal: 9,
-            }}
           ></TextInput>
         </Pressable>
       </View>

@@ -14,7 +14,7 @@ import loginUser from '../../src/api/loginUser'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { useDispatch } from 'react-redux'
-import { saveToken } from '../../src/actions/authActions'
+import { saveToken } from '../../src/redux/actions/authActions'
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch()

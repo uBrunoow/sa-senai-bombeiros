@@ -7,7 +7,7 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
 import YesOrNo from '../components/YesOrNo'
 import GestationPeriod from '../components/GestationPeriod'
-import InputFull from '../components/InputFull'
+import InputFull from '../components/inputs/InputFull'
 
 export default function AnamneseGestacional({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()

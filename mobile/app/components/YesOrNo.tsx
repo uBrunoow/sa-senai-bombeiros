@@ -11,7 +11,7 @@ export default function YesOrNo(props: YesOrNoProps) {
   )
 
   return (
-    <View className="m-auto flex-row flex-wrap items-center justify-center">
+    <View className="m-auto flex-row flex-wrap items-center justify-center pb-3">
       <Text className="w-5/6 text-center text-lg">{props.Question}</Text>
       <TouchableOpacity
         style={[
