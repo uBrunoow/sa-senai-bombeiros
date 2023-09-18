@@ -3,12 +3,11 @@ import React from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import InputFull from '../components/InputFull'
+import InputFull from '../components/inputs/InputFull'
 import YesOrNo from '../components/YesOrNo'
 import { AntDesign } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
-import InputClock from '../components/InputClock'
-import InputClock2 from '../components/InputClock2'
+import InputClock from '../components/inputs/InputClock'
 
 export default function Anamnese() {
   const { bottom, top } = useSafeAreaInsets()
@@ -54,7 +53,7 @@ export default function Anamnese() {
               </View>
               <View className="just-between aling-items flex-1">
                 {/* <InputFull title="Que Horas" isCalendar={true} /> */}
-                <InputClock2 title="Que horas?" />
+                <InputClock title="Que horas?" />
               </View>
             </View>
             <InputFull title="Observações Finais" isBig={true} />
