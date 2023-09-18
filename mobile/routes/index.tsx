@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import home from '../app/(tabs)/home'
-import login from '../app/(tabs)/login'
+import Login from '../app/(tabs)/login'
 import Anamnese from '../app/(tabs)/anamnese'
 import AnamneseGestacional from '../app/(tabs)/anamneseGestacional'
 import InfoPaciente from '../app/(tabs)/infoPaciente'
@@ -21,7 +21,12 @@ export default function Routes() {
       />
       <Stack.Screen
         name="login"
-        component={login}
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ocorrencia"
+        component={Ocorrencia}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -47,11 +52,6 @@ export default function Routes() {
       <Stack.Screen
         name="local-traumas"
         component={LocalTraumas}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ocorrencia"
-        component={Ocorrencia}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

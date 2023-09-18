@@ -1,8 +1,19 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import NOARLogo from '../../src/assets/logo-noar.svg'
 import Icon from '@expo/vector-icons/Feather'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../src/stores/stores'
 
 export default function App({ navigation }) {
+  const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
+
+  const handleButtonClick = () => {
+    if (isLoggedIn) {
+      navigation.navigate('ocorrencia')
+    } else {
+      navigation.navigate('login')
+    }
+  }
   return (
     <View className=" flex-1 items-center justify-between">
       <View className="h-[67px] w-full bg-[#A00E00]" />
@@ -23,7 +34,7 @@ export default function App({ navigation }) {
         <View className="absolute top-[-50px] h-[100px] w-[100px] items-center justify-center rounded-full bg-offwhite">
           <TouchableOpacity
             className="h-[66px] w-[66px] items-center justify-center rounded-full bg-[#A00E00]"
-            onPress={() => navigation.navigate('login')}
+            onPress={handleButtonClick}
           >
             <Icon name="plus" size={50} color="#fff" />
           </TouchableOpacity>

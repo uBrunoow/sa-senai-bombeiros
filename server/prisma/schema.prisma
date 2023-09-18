@@ -11,8 +11,8 @@ model User {
   id       Int      @id @default(autoincrement())
   email    String   @unique
   name     String?
+  gender   String?
   password String
-  gender   String
   isActive Boolean
   Reports  Report[]
 }
@@ -23,8 +23,8 @@ model Report {
   updatedAt                DateTime?                  @updatedAt
   reportDate               DateTime?
   name                     String?
-  gender                   String?
   age                      Int?
+  gender                   String?
   cpf                      String?
   phone                    String?
   reportPlace              String?
@@ -40,9 +40,9 @@ model Report {
   GestationalAnamnesis     GestationalAnamnesis[]
   Anamnesis                Anamnesis[]
   SuspectProblems          SuspectProblems[]
+  Glasglow                 Glasglow[]
   Report_PreHospitalMethod Report_PreHospitalMethod[]
   Report_Symptoms          Report_Symptoms[]
-  Glasglow                 Glasglow[]
 }
 
 //  Tabela N para N entre relatório e método pré-hospitalar
@@ -125,39 +125,43 @@ model Anamnesis {
 }
 
 model Glasglow {
-  id                    Int           @id @default(autoincrement())
-  reportOwner           Report        @relation(fields: [ReportOwnerId], references: [id])
-  eyeOpeningOwner       GlasglowClass @relation(fields: [eyeOpeningOwnerId], references: [id], name: "eyeOpeningRelation")
-  verbalResponseOwner   GlasglowClass @relation(fields: [verbalResponseOwnerId], references: [id], name: "verbalResponseRelation")
-  motorResponseOwner    GlasglowClass @relation(fields: [motorResponseOwnerId], references: [id], name: "motorResponseRelation")
+  id                    Int    @id @default(autoincrement())
+  reportOwner           Report @relation(fields: [ReportOwnerId], references: [id])
   ReportOwnerId         Int
   eyeOpeningOwnerId     Int
   verbalResponseOwnerId Int
   motorResponseOwnerId  Int
 }
 
-model GlasglowClass {
-  id             Int        @id @default(autoincrement())
-  score          Int
-  description    String
-  eyeOpening     Glasglow[] @relation(name: "eyeOpeningRelation")
-  verbalResponse Glasglow[] @relation(name: "verbalResponseRelation")
-  motorResponse  Glasglow[] @relation(name: "motorResponseRelation")
-}
+// model SuspectProblems {
+//   id           Int                    @id @default(autoincrement())
+//   classOwner   SuspectProblemsClasses @relation(fields: [classOwnerId], references: [id])
+//   classOwnerId Int
+//   name         String
+//   Report       Report?                @relation(fields: [reportId], references: [id])
+//   reportId     Int?
+// }
+
+// model SuspectProblemsClasses {
+//   id              Int               @id @default(autoincrement())
+//   name            String
+//   SuspectProblems SuspectProblems[]
+// }
 
 model SuspectProblems {
-  id           Int                    @id @default(autoincrement())
-  classOwner   SuspectProblemsClasses @relation(fields: [classOwnerId], references: [id])
-  classOwnerId Int
-  name         String
-  Report       Report?                @relation(fields: [reportId], references: [id])
-  reportId     Int?
+  id       Int        @id @default(autoincrement())
+  Problem  Problems[]
+  Another  String
+  Report   Report?    @relation(fields: [reportId], references: [id])
+  reportId Int?
 }
 
-model SuspectProblemsClasses {
-  id              Int               @id @default(autoincrement())
-  name            String
-  SuspectProblems SuspectProblems[]
+model Problems {
+  id                Int              @id @default(autoincrement())
+  Name              String
+  Description       String
+  SuspectProblems   SuspectProblems? @relation(fields: [suspectProblemsId], references: [id])
+  suspectProblemsId Int?
 }
 
 model CinematicAvaliation {
