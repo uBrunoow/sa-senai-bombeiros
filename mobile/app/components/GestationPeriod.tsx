@@ -17,7 +17,6 @@ export default function GestationPeriod() {
     setShowPicker2(!showPicker2)
   }
 
-
   const onDateStartChange = (event, selectedDate) => {
     setShowPicker1(Platform.OS === 'ios')
     if (selectedDate) {
@@ -46,7 +45,7 @@ export default function GestationPeriod() {
             value={date}
             mode="date"
             display="default"
-            onChange={onDateEndChange}
+            onChange={onDateStartChange}
           />
         </>
       )}
@@ -55,10 +54,10 @@ export default function GestationPeriod() {
           value={date}
           mode="date"
           display="default"
-          onChange={onDateStartChange}
+          onChange={onDateEndChange}
         />
       )}
-      <Pressable onPress={toggleDatePicker2}>
+      <Pressable onPress={toggleDatePicker1}>
         <TextInput
           className=" flex-1 rounded-lg border px-2"
           placeholder="Data de ínicio"
@@ -67,7 +66,7 @@ export default function GestationPeriod() {
           onChangeText={setDateStart}
         ></TextInput>
       </Pressable>
-      <Pressable onPress={toggleDatePicker1}>
+      <Pressable onPress={toggleDatePicker2}>
         <TextInput
           className=" flex-1 rounded-lg border px-2"
           placeholder="Data de término"
@@ -75,8 +74,7 @@ export default function GestationPeriod() {
           value={dateEnd}
           onChangeText={setDateEnd}
         />
-       </Pressable>
-      )}
+      </Pressable>
     </View>
   )
 }
