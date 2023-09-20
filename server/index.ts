@@ -39,6 +39,21 @@ import { updateSymptomsRoutes } from './src/routes/reports/Symptoms/updateSympto
 
 // Anamnesis
 import { registerAnamneseRoutes } from './src/routes/reports/Anamnesis/registerAnamesis'
+import { anamneseUpdateRoutes } from './src/routes/reports/Anamnesis/updateAnamesis'
+
+// Pre Hospitalar methods
+import { registerPreHospitalarMethodsRoutes } from './src/routes/reports/PreHospitalarMethod/registerPreHosMethod'
+import { updatePreHospitalarMethodsRoutes } from './src/routes/reports/PreHospitalarMethod/updatePreHosMethod'
+import {
+  preHospitalarMethodsFindOneRoutes,
+  preHospitalarMethodsFindRoutes,
+} from './src/routes/reports/PreHospitalarMethod/findPreHosMethod'
+import { preHospitalarMethodsDeleteRoutes } from './src/routes/reports/PreHospitalarMethod/deletePreHosMethod'
+import {
+  anamnesisFindOneRoutes,
+  anamnesisFindRoutes,
+} from './src/routes/reports/Anamnesis/findAnamesis'
+import { anamneseDeleteRoutes } from './src/routes/reports/Anamnesis/deleteAnamesis'
 
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
@@ -82,6 +97,17 @@ app.register(updateSymptomsRoutes)
 
 // ANAMNESIS
 app.register(registerAnamneseRoutes)
+app.register(anamneseUpdateRoutes)
+app.register(anamnesisFindRoutes)
+app.register(anamnesisFindOneRoutes)
+app.register(anamneseDeleteRoutes)
+
+// PRE HOSPITLAR METHODS
+app.register(registerPreHospitalarMethodsRoutes)
+app.register(updatePreHospitalarMethodsRoutes)
+app.register(preHospitalarMethodsFindRoutes)
+app.register(preHospitalarMethodsFindOneRoutes)
+app.register(preHospitalarMethodsDeleteRoutes)
 
 app
   .listen({
