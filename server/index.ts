@@ -55,6 +55,15 @@ import {
 } from './src/routes/reports/Anamnesis/findAnamesis'
 import { anamneseDeleteRoutes } from './src/routes/reports/Anamnesis/deleteAnamesis'
 
+// Glasgow
+import { registerGlasgowRoutes } from './src/routes/reports/Glasglow/registerGlasglow'
+import { updateGlasgowRoutes } from './src/routes/reports/Glasglow/updateGlasglow'
+import {
+  glasgowFindOneRoutes,
+  glasgowFindRoutes,
+} from './src/routes/reports/Glasglow/findGlasglow'
+import { glasgowDeleteRoutes } from './src/routes/reports/Glasglow/deleteGlasglow'
+
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
 app.register(cors, {
@@ -108,6 +117,13 @@ app.register(updatePreHospitalarMethodsRoutes)
 app.register(preHospitalarMethodsFindRoutes)
 app.register(preHospitalarMethodsFindOneRoutes)
 app.register(preHospitalarMethodsDeleteRoutes)
+
+// GLASGOW
+app.register(registerGlasgowRoutes)
+app.register(updateGlasgowRoutes)
+app.register(glasgowFindRoutes)
+app.register(glasgowFindOneRoutes)
+app.register(glasgowDeleteRoutes)
 
 app
   .listen({
