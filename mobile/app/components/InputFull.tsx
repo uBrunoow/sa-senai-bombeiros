@@ -1,14 +1,25 @@
 import { View, Text, TextInput } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 // import { Entypo } from '@expo/vector-icons'
 
 type InputProps = {
   title: string
   isCalendar?: boolean
-  isBig?: Boolean
+  isBig?: boolean
+  value?: string
+  onChangeText?: (text: string) => void
 }
 
 export default function InputFull(props: InputProps) {
+  const [inputValue, setInputValue] = useState(props.value || '')
+
+  const handleTextChange = (text: string) => {
+    setInputValue(text)
+
+    if (props.onChangeText) {
+      props.onChangeText(text) // Use onChangeText no lugar de onChange
+    }
+  }
   return (
     <View className="justfy-between m-auto my-2 w-5/6 flex-1 items-center">
       <Text className="text-lg">{props.title}</Text>
@@ -22,6 +33,8 @@ export default function InputFull(props: InputProps) {
             paddingVertical: 6,
             paddingHorizontal: 9,
           }}
+          value={inputValue}
+          onChangeText={handleTextChange}
         >
           {/* {props.isCalendar && (
             <>

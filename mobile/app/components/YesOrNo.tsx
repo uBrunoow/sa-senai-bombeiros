@@ -3,25 +3,25 @@ import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 
 type YesOrNoProps = {
   Question: String
+  selectedOption: 'SIM' | 'NÃO'
+  onSelectOption: (option: 'SIM' | 'NÃO') => void
 }
 
 export default function YesOrNo(props: YesOrNoProps) {
-  const [selectedOption, setSelectedOption] = useState<'SIM' | 'NÃO' | null>(
-    null,
-  )
-
   return (
     <View className="m-auto flex-row flex-wrap items-center justify-center">
       <Text className="w-5/6 text-center text-lg">{props.Question}</Text>
       <TouchableOpacity
         style={[
           styles.button,
-          selectedOption === 'SIM' ? styles.selected : null,
+          props.selectedOption === 'SIM' ? styles.selected : null,
         ]}
-        onPress={() => setSelectedOption('SIM')}
+        onPress={() => props.onSelectOption('SIM')}
       >
         <Text
-          style={selectedOption === 'SIM' ? styles.whiteText : styles.blackText}
+          style={
+            props.selectedOption === 'SIM' ? styles.whiteText : styles.blackText
+          }
         >
           SIM
         </Text>
@@ -29,12 +29,14 @@ export default function YesOrNo(props: YesOrNoProps) {
       <TouchableOpacity
         style={[
           styles.button,
-          selectedOption === 'NÃO' ? styles.selected : null,
+          props.selectedOption === 'NÃO' ? styles.selected : null,
         ]}
-        onPress={() => setSelectedOption('NÃO')}
+        onPress={() => props.onSelectOption('NÃO')}
       >
         <Text
-          style={selectedOption === 'NÃO' ? styles.whiteText : styles.blackText}
+          style={
+            props.selectedOption === 'NÃO' ? styles.whiteText : styles.blackText
+          }
         >
           NÃO
         </Text>
