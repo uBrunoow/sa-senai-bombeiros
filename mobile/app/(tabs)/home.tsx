@@ -3,12 +3,16 @@ import NOARLogo from '../../src/assets/logo-noar.svg'
 import Icon from '@expo/vector-icons/Feather'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../src/stores/stores'
+import registerReport from '../../src/api/registerReport'
 
 export default function App({ navigation }) {
   const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (isLoggedIn) {
+      const response = await registerReport()
+      const reportId = response.report.id
+      console.log(reportId)
       navigation.navigate('ocorrencia')
     } else {
       navigation.navigate('login')
