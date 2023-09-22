@@ -18,14 +18,13 @@ export async function registerReportRoutes(app: FastifyInstance) {
       breathing,
       saturation,
     } = reportSchema.parse(req.body)
-    const parsedReportDate = new Date(reportDate)
-
+    const reportDateValue = reportDate ? new Date(reportDate) : null
     const newReport = await prisma.report.create({
       data: {
         age,
         gender,
         name,
-        reportDate: parsedReportDate,
+        reportDate: reportDateValue,
         cpf,
         phone,
         reportPlace,
