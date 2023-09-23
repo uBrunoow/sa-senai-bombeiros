@@ -64,6 +64,15 @@ import {
 } from './src/routes/reports/Glasglow/findGlasglow'
 import { glasgowDeleteRoutes } from './src/routes/reports/Glasglow/deleteGlasglow'
 
+// Gestacional Anamnesis
+import { registerGestacionalAnamnesisRoutes } from './src/routes/reports/GestationalAnamnesis/registerGesAnamnesis'
+import { updateGestacionalAnamnesisRoutes } from './src/routes/reports/GestationalAnamnesis/updateGesAnamnesis'
+import {
+  gestacionalAnamnesisFindOneRoutes,
+  gestacionalAnamnesisFindRoutes,
+} from './src/routes/reports/GestationalAnamnesis/findGesAnamnesis'
+import { gestacionalAnamnesisDeleteRoutes } from './src/routes/reports/GestationalAnamnesis/deleteGesAnamnesis'
+
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
 app.register(cors, {
@@ -124,6 +133,13 @@ app.register(updateGlasgowRoutes)
 app.register(glasgowFindRoutes)
 app.register(glasgowFindOneRoutes)
 app.register(glasgowDeleteRoutes)
+
+// GESTACIONAL ANAMNESIS
+app.register(registerGestacionalAnamnesisRoutes)
+app.register(updateGestacionalAnamnesisRoutes)
+app.register(gestacionalAnamnesisFindRoutes)
+app.register(gestacionalAnamnesisFindOneRoutes)
+app.register(gestacionalAnamnesisDeleteRoutes)
 
 app
   .listen({
