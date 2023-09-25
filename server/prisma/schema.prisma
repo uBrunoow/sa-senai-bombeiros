@@ -33,7 +33,7 @@ model Report {
   bodyPulse                Int?
   breathing                Int?
   saturation               Int?
-  owner                    User                       @relation(fields: [ownerId], references: [id])
+  owner                    User                       @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId                  Int
   PreHospitalMethods       PreHospitalMethod[]
   Symptoms                 Symptoms[]
@@ -70,7 +70,7 @@ model Report_Symptoms {
 model PreHospitalMethod {
   id                       Int                        @id @default(autoincrement())
   description              String
-  reportOwner              Report                     @relation(fields: [ReportOwnerId], references: [id])
+  reportOwner              Report                     @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId            Int
   Report_PreHospitalMethod Report_PreHospitalMethod[]
 }
@@ -78,7 +78,7 @@ model PreHospitalMethod {
 model Symptoms {
   id              Int               @id @default(autoincrement())
   description     String
-  reportOwner     Report            @relation(fields: [ReportOwnerId], references: [id])
+  reportOwner     Report            @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId   Int
   Report_Symptoms Report_Symptoms[]
 }
@@ -101,7 +101,7 @@ model GestationalAnamnesis {
   BornHour            DateTime
   BabyName            String
   FinalRemarks        String
-  reportOwner         Report   @relation(fields: [ReportOwnerId], references: [id])
+  reportOwner         Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId       Int
 }
 
@@ -120,13 +120,13 @@ model Anamnesis {
   IngestedFood       Boolean
   WhatTimeFood       String
   FinalRemarks       String
-  reportOwner        Report  @relation(fields: [ReportOwnerId], references: [id])
+  reportOwner        Report  @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId      Int
 }
 
 model Glasglow {
   id                    Int    @id @default(autoincrement())
-  reportOwner           Report @relation(fields: [ReportOwnerId], references: [id])
+  reportOwner           Report @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId         Int
   eyeOpeningOwnerId     Int
   verbalResponseOwnerId Int
@@ -137,7 +137,7 @@ model SuspectProblems {
   id       Int        @id @default(autoincrement())
   Problem  Problems[]
   Another  String
-  Report   Report?    @relation(fields: [reportId], references: [id])
+  Report   Report?    @relation(fields: [reportId], references: [id], onDelete: Cascade)
   reportId Int?
 }
 
@@ -145,7 +145,7 @@ model Problems {
   id                Int              @id @default(autoincrement())
   Name              String
   Description       String
-  SuspectProblems   SuspectProblems? @relation(fields: [suspectProblemsId], references: [id])
+  SuspectProblems   SuspectProblems? @relation(fields: [suspectProblemsId], references: [id], onDelete: Cascade)
   suspectProblemsId Int?
 }
 

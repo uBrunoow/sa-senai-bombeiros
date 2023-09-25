@@ -23,27 +23,55 @@ export async function reportsDeleteRoutes(
         .send({ message: `Cannot delete user with ID ${id}. User not found.` })
     }
 
-    // Esperar o prisma fazer o delete
+    // Delete related records in each table
+    await Promise.all([
+      prisma.report_PreHospitalMethod.deleteMany({
+        where: {
+          ReportOwnerId: parseInt(id),
+        },
+      }),
+      prisma.report_Symptoms.deleteMany({
+        where: {
+          ReportOwnerId: parseInt(id),
+        },
+      }),
+      prisma.gestationalAnamnesis.deleteMany({
+        where: {
+          ReportOwnerId: parseInt(id),
+        },
+      }),
+      prisma.anamnesis.deleteMany({
+        where: {
+          ReportOwnerId: parseInt(id),
+        },
+      }),
+      prisma.suspectProblems.deleteMany({
+        where: {
+          reportId: parseInt(id),
+        },
+      }),
+      prisma.glasglow.deleteMany({
+        where: {
+          ReportOwnerId: parseInt(id),
+        },
+      }),
+      prisma.symptoms.deleteMany({
+        where: {
+          ReportOwnerId: parseInt(id),
+        },
+      }),
+      prisma.preHospitalMethod.deleteMany({
+        where: {
+          ReportOwnerId: parseInt(id),
+        },
+      }),
+    ])
+
     await prisma.report.delete({
       where: {
         id: parseInt(id),
       },
     })
-
-    // Redefinir IDs após a exclusão
-    const remainingReports = await prisma.report.findMany()
-    await Promise.all(
-      remainingReports.map(async (user, index) => {
-        await prisma.report.update({
-          where: {
-            id: user.id,
-          },
-          data: {
-            id: index + 1,
-          },
-        })
-      }),
-    )
 
     return res.send({ msg: `🔴 Ocorrência com o id ${id} foi deletado.` })
   })
