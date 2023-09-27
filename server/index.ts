@@ -13,19 +13,13 @@ import {
   userFindRoutes,
 } from './src/routes/users/findRoutes'
 
-// Teste
-import { criarSintomas } from './src/testes/criarSintomas'
-import { criarSintomas2 } from './src/testes/criarSintoma2'
-import { criarGlasgow } from './src/testes/criarGlasgow'
-import { criarAnamneses } from './src/testes/criarAnamnesis'
-
 // Reports
 import { registerReportRoutes } from './src/routes/reports/registerReports'
 import { reportsUpdateRoutes } from './src/routes/reports/updateReports'
 import { reportsDeleteRoutes } from './src/routes/reports/deleteReports'
 import {
-  reportsFindRoutes,
   reportFindOneRoutes,
+  reportsFindRoutes,
 } from './src/routes/reports/findReports'
 
 // Symptoms
@@ -92,12 +86,6 @@ app.register(userUpdateRoutes)
 app.register(userDeleteRoutes)
 app.register(userFindOneRoutes)
 app.register(userFindRoutes)
-
-// TESTE
-app.register(criarSintomas)
-app.register(criarSintomas2)
-app.register(criarGlasgow)
-app.register(criarAnamneses)
 
 // REPORTS
 app.register(reportsFindRoutes)
