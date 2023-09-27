@@ -23,19 +23,19 @@ export async function registerAnamneseRoutes(app: FastifyInstance) {
 
     const newAnamneses = await prisma.anamnesis.create({
       data: {
-        SignsAndSymptoms,
-        HappenedTimes,
-        SinceHappened,
-        HealthProblem,
-        HealthProlemsWhich,
-        Medication,
-        MedicationWhich,
-        HourMedication,
-        Allergies,
-        AllergiesWhich,
-        IngestedFood,
-        WhatTimeFood,
-        FinalRemarks,
+        SignsAndSymptoms: SignsAndSymptoms || '', // Valor padrão é uma string vazia
+        HappenedTimes: HappenedTimes || false, // Valor padrão é false
+        SinceHappened: SinceHappened || '', // Valor padrão é uma string vazia
+        HealthProblem: HealthProblem || false, // Valor padrão é false
+        HealthProlemsWhich: HealthProlemsWhich || '', // Valor padrão é uma string vazia
+        Medication: Medication || false, // Valor padrão é false
+        MedicationWhich: MedicationWhich || '', // Valor padrão é uma string vazia
+        HourMedication: HourMedication || '', // Valor padrão é uma string vazia
+        Allergies: Allergies || false, // Valor padrão é false
+        AllergiesWhich: AllergiesWhich || '', // Valor padrão é uma string vazia
+        IngestedFood: IngestedFood || false, // Valor padrão é false
+        WhatTimeFood: WhatTimeFood || '', // Valor padrão é uma string vazia
+        FinalRemarks: FinalRemarks || '', // Valor padrão é uma string vazia
         ReportOwnerId,
       },
     })
