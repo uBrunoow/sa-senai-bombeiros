@@ -8,20 +8,25 @@ import {
 import NOARLogo from '../../src/assets/logo-noar.svg'
 import Firefighter from '../../src/assets/firefighter.svg'
 import Hexagon from '../../src/assets/hexagon.svg'
-import Blur from '../../src/assets/blur.svg'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../src/stores/stores'
 import registerReport from '../../src/api/registerReport'
 import { Entypo } from '@expo/vector-icons'
 import React from 'react'
+import { saveReportId } from '../../src/actions/reportActions' // Importe a ação
 
 function App({ navigation }) {
   const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
+
+  const dispatch = useDispatch()
 
   const handleButtonClick = async () => {
     if (isLoggedIn) {
       const response = await registerReport()
       const reportId = response.report.id
+
+      dispatch(saveReportId(reportId))
+
       console.log(reportId)
       navigation.navigate('ocorrencia')
     } else {
@@ -34,7 +39,7 @@ function App({ navigation }) {
         {/* Header View, maybe placing some about us links here */}
         <View className=""></View>
         {/* End Header View */}
-        <View className="mb-44 items-center justify-center gap-6">
+        <View className="z-50 mb-44 items-center justify-center gap-6">
           {/* Main view */}
           <NOARLogo></NOARLogo>
           <Text className="text-4xl font-bold">Bem vindo(a)!</Text>
@@ -76,10 +81,7 @@ function App({ navigation }) {
         <View className="absolute bottom-0 right-0 z-20">
           <Firefighter />
         </View>
-        <View className="absolute bottom-0 right-0 z-20">
-          <Blur className="blur-2xl" />
-        </View>
-        <View className="absolute bottom-[-50px] right-0 z-10 ml-10 w-full flex-1">
+        <View className="absolute bottom-[-120px] right-0 z-10 ml-10 w-full flex-1">
           <Hexagon width={500} height={340} />
         </View>
       </View>

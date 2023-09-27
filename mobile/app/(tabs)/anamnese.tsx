@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Header from '../components/Header'
@@ -9,6 +9,7 @@ import { AntDesign } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
 import InputClock from '../components/InputClock'
 import InputClock2 from '../components/InputClock2'
+import registerAnamnesis from '../../src/api/registerAnamnesis'
 
 export default function Anamnese() {
   const { bottom, top } = useSafeAreaInsets()
@@ -44,6 +45,10 @@ export default function Anamnese() {
 
   const handleIngeriuAlimentoChange = (option: 'SIM' | 'NÃO') => {
     setIngeriuAlimento(option === 'SIM')
+  }
+
+  const handleClickButton = () => {
+    const response = registerAnamnesis()
   }
 
   return (
@@ -138,7 +143,7 @@ export default function Anamnese() {
               onChangeText={(e) => setObservacoesFinais(e)}
             />
           </View>
-          <MainButton innerText={'VOLTAR'}></MainButton>
+          <MainButton innerText={'SALVAR'}></MainButton>
         </View>
         <Footer />
       </View>
