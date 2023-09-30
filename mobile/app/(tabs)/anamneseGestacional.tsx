@@ -32,6 +32,7 @@ export default function AnamneseGestacional({ navigation }) {
         <YesOrNo Question="Pressão no quadril/vontade de evacuar?"></YesOrNo>
         <YesOrNo Question="Já houve ruptura da bolsa?"></YesOrNo>
         <YesOrNo Question="Foi feito inspeção visual?"></YesOrNo>
+        {/* TERMINAR ESSA PÁGINA!!! */}
         <YesOrNo Question="Parto realizado?"></YesOrNo>
         <Pressable onPress={() => navigation.navigate(`ocorrencia`)}>
           <MainButton innerText="VOLTAR"></MainButton>

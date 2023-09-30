@@ -106,21 +106,21 @@ model GestationalAnamnesis {
 }
 
 model Anamnesis {
-  id                 Int     @id @default(autoincrement())
-  SignsAndSymptoms   String
-  HappenedTimes      Boolean
-  SinceHappened      String
-  HealthProblem      Boolean
-  HealthProlemsWhich String
-  Medication         Boolean
-  MedicationWhich    String
-  HourMedication     String
-  Allergies          Boolean
-  AllergiesWhich     String
-  IngestedFood       Boolean
-  WhatTimeFood       String
-  FinalRemarks       String
-  reportOwner        Report  @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  id                 Int      @id @default(autoincrement())
+  SignsAndSymptoms   String?
+  HappenedTimes      Boolean?
+  SinceHappened      String?
+  HealthProblem      Boolean?
+  HealthProlemsWhich String?
+  Medication         Boolean?
+  MedicationWhich    String?
+  HourMedication     String?
+  Allergies          Boolean?
+  AllergiesWhich     String?
+  IngestedFood       Boolean?
+  WhatTimeFood       String?
+  FinalRemarks       String?
+  reportOwner        Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId      Int
 }
 

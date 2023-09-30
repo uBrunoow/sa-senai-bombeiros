@@ -13,6 +13,7 @@ const registerReport = async (ownerId: number) => {
         },
       },
     )
+
     const data = response.data
     return data
   } catch (error) {

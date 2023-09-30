@@ -41,7 +41,7 @@ export default function Login({ navigation }) {
       navigation.navigate('ocorrencia')
     }
 
-    console.log(response.user.id)
+    console.log('Id:', response.user.id)
     setEmail('')
     setPassword('')
   }

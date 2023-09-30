@@ -30,21 +30,6 @@ export async function anamneseDeleteRoutes(
       },
     })
 
-    // Redefinir IDs após a exclusão
-    const remainingAnamneses = await prisma.anamnesis.findMany()
-    await Promise.all(
-      remainingAnamneses.map(async (anamnese, index) => {
-        await prisma.anamnesis.update({
-          where: {
-            id: anamnese.id,
-          },
-          data: {
-            id: index + 1,
-          },
-        })
-      }),
-    )
-
     return res.send({ msg: `🔴 Anamnese com o id ${id} foi deletado.` })
   })
 
