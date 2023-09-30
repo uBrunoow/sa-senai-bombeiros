@@ -6,6 +6,7 @@ import authReducer from '../reducers/authReducer'
 export interface RootState {
   auth: {
     token: string
+    userId: number
   }
 }
 const store = configureStore({

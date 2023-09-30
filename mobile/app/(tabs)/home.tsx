@@ -7,13 +7,18 @@ import registerReport from '../../src/api/registerReport'
 
 export default function App({ navigation }) {
   const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
+  const ownerId = useSelector((state: RootState) => state.auth.userId)
 
   const handleButtonClick = async () => {
     if (isLoggedIn) {
-      const response = await registerReport()
-      const reportId = response.report.id
-      console.log(reportId)
-      navigation.navigate('ocorrencia')
+      if (ownerId) {
+        const response = await registerReport(ownerId)
+        const reportId = response.report.id
+        console.log(reportId)
+        navigation.navigate('ocorrencia')
+      } else {
+        console.error('User ID not available in Redux state.')
+      }
     } else {
       navigation.navigate('login')
     }

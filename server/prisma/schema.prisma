@@ -154,8 +154,5 @@ model CinematicAvaliation {
   comportamentalDisturb Boolean
   foundWithHelmet       Boolean
   foundWithSeatbelt     Boolean
-  // Para brisa avariado
   walkingInTheScene     Boolean
-  // Painel avariado
-  // Volante torcido
 }

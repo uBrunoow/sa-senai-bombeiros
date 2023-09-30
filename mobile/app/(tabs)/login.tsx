@@ -37,7 +37,7 @@ export default function Login({ navigation }) {
 
     const response = await loginUser(email, password)
     if (response && response.user) {
-      dispatch(saveToken(response.token))
+      dispatch(saveToken(response.token, response.user.id))
       navigation.navigate('ocorrencia')
     }
 

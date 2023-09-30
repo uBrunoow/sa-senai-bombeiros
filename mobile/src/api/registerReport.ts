@@ -1,10 +1,12 @@
 import { api } from '../lib/api'
 
-const registerReport = async () => {
+const registerReport = async (ownerId: number) => {
   try {
     const response = await api.post(
       '/api/reports',
-      {},
+      {
+        ownerId,
+      },
       {
         headers: {
           'Content-Type': 'application/json',
