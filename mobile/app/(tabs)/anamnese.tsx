@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Header from '../components/Header'
@@ -59,14 +59,35 @@ export default function Anamnese() {
   useEffect(() => {
     const findAnamnesisData = async () => {
       try {
-        const response = await findAnamnesis(56)
+        const response = await findAnamnesis(anamnesisId)
 
-        console.log(response.anamese.SignsAndSymptoms)
+        const sinaisESintomasResponse = response.anamese.SignsAndSymptoms
+        const outrasVezesResponse = response.anamese.HappenedTimes
+        const tempoAconteceuResponse = response.anamese.SinceHappened
+        const problemaSaudeResponse = response.anamese.HealthProblem
+        const quaisProblemasResponse = response.anamese.HealthProlemsWhich
+        const usoMedicacaoResponse = response.anamese.Medication
+        const horasMedicacaoResponse = response.anamese.HourMedication
+        const quaisMedicacoesResponse = response.anamese.MedicationWhich
+        const alergiaResponse = response.anamese.Allergies
+        const quaisAlergiasResponse = response.anamese.AllergiesWhich
+        const ingeriuAlimentoResponse = response.anamese.IngestedFood
+        const horasIngeriuAlimentoResponse = response.anamese.WhatTimeFood
+        const observacoesFinaisResponse = response.anamese.FinalRemarks
 
-        const sinaisESintomas = response.anamese.SignsAndSymptoms
-        setSinaisESintomas(sinaisESintomas)
-
-        console.log(response)
+        setSinaisESintomas(sinaisESintomasResponse || '')
+        setOutrasVezes(outrasVezesResponse || false)
+        setTempoAconteceu(tempoAconteceuResponse || '')
+        setProblemaSaude(problemaSaudeResponse || false)
+        setQuaisProblemas(quaisProblemasResponse || '')
+        setUsoMedicacao(usoMedicacaoResponse || false)
+        setHorasMedicacao(horasMedicacaoResponse || '')
+        setQuaisMedicacoes(quaisMedicacoesResponse || '')
+        setAlergia(alergiaResponse || false)
+        setQuaisAlergias(quaisAlergiasResponse || '')
+        setIngeriuAlimento(ingeriuAlimentoResponse || false)
+        setHorasIngeriuAlimento(horasIngeriuAlimentoResponse || '')
+        setObservacoesFinais(observacoesFinaisResponse || '')
       } catch (error) {
         console.error('Error fetching anamnesis data:', error)
       }
@@ -75,7 +96,6 @@ export default function Anamnese() {
   }, [])
 
   const handleSubmitAnamnesis = async () => {
-    console.log(anamnesisId)
     const response = await updateAnamnesis(
       reportId,
       anamnesisId,
@@ -113,6 +133,7 @@ export default function Anamnese() {
           <View className="justfy-between aling-items w-347 h-1041 flex-1">
             <InputFull
               title="Sinais e Sintomas"
+              placeholder={sinaisESintomas || ''}
               isBig={true}
               value={sinaisESintomas}
               onChangeText={(e) => setSinaisESintomas(e)}
@@ -127,6 +148,7 @@ export default function Anamnese() {
             <InputFull
               title="A quanto tempo isso aconteceu?"
               value={tempoAconteceu}
+              placeholder={tempoAconteceu || ''}
               onChangeText={(e) => setTempoAconteceu(e)}
             />
             <View className="just-between aling-items flex-1">
@@ -139,6 +161,7 @@ export default function Anamnese() {
             <InputFull
               title="Quais?"
               value={quaisProblemas}
+              placeholder={quaisProblemas || ''}
               onChangeText={(e) => setQuaisProblemas(e)}
             />
             <View className="just-between aling-items flex-1">
@@ -152,6 +175,7 @@ export default function Anamnese() {
             <InputFull
               title="Quais?"
               value={quaisMedicacoes}
+              placeholder={quaisMedicacoes || ''}
               onChangeText={(e) => setQuaisMedicacoes(e)}
             />
             {/* <InputFull title="Horário Ultima Med." isCalendar={true} /> */}
@@ -166,6 +190,7 @@ export default function Anamnese() {
             <InputFull
               title="Quais?"
               value={quaisAlergias}
+              placeholder={quaisAlergias || ''}
               onChangeText={(e) => setQuaisAlergias(e)}
             />
             <View className="w-92 h-67 flex-1">
@@ -184,6 +209,7 @@ export default function Anamnese() {
             <InputFull
               title="Observações Finais"
               isBig={true}
+              placeholder={observacoesFinais || ''}
               value={observacoesFinais}
               onChangeText={(e) => setObservacoesFinais(e)}
             />

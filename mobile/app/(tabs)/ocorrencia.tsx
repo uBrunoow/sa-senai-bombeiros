@@ -31,16 +31,30 @@ export default function Ocorrencia({ navigation }) {
     navigation.navigate('home')
   }
 
-  const handleClickAnamnese = async () => {
-    navigation.navigate(`anamnese`)
+  const existingAnamnesisId = useSelector(
+    (state: RootState) => state.anamnesis.anamnesisId,
+  )
 
-    const response = await registerAnamnesis(ReportOwnerId)
-    if (response && response.anamnesis) {
-      dispatch(saveAnamnesisId(response.anamnesis.id))
-      console.log('Anamnese n°: ', response.anamnesis.id)
-      navigation.navigate(`anamnese`, {
-        anamnesisId: response.anamnesis.id,
+  console.log(existingAnamnesisId)
+
+  const handleClickAnamnese = async () => {
+    if (existingAnamnesisId) {
+      navigation.navigate('anamnese', {
+        screen: 'anamnese',
+        params: { anamnesisId: existingAnamnesisId },
       })
+    } else {
+      const response = await registerAnamnesis(ReportOwnerId)
+
+      if (response && response.anamnesis) {
+        dispatch(saveAnamnesisId(response.anamnesis.id))
+        console.log('Anamnese n°: ', response.anamnesis.id)
+
+        navigation.navigate('anamnese', {
+          screen: 'anamnese',
+          params: { anamnesisId: response.anamnesis.id },
+        })
+      }
     }
   }
 
