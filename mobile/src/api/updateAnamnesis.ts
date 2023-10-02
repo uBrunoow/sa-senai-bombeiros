@@ -2,7 +2,7 @@ import { api } from '../lib/api'
 
 const updateAnamnesis = async (
   ReportOwnerId: number,
-  AnamneseId: number,
+  anamnesisId: number,
   sinaisESintomas?: string,
   outrasVezes?: boolean,
   tempoAconteceu?: string,
@@ -19,7 +19,7 @@ const updateAnamnesis = async (
 ) => {
   try {
     const response = await api.post(
-      `/api/anamnese/update/${AnamneseId}`,
+      `/api/anamnese/update/${anamnesisId}`,
       {
         ReportOwnerId,
         SignsAndSymptoms: sinaisESintomas,

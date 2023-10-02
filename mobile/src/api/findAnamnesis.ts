@@ -1,8 +1,8 @@
 import { api } from '../lib/api'
 
-const findReports = async (reportId: number) => {
+const findAnamnesis = async (anamnesisId: number) => {
   try {
-    const response = await api.get(`/api/reports/${reportId}`)
+    const response = await api.get(`/api/anamnese/${anamnesisId}`)
     return response.data
   } catch (error) {
     console.error('Erro ao obter as anamneses:', error)
@@ -10,4 +10,4 @@ const findReports = async (reportId: number) => {
   }
 }
 
-export default findReports
+export default findAnamnesis
