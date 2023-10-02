@@ -33,6 +33,7 @@ export default function Ocorrencia({ navigation }) {
 
   const handleClickAnamnese = async () => {
     navigation.navigate(`anamnese`)
+
     const response = await registerAnamnesis(ReportOwnerId)
     if (response && response.anamnesis) {
       dispatch(saveAnamnesisId(response.anamnesis.id))

@@ -58,13 +58,24 @@ export default function Anamnese() {
 
   useEffect(() => {
     const findAnamnesisData = async () => {
-      const response = await findAnamnesis(anamnesisId)
-      console.log(response)
+      try {
+        const response = await findAnamnesis(56)
+
+        console.log(response.anamese.SignsAndSymptoms)
+
+        const sinaisESintomas = response.anamese.SignsAndSymptoms
+        setSinaisESintomas(sinaisESintomas)
+
+        console.log(response)
+      } catch (error) {
+        console.error('Error fetching anamnesis data:', error)
+      }
     }
     findAnamnesisData()
   }, [])
 
   const handleSubmitAnamnesis = async () => {
+    console.log(anamnesisId)
     const response = await updateAnamnesis(
       reportId,
       anamnesisId,
