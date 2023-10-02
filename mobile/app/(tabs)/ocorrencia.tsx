@@ -13,9 +13,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Footer from '../components/Footer'
 import { FontAwesome5 } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import registerAnamnesis from '../../src/api/registerAnamnesis'
+import { RootState } from '../../src/stores/stores'
+import { saveAnamnesisId } from '../../src/actions/reportActions'
 
 export default function Ocorrencia({ navigation }) {
+  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
+
   const { bottom, top } = useSafeAreaInsets()
 
   const dispatch = useDispatch()
@@ -24,6 +29,18 @@ export default function Ocorrencia({ navigation }) {
     dispatch({ type: 'LOGOUT' })
 
     navigation.navigate('home')
+  }
+
+  const handleClickAnamnese = async () => {
+    navigation.navigate(`anamnese`)
+    const response = await registerAnamnesis(ReportOwnerId)
+    if (response && response.anamnesis) {
+      dispatch(saveAnamnesisId(response.anamnesis.id))
+      console.log('Anamnese n°: ', response.anamnesis.id)
+      navigation.navigate(`anamnese`, {
+        anamnesisId: response.anamnesis.id,
+      })
+    }
   }
 
   return (
@@ -49,10 +66,7 @@ export default function Ocorrencia({ navigation }) {
             isCompleted={4}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(`anamnese`)}
-          activeOpacity={0.7}
-        >
+        <TouchableOpacity onPress={handleClickAnamnese} activeOpacity={0.7}>
           <Grouper
             title="Anamnese de Emergência"
             desc="Sinais e sintomas, observações..."

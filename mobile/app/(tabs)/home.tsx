@@ -1,49 +1,91 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Text,
+  Linking,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native'
 import NOARLogo from '../../src/assets/logo-noar.svg'
-import Icon from '@expo/vector-icons/Feather'
-import { useSelector } from 'react-redux'
+import Firefighter from '../../src/assets/firefighter.svg'
+import Hexagon from '../../src/assets/hexagon.svg'
+import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../src/stores/stores'
 import registerReport from '../../src/api/registerReport'
+import { Entypo } from '@expo/vector-icons'
+import React from 'react'
+import { saveReportId } from '../../src/actions/reportActions'
+// import { saveReportId } from '../../src/actions/reportActions' // Importe a ação
 
-export default function App({ navigation }) {
+function App({ navigation }) {
+  const dispatch = useDispatch()
   const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
+  const ownerId = useSelector((state: RootState) => state.auth.userId)
 
   const handleButtonClick = async () => {
     if (isLoggedIn) {
-      const response = await registerReport()
+      const response = await registerReport(ownerId)
       const reportId = response.report.id
-      console.log(reportId)
+      console.log('Report de n°:', reportId)
+      dispatch(saveReportId(reportId))
       navigation.navigate('ocorrencia')
     } else {
       navigation.navigate('login')
     }
   }
   return (
-    <View className=" flex-1 items-center justify-between">
-      <View className="h-[67px] w-full bg-[#A00E00]" />
-      <View className=" h-[425px] w-full items-center justify-between p-6">
-        <NOARLogo className=" h-[147px] w-[148px] shrink-0" />
-        <Text className="text-[32px] font-normal leading-[32px] text-[#202020]">
-          Bem Vindo(a)!
-        </Text>
-
-        <Text className=" text-center text-[14px] font-normal leading-[22.4px] text-[#000]">
-          Bravos heróis que arriscam suas vidas todos os dias para proteger
-          comunidades e salvar vidas.Os bombeiros estão na linha de frente em
-          situações de emergência, e para ajuda-los é necassario um meio mais
-          ágil de relatórios
-        </Text>
-      </View>
-      <View className="relative h-[67px] w-full items-center bg-[#A00E00]">
-        <View className="absolute top-[-50px] h-[100px] w-[100px] items-center justify-center rounded-full bg-offwhite">
+    <SafeAreaView className="m-0 flex-1 bg-white p-0">
+      <View className="bg-red flex-1 items-center justify-center">
+        {/* Header View, maybe placing some about us links here */}
+        <View className=""></View>
+        {/* End Header View */}
+        <View className="z-50 mb-44 items-center justify-center gap-6">
+          {/* Main view */}
+          <NOARLogo></NOARLogo>
+          <Text className="text-4xl font-bold">Bem vindo(a)!</Text>
+          <Text className="text-xl font-bold text-red-600">
+            Núcleo de Operações Aéreas e Resgate
+          </Text>
+          <Text className="px-3 text-center font-bold">
+            Bravos heróis que arriscam suas vidas todos os dias para proteger
+            comunidades e salvar vidas. Os bombeiros estão na linha de frente em
+            situações de emergência, e para ajuda-los é necessário um meio mais
+            ágil de relatórios
+          </Text>
           <TouchableOpacity
-            className="h-[66px] w-[66px] items-center justify-center rounded-full bg-[#A00E00]"
             onPress={handleButtonClick}
+            className="w-2/6 rounded-md bg-red-600 px-5 py-2"
           >
-            <Icon name="plus" size={50} color="#fff" />
+            <Text className="text-center text-lg text-white">RELATÓRIO</Text>
           </TouchableOpacity>
+          {/* End main view */}
+        </View>
+        {/* Footer */}
+        <View className="absolute bottom-0 z-30 w-full flex-row p-3 py-5 ">
+          <TouchableOpacity
+            className="px-2"
+            onPress={() => {
+              Linking.openURL('https://noar.org.br/')
+            }}
+          >
+            <Entypo name="globe" size={24} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity className="px-2">
+            <Entypo name="instagram" size={24} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity className="px-2">
+            <Entypo name="facebook" size={24} color="white" />
+          </TouchableOpacity>
+          {/* End footer */}
+        </View>
+        <View className="absolute bottom-0 right-0 z-20">
+          <Firefighter />
+        </View>
+        <View className="absolute bottom-[-120px] right-0 z-10 ml-10 w-full flex-1">
+          <Hexagon width={500} height={340} />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
+
+export default App

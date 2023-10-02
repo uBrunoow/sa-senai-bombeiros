@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, ScrollView } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -9,8 +9,19 @@ import { AntDesign } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
 import InputClock from '../components/InputClock'
 import InputClock2 from '../components/InputClock2'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../src/stores/stores'
+import updateAnamnesis from '../../src/api/updateAnamnesis'
+// import { useRoute } from '@react-navigation/core'
+import findAnamnesis from '../../src/api/findAnamnesis'
 
 export default function Anamnese() {
+  // const route = useRoute()
+  const reportId = useSelector((state: RootState) => state.report.reportId)
+  const anamnesisId = useSelector(
+    (state: RootState) => state.anamnesis.anamnesisId,
+  )  // const { anamnesisId } = route.params || {}
+
   const { bottom, top } = useSafeAreaInsets()
 
   const [sinaisESintomas, setSinaisESintomas] = useState('')
@@ -19,11 +30,12 @@ export default function Anamnese() {
   const [problemaSaude, setProblemaSaude] = useState(false) // Pode ser um valor booleano
   const [quaisProblemas, setQuaisProblemas] = useState('')
   const [usoMedicacao, setUsoMedicacao] = useState(false) // Pode ser um valor booleano
+  const [horasMedicacao, setHorasMedicacao] = useState('20:00')
   const [quaisMedicacoes, setQuaisMedicacoes] = useState('')
   const [alergia, setAlergia] = useState(false) // Pode ser um valor booleano
   const [quaisAlergias, setQuaisAlergias] = useState('')
   const [ingeriuAlimento, setIngeriuAlimento] = useState(false) // Pode ser um valor booleano
-  const [horasIngeriuAlimento, setHorasIngeriuAlimento] = useState('')
+  const [horasIngeriuAlimento, setHorasIngeriuAlimento] = useState('21:00')
   const [observacoesFinais, setObservacoesFinais] = useState('')
 
   const handleOutrasVezesChange = (option: 'SIM' | 'NÃO') => {
@@ -45,6 +57,37 @@ export default function Anamnese() {
   const handleIngeriuAlimentoChange = (option: 'SIM' | 'NÃO') => {
     setIngeriuAlimento(option === 'SIM')
   }
+
+  useEffect(() => {
+    const findAnamnesisData = async () => {
+      const response = await findAnamnesis(anamnesisId)
+      console.log(response)
+    }
+    findAnamnesisData()
+  }, [])
+
+  const handleSubmitAnamnesis = async () => {
+    const response = await updateAnamnesis(
+      reportId,
+      anamnesisId,
+      sinaisESintomas,
+      outrasVezes,
+      tempoAconteceu,
+      problemaSaude,
+      quaisProblemas,
+      usoMedicacao,
+      quaisMedicacoes,
+      horasMedicacao,
+      alergia,
+      quaisAlergias,
+      ingeriuAlimento,
+      horasIngeriuAlimento,
+      observacoesFinais,
+    )
+    console.log(response)
+  }
+
+  console.log('Anamnese na anamnese:', anamnesisId)
 
   return (
     <ScrollView
@@ -138,7 +181,10 @@ export default function Anamnese() {
               onChangeText={(e) => setObservacoesFinais(e)}
             />
           </View>
-          <MainButton innerText={'VOLTAR'}></MainButton>
+          <MainButton
+            innerText="SALVAR"
+            onPress={() => handleSubmitAnamnesis()}
+          />
         </View>
         <Footer />
       </View>

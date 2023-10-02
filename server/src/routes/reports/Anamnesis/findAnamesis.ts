@@ -8,12 +8,12 @@ export async function anamnesisFindRoutes(
 ) {
   // Rota para pegar todos os usuários
   app.get('/api/anamnese', async (req, res) => {
-    const anameses = await prisma.anamnesis.findMany({
+    const anamnesis = await prisma.anamnesis.findMany({
       include: {},
     })
     return res.send({
       msg: `🟢 Anamnesis localizadas com sucesso.`,
-      anameses,
+      anamnesis,
     })
   })
 
