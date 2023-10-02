@@ -12,29 +12,27 @@ import InputClock2 from '../components/InputClock2'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../src/stores/stores'
 import updateAnamnesis from '../../src/api/updateAnamnesis'
-// import { useRoute } from '@react-navigation/core'
 import findAnamnesis from '../../src/api/findAnamnesis'
 
 export default function Anamnese() {
-  // const route = useRoute()
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const anamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,
-  )  // const { anamnesisId } = route.params || {}
+  )
 
   const { bottom, top } = useSafeAreaInsets()
 
   const [sinaisESintomas, setSinaisESintomas] = useState('')
-  const [outrasVezes, setOutrasVezes] = useState(false) // Pode ser um valor booleano
+  const [outrasVezes, setOutrasVezes] = useState(false)
   const [tempoAconteceu, setTempoAconteceu] = useState('')
-  const [problemaSaude, setProblemaSaude] = useState(false) // Pode ser um valor booleano
+  const [problemaSaude, setProblemaSaude] = useState(false)
   const [quaisProblemas, setQuaisProblemas] = useState('')
-  const [usoMedicacao, setUsoMedicacao] = useState(false) // Pode ser um valor booleano
+  const [usoMedicacao, setUsoMedicacao] = useState(false)
   const [horasMedicacao, setHorasMedicacao] = useState('20:00')
   const [quaisMedicacoes, setQuaisMedicacoes] = useState('')
-  const [alergia, setAlergia] = useState(false) // Pode ser um valor booleano
+  const [alergia, setAlergia] = useState(false)
   const [quaisAlergias, setQuaisAlergias] = useState('')
-  const [ingeriuAlimento, setIngeriuAlimento] = useState(false) // Pode ser um valor booleano
+  const [ingeriuAlimento, setIngeriuAlimento] = useState(false)
   const [horasIngeriuAlimento, setHorasIngeriuAlimento] = useState('21:00')
   const [observacoesFinais, setObservacoesFinais] = useState('')
 
@@ -86,8 +84,6 @@ export default function Anamnese() {
     )
     console.log(response)
   }
-
-  console.log('Anamnese na anamnese:', anamnesisId)
 
   return (
     <ScrollView

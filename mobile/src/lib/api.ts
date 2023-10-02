@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: 'http://192.168.0.9:3333', // A rede do senai é mó bloqueada
+  baseURL: 'http://10.3.77.215:3333', // A rede do senai é mó bloqueada
   // IP DO LUCIANO: 10.3.77.141
   // IP QUE TAVA ANTES: 10.3.78.11
   // IP DO BRUNOW 10.3.76.82
