@@ -15,8 +15,8 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
 import { useDispatch, useSelector } from 'react-redux'
 import registerAnamnesis from '../../src/api/registerAnamnesis'
-import { RootState } from '../../src/stores/stores'
-import { saveAnamnesisId } from '../../src/actions/reportActions'
+import { RootState } from '../../src/redux/stores/stores'
+import { saveAnamnesisId } from '../../src/redux/actions/reportActions'
 
 export default function Ocorrencia({ navigation }) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)

@@ -10,7 +10,7 @@ import MainButton from '../components/MainButton'
 import InputClock from '../components/InputClock'
 import InputClock2 from '../components/InputClock2'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../src/stores/stores'
+import { RootState } from '../../src/redux/stores/stores'
 import updateAnamnesis from '../../src/api/updateAnamnesis'
 import findAnamnesis from '../../src/api/findAnamnesis'
 
