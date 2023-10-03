@@ -27,6 +27,7 @@ import { RootState } from '../../../src/redux/stores/stores'
 import findUser from '../../../src/api/findUser'
 import FInalizacaoModal from '../../modal/FInalizacaoModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import InputFull from '../../components/InputFull'
 
 const Finalizacao = () => {
   const [selected, setSelected] = React.useState('')
@@ -35,6 +36,7 @@ const Finalizacao = () => {
   const [selectedOption, setSelectedOption] = React.useState(null)
   const [changeResponsable, setChangeResponsable] = useState(false)
   const [responsable, setResponsable] = useState('')
+  const [observacoesFinais, setObservacoesFinais] = useState('')
 
   const handleOptionPress = (option) => {
     setSelectedOption(option)
@@ -221,6 +223,16 @@ const Finalizacao = () => {
                   <Text className="text-center">Estável</Text>
                 </View>
               </View>
+            </View>
+
+            <View className="aling-items w-347 h-1041 flex-1">
+              <InputFull
+                title="Sinais e Sintomas"
+                placeholder={observacoesFinais || ''}
+                isBig={true}
+                value={observacoesFinais}
+                onChangeText={(e) => setObservacoesFinais(e)}
+              />
             </View>
           </View>
           {changeResponsable && (
