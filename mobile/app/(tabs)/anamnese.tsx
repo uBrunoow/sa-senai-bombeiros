@@ -14,7 +14,7 @@ import { RootState } from '../../src/redux/stores/stores'
 import updateAnamnesis from '../../src/api/updateAnamnesis'
 import findAnamnesis from '../../src/api/findAnamnesis'
 
-export default function Anamnese() {
+export default function Anamnese({ navigation }) {
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const anamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,
@@ -113,7 +113,9 @@ export default function Anamnese() {
       horasIngeriuAlimento,
       observacoesFinais,
     )
-    console.log(response)
+    if (response && response.updatedAnamnese) {
+      navigation.navigate('ocorrencia')
+    }
   }
 
   return (

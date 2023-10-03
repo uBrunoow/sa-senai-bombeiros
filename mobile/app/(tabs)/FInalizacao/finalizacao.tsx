@@ -6,6 +6,7 @@ import {
   Pressable,
   TextInput,
   Modal,
+  ScrollView,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
@@ -25,6 +26,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../../src/redux/stores/stores'
 import findUser from '../../../src/api/findUser'
 import FInalizacaoModal from '../../modal/FInalizacaoModal'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const Finalizacao = () => {
   const [selected, setSelected] = React.useState('')
@@ -82,160 +84,173 @@ const Finalizacao = () => {
     fetchUserData()
   }, [ownerId])
 
+  const { bottom, top } = useSafeAreaInsets()
+
   return (
     <>
-      <Header />
-      <SafeAreaView className="m-0 flex-1 items-center bg-white p-0 px-[21.5px]">
-        <View className="mb-[25px] mt-[34px] flex-row items-center justify-center">
-          <FontAwesome5 name="flag-checkered" size={24} color="#F23030" />
-          <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
-            Finalização
-          </Text>
-        </View>
-
-        <View
-          style={styles.boxShadow}
-          className="h-[500px] w-full rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
-        >
-          <View>
-            <Text className="text-[15px] font-normal">
-              Responsável pelo preenchimento:
+      <ScrollView
+        className="flex-1"
+        contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
+      >
+        <Header />
+        <SafeAreaView className="m-0 h-screen items-center bg-white p-0 px-[21.5px]">
+          <View className="mb-[25px] mt-[34px] flex-row items-center justify-center">
+            <FontAwesome5 name="flag-checkered" size={24} color="#F23030" />
+            <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
+              Finalização
             </Text>
-            <View className="w-full flex-row items-center justify-between">
-              <Text className="text-[25px] font-bold">{responsable}</Text>
-              <Pressable onPress={handleChangeName}>
-                <Ionicons name="md-pencil" size={24} color="black" />
-              </Pressable>
-            </View>
-          </View>
-          <View>
-            <Text>Objetos recolhidos</Text>
-            <TextInput className="items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]" />
           </View>
 
-          <View>
-            <Text>Forma de condução</Text>
-            <MultipleSelectList
-              setSelected={(val) => setCategories(val)}
-              data={data}
-              save="value"
-              label="Categories"
-              boxStyles={{ padding: 10 }}
-              placeholder="Selecione"
-              searchPlaceholder="Busque pela forma de condução"
-            />
-          </View>
-
-          <View>
-            <Text>Decisão transporte</Text>
-            <View className="flex-row items-center justify-between">
-              <View>
-                <Pressable
-                  style={({ pressed }) => [
-                    // {
-                    //   backgroundColor: pressed ? '#000' : 'transparent',
-                    // },
-                    styles.button,
-                    getButtonStyle('critico'),
-                    selectedOption === 'critico' && { borderColor: '#6d1111' },
-                  ]}
-                  onPress={() => handleOptionPress('critico')}
-                  onPressIn={handlePressIn}
-                  onPressOut={handlePressOut}
-                >
-                  <MaterialCommunityIcons
-                    name="emoticon-dead-outline"
-                    size={24}
-                    color="white"
-                  />
-                </Pressable>
-                <Text>Crítico</Text>
-              </View>
-              <View>
-                <Pressable
-                  style={({ pressed }) => [
-                    styles.buttonOrange,
-                    getButtonStyle('instavel'),
-                    selectedOption === 'instavel' && { borderColor: '#6d4011' },
-                  ]}
-                  onPress={() => handleOptionPress('instavel')}
-                  onPressIn={handlePressIn}
-                  onPressOut={handlePressOut}
-                >
-                  <MaterialIcons name="mood-bad" size={24} color="white" />
-                </Pressable>
-                <Text>Instável</Text>
-              </View>
-              <View>
-                <Pressable
-                  style={({ pressed }) => [
-                    styles.buttonYellow,
-                    getButtonStyle('possivelmente estavel'),
-                    selectedOption === 'possivelmente estavel' && {
-                      borderColor: '#656d11',
-                    },
-                  ]}
-                  onPress={() => handleOptionPress('possivelmente estavel')}
-                  onPressIn={handlePressIn}
-                  onPressOut={handlePressOut}
-                >
-                  <MaterialCommunityIcons
-                    name="emoticon-neutral-outline"
-                    size={24}
-                    color="white"
-                  />
-                </Pressable>
-                <Text>P. Estável</Text>
-              </View>
-              <View>
-                <Pressable
-                  style={({ pressed }) => [
-                    styles.buttonGreen,
-                    getButtonStyle('estavel'),
-                    selectedOption === 'estavel' && { borderColor: '#1a6d11' },
-                  ]}
-                  onPress={() => handleOptionPress('estavel')}
-                  onPressIn={handlePressIn}
-                  onPressOut={handlePressOut}
-                >
-                  <MaterialCommunityIcons
-                    name="emoticon-excited-outline"
-                    size={24}
-                    color="white"
-                  />
-                </Pressable>
-                <Text>Estável</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        {changeResponsable && (
-          <Modal
-            transparent={true}
-            animationType="fade"
-            visible={changeResponsable}
-            onRequestClose={() => setChangeResponsable(false)}
+          <View
+            style={styles.boxShadow}
+            className="h-[500px] w-full rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
           >
-            <View className="flex-1 items-center justify-center bg-[#0000007f]">
-              <View
-                style={styles.modalContent}
-                className="rounded-[7px] bg-white p-4 "
-              >
-                <View className="relative flex-row items-center justify-center">
-                  <FInalizacaoModal />
+            <View>
+              <Text className="text-[15px] font-normal">
+                Responsável pelo preenchimento:
+              </Text>
+              <View className="w-full flex-row items-center justify-between">
+                <Text className="text-[25px] font-bold">{responsable}</Text>
+                <Pressable onPress={handleChangeName}>
+                  <Ionicons name="md-pencil" size={24} color="black" />
+                </Pressable>
+              </View>
+            </View>
+            <View>
+              <Text>Objetos recolhidos</Text>
+              <TextInput className="items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]" />
+            </View>
+
+            <View>
+              <Text>Forma de condução</Text>
+              <MultipleSelectList
+                setSelected={(val) => setCategories(val)}
+                data={data}
+                save="value"
+                label="Categories"
+                boxStyles={{ padding: 10 }}
+                placeholder="Selecione"
+                searchPlaceholder="Busque pela forma de condução"
+              />
+            </View>
+
+            <View>
+              <Text>Decisão transporte</Text>
+              <View className="flex-row items-center justify-between">
+                <View>
                   <Pressable
-                    onPress={() => setChangeResponsable(false)}
-                    className="absolute right-[-5px] top-1"
+                    style={({ pressed }) => [
+                      // {
+                      //   backgroundColor: pressed ? '#000' : 'transparent',
+                      // },
+                      styles.button,
+                      getButtonStyle('critico'),
+                      selectedOption === 'critico' && {
+                        borderColor: '#6d1111',
+                      },
+                    ]}
+                    onPress={() => handleOptionPress('critico')}
+                    onPressIn={handlePressIn}
+                    onPressOut={handlePressOut}
                   >
-                    <AntDesign name="closecircle" size={24} color="red" />
+                    <MaterialCommunityIcons
+                      name="emoticon-dead-outline"
+                      size={24}
+                      color="white"
+                    />
                   </Pressable>
+                  <Text className="text-center">Crítico</Text>
+                </View>
+                <View>
+                  <Pressable
+                    style={({ pressed }) => [
+                      styles.buttonOrange,
+                      getButtonStyle('instavel'),
+                      selectedOption === 'instavel' && {
+                        borderColor: '#6d4011',
+                      },
+                    ]}
+                    onPress={() => handleOptionPress('instavel')}
+                    onPressIn={handlePressIn}
+                    onPressOut={handlePressOut}
+                  >
+                    <MaterialIcons name="mood-bad" size={24} color="white" />
+                  </Pressable>
+                  <Text className="text-center">Instável</Text>
+                </View>
+                <View>
+                  <Pressable
+                    style={({ pressed }) => [
+                      styles.buttonYellow,
+                      getButtonStyle('possivelmente estavel'),
+                      selectedOption === 'possivelmente estavel' && {
+                        borderColor: '#656d11',
+                      },
+                    ]}
+                    onPress={() => handleOptionPress('possivelmente estavel')}
+                    onPressIn={handlePressIn}
+                    onPressOut={handlePressOut}
+                  >
+                    <MaterialCommunityIcons
+                      name="emoticon-neutral-outline"
+                      size={24}
+                      color="white"
+                    />
+                  </Pressable>
+                  <Text className="text-center">P. Estável</Text>
+                </View>
+                <View>
+                  <Pressable
+                    style={({ pressed }) => [
+                      styles.buttonGreen,
+                      getButtonStyle('estavel'),
+                      selectedOption === 'estavel' && {
+                        borderColor: '#1a6d11',
+                      },
+                    ]}
+                    onPress={() => handleOptionPress('estavel')}
+                    onPressIn={handlePressIn}
+                    onPressOut={handlePressOut}
+                  >
+                    <MaterialCommunityIcons
+                      name="emoticon-excited-outline"
+                      size={24}
+                      color="white"
+                    />
+                  </Pressable>
+                  <Text className="text-center">Estável</Text>
                 </View>
               </View>
             </View>
-          </Modal>
-        )}
-      </SafeAreaView>
-      <Footer />
+          </View>
+          {changeResponsable && (
+            <Modal
+              transparent={true}
+              animationType="fade"
+              visible={changeResponsable}
+              onRequestClose={() => setChangeResponsable(false)}
+            >
+              <View className="flex-1 items-center justify-center bg-[#0000007f]">
+                <View
+                  style={styles.modalContent}
+                  className="rounded-[7px] bg-white p-4 "
+                >
+                  <View className="relative flex-row items-center justify-center">
+                    <FInalizacaoModal />
+                    <Pressable
+                      onPress={() => setChangeResponsable(false)}
+                      className="absolute right-[-5px] top-1"
+                    >
+                      <AntDesign name="closecircle" size={24} color="red" />
+                    </Pressable>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+          )}
+        </SafeAreaView>
+        <Footer />
+      </ScrollView>
     </>
   )
 }
