@@ -22,6 +22,11 @@ const Finalizacao = () => {
   const [selected, setSelected] = React.useState('')
   const [categories, setCategories] = React.useState([])
   const [isPressed, setIsPressed] = useState(false)
+  const [selectedOption, setSelectedOption] = React.useState(null)
+
+  const handleOptionPress = (option) => {
+    setSelectedOption(option)
+  }
 
   const handlePressIn = () => {
     setIsPressed(true)
@@ -31,14 +36,15 @@ const Finalizacao = () => {
     setIsPressed(false)
   }
 
-  const getButtonStyle = () => {
+  const getButtonStyle = (option) => {
     return {
-      // Adiciona a borda se o botão estiver pressionado
-      borderColor: isPressed ? '#6d1111' : 'transparent',
+      borderColor: selectedOption === option ? '#6d1111' : 'transparent',
       borderWidth: 2,
       borderRadius: 7,
     }
   }
+
+  console.log(selectedOption)
 
   const data = [
     { key: 'Deitada', value: 'Deitada' },
@@ -95,13 +101,14 @@ const Finalizacao = () => {
               <View>
                 <Pressable
                   style={({ pressed }) => [
-                    {
-                      backgroundColor: pressed ? '#000' : 'transparent',
-                    },
+                    // {
+                    //   backgroundColor: pressed ? '#000' : 'transparent',
+                    // },
                     styles.button,
-                    getButtonStyle(), // Aplica o estilo condicional da borda
+                    getButtonStyle(pressed),
+                    selectedOption === 'critico' && { borderColor: '#6d1111' },
                   ]}
-                  onPress={() => console.log('Pressed!')}
+                  onPress={() => handleOptionPress('critico')}
                   onPressIn={handlePressIn}
                   onPressOut={handlePressOut}
                 >
@@ -111,33 +118,71 @@ const Finalizacao = () => {
                     color="white"
                   />
                 </Pressable>
-                <Text></Text>
+                <Text>Crítico</Text>
               </View>
               <View>
-                <Pressable className="h-[50px] w-[70px] items-center justify-center rounded-[7px] bg-[#FF6B00]">
+                <Pressable
+                  style={({ pressed }) => [
+                    {
+                      backgroundColor: pressed ? '#000' : 'transparent',
+                    },
+                    styles.buttonOrange,
+                    getButtonStyle(),
+                    selectedOption === 'instavel' && { borderColor: '#6d4011' },
+                  ]}
+                  onPress={() => handleOptionPress('instavel')}
+                  onPressIn={handlePressIn}
+                  onPressOut={handlePressOut}
+                >
                   <MaterialIcons name="mood-bad" size={24} color="white" />
                 </Pressable>
-                <Text></Text>
+                <Text>Instável</Text>
               </View>
               <View>
-                <Pressable className="h-[50px] w-[70px] items-center justify-center rounded-[7px] bg-[#FFC700]">
+                <Pressable
+                  style={({ pressed }) => [
+                    {
+                      backgroundColor: pressed ? '#000' : 'transparent',
+                    },
+                    styles.buttonYellow,
+                    getButtonStyle(),
+                    selectedOption === 'possivelmente estavel' && {
+                      borderColor: '#656d11',
+                    },
+                  ]}
+                  onPress={() => handleOptionPress('possivelmente estavel')}
+                  onPressIn={handlePressIn}
+                  onPressOut={handlePressOut}
+                >
                   <MaterialCommunityIcons
                     name="emoticon-neutral-outline"
                     size={24}
                     color="white"
                   />
                 </Pressable>
-                <Text></Text>
+                <Text>P. Estável</Text>
               </View>
               <View>
-                <Pressable className="h-[50px] w-[70px] items-center justify-center rounded-[7px] bg-[#11D300]">
+                <Pressable
+                  style={({ pressed }) => [
+                    {
+                      backgroundColor: pressed ? '#000' : 'transparent',
+                    },
+                    styles.buttonGreen,
+                    getButtonStyle(),
+                    selectedOption === 'estavel' && { borderColor: '#1a6d11' },
+                  ]}
+                  onPress={() => handleOptionPress('estavel')}
+                  onPressIn={handlePressIn}
+                  onPressOut={handlePressOut}
+                >
                   <MaterialCommunityIcons
                     name="emoticon-excited-outline"
                     size={24}
                     color="white"
                   />
                 </Pressable>
-                <Text></Text>
+                <Text>Estável</Text>
               </View>
             </View>
           </View>
@@ -162,6 +207,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 7,
     backgroundColor: '#F23030',
+  },
+  buttonOrange: {
+    height: 50,
+    width: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 7,
+    backgroundColor: '#FF6B00',
+  },
+  buttonYellow: {
+    height: 50,
+    width: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 7,
+    backgroundColor: '#FFC700',
+  },
+  buttonGreen: {
+    height: 50,
+    width: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 7,
+    backgroundColor: '#11D300',
   },
 })
 
