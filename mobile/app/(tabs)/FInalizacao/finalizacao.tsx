@@ -5,8 +5,9 @@ import {
   StyleSheet,
   Pressable,
   TextInput,
+  Modal,
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import {
@@ -14,15 +15,23 @@ import {
   Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
+  AntDesign,
 } from '@expo/vector-icons'
 
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
+import findAnamnesis from '../../../src/api/findAnamnesis'
+import { calculateAnamnesisCompleteness } from '../../../src/utils/calculateAnamnesisCompleteness'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../src/redux/stores/stores'
+import findUser from '../../../src/api/findUser'
 
 const Finalizacao = () => {
   const [selected, setSelected] = React.useState('')
   const [categories, setCategories] = React.useState([])
   const [isPressed, setIsPressed] = useState(false)
   const [selectedOption, setSelectedOption] = React.useState(null)
+  const [changeResponsable, setChangeResponsable] = useState(false)
+  const [responsable, setResponsable] = useState('')
 
   const handleOptionPress = (option) => {
     setSelectedOption(option)
@@ -36,7 +45,7 @@ const Finalizacao = () => {
     setIsPressed(false)
   }
 
-  const getButtonStyle = (option) => {
+  const getButtonStyle = (option: any) => {
     return {
       borderColor: selectedOption === option ? '#6d1111' : 'transparent',
       borderWidth: 2,
@@ -44,13 +53,34 @@ const Finalizacao = () => {
     }
   }
 
-  console.log(selectedOption)
-
   const data = [
     { key: 'Deitada', value: 'Deitada' },
     { key: 'Semi-deitada', value: 'Semi-deitada' },
     { key: 'Sentada', value: 'Sentada' },
   ]
+
+  const handleChangeName = () => {
+    setChangeResponsable(!changeResponsable)
+  }
+
+  const ownerId = useSelector((state: RootState) => state.auth.userId)
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (ownerId) {
+          const response = await findUser(ownerId)
+          const userNameResponse = response.user.name
+          setResponsable(userNameResponse)
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error)
+      }
+    }
+
+    fetchUserData()
+  }, [ownerId])
+
   return (
     <>
       <Header />
@@ -71,8 +101,8 @@ const Finalizacao = () => {
               Responsável pelo preenchimento:
             </Text>
             <View className="w-full flex-row items-center justify-between">
-              <Text className="text-[25px] font-bold">TAKAMASA NOMURO</Text>
-              <Pressable>
+              <Text className="text-[25px] font-bold">{responsable}</Text>
+              <Pressable onPress={handleChangeName}>
                 <Ionicons name="md-pencil" size={24} color="black" />
               </Pressable>
             </View>
@@ -105,7 +135,7 @@ const Finalizacao = () => {
                     //   backgroundColor: pressed ? '#000' : 'transparent',
                     // },
                     styles.button,
-                    getButtonStyle(pressed),
+                    getButtonStyle('critico'),
                     selectedOption === 'critico' && { borderColor: '#6d1111' },
                   ]}
                   onPress={() => handleOptionPress('critico')}
@@ -123,11 +153,8 @@ const Finalizacao = () => {
               <View>
                 <Pressable
                   style={({ pressed }) => [
-                    {
-                      backgroundColor: pressed ? '#000' : 'transparent',
-                    },
                     styles.buttonOrange,
-                    getButtonStyle(),
+                    getButtonStyle('instavel'),
                     selectedOption === 'instavel' && { borderColor: '#6d4011' },
                   ]}
                   onPress={() => handleOptionPress('instavel')}
@@ -141,11 +168,8 @@ const Finalizacao = () => {
               <View>
                 <Pressable
                   style={({ pressed }) => [
-                    {
-                      backgroundColor: pressed ? '#000' : 'transparent',
-                    },
                     styles.buttonYellow,
-                    getButtonStyle(),
+                    getButtonStyle('possivelmente estavel'),
                     selectedOption === 'possivelmente estavel' && {
                       borderColor: '#656d11',
                     },
@@ -165,11 +189,8 @@ const Finalizacao = () => {
               <View>
                 <Pressable
                   style={({ pressed }) => [
-                    {
-                      backgroundColor: pressed ? '#000' : 'transparent',
-                    },
                     styles.buttonGreen,
-                    getButtonStyle(),
+                    getButtonStyle('estavel'),
                     selectedOption === 'estavel' && { borderColor: '#1a6d11' },
                   ]}
                   onPress={() => handleOptionPress('estavel')}
@@ -187,6 +208,51 @@ const Finalizacao = () => {
             </View>
           </View>
         </View>
+        {changeResponsable && (
+          <Modal
+            transparent={true}
+            animationType="fade"
+            visible={changeResponsable}
+            onRequestClose={() => setChangeResponsable(false)}
+          >
+            <View className="flex-1 items-center justify-center bg-[#0000007f]">
+              <View
+                style={styles.modalContent}
+                className="rounded-[7px] bg-white p-4 "
+              >
+                <View className="relative flex-row items-center justify-center">
+                  <View className="w-[320px]">
+                    <Text className="w-[300px] text-left text-[20px] font-bold">
+                      Coloque o nome do responsável pelo preenchimento
+                    </Text>
+                    <Text className="mt-3 text-[#979797b0]">
+                      (Caso o nome não for preenchido o responsável será o nome
+                      da pessoa com a conta logada.)
+                    </Text>
+                    <View>
+                      <Text className="mt-5">Nome:</Text>
+                      <TextInput
+                        className="mt-2 items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]"
+                        placeholder="Digite um nome"
+                      />
+                    </View>
+                    <Pressable className=" mt-10 w-[100px] items-center justify-center rounded-[7px] bg-[#F23030] p-3">
+                      <Text className="text-[18px] font-bold uppercase text-white">
+                        Salvar
+                      </Text>
+                    </Pressable>
+                  </View>
+                  <Pressable
+                    onPress={() => setChangeResponsable(false)}
+                    className="absolute right-[-5px] top-1"
+                  >
+                    <AntDesign name="closecircle" size={24} color="red" />
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        )}
       </SafeAreaView>
       <Footer />
     </>
@@ -231,6 +297,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 7,
     backgroundColor: '#11D300',
+  },
+  modalContent: {
+    elevation: 5, // for Android
   },
 })
 

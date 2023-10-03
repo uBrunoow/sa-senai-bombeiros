@@ -6,7 +6,7 @@ import {
   Pressable,
   Button,
 } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Grouper from '../components/Grouper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -17,6 +17,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import registerAnamnesis from '../../src/api/registerAnamnesis'
 import { RootState } from '../../src/redux/stores/stores'
 import { saveAnamnesisId } from '../../src/redux/actions/reportActions'
+import findAnamnesis from '../../src/api/findAnamnesis'
+import { calculateAnamnesisCompleteness } from '../../src/utils/calculateAnamnesisCompleteness'
 
 export default function Ocorrencia({ navigation }) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
@@ -34,8 +36,24 @@ export default function Ocorrencia({ navigation }) {
   const existingAnamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,
   )
+  const [anamnesisCompleteness, setAnamnesisCompleteness] = useState(0)
 
-  console.log(existingAnamnesisId)
+  useEffect(() => {
+    const fetchAnamnesisCompleteness = async () => {
+      try {
+        if (existingAnamnesisId) {
+          const response = await findAnamnesis(existingAnamnesisId)
+          const completeness = calculateAnamnesisCompleteness(response.anamese)
+          setAnamnesisCompleteness(completeness)
+          console.log(response.anamese)
+        }
+      } catch (error) {
+        console.error('Error fetching anamnesis completeness:', error)
+      }
+    }
+
+    fetchAnamnesisCompleteness()
+  }, [existingAnamnesisId])
 
   const handleClickAnamnese = async () => {
     if (existingAnamnesisId) {
@@ -85,7 +103,7 @@ export default function Ocorrencia({ navigation }) {
           <Grouper
             title="Anamnese de Emergência"
             desc="Sinais e sintomas, observações..."
-            isCompleted={2}
+            isCompleted={anamnesisCompleteness}
           />
         </TouchableOpacity>
         <TouchableOpacity
