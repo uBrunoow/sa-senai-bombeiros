@@ -6,6 +6,6 @@ export const saveReportId = (reportId: number) => {
 }
 
 export const saveAnamnesisId = (anamnesisId: number) => ({
-  type: 'SAVE_ANAMNESIS_ID',
+  type: 'SAVE_ANAMNESIS',
   payload: { anamnesisId },
 })

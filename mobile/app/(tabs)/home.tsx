@@ -9,11 +9,11 @@ import NOARLogo from '../../src/assets/logo-noar.svg'
 import Firefighter from '../../src/assets/firefighter.svg'
 import Hexagon from '../../src/assets/hexagon.svg'
 import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../../src/stores/stores'
+import { RootState } from '../../src/redux/stores/stores'
 import registerReport from '../../src/api/registerReport'
 import { Entypo } from '@expo/vector-icons'
 import React from 'react'
-import { saveReportId } from '../../src/actions/reportActions'
+import { saveReportId } from '../../src/redux/actions/reportActions'
 // import { saveReportId } from '../../src/actions/reportActions' // Importe a ação
 
 function App({ navigation }) {

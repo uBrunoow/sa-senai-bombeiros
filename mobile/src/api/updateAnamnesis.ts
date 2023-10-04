@@ -18,10 +18,9 @@ const updateAnamnesis = async (
   observacoesFinais?: string,
 ) => {
   try {
-    const response = await api.post(
+    const response = await api.put(
       `/api/anamnese/update/${anamnesisId}`,
       {
-        ReportOwnerId,
         SignsAndSymptoms: sinaisESintomas,
         HappenedTimes: outrasVezes,
         SinceHappened: tempoAconteceu,
@@ -35,6 +34,7 @@ const updateAnamnesis = async (
         IngestedFood: ingeriuAlimento,
         WhatTimeFood: horasIngeriuAlimento,
         FinalRemarks: observacoesFinais,
+        ReportOwnerId,
       },
       {
         headers: {
