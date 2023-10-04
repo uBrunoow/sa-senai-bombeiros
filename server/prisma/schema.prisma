@@ -43,6 +43,7 @@ model Report {
   Glasglow                 Glasglow[]
   Report_PreHospitalMethod Report_PreHospitalMethod[]
   Report_Symptoms          Report_Symptoms[]
+  Finalization             Finalization[]
 }
 
 //  Tabela N para N entre relatório e método pré-hospitalar
@@ -155,4 +156,14 @@ model CinematicAvaliation {
   foundWithHelmet       Boolean
   foundWithSeatbelt     Boolean
   walkingInTheScene     Boolean
+}
+
+model Finalization {
+  id             Int      @id @default(autoincrement())
+  responsable    String?
+  conduction     String[]
+  transportation String?
+  finalRemarks   String?
+  reportOwner    Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  ReportOwnerId  Int
 }
