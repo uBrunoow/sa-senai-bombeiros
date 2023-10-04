@@ -15,6 +15,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { useDispatch } from 'react-redux'
 import { saveToken } from '../../src/redux/actions/authActions'
+import { styles as s } from '../components/styles/boxShadow'
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch()
@@ -67,7 +68,7 @@ export default function Login({ navigation }) {
           </View>
           {/* Div da parte de login */}
           <View
-            style={styles.boxShadow}
+            style={s.boxShadow}
             className=" w-full rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
           >
             {/* Div que engloba o cpf e a senha */}
@@ -124,12 +125,3 @@ export default function Login({ navigation }) {
     </ScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  boxShadow: {
-    shadowColor: 'rgb(0, 0, 0)',
-    shadowOpacity: 0,
-    shadowRadius: 4,
-    textShadowOffset: { width: 8, height: 2 },
-  },
-})

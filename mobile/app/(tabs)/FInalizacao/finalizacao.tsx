@@ -2,7 +2,6 @@ import {
   View,
   Text,
   SafeAreaView,
-  StyleSheet,
   Pressable,
   TextInput,
   Modal,
@@ -28,6 +27,7 @@ import findUser from '../../../src/api/findUser'
 import FInalizacaoModal from '../../modal/FInalizacaoModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import InputFull from '../../components/InputFull'
+import { styles as s } from '../../components/styles/boxShadow'
 
 const Finalizacao = () => {
   const [selected, setSelected] = React.useState('')
@@ -95,24 +95,24 @@ const Finalizacao = () => {
         contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
       >
         <Header />
-        <SafeAreaView className="m-0 h-screen items-center bg-white p-0 px-[21.5px]">
-          <View className="mb-[25px] mt-[34px] flex-row items-center justify-center">
+        <SafeAreaView className="m-0 items-center bg-white px-5 ">
+          <View className="mb-6 mt-8 flex-row items-center justify-center">
             <FontAwesome5 name="flag-checkered" size={24} color="#F23030" />
-            <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
+            <Text className="ml-3 text-xl font-medium leading-5">
               Finalização
             </Text>
           </View>
 
           <View
-            style={styles.boxShadow}
-            className="h-[500px] w-full rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
+            style={s.boxShadow}
+            className="w-full rounded-lg bg-white px-5 py-4 shadow-md"
           >
             <View>
               <Text className="text-[15px] font-normal">
                 Responsável pelo preenchimento:
               </Text>
               <View className="w-full flex-row items-center justify-between">
-                <Text className="text-[25px] font-bold">{responsable}</Text>
+                <Text className="text-4xl font-bold">{responsable}</Text>
                 <Pressable onPress={handleChangeName}>
                   <Ionicons name="md-pencil" size={24} color="black" />
                 </Pressable>
@@ -145,7 +145,7 @@ const Finalizacao = () => {
                       // {
                       //   backgroundColor: pressed ? '#000' : 'transparent',
                       // },
-                      styles.button,
+                      s.button,
                       getButtonStyle('critico'),
                       selectedOption === 'critico' && {
                         borderColor: '#6d1111',
@@ -166,7 +166,7 @@ const Finalizacao = () => {
                 <View>
                   <Pressable
                     style={({ pressed }) => [
-                      styles.buttonOrange,
+                      s.buttonOrange,
                       getButtonStyle('instavel'),
                       selectedOption === 'instavel' && {
                         borderColor: '#6d4011',
@@ -183,7 +183,7 @@ const Finalizacao = () => {
                 <View>
                   <Pressable
                     style={({ pressed }) => [
-                      styles.buttonYellow,
+                      s.buttonYellow,
                       getButtonStyle('possivelmente estavel'),
                       selectedOption === 'possivelmente estavel' && {
                         borderColor: '#656d11',
@@ -204,7 +204,7 @@ const Finalizacao = () => {
                 <View>
                   <Pressable
                     style={({ pressed }) => [
-                      styles.buttonGreen,
+                      s.buttonGreen,
                       getButtonStyle('estavel'),
                       selectedOption === 'estavel' && {
                         borderColor: '#1a6d11',
@@ -225,7 +225,7 @@ const Finalizacao = () => {
               </View>
             </View>
 
-            <View className="aling-items w-347 h-1041 flex-1">
+            <View className="flex-1">
               <InputFull
                 title="Sinais e Sintomas"
                 placeholder={observacoesFinais || ''}
@@ -244,7 +244,7 @@ const Finalizacao = () => {
             >
               <View className="flex-1 items-center justify-center bg-[#0000007f]">
                 <View
-                  style={styles.modalContent}
+                  style={s.modalContent}
                   className="rounded-[7px] bg-white p-4 "
                 >
                   <View className="relative flex-row items-center justify-center">
@@ -266,49 +266,5 @@ const Finalizacao = () => {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  boxShadow: {
-    shadowColor: 'rgb(0, 0, 0)',
-    shadowOpacity: 0,
-    shadowRadius: 4,
-    textShadowOffset: { width: 8, height: 2 },
-  },
-  button: {
-    height: 50,
-    width: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-    backgroundColor: '#F23030',
-  },
-  buttonOrange: {
-    height: 50,
-    width: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-    backgroundColor: '#FF6B00',
-  },
-  buttonYellow: {
-    height: 50,
-    width: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-    backgroundColor: '#FFC700',
-  },
-  buttonGreen: {
-    height: 50,
-    width: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-    backgroundColor: '#11D300',
-  },
-  modalContent: {
-    elevation: 5, // for Android
-  },
-})
 
 export default Finalizacao

@@ -35,7 +35,7 @@ export default function GestationPeriod() {
     }
   }
   return (
-    <View className=" m-auto mb-4 w-4/6 flex-col flex-wrap justify-around">
+    <View className=" m-auto mb-4 w-5/6 flex-row flex-wrap justify-around">
       <Text className="mb-2 w-full text-center text-lg">
         Período de Gestação
       </Text>
@@ -59,16 +59,18 @@ export default function GestationPeriod() {
       )}
       <Pressable onPress={toggleDatePicker1}>
         <TextInput
-          className=" flex-1 rounded-lg border px-2"
+          className="w-full flex-1 rounded-lg border p-4"
           placeholder="Data de ínicio"
           editable={false}
           value={dateStart}
           onChangeText={setDateStart}
         ></TextInput>
       </Pressable>
+      <Text className="text-lg"> - </Text>
+
       <Pressable onPress={toggleDatePicker2}>
         <TextInput
-          className=" flex-1 rounded-lg border px-2"
+          className=" flex-1 rounded-lg border p-4"
           placeholder="Data de término"
           editable={false}
           value={dateEnd}
