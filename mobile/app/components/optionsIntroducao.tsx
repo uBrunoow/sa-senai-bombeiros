@@ -3,6 +3,8 @@ import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 
 type optionsProps = {
   title: String
+  Option1?: String
+  Option2?: String
 }
 
 export default function Options(props: optionsProps) {
@@ -25,7 +27,7 @@ export default function Options(props: optionsProps) {
             selectedOption === 'MASC' ? styles.whiteText : styles.blackText
           }
         >
-          Masc.
+          {props.Option1}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -38,7 +40,7 @@ export default function Options(props: optionsProps) {
         <Text
           style={selectedOption === 'FEM' ? styles.whiteText : styles.blackText}
         >
-          Fem.
+          {props.Option2}
         </Text>
       </TouchableOpacity>
     </View>

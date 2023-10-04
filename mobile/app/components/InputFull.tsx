@@ -36,7 +36,7 @@ export default function InputFull(props: InputProps) {
       style={{
         flexGrow: handleWidth(),
       }}
-      className="justfy-between m-auto my-2 w-5/6 flex-1 items-center"
+      className="justfy-between m-auto my-2 w-full flex-1 items-center"
     >
       <Text className="text-lg">{props.title}</Text>
       <View className="mb-4 mt-2 w-5/6 rounded-lg border">
@@ -44,10 +44,10 @@ export default function InputFull(props: InputProps) {
           multiline={true}
           numberOfLines={100}
           style={{
-            height: props.isBig ? 100 : 28,
+            height: props.isBig ? 100 : 38,
             textAlignVertical: 'top',
             paddingVertical: 6,
-            paddingHorizontal: 9,
+            paddingHorizontal: 10,
           }}
           value={inputValue}
           onChangeText={handleTextChange}

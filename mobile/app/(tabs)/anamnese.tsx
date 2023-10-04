@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable } from 'react-native'
+import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Header from '../components/Header'
@@ -8,7 +8,6 @@ import YesOrNo from '../components/YesOrNo'
 import { AntDesign } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
 import InputClock from '../components/InputClock'
-import InputClock2 from '../components/InputClock2'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../src/redux/stores/stores'
 import updateAnamnesis from '../../src/api/updateAnamnesis'
@@ -125,96 +124,101 @@ export default function Anamnese({ navigation }) {
     >
       <View>
         <Header />
-        <View className="justfy-between aling-items w-347 h-1203 mb-4 flex-1">
+        <View className="justfy-between aling-items mb-4 flex-1 px-[21.5px]">
           <View className="mb-[25px] mt-[34px] flex-row items-center justify-center">
             <AntDesign name="questioncircle" size={24} color="#A00E00" />
             <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
               Ocorrência
             </Text>
           </View>
-          <View className="justfy-between aling-items w-347 h-1041 flex-1">
-            <InputFull
-              title="Sinais e Sintomas"
-              placeholder={sinaisESintomas || ''}
-              isBig={true}
-              value={sinaisESintomas}
-              onChangeText={(e) => setSinaisESintomas(e)}
-            />
-            <View className="just-between aling-items flex-1">
-              <YesOrNo
-                Question="Aconteceu outras vezes?"
-                selectedOption={outrasVezes ? 'SIM' : 'NÃO'}
-                onSelectOption={handleOutrasVezesChange}
+          <View
+            className="mb-12 w-full rounded-[14] bg-white px-[10] py-[30] shadow-md"
+            style={styles.boxShadow}
+          >
+            <View className="justfy-between aling-items w-347 h-1041 flex-1">
+              <InputFull
+                title="Sinais e Sintomas"
+                placeholder={sinaisESintomas || ''}
+                isBig={true}
+                value={sinaisESintomas}
+                onChangeText={(e) => setSinaisESintomas(e)}
               />
-            </View>
-            <InputFull
-              title="A quanto tempo isso aconteceu?"
-              value={tempoAconteceu}
-              placeholder={tempoAconteceu || ''}
-              onChangeText={(e) => setTempoAconteceu(e)}
-            />
-            <View className="just-between aling-items flex-1">
-              <YesOrNo
-                Question="Possui algum problema de saúde?"
-                selectedOption={problemaSaude ? 'SIM' : 'NÃO'}
-                onSelectOption={handleProblemaSaudeChange}
-              />
-            </View>
-            <InputFull
-              title="Quais?"
-              value={quaisProblemas}
-              placeholder={quaisProblemas || ''}
-              onChangeText={(e) => setQuaisProblemas(e)}
-            />
-            <View className="just-between aling-items flex-1">
-              <YesOrNo
-                Question="Faz uso de medicação?"
-                selectedOption={usoMedicacao ? 'SIM' : 'NÃO'}
-                onSelectOption={handleUsoMedicacaoChange}
-              />
-            </View>
-            {/* TERMINAR ESSA PÁGINA!!! */}
-            <InputFull
-              title="Quais?"
-              value={quaisMedicacoes}
-              placeholder={quaisMedicacoes || ''}
-              onChangeText={(e) => setQuaisMedicacoes(e)}
-            />
-            {/* <InputFull title="Horário Ultima Med." isCalendar={true} /> */}
-            <InputClock title="Horário Ultima Med." />
-            <View className="just-between aling-items flex-1">
-              <YesOrNo
-                Question="Tem alguma alergia?"
-                selectedOption={alergia ? 'SIM' : 'NÃO'}
-                onSelectOption={handleAlergiaChange}
-              />
-            </View>
-            <InputFull
-              title="Quais?"
-              value={quaisAlergias}
-              placeholder={quaisAlergias || ''}
-              onChangeText={(e) => setQuaisAlergias(e)}
-            />
-            <View className="w-92 h-67 flex-1">
               <View className="just-between aling-items flex-1">
                 <YesOrNo
-                  Question="Ingeriu alimento/líquido nas últimas 6 horas?"
-                  selectedOption={ingeriuAlimento ? 'SIM' : 'NÃO'}
-                  onSelectOption={handleIngeriuAlimentoChange}
+                  Question="Aconteceu outras vezes?"
+                  selectedOption={outrasVezes ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleOutrasVezesChange}
                 />
               </View>
+              <InputFull
+                title="A quanto tempo isso aconteceu?"
+                value={tempoAconteceu}
+                placeholder={tempoAconteceu || ''}
+                onChangeText={(e) => setTempoAconteceu(e)}
+              />
               <View className="just-between aling-items flex-1">
-                {/* <InputFull title="Que Horas" isCalendar={true} /> */}
-                <InputClock2 title="Que horas?" />
+                <YesOrNo
+                  Question="Possui algum problema de saúde?"
+                  selectedOption={problemaSaude ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleProblemaSaudeChange}
+                />
               </View>
+              <InputFull
+                title="Quais?"
+                value={quaisProblemas}
+                placeholder={quaisProblemas || ''}
+                onChangeText={(e) => setQuaisProblemas(e)}
+              />
+              <View className="just-between aling-items flex-1">
+                <YesOrNo
+                  Question="Faz uso de medicação?"
+                  selectedOption={usoMedicacao ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleUsoMedicacaoChange}
+                />
+              </View>
+              {/* TERMINAR ESSA PÁGINA!!! */}
+              <InputFull
+                title="Quais?"
+                value={quaisMedicacoes}
+                placeholder={quaisMedicacoes || ''}
+                onChangeText={(e) => setQuaisMedicacoes(e)}
+              />
+              {/* <InputFull title="Horário Ultima Med." isCalendar={true} /> */}
+              <InputClock title="Horário Ultima Med." />
+              <View className="just-between aling-items flex-1">
+                <YesOrNo
+                  Question="Tem alguma alergia?"
+                  selectedOption={alergia ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleAlergiaChange}
+                />
+              </View>
+              <InputFull
+                title="Quais?"
+                value={quaisAlergias}
+                placeholder={quaisAlergias || ''}
+                onChangeText={(e) => setQuaisAlergias(e)}
+              />
+              <View className="w-92 h-67 flex-1">
+                <View className="just-between aling-items flex-1">
+                  <YesOrNo
+                    Question="Ingeriu alimento/líquido nas últimas 6 horas?"
+                    selectedOption={ingeriuAlimento ? 'SIM' : 'NÃO'}
+                    onSelectOption={handleIngeriuAlimentoChange}
+                  />
+                </View>
+                <View className="just-between aling-items flex-1">
+                  {/* <InputFull title="Que Horas" isCalendar={true} /> */}
+                  <InputClock title="Que horas?" />
+                </View>
+              </View>
+              <InputFull
+                title="Observações Finais"
+                isBig={true}
+                placeholder={observacoesFinais || ''}
+                value={observacoesFinais}
+                onChangeText={(e) => setObservacoesFinais(e)}
+              />
             </View>
-            <InputFull
-              title="Observações Finais"
-              isBig={true}
-              placeholder={observacoesFinais || ''}
-              value={observacoesFinais}
-              onChangeText={(e) => setObservacoesFinais(e)}
-            />
           </View>
           <MainButton
             innerText="SALVAR"
@@ -226,3 +230,15 @@ export default function Anamnese({ navigation }) {
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  boxShadow: {
+    shadowColor: 'rgb(0, 0, 0)',
+    shadowopacity: 0,
+    shadowradius: 4,
+    textshadowoffset: {
+      width: 8,
+      height: 2,
+    },
+  },
+})

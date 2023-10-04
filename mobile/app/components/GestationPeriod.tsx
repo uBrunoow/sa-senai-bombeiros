@@ -66,7 +66,7 @@ export default function GestationPeriod() {
           onChangeText={setDateStart}
         ></TextInput>
       </Pressable>
-      <Text> - </Text>
+      <Text className="text-lg"> - </Text>
 
       <Pressable onPress={toggleDatePicker2}>
         <TextInput

@@ -6,6 +6,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Options from '../components/optionsIntroducao'
 import InputLowPadding from '../components/InputLowPadding'
+import { styles as s } from '../components/styles/boxShadow'
 
 export default function Introducao() {
   const { bottom, top } = useSafeAreaInsets()
