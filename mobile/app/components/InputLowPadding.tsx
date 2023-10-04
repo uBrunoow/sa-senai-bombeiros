@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 // import { Entypo } from '@expo/vector-icons'
 
 type InputProps = {
-  title: string
+  title?: string
   size?: 'small' | 'regular' | 'big'
   isCalendar?: boolean
   isBig?: boolean
@@ -35,10 +35,10 @@ export default function InputFull(props: InputProps) {
       style={{
         flexGrow: handleWidth(),
       }}
-      className="justfy-between m-auto w-5/6 flex-1 p-2"
+      className="justfy-between m-auto h-full h-full w-5/6 flex-1 p-2"
     >
-      <Text className="text-lg">{props.title}</Text>
-      <View className="w-6/6 rounded-lg border p-2">
+      {props.title && <Text className="text-lg">{props.title}</Text>}
+      <View className="w-full rounded-lg border p-2">
         <TextInput
           multiline={true}
           numberOfLines={100}

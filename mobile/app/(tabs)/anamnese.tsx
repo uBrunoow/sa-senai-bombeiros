@@ -132,7 +132,7 @@ export default function Anamnese({ navigation }) {
             </Text>
           </View>
           <View
-            className="mb-12 w-full rounded-[14] bg-white px-[10] py-[30] shadow-md"
+            className="mb-12 w-full rounded-[14px] bg-white px-[10] py-[30] shadow-md"
             style={styles.boxShadow}
           >
             <View className="justfy-between aling-items w-347 h-1041 flex-1">
