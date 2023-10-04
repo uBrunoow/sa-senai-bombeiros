@@ -6,7 +6,7 @@ import {
   Pressable,
   Button,
 } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Grouper from '../components/Grouper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -15,8 +15,10 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
 import { useDispatch, useSelector } from 'react-redux'
 import registerAnamnesis from '../../src/api/registerAnamnesis'
-import { RootState } from '../../src/stores/stores'
-import { saveAnamnesisId } from '../../src/actions/reportActions'
+import { RootState } from '../../src/redux/stores/stores'
+import { saveAnamnesisId } from '../../src/redux/actions/reportActions'
+import findAnamnesis from '../../src/api/findAnamnesis'
+import { calculateAnamnesisCompleteness } from '../../src/utils/calculateAnamnesisCompleteness'
 
 export default function Ocorrencia({ navigation }) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
@@ -31,15 +33,46 @@ export default function Ocorrencia({ navigation }) {
     navigation.navigate('home')
   }
 
+  const existingAnamnesisId = useSelector(
+    (state: RootState) => state.anamnesis.anamnesisId,
+  )
+  const [anamnesisCompleteness, setAnamnesisCompleteness] = useState(0)
+
+  useEffect(() => {
+    const fetchAnamnesisCompleteness = async () => {
+      try {
+        if (existingAnamnesisId) {
+          const response = await findAnamnesis(existingAnamnesisId)
+          const completeness = calculateAnamnesisCompleteness(response.anamese)
+          setAnamnesisCompleteness(completeness)
+          console.log(response.anamese)
+        }
+      } catch (error) {
+        console.error('Error fetching anamnesis completeness:', error)
+      }
+    }
+
+    fetchAnamnesisCompleteness()
+  }, [existingAnamnesisId])
+
   const handleClickAnamnese = async () => {
-    navigation.navigate(`anamnese`)
-    const response = await registerAnamnesis(ReportOwnerId)
-    if (response && response.anamnesis) {
-      dispatch(saveAnamnesisId(response.anamnesis.id))
-      console.log('Anamnese n°: ', response.anamnesis.id)
-      navigation.navigate(`anamnese`, {
-        anamnesisId: response.anamnesis.id,
+    if (existingAnamnesisId) {
+      navigation.navigate('anamnese', {
+        screen: 'anamnese',
+        params: { anamnesisId: existingAnamnesisId },
       })
+    } else {
+      const response = await registerAnamnesis(ReportOwnerId)
+
+      if (response && response.anamnesis) {
+        dispatch(saveAnamnesisId(response.anamnesis.id))
+        console.log('Anamnese n°: ', response.anamnesis.id)
+
+        navigation.navigate('anamnese', {
+          screen: 'anamnese',
+          params: { anamnesisId: response.anamnesis.id },
+        })
+      }
     }
   }
 
@@ -70,7 +103,7 @@ export default function Ocorrencia({ navigation }) {
           <Grouper
             title="Anamnese de Emergência"
             desc="Sinais e sintomas, observações..."
-            isCompleted={2}
+            isCompleted={anamnesisCompleteness}
           />
         </TouchableOpacity>
         <TouchableOpacity

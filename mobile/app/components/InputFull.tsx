@@ -8,6 +8,7 @@ type InputProps = {
   isCalendar?: boolean
   isBig?: boolean
   value?: string
+  placeholder?: string
   onChangeText?: (text: string) => void
 }
 
@@ -50,18 +51,8 @@ export default function InputFull(props: InputProps) {
           }}
           value={inputValue}
           onChangeText={handleTextChange}
-        >
-          {/* {props.isCalendar && (
-            <>
-              <Entypo
-                className="absolute right-0 m-5"
-                name="calendar"
-                size={20}
-                color="black"
-              />
-            </>
-          )} */}
-        </TextInput>
+          placeholder={props.placeholder}
+        ></TextInput>
       </View>
     </View>
   )

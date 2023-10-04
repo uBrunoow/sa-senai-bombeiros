@@ -11,10 +11,11 @@ export interface RootState {
     userId: number
   }
   report: {
-    reportId: number
+    reportId: number | null
   }
   anamnesis: {
-    anamnesisId: number
+    anamnesisId: number | null
+    isAnamnesisCreated: boolean
   }
 }
 const store = configureStore({
