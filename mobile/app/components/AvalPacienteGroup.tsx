@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { View, Text, Modal, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native'
 import AvalPacienteModal from './../modal/AvalPacienteModal'
-
+import { styles as s } from '../styles/boxShadow'
+import { AntDesign } from '@expo/vector-icons'
 export default function AvalPacienteGroup() {
   const [aberturaOcular, setAberturaOcular] = useState(0)
   const [respostaVerbal, setRespostaVerbal] = useState(0)
@@ -40,15 +41,18 @@ export default function AvalPacienteGroup() {
   }
 
   return (
-    <View className="mx-auto w-5/6 flex-col rounded-md bg-white py-10 shadow-2xl">
-      <View className="flex-col p-5">
+    <View
+      className="mx-auto mb-7 w-5/6 flex-col rounded-md bg-white py-5 shadow-lg "
+      style={s.boxShadow}
+    >
+      <View className="flex-col px-5 py-3">
         <TouchableOpacity
           className="border-lg rounded"
           onPress={() => {
             setAberturaOcularModalVisible(true)
           }}
         >
-          <View className="border-lg flex flex-row justify-between rounded-[7px] border-width1 border-black p-2">
+          <View className="border-lg flex h-[42px] flex-row justify-between rounded-[7px] border-width1 border-black p-[10px]">
             <Text>Abertura ocular</Text>
             <Text>{aberturaOcular !== 0 ? `${aberturaOcular}` : '...'}</Text>
           </View>
@@ -73,14 +77,14 @@ export default function AvalPacienteGroup() {
           />
         </Modal>
       </View>
-      <View className="flex-col p-5">
+      <View className="flex-col px-5 py-3">
         <TouchableOpacity
           className="border-lg rounded"
           onPress={() => {
             setRespostaVerbalModalVisible(true)
           }}
         >
-          <View className="border-lg flex flex-row justify-between rounded-[7px] border-width1 border-black p-2">
+          <View className="border-lg flex h-[42px] flex-row justify-between rounded-[7px] border-width1 border-black p-[10px]">
             <Text>Resposta Verbal</Text>
             <Text>{respostaVerbal !== 0 ? `${respostaVerbal}` : '...'}</Text>
           </View>
@@ -106,14 +110,14 @@ export default function AvalPacienteGroup() {
           />
         </Modal>
       </View>
-      <View className="flex-col p-5">
+      <View className="flex-col px-5 py-3">
         <TouchableOpacity
           className="border-lg rounded"
           onPress={() => {
             setRespostaMotoraModalVisible(true)
           }}
         >
-          <View className="border-lg flex flex-row justify-between rounded-[7px] border-width1 border-black p-2">
+          <View className="border-lg flex h-[42px] flex-row justify-between rounded-[7px] border-width1 border-black p-[10px]">
             <Text>Resposta Motora</Text>
             <Text>{respostaMotora !== 0 ? `${respostaMotora}` : '...'}</Text>
           </View>
@@ -140,18 +144,18 @@ export default function AvalPacienteGroup() {
           />
         </Modal>
       </View>
-      <View className="w-full flex-row gap-2">
-        <Text className="text-extrabold color-[#202020] text-2xl">
-          Total GCS
-        </Text>
-        <Text className="text-extrabold color-[#202020aa] text-xl">
+      <View className=" w-full flex-row items-center justify-center gap-2 px-5 py-3">
+        <Text className="text-bold color-[#202020] text-base">Total GCS</Text>
+        <Text className="text-bold color-[#202020aa] text-base">
           {'(3 - 15):'}
         </Text>
-        <Text className="text-extrabold color-[#202020] text-2xl">
-          {validateGlasgow()
-            ? calcGlasgow().toString()
-            : 'Avaliação de Glasgow incompleta'}
-        </Text>
+        <View className="border-b-[1px] border-black">
+          <Text className="text-bold color-[#202020] w-[150px] text-base">
+            {validateGlasgow()
+              ? calcGlasgow().toString()
+              : 'Glasgow incompleta'}
+          </Text>
+        </View>
       </View>
     </View>
   )

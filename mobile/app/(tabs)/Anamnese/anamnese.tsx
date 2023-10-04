@@ -1,17 +1,17 @@
 import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import InputFull from '../components/InputFull'
-import YesOrNo from '../components/YesOrNo'
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
+import InputFull from '../../components/InputFull'
+import YesOrNo from '../../components/YesOrNo'
 import { AntDesign } from '@expo/vector-icons'
-import MainButton from '../components/MainButton'
-import InputClock from '../components/InputClock'
+import MainButton from '../../components/MainButton'
+import InputClock from '../../components/InputClock'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../src/redux/stores/stores'
-import updateAnamnesis from '../../src/api/updateAnamnesis'
-import findAnamnesis from '../../src/api/findAnamnesis'
+import { RootState } from '../../../src/redux/stores/stores'
+import updateAnamnesis from '../../../src/api/updateAnamnesis'
+import findAnamnesis from '../../../src/api/findAnamnesis'
 
 export default function Anamnese({ navigation }) {
   const reportId = useSelector((state: RootState) => state.report.reportId)
@@ -128,7 +128,7 @@ export default function Anamnese({ navigation }) {
           <View className="mb-[25px] mt-[34px] flex-row items-center justify-center">
             <AntDesign name="questioncircle" size={24} color="#A00E00" />
             <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
-              Ocorrência
+              Anamnese de emergência
             </Text>
           </View>
           <View

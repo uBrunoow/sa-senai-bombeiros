@@ -1,13 +1,13 @@
 import { View, ScrollView, Text, Pressable } from 'react-native'
 import React from 'react'
-import Header from '../components/Header'
+import Header from '../../components/Header'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Footer from '../components/Footer'
+import Footer from '../../components/Footer'
 import { FontAwesome5 } from '@expo/vector-icons'
-import MainButton from '../components/MainButton'
-import YesOrNo from '../components/YesOrNo'
-import GestationPeriod from '../components/GestationPeriod'
-import InputFull from '../components/InputFull'
+import MainButton from '../../components/MainButton'
+import YesOrNo from '../../components/YesOrNo'
+import GestationPeriod from '../../components/GestationPeriod'
+import InputFull from '../../components/InputFull'
 
 export default function AnamneseGestacional({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()

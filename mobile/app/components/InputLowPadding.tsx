@@ -6,8 +6,10 @@ type InputProps = {
   title?: string
   size?: 'small' | 'regular' | 'big'
   isCalendar?: boolean
+  alignText?: 'center' | 'left' | 'right'
   isBig?: boolean
   value?: string
+  placeholder?: string
   onChangeText?: (text: string) => void
 }
 
@@ -18,7 +20,7 @@ export default function InputFull(props: InputProps) {
     setInputValue(text)
 
     if (props.onChangeText) {
-      props.onChangeText(text) // Use onChangeText no lugar de onChange
+      props.onChangeText(text)
     }
   }
 
@@ -30,14 +32,34 @@ export default function InputFull(props: InputProps) {
     }
     return 3
   }
+
+  const handleAlignText = () => {
+    if (props.alignText === 'center') {
+      return 'center'
+    } else if (props.alignText === 'left') {
+      return 'left'
+    } else if (props.alignText === 'right') {
+      return 'right'
+    }
+  }
+
   return (
     <View
       style={{
         flexGrow: handleWidth(),
       }}
-      className="justfy-between m-auto h-full h-full w-5/6 flex-1 p-2"
+      className="justfy-between m-auto h-full w-5/6 flex-1 p-2"
     >
-      {props.title && <Text className="text-lg">{props.title}</Text>}
+      {props.title && (
+        <Text
+          className="text-base font-medium"
+          style={{
+            textAlign: handleAlignText(),
+          }}
+        >
+          {props.title}
+        </Text>
+      )}
       <View className="w-full rounded-lg border p-2">
         <TextInput
           multiline={true}
@@ -51,18 +73,8 @@ export default function InputFull(props: InputProps) {
           }}
           value={inputValue}
           onChangeText={handleTextChange}
-        >
-          {/* {props.isCalendar && (
-            <>
-              <Entypo
-                className="absolute right-0 m-5"
-                name="calendar"
-                size={20}
-                color="black"
-              />
-            </>
-          )} */}
-        </TextInput>
+          placeholder={props.placeholder}
+        ></TextInput>
       </View>
     </View>
   )

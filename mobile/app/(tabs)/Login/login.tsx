@@ -10,12 +10,12 @@ import React, { useState } from 'react'
 import Icon from '@expo/vector-icons/Feather'
 import { AntDesign } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import loginUser from '../../src/api/loginUser'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import loginUser from '../../../src/api/loginUser'
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
 import { useDispatch } from 'react-redux'
-import { saveToken } from '../../src/redux/actions/authActions'
-import { styles as s } from '../components/styles/boxShadow'
+import { saveToken } from '../../../src/redux/actions/authActions'
+import { styles as s } from '../../styles/boxShadow'
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch()

@@ -27,7 +27,7 @@ import findUser from '../../../src/api/findUser'
 import FInalizacaoModal from '../../modal/FInalizacaoModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import InputFull from '../../components/InputFull'
-import { styles as s } from '../../components/styles/boxShadow'
+import { styles as s } from '../../styles/boxShadow'
 
 const Finalizacao = () => {
   const [selected, setSelected] = React.useState('')
