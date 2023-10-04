@@ -5,6 +5,7 @@ import React from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Options from '../components/optionsIntroducao'
+import InputLowPadding from '../components/InputLowPadding'
 
 export default function Introducao() {
   const { bottom, top } = useSafeAreaInsets()
@@ -30,6 +31,17 @@ export default function Introducao() {
           <View className=" w-3/6 items-center justify-between border">
             <Options title="Sexo"></Options>
           </View>
+        </View>
+        <View className="mx-auto w-5/6 flex-1 flex-row">
+          <InputLowPadding title="Nome" size="regular" />
+          <InputLowPadding title="Idade" size="small" />
+        </View>
+        <InputLowPadding title="RG/CPF" />
+        <InputLowPadding title="Fone" />
+        <InputLowPadding title="Local da Ocorrência" />
+        <View className="mx-auto w-5/6 flex-1 flex-row">
+          <InputLowPadding title="Acompanhante" size="regular" />
+          <InputLowPadding title="Idade" size="small" />
         </View>
       </View>
       <Footer />

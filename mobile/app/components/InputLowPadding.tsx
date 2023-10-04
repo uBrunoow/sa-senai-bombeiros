@@ -8,7 +8,6 @@ type InputProps = {
   isCalendar?: boolean
   isBig?: boolean
   value?: string
-  placeholder?: string
   onChangeText?: (text: string) => void
 }
 
@@ -36,23 +35,34 @@ export default function InputFull(props: InputProps) {
       style={{
         flexGrow: handleWidth(),
       }}
-      className="justfy-between m-auto my-2 w-5/6 flex-1 items-center"
+      className="justfy-between m-auto w-5/6 flex-1 p-2"
     >
       <Text className="text-lg">{props.title}</Text>
-      <View className="mb-4 mt-2 w-5/6 rounded-lg border">
+      <View className="w-6/6 rounded-lg border p-2">
         <TextInput
           multiline={true}
           numberOfLines={100}
           style={{
             height: props.isBig ? 100 : 28,
             textAlignVertical: 'top',
-            paddingVertical: 6,
-            paddingHorizontal: 9,
+            paddingVertical: 3,
+            paddingHorizontal: 5,
+            fontSize: 16,
           }}
           value={inputValue}
           onChangeText={handleTextChange}
-          placeholder={props.placeholder}
-        ></TextInput>
+        >
+          {/* {props.isCalendar && (
+            <>
+              <Entypo
+                className="absolute right-0 m-5"
+                name="calendar"
+                size={20}
+                color="black"
+              />
+            </>
+          )} */}
+        </TextInput>
       </View>
     </View>
   )
