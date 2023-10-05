@@ -44,14 +44,14 @@ const InputClock = (props: InputClockProps) => {
       <View className="mb-4 mt-2 w-5/6 rounded-lg">
         <Pressable onPress={toggleDatePicker} className="relative ">
           <TextInput
-            className=" realtive flex-1 rounded-lg border px-2 text-black"
+            className=" realtive flex-1 rounded-lg border text-black"
             placeholder="00:00"
             editable={false}
             value={timeMedication}
             style={{
-              textAlignVertical: 'top',
+              textAlignVertical: 'center',
               paddingVertical: 6,
-              paddingHorizontal: 9,
+              paddingHorizontal: 10,
             }}
           ></TextInput>
         </Pressable>

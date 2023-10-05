@@ -1,13 +1,14 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import home from '../app/(tabs)/home'
-import Login from '../app/(tabs)/login'
-import Anamnese from '../app/(tabs)/anamnese'
-import AnamneseGestacional from '../app/(tabs)/anamneseGestacional'
-import InfoPaciente from '../app/(tabs)/infoPaciente'
-import Introducao from '../app/(tabs)/introducao'
-import LocalTraumas from '../app/(tabs)/localTraumas'
-import Ocorrencia from '../app/(tabs)/ocorrencia'
+import home from '../app/(tabs)/Home/home'
+import Login from '../app/(tabs)/Login/login'
+import Anamnese from '../app/(tabs)/Anamnese/anamnese'
+import AnamneseGestacional from '../app/(tabs)/AnamneseGestacional/anamneseGestacional'
+import InfoPaciente from '../app/(tabs)/InfoPaciente/infoPaciente'
+import Introducao from '../app/(tabs)/Introducao/introducao'
+import LocalTraumas from '../app/(tabs)/LocalTraumas/localTraumas'
+import Ocorrencia from '../app/(tabs)/Ocorrencia/ocorrencia'
+import Finalizacao from '../app/(tabs)/FInalizacao/finalizacao'
 
 const Stack = createNativeStackNavigator()
 
@@ -52,6 +53,11 @@ export default function Routes() {
       <Stack.Screen
         name="local-traumas"
         component={LocalTraumas}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="finalizacao"
+        component={Finalizacao}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -14,6 +14,14 @@ export async function reportsDeleteRoutes(
       where: {
         id: parseInt(id),
       },
+      include: {
+        Anamnesis: true,
+        GestationalAnamnesis: true,
+        Glasglow: true,
+        PreHospitalMethods: true,
+        SuspectProblems: true,
+        Symptoms: true,
+      },
     })
 
     // Verificar se esse usuário existe
@@ -72,6 +80,20 @@ export async function reportsDeleteRoutes(
         id: parseInt(id),
       },
     })
+
+    // const remainingReports = await prisma.report.findMany()
+    // await Promise.all(
+    //   remainingReports.map(async (report, index) => {
+    //     await prisma.report.update({
+    //       where: {
+    //         id: report.id,
+    //       },
+    //       data: {
+    //         id: index + 1,
+    //       },
+    //     })
+    //   }),
+    // )
 
     return res.send({ msg: `🔴 Ocorrência com o id ${id} foi deletado.` })
   })
