@@ -1,11 +1,11 @@
-import { api } from '../lib/api'
+import { api } from '@src/lib/api'
 
-const registerReport = async (ReportOwnerId: number) => {
+const registerReport = async (ownerId: number) => {
   try {
     const response = await api.post(
-      '/api/anamnese',
+      '/api/reports',
       {
-        ReportOwnerId,
+        ownerId,
       },
       {
         headers: {

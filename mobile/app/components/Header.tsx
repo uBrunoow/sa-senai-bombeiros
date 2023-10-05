@@ -7,13 +7,13 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import React, { useState } from 'react'
-import NOARLogo from '../../src/public/logo-noar.svg'
+import NOARLogo from '@src/public/logo-noar.svg'
 import { Feather, AntDesign } from '@expo/vector-icons'
-import { styles as s } from '../styles/boxShadow'
-import ExcluirOcorrenciaModal from '../modal/ExcluirOcorrenciaModal'
+import { styles as s } from '@app/styles/boxShadow'
+import ExcluirOcorrenciaModal from '@app/modal/ExcluirOcorrenciaModal'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../src/redux/stores/stores'
-import deleteReport from '../../src/api/deleteReport'
+import { RootState } from '@src/redux/stores/stores'
+import deleteReport from '@src/api/reports/deleteReport'
 import { useNavigation } from '@react-navigation/core'
 import {
   clearAnamnesisId,

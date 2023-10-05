@@ -1,17 +1,23 @@
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native'
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Header from '../../components/Header'
-import Footer from '../../components/Footer'
-import InputFull from '../../components/InputFull'
-import YesOrNo from '../../components/YesOrNo'
+import Header from '@app/components/Header'
+import Footer from '@app/components/Footer'
+import InputFull from '@app/components/InputFull'
+import YesOrNo from '@app/components/YesOrNo'
 import { AntDesign } from '@expo/vector-icons'
-import MainButton from '../../components/MainButton'
-import InputClock from '../../components/InputClock'
+import MainButton from '@app/components/MainButton'
+import InputClock from '@app/components/InputClock'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../../src/redux/stores/stores'
-import updateAnamnesis from '../../../src/api/updateAnamnesis'
-import findAnamnesis from '../../../src/api/findAnamnesis'
+import { RootState } from '@src/redux/stores/stores'
+import updateAnamnesis from '@src/api/reports/anamnesis/updateAnamnesis'
+import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
 
 export default function Anamnese({ navigation }) {
   const reportId = useSelector((state: RootState) => state.report.reportId)
@@ -34,6 +40,7 @@ export default function Anamnese({ navigation }) {
   const [ingeriuAlimento, setIngeriuAlimento] = useState(false)
   const [horasIngeriuAlimento, setHorasIngeriuAlimento] = useState('21:00')
   const [observacoesFinais, setObservacoesFinais] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleOutrasVezesChange = (option: 'SIM' | 'NÃO') => {
     setOutrasVezes(option === 'SIM')
@@ -58,6 +65,7 @@ export default function Anamnese({ navigation }) {
   useEffect(() => {
     const findAnamnesisData = async () => {
       try {
+        setLoading(true)
         const response = await findAnamnesis(anamnesisId)
 
         const sinaisESintomasResponse = response.anamese.SignsAndSymptoms
@@ -89,6 +97,8 @@ export default function Anamnese({ navigation }) {
         setObservacoesFinais(observacoesFinaisResponse || '')
       } catch (error) {
         console.error('Error fetching anamnesis data:', error)
+      } finally {
+        setLoading(false)
       }
     }
     findAnamnesisData()
@@ -112,6 +122,9 @@ export default function Anamnese({ navigation }) {
       horasIngeriuAlimento,
       observacoesFinais,
     )
+
+    console.log(response)
+
     if (response && response.updatedAnamnese) {
       navigation.navigate('ocorrencia')
     }
@@ -122,111 +135,129 @@ export default function Anamnese({ navigation }) {
       className="flex-1"
       contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
     >
-      <View>
-        <Header />
-        <View className="justfy-between aling-items mb-4 flex-1 px-[21.5px]">
-          <View className="mb-[25px] mt-[34px] flex-row items-center justify-center">
-            <AntDesign name="questioncircle" size={24} color="#A00E00" />
-            <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
-              Anamnese de emergência
-            </Text>
-          </View>
-          <View
-            className="mb-12 w-full rounded-[14px] bg-white px-[10] py-[30] shadow-md"
-            style={styles.boxShadow}
-          >
-            <View className="justfy-between aling-items w-347 h-1041 flex-1">
-              <InputFull
-                title="Sinais e Sintomas"
-                placeholder={sinaisESintomas || ''}
-                isBig={true}
-                value={sinaisESintomas}
-                onChangeText={(e) => setSinaisESintomas(e)}
-              />
-              <View className="just-between aling-items flex-1">
-                <YesOrNo
-                  Question="Aconteceu outras vezes?"
-                  selectedOption={outrasVezes ? 'SIM' : 'NÃO'}
-                  onSelectOption={handleOutrasVezesChange}
+      {loading ? (
+        <View className="mx-auto h-screen w-[320px] items-center justify-center">
+          <ActivityIndicator size="large" color="#ff0000" />
+          <Text className="mt-3 text-center text-lg font-bold uppercase">
+            Carregando...
+          </Text>
+        </View>
+      ) : (
+        <View>
+          <Header />
+          <View className="justfy-between aling-items mb-4 flex-1 px-[21.5px]">
+            <View className="mb-[25px] mt-[34px] flex-row items-center justify-center">
+              <AntDesign name="questioncircle" size={24} color="#A00E00" />
+              <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
+                Anamnese de emergência
+              </Text>
+            </View>
+            <View
+              className=" mx-auto mb-12 rounded-[14px] bg-white py-[30px] shadow-md"
+              style={styles.boxShadow}
+            >
+              <View className="justfy-between aling-items w-347 h-1041 flex-1">
+                <InputFull
+                  title="Sinais e Sintomas"
+                  isBig={true}
+                  value={sinaisESintomas}
+                  onChangeText={(e) => setSinaisESintomas(e)}
                 />
-              </View>
-              <InputFull
-                title="A quanto tempo isso aconteceu?"
-                value={tempoAconteceu}
-                placeholder={tempoAconteceu || ''}
-                onChangeText={(e) => setTempoAconteceu(e)}
-              />
-              <View className="just-between aling-items flex-1">
-                <YesOrNo
-                  Question="Possui algum problema de saúde?"
-                  selectedOption={problemaSaude ? 'SIM' : 'NÃO'}
-                  onSelectOption={handleProblemaSaudeChange}
-                />
-              </View>
-              <InputFull
-                title="Quais?"
-                value={quaisProblemas}
-                placeholder={quaisProblemas || ''}
-                onChangeText={(e) => setQuaisProblemas(e)}
-              />
-              <View className="just-between aling-items flex-1">
-                <YesOrNo
-                  Question="Faz uso de medicação?"
-                  selectedOption={usoMedicacao ? 'SIM' : 'NÃO'}
-                  onSelectOption={handleUsoMedicacaoChange}
-                />
-              </View>
-              {/* TERMINAR ESSA PÁGINA!!! */}
-              <InputFull
-                title="Quais?"
-                value={quaisMedicacoes}
-                placeholder={quaisMedicacoes || ''}
-                onChangeText={(e) => setQuaisMedicacoes(e)}
-              />
-              {/* <InputFull title="Horário Ultima Med." isCalendar={true} /> */}
-              <InputClock title="Horário Ultima Med." />
-              <View className="just-between aling-items flex-1">
-                <YesOrNo
-                  Question="Tem alguma alergia?"
-                  selectedOption={alergia ? 'SIM' : 'NÃO'}
-                  onSelectOption={handleAlergiaChange}
-                />
-              </View>
-              <InputFull
-                title="Quais?"
-                value={quaisAlergias}
-                placeholder={quaisAlergias || ''}
-                onChangeText={(e) => setQuaisAlergias(e)}
-              />
-              <View className="w-92 h-67 flex-1">
                 <View className="just-between aling-items flex-1">
                   <YesOrNo
-                    Question="Ingeriu alimento/líquido nas últimas 6 horas?"
-                    selectedOption={ingeriuAlimento ? 'SIM' : 'NÃO'}
-                    onSelectOption={handleIngeriuAlimentoChange}
+                    Question="Aconteceu outras vezes?"
+                    selectedOption={outrasVezes ? 'SIM' : 'NÃO'}
+                    onSelectOption={handleOutrasVezesChange}
                   />
                 </View>
+                {outrasVezes && (
+                  <InputFull
+                    title="A quanto tempo isso aconteceu?"
+                    value={tempoAconteceu}
+                    placeholder={tempoAconteceu || ''}
+                    onChangeText={(e) => setTempoAconteceu(e)}
+                  />
+                )}
                 <View className="just-between aling-items flex-1">
-                  {/* <InputFull title="Que Horas" isCalendar={true} /> */}
-                  <InputClock title="Que horas?" />
+                  <YesOrNo
+                    Question="Possui algum problema de saúde?"
+                    selectedOption={problemaSaude ? 'SIM' : 'NÃO'}
+                    onSelectOption={handleProblemaSaudeChange}
+                  />
                 </View>
+                {problemaSaude && (
+                  <InputFull
+                    title="Quais?"
+                    value={quaisProblemas}
+                    placeholder={quaisProblemas || ''}
+                    onChangeText={(e) => setQuaisProblemas(e)}
+                  />
+                )}
+                <View className="just-between aling-items flex-1">
+                  <YesOrNo
+                    Question="Faz uso de medicação?"
+                    selectedOption={usoMedicacao ? 'SIM' : 'NÃO'}
+                    onSelectOption={handleUsoMedicacaoChange}
+                  />
+                </View>
+                {usoMedicacao && (
+                  <>
+                    <InputFull
+                      title="Quais?"
+                      value={quaisMedicacoes}
+                      placeholder={quaisMedicacoes || ''}
+                      onChangeText={(e) => setQuaisMedicacoes(e)}
+                    />
+                    <InputClock title="Horário Ultima Med." />
+                  </>
+                )}
+                <View className="just-between aling-items flex-1">
+                  <YesOrNo
+                    Question="Tem alguma alergia?"
+                    selectedOption={alergia ? 'SIM' : 'NÃO'}
+                    onSelectOption={handleAlergiaChange}
+                  />
+                </View>
+                {alergia && (
+                  <InputFull
+                    title="Quais?"
+                    value={quaisAlergias}
+                    placeholder={quaisAlergias || ''}
+                    onChangeText={(e) => setQuaisAlergias(e)}
+                  />
+                )}
+                <View className="w-92 h-67 flex-1">
+                  <View className="just-between aling-items flex-1">
+                    <YesOrNo
+                      Question="Ingeriu alimento/líquido nas últimas 6 horas?"
+                      selectedOption={ingeriuAlimento ? 'SIM' : 'NÃO'}
+                      onSelectOption={handleIngeriuAlimentoChange}
+                    />
+                  </View>
+                  {ingeriuAlimento && (
+                    <View className="just-between aling-items flex-1">
+                      {/* <InputFull title="Que Horas" isCalendar={true} /> */}
+                      <InputClock title="Que horas?" />
+                    </View>
+                  )}
+                </View>
+                <InputFull
+                  title="Observações Finais"
+                  isBig={true}
+                  placeholder={observacoesFinais || ''}
+                  value={observacoesFinais}
+                  onChangeText={(e) => setObservacoesFinais(e)}
+                />
               </View>
-              <InputFull
-                title="Observações Finais"
-                isBig={true}
-                placeholder={observacoesFinais || ''}
-                value={observacoesFinais}
-                onChangeText={(e) => setObservacoesFinais(e)}
-              />
             </View>
+            <MainButton
+              innerText="SALVAR"
+              onPress={() => handleSubmitAnamnesis()}
+            />
           </View>
-          <MainButton
-            innerText="SALVAR"
-            onPress={() => handleSubmitAnamnesis()}
-          />
+          <Footer />
         </View>
-        <Footer />
-      </View>
+      )}
     </ScrollView>
   )
 }

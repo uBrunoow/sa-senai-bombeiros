@@ -3,14 +3,14 @@ import {
   Text,
   SafeAreaView,
   Pressable,
-  TextInput,
+  // TextInput,
   Modal,
   ScrollView,
   ActivityIndicator,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import Header from '../../components/Header'
-import Footer from '../../components/Footer'
+import Header from '@app/components/Header'
+import Footer from '@app/components/Footer'
 import {
   FontAwesome5,
   Ionicons,
@@ -20,16 +20,16 @@ import {
 } from '@expo/vector-icons'
 
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
-import findAnamnesis from '../../../src/api/findAnamnesis'
-import { calculateAnamnesisCompleteness } from '../../../src/utils/calculateAnamnesisCompleteness'
+// import findAnamnesis from '../../../src/api/findAnamnesis'
+// import { calculateAnamnesisCompleteness } from '../../../src/utils/calculateAnamnesisCompleteness'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../../src/redux/stores/stores'
-import findUser from '../../../src/api/findUser'
-import FInalizacaoModal from '../../modal/FInalizacaoModal'
+import { RootState } from '@src/redux/stores/stores'
+import findUser from '@src/api/users/findUser'
+import FInalizacaoModal from '@app/modal/FInalizacaoModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import InputFull from '../../components/InputFull'
+// import InputFull from '../../components/InputFull'
 
-import { styles as s } from '../../styles/boxShadow'
+import { styles as s } from '@app/styles/boxShadow'
 import InputLowPadding from '@app/components/InputLowPadding'
 
 const Finalizacao = () => {
@@ -119,7 +119,10 @@ const Finalizacao = () => {
                 </Text>
               </View>
 
-              <View style={s.boxShadow}>
+              <View
+                style={s.boxShadow}
+                className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
+              >
                 <View>
                   <Text className="font-medium">
                     Responsável pelo preenchimento:

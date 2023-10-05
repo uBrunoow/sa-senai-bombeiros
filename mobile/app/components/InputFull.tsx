@@ -13,13 +13,13 @@ type InputProps = {
 }
 
 export default function InputFull(props: InputProps) {
-  const [inputValue, setInputValue] = useState(props.value || '')
+  const [inputValue, setInputValue] = useState(props.value)
 
   const handleTextChange = (text: string) => {
     setInputValue(text)
 
     if (props.onChangeText) {
-      props.onChangeText(text) // Use onChangeText no lugar de onChange
+      props.onChangeText(text)
     }
   }
 
@@ -49,7 +49,7 @@ export default function InputFull(props: InputProps) {
             paddingVertical: 6,
             paddingHorizontal: 10,
           }}
-          value={inputValue}
+          value={props.value}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
         ></TextInput>

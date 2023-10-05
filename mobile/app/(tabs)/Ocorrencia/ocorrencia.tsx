@@ -7,18 +7,18 @@ import {
   Button,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import Header from '../../components/Header'
-import Grouper from '../../components/Grouper'
+import Header from '@app/components/Header'
+import Grouper from '@app/components/Grouper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Footer from '../../components/Footer'
+import Footer from '@app/components/Footer'
 import { FontAwesome5 } from '@expo/vector-icons'
-import MainButton from '../../components/MainButton'
+import MainButton from '@app/components/MainButton'
 import { useDispatch, useSelector } from 'react-redux'
-import registerAnamnesis from '../../../src/api/registerAnamnesis'
-import { RootState } from '../../../src/redux/stores/stores'
-import { saveAnamnesisId } from '../../../src/redux/actions/reportActions'
-import findAnamnesis from '../../../src/api/findAnamnesis'
-import { calculateAnamnesisCompleteness } from '../../../src/utils/calculateAnamnesisCompleteness'
+import registerAnamnesis from '@src/api/reports/anamnesis/registerAnamnesis'
+import { RootState } from '@src/redux/stores/stores'
+import { saveAnamnesisId } from '@src/redux/actions/reportActions'
+import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
+import { calculateAnamnesisCompleteness } from '@src/utils/calculateAnamnesisCompleteness'
 
 export default function Ocorrencia({ navigation }) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)

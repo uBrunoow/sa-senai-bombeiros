@@ -11,6 +11,7 @@ type InputProps = {
   value?: string
   placeholder?: string
   isCPF?: boolean
+  keyBoardType?: 'default' | 'numeric'
   isTelefone?: boolean
   onChangeText?: (text: string) => void
 }
@@ -43,8 +44,12 @@ export default function InputFull(props: InputProps) {
         }
       }
     } else if (props.isTelefone) {
-      // Format phone number (e.g., (12)34567-8901)
       formattedText = text.replace(/\D/g, '')
+
+      if (formattedText.length > 11) {
+        formattedText = formattedText.substring(0, 11)
+      }
+
       if (formattedText.length > 2) {
         formattedText = `(${formattedText.substring(
           0,
@@ -116,6 +121,7 @@ export default function InputFull(props: InputProps) {
           value={inputValue}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
+          keyboardType={props.keyBoardType}
         ></TextInput>
       </View>
     </View>

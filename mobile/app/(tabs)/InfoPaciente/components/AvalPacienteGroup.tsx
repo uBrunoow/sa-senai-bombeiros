@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native'
-import AvalPacienteModal from './../modal/AvalPacienteModal'
-import { styles as s } from '../styles/boxShadow'
-import { AntDesign } from '@expo/vector-icons'
+import { View, Text, Modal, TouchableOpacity } from 'react-native'
+import AvalPacienteModal from '@app/modal/AvalPacienteModal'
+import { styles as s } from '@app/styles/boxShadow'
 export default function AvalPacienteGroup() {
   const [aberturaOcular, setAberturaOcular] = useState(0)
   const [respostaVerbal, setRespostaVerbal] = useState(0)
@@ -42,7 +41,8 @@ export default function AvalPacienteGroup() {
 
   return (
     <View
-      className="mx-auto mb-7 w-5/6 flex-col rounded-md bg-white py-5 shadow-lg "
+      // className="mx-auto mb-7 w-5/6 flex-col rounded-md bg-white py-5 shadow-lg "
+      className=" mx-auto w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
       style={s.boxShadow}
     >
       <View className="flex-col px-5 py-3">

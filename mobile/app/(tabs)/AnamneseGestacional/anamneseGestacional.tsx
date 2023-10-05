@@ -1,13 +1,14 @@
 import { View, ScrollView, Text, Pressable } from 'react-native'
 import React from 'react'
-import Header from '../../components/Header'
+import Header from '@app/components/Header'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Footer from '../../components/Footer'
+import Footer from '@app/components/Footer'
 import { FontAwesome5 } from '@expo/vector-icons'
-import MainButton from '../../components/MainButton'
-import YesOrNo from '../../components/YesOrNo'
-import GestationPeriod from '../../components/GestationPeriod'
-import InputFull from '../../components/InputFull'
+import MainButton from '@app/components/MainButton'
+import YesOrNo from '@app/components/YesOrNo'
+import GestationPeriod from '@app/(tabs)/AnamneseGestacional/components/GestationPeriod'
+import InputFull from '@app/components/InputFull'
+import { styles as s } from '@app/styles/boxShadow'
 
 export default function AnamneseGestacional({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
@@ -25,17 +26,21 @@ export default function AnamneseGestacional({ navigation }) {
             Anamnese Gestacional
           </Text>
         </View>
-        <GestationPeriod />
-        <YesOrNo Question="Fez pré-natal?"></YesOrNo>
-        <InputFull title="Nome do médico"></InputFull>
-        <YesOrNo Question="Possibilidade de complicações?"></YesOrNo>
-        <YesOrNo Question="Pressão no quadril/vontade de evacuar?"></YesOrNo>
-        <YesOrNo Question="Já houve ruptura da bolsa?"></YesOrNo>
-        <YesOrNo Question="Foi feito inspeção visual?"></YesOrNo>
-        {/* TERMINAR ESSA PÁGINA!!! */}
-        <YesOrNo Question="Parto realizado?"></YesOrNo>
+        <View
+          style={s.boxShadow}
+          className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white py-[30px] shadow-md"
+        >
+          <GestationPeriod />
+          <YesOrNo Question="Fez pré-natal?"></YesOrNo>
+          <InputFull title="Nome do médico"></InputFull>
+          <YesOrNo Question="Possibilidade de complicações?"></YesOrNo>
+          <YesOrNo Question="Pressão no quadril/vontade de evacuar?"></YesOrNo>
+          <YesOrNo Question="Já houve ruptura da bolsa?"></YesOrNo>
+          <YesOrNo Question="Foi feito inspeção visual?"></YesOrNo>
+          <YesOrNo Question="Parto realizado?"></YesOrNo>
+        </View>
         <Pressable onPress={() => navigation.navigate(`ocorrencia`)}>
-          <MainButton innerText="VOLTAR"></MainButton>
+          <MainButton innerText="SALVAR"></MainButton>
         </Pressable>
       </View>
       <Footer />

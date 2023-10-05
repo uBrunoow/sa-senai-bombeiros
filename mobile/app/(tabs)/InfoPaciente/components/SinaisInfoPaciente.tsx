@@ -1,13 +1,15 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import InputLowPadding from './InputLowPadding'
-import YesOrNo from './YesOrNo'
-import Options from './optionsIntroducao'
-import { styles as s } from '../styles/boxShadow'
+import InputLowPadding from '@app/components/InputLowPadding'
+import Options from '@app/components/optionsIntroducao'
+import { styles as s } from '@app/styles/boxShadow'
 
 export default function SinaisInfoPaciente() {
   return (
-    <View style={s.boxShadow}>
+    <View
+      style={s.boxShadow}
+      className=" mx-auto w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
+    >
       <View className="w-full flex-row border-b border-black pb-3">
         <View className="w-3/6 flex-1 items-center  ">
           <View className="w-6/6 mx-auto flex-1 ">

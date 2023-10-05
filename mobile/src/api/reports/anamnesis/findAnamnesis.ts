@@ -1,4 +1,4 @@
-import { api } from '../lib/api'
+import { api } from '@src/lib/api'
 
 const findAnamnesis = async (anamnesisId: number) => {
   try {

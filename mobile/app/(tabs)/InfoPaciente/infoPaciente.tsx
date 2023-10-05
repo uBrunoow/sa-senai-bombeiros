@@ -2,14 +2,14 @@ import { View, ScrollView, SafeAreaView, Text } from 'react-native'
 import React from 'react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-import InfoPacienteTitle from '../../components/InfoPacienteTitle'
-import SinaisInfoPaciente from '../../components/SinaisInfoPaciente'
-import AvalPacienteGroup from '../../components/AvalPacienteGroup'
-import ProblemasSuspeitos from '../../components/ProblemasSuspeitos'
+import InfoPacienteTitle from '@app/(tabs)/InfoPaciente/components/InfoPacienteTitle'
+import SinaisInfoPaciente from '@app/(tabs)/InfoPaciente/components/SinaisInfoPaciente'
+import AvalPacienteGroup from '@app/(tabs)/InfoPaciente/components/AvalPacienteGroup'
+import ProblemasSuspeitos from '@app/(tabs)/InfoPaciente/components/ProblemasSuspeitos'
 import MainButton from '../../components/MainButton'
 import { MaterialIcons } from '@expo/vector-icons'
 
-export default function Ocorrencia({ navigation }) {
+export default function Ocorrencia() {
   return (
     <SafeAreaView className="m-0 flex-1 p-0">
       <ScrollView>
