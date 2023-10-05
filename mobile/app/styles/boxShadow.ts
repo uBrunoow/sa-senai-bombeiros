@@ -3,9 +3,17 @@ import { StyleSheet } from 'react-native'
 export const styles = StyleSheet.create({
   boxShadow: {
     shadowColor: 'rgb(0, 0, 0)',
-    shadowOpacity: 0,
+    shadowOpacity: 1,
     shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 5, // Android
     textShadowOffset: { width: 8, height: 2 },
+    backgroundColor: '#fff',
+    width: '90%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    borderRadius: 8,
+    padding: 16,
   },
 
   button: {

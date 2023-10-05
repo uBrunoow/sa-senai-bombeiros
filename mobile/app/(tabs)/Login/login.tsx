@@ -92,7 +92,7 @@ export default function Login({ navigation }) {
                 {/* Input do texto para senha */}
                 <View className=" relative items-center justify-center">
                   <TextInput
-                    placeholder="___.___.___-__"
+                    placeholder="***********"
                     secureTextEntry
                     onChangeText={handleChangePassword}
                     value={password}

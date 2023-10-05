@@ -10,6 +10,8 @@ type InputProps = {
   isBig?: boolean
   value?: string
   placeholder?: string
+  isCPF?: boolean
+  isTelefone?: boolean
   onChangeText?: (text: string) => void
 }
 
@@ -17,10 +19,44 @@ export default function InputFull(props: InputProps) {
   const [inputValue, setInputValue] = useState(props.value || '')
 
   const handleTextChange = (text: string) => {
-    setInputValue(text)
+    let formattedText = text
+
+    if (props.isCPF) {
+      // Format CPF (e.g., 123.456.789-09)
+      formattedText = text.replace(/\D/g, '')
+      if (formattedText.length > 3) {
+        formattedText = formattedText.replace(/^(\d{3})/, '$1.')
+        if (formattedText.length > 7) {
+          formattedText = formattedText.replace(/^(\d{3})\.(\d{3})/, '$1.$2.')
+          if (formattedText.length > 11) {
+            formattedText = formattedText.replace(
+              /^(\d{3})\.(\d{3})\.(\d{3})/,
+              '$1.$2.$3-',
+            )
+          }
+        }
+      }
+    } else if (props.isTelefone) {
+      // Format phone number (e.g., (12)34567-8901)
+      formattedText = text.replace(/\D/g, '')
+      if (formattedText.length > 2) {
+        formattedText = `(${formattedText.substring(
+          0,
+          2,
+        )})${formattedText.substring(2)}`
+        if (formattedText.length > 9) {
+          formattedText = `${formattedText.substring(
+            0,
+            9,
+          )}-${formattedText.substring(9)}`
+        }
+      }
+    }
+
+    setInputValue(formattedText)
 
     if (props.onChangeText) {
-      props.onChangeText(text)
+      props.onChangeText(formattedText)
     }
   }
 
@@ -48,7 +84,7 @@ export default function InputFull(props: InputProps) {
       style={{
         flexGrow: handleWidth(),
       }}
-      className="justfy-between m-auto h-full w-5/6 flex-1 p-2"
+      className="h-full w-full flex-1 p-2"
     >
       {props.title && (
         <Text
@@ -60,12 +96,12 @@ export default function InputFull(props: InputProps) {
           {props.title}
         </Text>
       )}
-      <View className="w-full rounded-lg border p-2">
+      <View className="my-1 w-full rounded-lg border p-4">
         <TextInput
           multiline={true}
           numberOfLines={100}
           style={{
-            height: props.isBig ? 100 : 28,
+            height: props.isBig ? 100 : 20,
             textAlignVertical: 'top',
             paddingVertical: 3,
             paddingHorizontal: 5,

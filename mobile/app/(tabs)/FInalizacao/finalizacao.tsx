@@ -27,7 +27,9 @@ import findUser from '../../../src/api/findUser'
 import FInalizacaoModal from '../../modal/FInalizacaoModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import InputFull from '../../components/InputFull'
+
 import { styles as s } from '../../styles/boxShadow'
+import InputLowPadding from '@app/components/InputLowPadding'
 
 const Finalizacao = () => {
   const [selected, setSelected] = React.useState('')
@@ -95,7 +97,7 @@ const Finalizacao = () => {
         contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
       >
         <Header />
-        <SafeAreaView className="m-0 items-center bg-white px-5 ">
+        <SafeAreaView className="">
           <View className="mb-6 mt-8 flex-row items-center justify-center">
             <FontAwesome5 name="flag-checkered" size={24} color="#F23030" />
             <Text className="ml-3 text-xl font-medium leading-5">
@@ -103,12 +105,9 @@ const Finalizacao = () => {
             </Text>
           </View>
 
-          <View
-            style={s.boxShadow}
-            className="w-full rounded-lg bg-white px-5 py-4 shadow-md"
-          >
+          <View style={s.boxShadow}>
             <View>
-              <Text className="text-[15px] font-normal">
+              <Text className="font-medium">
                 Responsável pelo preenchimento:
               </Text>
               <View className="w-full flex-row items-center justify-between">
@@ -118,18 +117,17 @@ const Finalizacao = () => {
                 </Pressable>
               </View>
             </View>
-            <View>
-              <Text>Objetos recolhidos</Text>
-              <TextInput className="items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]" />
-            </View>
+            <InputLowPadding title="Objetos recolhidos" />
 
             <View>
-              <Text>Forma de condução</Text>
+              <Text className="m-1 text-base font-medium">
+                Forma de condução
+              </Text>
               <MultipleSelectList
                 setSelected={(val) => setCategories(val)}
                 data={data}
                 save="value"
-                label="Categories"
+                label="Categorias"
                 boxStyles={{ padding: 10 }}
                 placeholder="Selecione"
                 searchPlaceholder="Busque pela forma de condução"
@@ -226,8 +224,8 @@ const Finalizacao = () => {
             </View>
 
             <View className="flex-1">
-              <InputFull
-                title="Sinais e Sintomas"
+              <InputLowPadding
+                title="Observações Finais"
                 placeholder={observacoesFinais || ''}
                 isBig={true}
                 value={observacoesFinais}

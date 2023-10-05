@@ -4,9 +4,11 @@ import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import InfoPacienteTitle from '../../components/InfoPacienteTitle'
 import SinaisInfoPaciente from '../../components/SinaisInfoPaciente'
-import AvalPacienteroup from '../../components/AvalPacienteGroup'
+import AvalPacienteGroup from '../../components/AvalPacienteGroup'
+import ProblemasSuspeitos from '../../components/ProblemasSuspeitos'
 import MainButton from '../../components/MainButton'
 import { MaterialIcons } from '@expo/vector-icons'
+
 export default function Ocorrencia({ navigation }) {
   return (
     <SafeAreaView className="m-0 flex-1 p-0">
@@ -25,10 +27,11 @@ export default function Ocorrencia({ navigation }) {
           </View>
           <View>
             <InfoPacienteTitle content="Aval. do Paciênte (GLASGOW)" />
-            <AvalPacienteroup />
+            <AvalPacienteGroup />
           </View>
           <View>
             <InfoPacienteTitle content="Problemas suspeitos encontrados" />
+            <ProblemasSuspeitos />
           </View>
           <MainButton innerText="SALVAR" onPress={() => ({})} />
           <Footer />

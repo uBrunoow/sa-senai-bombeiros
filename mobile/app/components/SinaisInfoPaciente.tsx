@@ -7,11 +7,8 @@ import { styles as s } from '../styles/boxShadow'
 
 export default function SinaisInfoPaciente() {
   return (
-    <View
-      className="mx-auto w-5/6 flex-col rounded-md bg-white p-4 shadow-lg"
-      style={s.boxShadow}
-    >
-      <View className="w-full flex-row border-b-[1px] border-black pb-3">
+    <View style={s.boxShadow}>
+      <View className="w-full flex-row border-b border-black pb-3">
         <View className="w-3/6 flex-1 items-center  ">
           <View className="w-6/6 mx-auto flex-1 ">
             <Text className="text-center text-base font-medium">
