@@ -11,13 +11,19 @@ import NOARLogo from '../../src/public/logo-noar.svg'
 import { Feather, AntDesign } from '@expo/vector-icons'
 import { styles as s } from '../styles/boxShadow'
 import ExcluirOcorrenciaModal from '../modal/ExcluirOcorrenciaModal'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../src/redux/stores/stores'
 import deleteReport from '../../src/api/deleteReport'
 import { useNavigation } from '@react-navigation/core'
+import {
+  clearAnamnesisId,
+  clearReportId,
+} from '@src/redux/actions/reportActions'
 
 export default function Header() {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
+
   const [excluirOcorrenciaAbrir, setExcluirOcorrenciaAbrir] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -37,6 +43,8 @@ export default function Header() {
       const response = await deleteReport(reportId)
       console.log(response)
       if (response.msg) {
+        dispatch(clearReportId())
+        dispatch(clearAnamnesisId())
         setExcluirOcorrenciaAbrir(false)
         navigation.navigate('home')
       }
@@ -86,8 +94,8 @@ export default function Header() {
                       Carregando...
                     </Text>
                     <Text className=" mt-3 text-center text-[#979797b0]">
-                      (Esspere sua report ser excluída, enquanto isso pegue um
-                      café.)
+                      (Esspere sua ocorrência ser excluída, enquanto isso pegue
+                      um café.)
                     </Text>
                   </View>
                 ) : (

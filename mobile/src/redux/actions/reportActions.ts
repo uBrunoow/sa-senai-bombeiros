@@ -15,3 +15,9 @@ export const saveAnamnesisId = (anamnesisId: number) => ({
   type: 'SAVE_ANAMNESIS',
   payload: { anamnesisId },
 })
+
+export const clearAnamnesisId = () => {
+  return {
+    type: 'CLEAR_ANAMNESIS_ID',
+  }
+}

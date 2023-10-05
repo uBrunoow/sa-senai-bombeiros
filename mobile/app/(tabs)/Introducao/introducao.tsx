@@ -10,6 +10,7 @@ import { styles as s } from '../../styles/boxShadow'
 import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import InputDatePicker from '@app/components/InputDatePIcker'
 
 export default function Introducao({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
@@ -28,10 +29,9 @@ export default function Introducao({ navigation }) {
           </Text>
         </View>
         <View style={s.boxShadow}>
-          <View className="w-full flex-1 flex-row">
-            <View className="w-3/6 flex-col items-center justify-around">
-              <Text>DATA</Text>
-              <TextInput> |DATA|</TextInput>
+          <View className="w-full flex-1 flex-row items-center">
+            <View className="w-3/6 p-2">
+              <InputDatePicker />
             </View>
             <View className="w-3/6 items-center justify-between">
               <Options title="Sexo" Option1="Masc." Option2="Fem."></Options>
@@ -41,8 +41,16 @@ export default function Introducao({ navigation }) {
             <InputLowPadding title="Nome" size="regular" alignText="left" />
             <InputLowPadding title="Idade" size="small" />
           </View>
-          <InputLowPadding title="RG/CPF" placeholder="___.___.___-__" />
-          <InputLowPadding title="Fone" placeholder="(__) _____-____" />
+          <InputLowPadding
+            title="RG/CPF"
+            placeholder="___.___.___-__"
+            isCPF={true}
+          />
+          <InputLowPadding
+            title="Fone"
+            placeholder="(__) _____-____"
+            isTelefone={true}
+          />
           <InputLowPadding title="Local da Ocorrência" />
           <View className="mx-auto flex-1 flex-row">
             <InputLowPadding title="Acompanhante" size="regular" />

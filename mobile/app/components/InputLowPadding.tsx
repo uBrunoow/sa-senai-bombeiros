@@ -22,8 +22,14 @@ export default function InputFull(props: InputProps) {
     let formattedText = text
 
     if (props.isCPF) {
-      // Format CPF (e.g., 123.456.789-09)
+      // Remover caracteres não numéricos
       formattedText = text.replace(/\D/g, '')
+
+      // Limitar o número máximo de caracteres para 11
+      if (formattedText.length > 11) {
+        formattedText = formattedText.substring(0, 11)
+      }
+
       if (formattedText.length > 3) {
         formattedText = formattedText.replace(/^(\d{3})/, '$1.')
         if (formattedText.length > 7) {
@@ -103,8 +109,8 @@ export default function InputFull(props: InputProps) {
           style={{
             height: props.isBig ? 100 : 20,
             textAlignVertical: 'top',
-            paddingVertical: 3,
-            paddingHorizontal: 5,
+            paddingVertical: 2,
+            paddingHorizontal: 2,
             fontSize: 16,
           }}
           value={inputValue}

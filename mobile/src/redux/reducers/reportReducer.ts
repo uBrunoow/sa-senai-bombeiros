@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface ReportState {
-  reportId: number
+  reportId: number | null
 }
 
 const initialState: ReportState = {
