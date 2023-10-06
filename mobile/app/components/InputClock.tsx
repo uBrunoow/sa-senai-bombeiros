@@ -41,10 +41,10 @@ const InputClock = (props: InputClockProps) => {
           />
         </>
       )}
-      <View className="mb-4 mt-2 w-5/6 rounded-lg">
+      <View className="mb-4  mt-2 w-5/6 rounded-lg">
         <Pressable onPress={toggleDatePicker} className="relative ">
           <TextInput
-            className=" realtive flex-1 rounded-lg border text-black"
+            className=" realtive rounded-lg border text-black"
             placeholder="00:00"
             editable={false}
             value={timeMedication}

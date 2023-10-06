@@ -208,7 +208,9 @@ export default function Anamnese({ navigation }) {
                       placeholder={quaisMedicacoes || ''}
                       onChangeText={(e) => setQuaisMedicacoes(e)}
                     />
-                    <InputClock title="Horário Ultima Med." />
+                    <View className="h-[100px]">
+                      <InputClock title="Horário Ultima Med." />
+                    </View>
                   </>
                 )}
                 <View className="just-between aling-items flex-1">
