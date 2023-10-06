@@ -18,8 +18,30 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
 import updateAnamnesis from '@src/api/reports/anamnesis/updateAnamnesis'
 import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 
-export default function Anamnese({ navigation }) {
+type RootStackParamList = {
+  anamnese: {
+    anamnesisId: number
+  }
+  ocorrencia: {
+    reportId: number
+  }
+}
+
+type AnamneseScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'anamnese'
+>
+type AnamneseScreenRouteProp = RouteProp<RootStackParamList, 'anamnese'>
+
+interface AnamneseProps {
+  navigation: AnamneseScreenNavigationProp
+  route: AnamneseScreenRouteProp
+}
+
+export default function Anamnese({ navigation }: AnamneseProps) {
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const anamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,
@@ -33,12 +55,12 @@ export default function Anamnese({ navigation }) {
   const [problemaSaude, setProblemaSaude] = useState(false)
   const [quaisProblemas, setQuaisProblemas] = useState('')
   const [usoMedicacao, setUsoMedicacao] = useState(false)
-  const [horasMedicacao, setHorasMedicacao] = useState('20:00')
+  const [horasMedicacao, setHorasMedicacao] = useState('')
   const [quaisMedicacoes, setQuaisMedicacoes] = useState('')
   const [alergia, setAlergia] = useState(false)
   const [quaisAlergias, setQuaisAlergias] = useState('')
   const [ingeriuAlimento, setIngeriuAlimento] = useState(false)
-  const [horasIngeriuAlimento, setHorasIngeriuAlimento] = useState('21:00')
+  const [horasIngeriuAlimento, setHorasIngeriuAlimento] = useState('')
   const [observacoesFinais, setObservacoesFinais] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -102,7 +124,7 @@ export default function Anamnese({ navigation }) {
       }
     }
     findAnamnesisData()
-  }, [])
+  }, [anamnesisId])
 
   const handleSubmitAnamnesis = async () => {
     const response = await updateAnamnesis(
@@ -126,7 +148,7 @@ export default function Anamnese({ navigation }) {
     console.log(response)
 
     if (response && response.updatedAnamnese) {
-      navigation.navigate('ocorrencia')
+      navigation.navigate('ocorrencia', { reportId })
     }
   }
 
@@ -209,7 +231,11 @@ export default function Anamnese({ navigation }) {
                       onChangeText={(e) => setQuaisMedicacoes(e)}
                     />
                     <View className="h-[100px]">
-                      <InputClock title="Horário Ultima Med." />
+                      <InputClock
+                        title="Horário Ultima Med."
+                        initialValue={horasMedicacao}
+                        onChange={(newValue) => setHorasMedicacao(newValue)}
+                      />
                     </View>
                   </>
                 )}
@@ -239,7 +265,13 @@ export default function Anamnese({ navigation }) {
                   {ingeriuAlimento && (
                     <View className="just-between aling-items flex-1">
                       {/* <InputFull title="Que Horas" isCalendar={true} /> */}
-                      <InputClock title="Que horas?" />
+                      <InputClock
+                        title="Que horas?"
+                        initialValue={horasIngeriuAlimento}
+                        onChange={(newValue) =>
+                          setHorasIngeriuAlimento(newValue)
+                        }
+                      />
                     </View>
                   )}
                 </View>

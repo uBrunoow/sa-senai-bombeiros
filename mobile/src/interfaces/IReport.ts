@@ -79,19 +79,18 @@ export interface IGlasglow extends IBase {
 }
 
 export interface IReport extends IBase {
-  reportDate?: string
-  name?: string
-  age?: number
+  reportDate: string
+  name: string
+  age: number | null
   gender?: string
   cpf?: string
   phone?: string
   reportPlace?: string
-  bloodPressure?: number
-  bodyTemp?: number
-  bodyPulse?: number
-  breathing?: number
-  saturation?: number
-  ownerId?: number
+  bloodPressure?: number | null
+  bodyTemp?: number | null
+  bodyPulse?: number | null
+  breathing?: number | null
+  saturation?: number | null
   PreHospitalMethods?: IPreHospitalMethods[]
   Symptoms?: ISymptoms[]
   GestationalAnamnesis?: IGestationalAnamnesis[]

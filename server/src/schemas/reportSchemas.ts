@@ -29,4 +29,5 @@ export const reportsUpdateSchema = z.object({
   bodyPulse: z.number().optional(),
   breathing: z.number().optional(),
   saturation: z.number().optional(),
+  ownerId: z.number(),
 })

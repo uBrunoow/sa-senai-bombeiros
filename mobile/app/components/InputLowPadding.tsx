@@ -8,25 +8,23 @@ type InputProps = {
   isCalendar?: boolean
   alignText?: 'center' | 'left' | 'right'
   isBig?: boolean
-  value?: string
+  value?: string | number | null
   placeholder?: string
   isCPF?: boolean
   keyBoardType?: 'default' | 'numeric'
   isTelefone?: boolean
-  onChangeText?: (text: string) => void
+  onChangeText?: (text: string | number) => void
 }
 
-export default function InputFull(props: InputProps) {
-  const [inputValue, setInputValue] = useState(props.value || '')
+export default function InputLowPadding(props: InputProps) {
+  const [inputValue, setInputValue] = useState(props.value)
 
   const handleTextChange = (text: string) => {
     let formattedText = text
 
     if (props.isCPF) {
-      // Remover caracteres não numéricos
       formattedText = text.replace(/\D/g, '')
 
-      // Limitar o número máximo de caracteres para 11
       if (formattedText.length > 11) {
         formattedText = formattedText.substring(0, 11)
       }
@@ -67,7 +65,12 @@ export default function InputFull(props: InputProps) {
     setInputValue(formattedText)
 
     if (props.onChangeText) {
-      props.onChangeText(formattedText)
+      // Certifique-se de converter para número se o tipo for number
+      const parsedValue =
+        props.keyBoardType === 'numeric'
+          ? parseFloat(formattedText)
+          : formattedText
+      props.onChangeText(parsedValue)
     }
   }
 
@@ -118,7 +121,7 @@ export default function InputFull(props: InputProps) {
             paddingHorizontal: 2,
             fontSize: 16,
           }}
-          value={inputValue}
+          value={props.value}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
           keyboardType={props.keyBoardType}
