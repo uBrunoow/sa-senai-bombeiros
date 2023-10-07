@@ -10,26 +10,24 @@ export default function SinaisInfoPaciente() {
       style={s.boxShadow}
       className=" mx-auto w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
     >
-      <View className="w-full flex-row border-b border-black pb-3">
-        <View className="w-3/6 flex-1 items-center  ">
-          <View className="w-6/6 mx-auto flex-1 ">
+      <View className="w-full flex-row pb-3">
+        <View className="mt-3 w-full flex-row border-b-[1px] border-black pb-3">
+          <View className="center-between w-3/6 flex-1 items-center">
             <Text className="text-center text-base font-medium">
               Pressão arterial
             </Text>
             <View className="w-[150px] flex-row items-center justify-center">
-              <InputLowPadding size="small" />
-              <Text className="text-[20px]">X</Text>
-              <InputLowPadding size="small" />
+              <InputLowPadding />
+              <Text className="uppercase">X</Text>
+              <InputLowPadding />
               <Text>mmHg</Text>
             </View>
           </View>
-        </View>
-        <View className="center-between ml-7 w-3/6 flex-1 items-center">
-          <View className="w-6/6 mx-auto flex-1 ">
+          <View className="center-between w-3/6 flex-1 items-center">
             <Text className="text-center text-base font-medium">Temper.</Text>
-            <View className="w-[100px] flex-row items-center justify-center">
+            <View className="w-[130px] flex-row items-center justify-center">
               <InputLowPadding />
-              <Text>°C</Text>
+              <Text className="uppercase">°C</Text>
             </View>
           </View>
         </View>

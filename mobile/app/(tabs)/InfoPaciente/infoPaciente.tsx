@@ -21,18 +21,12 @@ export default function Ocorrencia() {
               Info. Paciente
             </Text>
           </View>
-          <View>
-            <InfoPacienteTitle content="Sinais Vitais" />
-            <SinaisInfoPaciente />
-          </View>
-          <View>
-            <InfoPacienteTitle content="Aval. do Paciênte (GLASGOW)" />
-            <AvalPacienteGroup />
-          </View>
-          <View>
-            <InfoPacienteTitle content="Problemas suspeitos encontrados" />
-            <ProblemasSuspeitos />
-          </View>
+          <InfoPacienteTitle content="Sinais Vitais" />
+          <SinaisInfoPaciente />
+          <InfoPacienteTitle content="Aval. do Paciênte (GLASGOW)" />
+          <AvalPacienteGroup />
+          <InfoPacienteTitle content="Problemas suspeitos encontrados" />
+          <ProblemasSuspeitos />
           <MainButton innerText="SALVAR" onPress={() => ({})} />
           <Footer />
         </View>

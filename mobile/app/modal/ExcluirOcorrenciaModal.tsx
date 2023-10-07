@@ -30,7 +30,7 @@ const ExcluirOcorrenciaModal = (props: ExcluirOcorrenciaModalProps) => {
         </Pressable>
         <Pressable
           className="mx-2 mt-10 w-3/6 items-center justify-center rounded-[7px] bg-[#979797b0] p-3"
-          onPress={props.handleDeleteReport}
+          onPress={props.handleCancel}
         >
           <Text className="text-[18px] font-bold uppercase text-white">
             Não
