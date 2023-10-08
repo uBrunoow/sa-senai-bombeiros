@@ -17,7 +17,7 @@ export const reportSchema = z.object({
 })
 
 export const reportsUpdateSchema = z.object({
-  reportDate: z.string().optional(),
+  reportDate: z.string().optional().nullable(),
   age: z.number().optional(),
   gender: z.string().optional(),
   name: z.string().optional(),
