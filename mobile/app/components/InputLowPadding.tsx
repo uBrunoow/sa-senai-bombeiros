@@ -17,7 +17,7 @@ type InputProps = {
 }
 
 export default function InputLowPadding(props: InputProps) {
-  const [inputValue, setInputValue] = useState(props.value)
+  const [inputValue, setInputValue] = useState(props.value?.toString() || '')
 
   const handleTextChange = (text: string) => {
     let formattedText = text
@@ -65,11 +65,10 @@ export default function InputLowPadding(props: InputProps) {
     setInputValue(formattedText)
 
     if (props.onChangeText) {
-      // Certifique-se de converter para número se o tipo for number
-      const parsedValue =
-        props.keyBoardType === 'numeric'
-          ? parseFloat(formattedText)
-          : formattedText
+      // Check if the value is a number
+      const isNumber = !isNaN(Number(formattedText))
+      // Convert to a number if applicable
+      const parsedValue = isNumber ? parseFloat(formattedText) : formattedText
       props.onChangeText(parsedValue)
     }
   }
@@ -121,7 +120,7 @@ export default function InputLowPadding(props: InputProps) {
             paddingHorizontal: 2,
             fontSize: 16,
           }}
-          value={props.value}
+          value={inputValue}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
           keyboardType={props.keyBoardType}

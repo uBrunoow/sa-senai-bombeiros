@@ -25,6 +25,8 @@ export async function reportsUpdateRoutes(
       saturation,
     } = reportsUpdateSchema.parse(req.body)
 
+    const reportDateValue = reportDate ? new Date(reportDate) : null
+
     // Validação dos dados recebidos
     if (
       !age &&
@@ -60,6 +62,7 @@ export async function reportsUpdateRoutes(
 
     // Informações para serem atualizadas
     const updatedReportData: {
+      reportDate?: Date | null
       age?: number
       gender?: string
       name?: string
@@ -74,42 +77,19 @@ export async function reportsUpdateRoutes(
       saturation?: number
     } = {}
 
-    if (age) {
-      updatedReportData.age = age
-    }
-    if (gender) {
-      updatedReportData.gender = gender
-    }
-    if (name) {
-      updatedReportData.name = name
-    }
-    if (cpf) {
-      updatedReportData.cpf = cpf
-    }
-    if (phone) {
-      updatedReportData.phone = phone
-    }
-    if (reportPlace) {
-      updatedReportData.reportPlace = reportPlace
-    }
-    if (bloodPressure) {
-      updatedReportData.bloodPressure = bloodPressure
-    }
-    if (reportDate !== undefined) {
-      updatedReportData.parsedReportDate = new Date(reportDate).toISOString()
-    }
-    if (bodyTemp) {
-      updatedReportData.bodyTemp = bodyTemp
-    }
-    if (bodyPulse) {
-      updatedReportData.bodyPulse = bodyPulse
-    }
-    if (breathing) {
-      updatedReportData.breathing = breathing
-    }
-    if (saturation) {
-      updatedReportData.saturation = saturation
-    }
+    if (age) updatedReportData.age = age
+    if (gender) updatedReportData.gender = gender
+    if (name) updatedReportData.name = name
+    if (cpf) updatedReportData.cpf = cpf
+    if (phone) updatedReportData.phone = phone
+    if (reportPlace) updatedReportData.reportPlace = reportPlace
+    if (bloodPressure) updatedReportData.bloodPressure = bloodPressure
+    if (reportDateValue !== undefined)
+      updatedReportData.reportDate = reportDateValue
+    if (bodyTemp) updatedReportData.bodyTemp = bodyTemp
+    if (bodyPulse) updatedReportData.bodyPulse = bodyPulse
+    if (breathing) updatedReportData.breathing = breathing
+    if (saturation) updatedReportData.saturation = saturation
 
     // Atualizar o usuário buscando pelo ID
     const updatedReport = await prisma.report.update({

@@ -12,13 +12,15 @@ import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
 import updateReport from '@src/api/reports/updateReport'
 import MainButton from '@app/components/MainButton'
+import { name } from 'classnames'
+import { formatReportDate } from '@src/utils/formatReportDate'
 
 export default function Introducao({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const ownerId = useSelector((state: RootState) => state.auth.userId)
 
-  const [reportDate, setReportDate] = useState('')
+  const [reportDateTime, setReportDateTime] = useState('')
   const [name, setName] = useState('')
   const [age, setAge] = useState(0)
   const [gender, setGender] = useState('')
@@ -31,10 +33,10 @@ export default function Introducao({ navigation }) {
   const [breathing, setBreathing] = useState(0)
   const [saturation, setSaturation] = useState(0)
 
-  console.log(reportId)
-
   const handleSubmitIntroduction = async () => {
     try {
+      const reportDate = formatReportDate(reportDateTime)
+
       const response = await updateReport(
         ownerId,
         reportId,
@@ -56,8 +58,6 @@ export default function Introducao({ navigation }) {
     } catch (error) {
       console.error(error)
     }
-
-    console.log(name)
   }
 
   return (
@@ -79,7 +79,10 @@ export default function Introducao({ navigation }) {
         >
           <View className="w-full flex-1 flex-row items-center">
             <View className="w-3/6 p-2">
-              <InputDatePicker />
+              <InputDatePicker
+                reportDate={reportDateTime}
+                setReportDate={setReportDateTime}
+              />
             </View>
             <View className="w-3/6 items-center justify-between">
               <Options title="Sexo" Option1="Masc." Option2="Fem."></Options>
@@ -90,6 +93,7 @@ export default function Introducao({ navigation }) {
               title="Nome"
               size="regular"
               alignText="left"
+              keyBoardType="default"
               value={name}
               placeholder={name || ''}
               onChangeText={(e) => setName(e)}
@@ -107,14 +111,23 @@ export default function Introducao({ navigation }) {
             placeholder="___.___.___-__"
             isCPF={true}
             keyBoardType="numeric"
+            value={cpf}
+            onChangeText={(e) => setCpf(e)}
           />
           <InputLowPadding
             title="Fone"
             placeholder="(__) _____-____"
             isTelefone={true}
             keyBoardType="numeric"
+            value={phone}
+            onChangeText={(e) => setPhone(e)}
           />
-          <InputLowPadding title="Local da Ocorrência" />
+          <InputLowPadding
+            title="Local da Ocorrência"
+            keyBoardType="default"
+            value={reportPlace}
+            onChangeText={(e) => setReportPlace(e)}
+          />
           <View className="mx-auto flex-1 flex-row">
             <InputLowPadding title="Acompanhante" size="regular" />
             <InputLowPadding
