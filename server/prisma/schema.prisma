@@ -98,7 +98,7 @@ model GestationalAnamnesis {
   gestationalPeriod   DateTime
   PreNatal            Boolean
   DoctorName          String
-  Complications       String
+  Complications       Boolean
   NumberSon           Int
   ContractionSchedule DateTime
   Duration            DateTime

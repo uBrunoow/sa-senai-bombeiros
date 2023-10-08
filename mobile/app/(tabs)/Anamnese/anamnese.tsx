@@ -64,26 +64,6 @@ export default function Anamnese({ navigation }: AnamneseProps) {
   const [observacoesFinais, setObservacoesFinais] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleOutrasVezesChange = (option: 'SIM' | 'NÃO') => {
-    setOutrasVezes(option === 'SIM')
-  }
-
-  const handleProblemaSaudeChange = (option: 'SIM' | 'NÃO') => {
-    setProblemaSaude(option === 'SIM')
-  }
-
-  const handleUsoMedicacaoChange = (option: 'SIM' | 'NÃO') => {
-    setUsoMedicacao(option === 'SIM')
-  }
-
-  const handleAlergiaChange = (option: 'SIM' | 'NÃO') => {
-    setAlergia(option === 'SIM')
-  }
-
-  const handleIngeriuAlimentoChange = (option: 'SIM' | 'NÃO') => {
-    setIngeriuAlimento(option === 'SIM')
-  }
-
   useEffect(() => {
     const findAnamnesisData = async () => {
       try {
@@ -126,6 +106,47 @@ export default function Anamnese({ navigation }: AnamneseProps) {
     findAnamnesisData()
   }, [anamnesisId])
 
+  const handleOutrasVezesChange = (option: 'SIM' | 'NÃO') => {
+    setOutrasVezes(option === 'SIM')
+
+    if (option === 'NÃO') {
+      setTempoAconteceu('')
+    }
+  }
+
+  const handleProblemaSaudeChange = (option: 'SIM' | 'NÃO') => {
+    setProblemaSaude(option === 'SIM')
+
+    if (option === 'NÃO') {
+      setQuaisProblemas('')
+    }
+  }
+
+  const handleUsoMedicacaoChange = (option: 'SIM' | 'NÃO') => {
+    setUsoMedicacao(option === 'SIM')
+
+    if (option === 'NÃO') {
+      setQuaisMedicacoes('')
+      setHorasMedicacao('')
+    }
+  }
+
+  const handleAlergiaChange = (option: 'SIM' | 'NÃO') => {
+    setAlergia(option === 'SIM')
+
+    if (option === 'NÃO') {
+      setQuaisAlergias('')
+    }
+  }
+
+  const handleIngeriuAlimentoChange = (option: 'SIM' | 'NÃO') => {
+    setIngeriuAlimento(option === 'SIM')
+
+    if (option === 'NÃO') {
+      setHorasIngeriuAlimento('')
+    }
+  }
+
   const handleSubmitAnamnesis = async () => {
     const response = await updateAnamnesis(
       reportId,
@@ -151,6 +172,8 @@ export default function Anamnese({ navigation }: AnamneseProps) {
       navigation.navigate('ocorrencia', { reportId })
     }
   }
+
+  console.log(tempoAconteceu)
 
   return (
     <ScrollView
@@ -255,7 +278,7 @@ export default function Anamnese({ navigation }: AnamneseProps) {
                   />
                 )}
                 <View className="w-92 h-67 flex-1">
-                  <View className="just-between aling-items flex-1">
+                  <View className="flex-1">
                     <YesOrNo
                       Question="Ingeriu alimento/líquido nas últimas 6 horas?"
                       selectedOption={ingeriuAlimento ? 'SIM' : 'NÃO'}
@@ -263,7 +286,7 @@ export default function Anamnese({ navigation }: AnamneseProps) {
                     />
                   </View>
                   {ingeriuAlimento && (
-                    <View className="just-between aling-items flex-1">
+                    <View className=" flex-1">
                       {/* <InputFull title="Que Horas" isCalendar={true} /> */}
                       <InputClock
                         title="Que horas?"
