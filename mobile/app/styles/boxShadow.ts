@@ -10,11 +10,9 @@ export const styles = StyleSheet.create({
     textShadowOffset: { width: 8, height: 2 },
     backgroundColor: '#fff',
     borderRadius: 10,
-    // width: '90%',
-    // marginLeft: 'auto',
-    // marginRight: 'auto',
-    // borderRadius: 8,
-    // padding: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    width: '90%',
   },
 
   button: {
