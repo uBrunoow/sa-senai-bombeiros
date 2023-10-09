@@ -16,32 +16,31 @@ import MainButton from '@app/components/MainButton'
 import InputClock from '@app/components/InputClock'
 import { useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
-import updateAnamnesis from '@src/api/reports/Anamnesis/updateAnamnesis'
-import findAnamnesis from '@src/api/reports/Anamnesis/findAnamnesis'
+import updateAnamnesis from '@src/api/reports/anamnesis/updateAnamnesis'
+import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
 import { RouteProp } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
 
-type RootStackParamList = {
-  anamnese: {
-    anamnesisId: number
-  }
-  ocorrencia: {
-    reportId: number
-  }
-}
+// type RootStackParamList = {
+//   anamnese: {
+//     anamnesisId: number
+//   }
+//   ocorrencia: {
+//     reportId: number
+//   }
+// }
 
-type AnamneseScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'anamnese'
->
-type AnamneseScreenRouteProp = RouteProp<RootStackParamList, 'anamnese'>
+// type AnamneseScreenNavigationProp = StackNavigationProp<
+//   RootStackParamList,
+//   'anamnese'
+// >
+// type AnamneseScreenRouteProp = RouteProp<RootStackParamList, 'anamnese'>
 
-interface AnamneseProps {
-  navigation: AnamneseScreenNavigationProp
-  route: AnamneseScreenRouteProp
-}
+// interface AnamneseProps {
+//   navigation: AnamneseScreenNavigationProp
+//   route: AnamneseScreenRouteProp
+// }
 
-export default function Anamnese({ navigation }: AnamneseProps) {
+export default function Anamnese({ navigation }) {
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const anamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,
