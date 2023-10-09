@@ -14,6 +14,7 @@ import updateReport from '@src/api/reports/updateReport'
 import MainButton from '@app/components/MainButton'
 import { name } from 'classnames'
 import { formatReportDate } from '@src/utils/formatReportDate'
+import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
 export default function Introducao({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
@@ -32,6 +33,8 @@ export default function Introducao({ navigation }) {
   const [bodyPulse, setBodyPulse] = useState(0)
   const [breathing, setBreathing] = useState(0)
   const [saturation, setSaturation] = useState(0)
+
+  const [categories, setCategories] = React.useState([])
 
   const handleSubmitIntroduction = async () => {
     try {
@@ -60,6 +63,85 @@ export default function Introducao({ navigation }) {
     }
   }
 
+  const preHospitalarData = [
+    { value: 'Afogamento' },
+    { value: 'Agressão' },
+    { value: 'Atropelamento' },
+    { value: 'Causado por animais' },
+    { value: 'Choque elétrico' },
+    { value: 'Com meio de transporte' },
+    { value: 'Desabamento' },
+    { value: 'Desmoronamento' },
+    { value: 'Doméstico' },
+    { value: 'Emergência médica' },
+    { value: 'Esportivo' },
+    { value: 'Intoxicação' },
+    { value: 'Queda bicicleta' },
+    { value: 'Queda moto' },
+    { value: 'Queda menor que 2m' },
+    { value: 'Queda maior que 2m' },
+    { value: 'Queda própria altura' },
+    { value: 'Tentativa de suicídio' },
+    { value: 'Trabalho' },
+    { value: 'Transferência' },
+  ]
+
+  const sinaisESintomasData = [
+    { value: 'Abd. Sensível/Rígido' },
+    { value: 'Afundamento de crânio' },
+    { value: 'Agitação' },
+    { value: 'Amnésia' },
+    { value: 'Angina de Peito' },
+    { value: 'Apinéia' },
+    { value: 'Bradicardia' },
+    { value: 'Bradipnéia' },
+    { value: 'Bronco-Aspirando' },
+    { value: 'Cefaléia' },
+    { value: 'Cianose lábios' },
+    { value: 'Cianose extremidades' },
+    { value: 'Convulsão' },
+    { value: 'Decorticação' },
+    { value: 'Deformidade' },
+    { value: 'Descerebração' },
+    { value: 'Desmaio' },
+    { value: 'Desvio de traquéia' },
+    { value: 'Dispnéia' },
+    { value: 'Dor local' },
+    { value: 'Edema generalizado' },
+    { value: 'Edema localizado' },
+    { value: 'Enfisema subcutâneo' },
+    { value: 'Êstase da jugular' },
+    { value: 'Face pálida' },
+    { value: 'Hemorragia interna' },
+    { value: 'Hemorragia externa' },
+    { value: 'Hipertensão' },
+    { value: 'Hipotensão' },
+    { value: 'Náuseas/vômitos' },
+    { value: 'Nasoragia' },
+    { value: 'Óbito' },
+    { value: 'Otorréia' },
+    { value: 'Otorragia' },
+    { value: 'O.V.A.C.E' },
+    { value: 'Parada cardíaca' },
+    { value: 'Parada respiratória' },
+    { value: 'Priaprismo' },
+    { value: 'Prurido na pele' },
+    { value: 'Anisocoria NÃO reagente' },
+    { value: 'Anisocoria reagente' },
+    { value: 'Isocoria NÃO reagente' },
+    { value: 'Isocoria reagente' },
+    { value: 'Midríase NÃO reagente' },
+    { value: 'Midríase reagente' },
+    { value: 'Miose NÃO reagente' },
+    { value: 'Miose reagente' },
+    { value: 'Sede' },
+    { value: 'Sinal de battle' },
+    { value: 'Sinal de guaxinim' },
+    { value: 'Sudorese' },
+    { value: 'Taquipinéia' },
+    { value: 'Taquicardia' },
+    { value: 'Tontura' },
+  ]
   return (
     <ScrollView
       className="flex-1"
@@ -136,6 +218,38 @@ export default function Introducao({ navigation }) {
               keyBoardType="numeric"
             />
           </View>
+          {/* Pré-Hospitalar */}
+          <MultipleSelectList
+            setSelected={(val) => setCategories(val)}
+            data={preHospitalarData}
+            save="value"
+            label="Pré-Hospitalar"
+            boxStyles={{ padding: 10 }}
+            badgeStyles={{
+              backgroundColor: '#A00E00',
+              paddingHorizontal: 10,
+            }}
+            placeholder="PRÉ-HOSPITALAR"
+            searchPlaceholder="Escolha quantos for necessário"
+            notFoundText="Nenhuma categoria encontrada"
+            maxHeight={450}
+          />
+          {/* Sinais e Sintomas */}
+          <MultipleSelectList
+            setSelected={(val) => setCategories(val)}
+            data={sinaisESintomasData}
+            save="value"
+            label="Sinais e Sintomas"
+            boxStyles={{ padding: 10 }}
+            badgeStyles={{
+              backgroundColor: '#A00E00',
+              paddingHorizontal: 10,
+            }}
+            placeholder="SINAIS E SINTOMAS"
+            searchPlaceholder="Escolha quantos for necessário"
+            notFoundText="Nenhuma categoria encontrada"
+            maxHeight={750}
+          />
         </View>
         <MainButton
           innerText="SALVAR"
