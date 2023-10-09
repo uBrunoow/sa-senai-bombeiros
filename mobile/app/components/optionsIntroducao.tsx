@@ -19,7 +19,7 @@ export default function Options(props: optionsProps) {
       )}
       <View className="mt-2 flex-row">
         <TouchableOpacity
-          className="h-[40px] w-[70px] items-center justify-center"
+          className="w-[70px] items-center justify-center py-2"
           style={[
             styles.button,
             selectedOption === 'MASC' ? styles.selected : null,
@@ -35,7 +35,7 @@ export default function Options(props: optionsProps) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="ml-1 h-[40px] w-[70px] items-center justify-center"
+          className="ml-1 w-[70px] items-center justify-center py-3"
           style={[
             styles.button,
             selectedOption === 'FEM' ? styles.selected : null,

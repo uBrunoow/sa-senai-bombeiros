@@ -109,16 +109,16 @@ export default function InputLowPadding(props: InputProps) {
           {props.title}
         </Text>
       )}
-      <View className="my-1 w-full rounded-lg border p-4">
+      <View className="my-1 w-full rounded-lg border">
         <TextInput
           multiline={true}
           numberOfLines={100}
           style={{
-            height: props.isBig ? 100 : 20,
-            textAlignVertical: 'top',
-            paddingVertical: 2,
-            paddingHorizontal: 2,
+            height: props.isBig ? 100 : 45,
+            textAlignVertical: 'center',
+            padding: 6,
             fontSize: 16,
+            paddingLeft: 10,
           }}
           value={inputValue}
           onChangeText={handleTextChange}

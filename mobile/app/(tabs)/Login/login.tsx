@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native'
+import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import Icon from '@expo/vector-icons/Feather'
 import { AntDesign } from '@expo/vector-icons'
@@ -74,7 +68,7 @@ export default function Login({ navigation }) {
             {/* Input do texto para senha */}
             <View className=" items-center justify-center">
               <TextInput
-                placeholder="***********"
+                placeholder="••••••••••"
                 secureTextEntry
                 onChangeText={handleChangePassword}
                 value={password}
