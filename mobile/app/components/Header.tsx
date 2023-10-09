@@ -68,10 +68,13 @@ export default function Header() {
       </View>
       <View>
         <Pressable
-          className="rounded-[3px] bg-red-600"
+          className="flex-row rounded-[3px] bg-red-600"
           onPress={handleExcluirOcorrenciaAbrirModal}
         >
           <Feather name="x" size={24} color="white" />
+          <Text className=" px-1 font-medium text-white">
+            Apagar ocorrência
+          </Text>
         </Pressable>
       </View>
       {excluirOcorrenciaAbrir && (

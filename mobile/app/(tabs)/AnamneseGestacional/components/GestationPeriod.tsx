@@ -63,7 +63,7 @@ export default function GestationPeriod() {
       <Pressable onPress={toggleDatePicker1} className="w-2/6">
         <TextInput
           className=" w-full rounded-lg border px-3 py-2 text-center text-black"
-          placeholder="Data de ínicio"
+          placeholder="Início"
           editable={false}
           value={dateStart}
           onChangeText={setDateStart}
@@ -74,7 +74,7 @@ export default function GestationPeriod() {
       <Pressable onPress={toggleDatePicker2} className="w-2/6">
         <TextInput
           className="w-full rounded-lg border px-3 py-2 text-center text-black"
-          placeholder="Data de término"
+          placeholder="Fim"
           editable={false}
           value={dateEnd}
           onChangeText={setDateEnd}

@@ -16,14 +16,14 @@ import Footer from '@app/components/Footer'
 import { FontAwesome5, AntDesign } from '@expo/vector-icons'
 import MainButton from '@app/components/MainButton'
 import { useDispatch, useSelector } from 'react-redux'
-import registerAnamnesis from '@src/api/reports/Anamnesis/registerAnamnesis'
+import registerAnamnesis from '@src/api/reports/anamnesis/registerAnamnesis'
 import { RootState } from '@src/redux/stores/stores'
 import {
   clearAnamnesisId,
   clearReportId,
   saveAnamnesisId,
 } from '@src/redux/actions/reportActions'
-import findAnamnesis from '@src/api/reports/Anamnesis/findAnamnesis'
+import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
 import { calculateAnamnesisCompleteness } from '@src/utils/calculateAnamnesisCompleteness'
 import ExcluirOcorrenciaModal from '@app/modal/ExcluirOcorrenciaModal'
 import { styles as s } from '@app/styles/boxShadow'
