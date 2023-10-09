@@ -13,13 +13,13 @@ type InputProps = {
 }
 
 export default function InputFull(props: InputProps) {
-  const [inputValue, setInputValue] = useState(props.value || '')
+  const [inputValue, setInputValue] = useState(props.value)
 
   const handleTextChange = (text: string) => {
     setInputValue(text)
 
     if (props.onChangeText) {
-      props.onChangeText(text) // Use onChangeText no lugar de onChange
+      props.onChangeText(text)
     }
   }
 
@@ -38,7 +38,7 @@ export default function InputFull(props: InputProps) {
       }}
       className="justfy-between m-auto my-2 w-full flex-1 items-center"
     >
-      <Text className="text-lg">{props.title}</Text>
+      <Text className="text-lg font-medium">{props.title}</Text>
       <View className="mb-4 mt-2 w-5/6 rounded-lg border">
         <TextInput
           multiline={true}
@@ -49,7 +49,7 @@ export default function InputFull(props: InputProps) {
             paddingVertical: 6,
             paddingHorizontal: 10,
           }}
-          value={inputValue}
+          value={props.value}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
         ></TextInput>

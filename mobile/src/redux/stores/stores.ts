@@ -11,7 +11,7 @@ export interface RootState {
     userId: number
   }
   report: {
-    reportId: number | null
+    reportId: number
   }
   anamnesis: {
     anamnesisId: number | null

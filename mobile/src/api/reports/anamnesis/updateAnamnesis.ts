@@ -1,8 +1,8 @@
-import { api } from '../lib/api'
+import { api } from '@src/lib/api'
 
 const updateAnamnesis = async (
-  ReportOwnerId: number,
-  anamnesisId: number,
+  ReportOwnerId: number | null,
+  anamnesisId: number | null,
   sinaisESintomas?: string,
   outrasVezes?: boolean,
   tempoAconteceu?: string,

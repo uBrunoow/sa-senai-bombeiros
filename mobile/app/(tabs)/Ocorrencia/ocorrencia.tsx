@@ -1,24 +1,33 @@
 import {
-  View,
   ScrollView,
   Text,
   TouchableOpacity,
-  Pressable,
   Button,
+  Modal,
+  ActivityIndicator,
+  View,
+  Pressable,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import Header from '../components/Header'
-import Grouper from '../components/Grouper'
+import Header from '@app/components/Header'
+import Grouper from '@app/components/Grouper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Footer from '../components/Footer'
-import { FontAwesome5 } from '@expo/vector-icons'
-import MainButton from '../components/MainButton'
+import Footer from '@app/components/Footer'
+import { FontAwesome5, AntDesign } from '@expo/vector-icons'
+import MainButton from '@app/components/MainButton'
 import { useDispatch, useSelector } from 'react-redux'
-import registerAnamnesis from '../../src/api/registerAnamnesis'
-import { RootState } from '../../src/redux/stores/stores'
-import { saveAnamnesisId } from '../../src/redux/actions/reportActions'
-import findAnamnesis from '../../src/api/findAnamnesis'
-import { calculateAnamnesisCompleteness } from '../../src/utils/calculateAnamnesisCompleteness'
+import registerAnamnesis from '@src/api/reports/anamnesis/registerAnamnesis'
+import { RootState } from '@src/redux/stores/stores'
+import {
+  clearAnamnesisId,
+  clearReportId,
+  saveAnamnesisId,
+} from '@src/redux/actions/reportActions'
+import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
+import { calculateAnamnesisCompleteness } from '@src/utils/calculateAnamnesisCompleteness'
+import ExcluirOcorrenciaModal from '@app/modal/ExcluirOcorrenciaModal'
+import { styles as s } from '@app/styles/boxShadow'
+import deleteReport from '@src/api/reports/deleteReport'
 
 export default function Ocorrencia({ navigation }) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
@@ -74,6 +83,44 @@ export default function Ocorrencia({ navigation }) {
         })
       }
     }
+  }
+
+  const [showModal, setShowModal] = useState(false)
+  const reportId = useSelector((state: RootState) => state.report.reportId)
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+      if (reportId) {
+        setShowModal(true)
+        e.preventDefault()
+      }
+    })
+
+    return unsubscribe
+  }, [navigation, reportId])
+
+  const [loading, setLoading] = useState(false)
+
+  const handleDeleteReport = async () => {
+    try {
+      setLoading(true)
+      const response = await deleteReport(reportId)
+      console.log(response)
+      if (response.msg) {
+        dispatch(clearReportId())
+        dispatch(clearAnamnesisId())
+        setShowModal(false)
+        navigation.navigate('home')
+      }
+    } catch (error) {
+      console.error('Error deleting report:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleModalCancel = () => {
+    setShowModal(false)
   }
 
   return (
@@ -170,6 +217,49 @@ export default function Ocorrencia({ navigation }) {
           <MainButton innerText="FINALIZAR" />
         </Pressable>
         <Button title="Logout" onPress={handleLogout} />
+        {showModal && (
+          <Modal
+            transparent={true}
+            animationType="fade"
+            visible={showModal}
+            onRequestClose={() => setShowModal(false)}
+          >
+            <View className="flex-1 items-center justify-center bg-[#0000007f]">
+              <View
+                style={s.modalContent}
+                className="rounded-[7px] bg-white p-4 "
+              >
+                <View className="relative flex-row items-center justify-center">
+                  {loading ? (
+                    <View className="mx-auto h-[120px] w-[320px] items-center justify-center">
+                      <ActivityIndicator size="large" color="#ff0000" />
+                      <Text className="mt-3 text-center text-lg font-bold uppercase">
+                        Carregando...
+                      </Text>
+                      <Text className=" mt-3 text-center text-[#979797b0]">
+                        (Esspere sua ocorrência ser excluída, enquanto isso
+                        pegue um café.)
+                      </Text>
+                    </View>
+                  ) : (
+                    <>
+                      <ExcluirOcorrenciaModal
+                        handleDeleteReport={handleDeleteReport}
+                        handleCancel={handleModalCancel}
+                      />
+                      <Pressable
+                        onPress={() => setShowModal(false)}
+                        className="absolute right-1 top-1 z-50"
+                      >
+                        <AntDesign name="closecircle" size={24} color="red" />
+                      </Pressable>
+                    </>
+                  )}
+                </View>
+              </View>
+            </View>
+          </Modal>
+        )}
       </View>
       <Footer />
     </ScrollView>

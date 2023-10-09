@@ -5,15 +5,15 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native'
-import NOARLogo from '../../src/assets/logo-noar.svg'
-import Firefighter from '../../src/assets/firefighter.svg'
-import Hexagon from '../../src/assets/hexagon.svg'
+import NOARLogo from '@src/public/logo-noar.svg'
+import Firefighter from '@src/public/firefighter.svg'
+import Hexagon from '@src/public/hexagon.svg'
 import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../../src/redux/stores/stores'
-import registerReport from '../../src/api/registerReport'
+import { RootState } from '@src/redux/stores/stores'
+import registerReport from '@src/api/reports/registerReport'
 import { Entypo } from '@expo/vector-icons'
 import React from 'react'
-import { saveReportId } from '../../src/redux/actions/reportActions'
+import { saveReportId } from '@src/redux/actions/reportActions'
 // import { saveReportId } from '../../src/actions/reportActions' // Importe a ação
 
 function App({ navigation }) {

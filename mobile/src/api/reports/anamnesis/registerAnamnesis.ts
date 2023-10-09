@@ -1,12 +1,11 @@
-import { api } from '../lib/api'
+import { api } from '@src/lib/api'
 
-const loginUser = async (email: string, password: string) => {
+const registerReport = async (ReportOwnerId: number) => {
   try {
     const response = await api.post(
-      '/api/users/login',
+      '/api/anamnese',
       {
-        email,
-        password,
+        ReportOwnerId,
       },
       {
         headers: {
@@ -18,9 +17,9 @@ const loginUser = async (email: string, password: string) => {
     const data = response.data
     return data
   } catch (error) {
-    console.error('Erro ao enviar os usuários:', error)
+    console.error('Erro ao enviar a report:', error)
     return null
   }
 }
 
-export default loginUser
+export default registerReport

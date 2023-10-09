@@ -1,6 +1,6 @@
-import { api } from '../lib/api'
+import { api } from '@src/lib/api'
 
-const findAnamnesis = async (anamnesisId: number) => {
+const findAnamnesis = async (anamnesisId: number | null) => {
   try {
     const response = await api.get(`/api/anamnese/${anamnesisId}`)
     return response.data

@@ -2,7 +2,24 @@
   "compilerOptions": {
     "types" : [
       "nativewind/types"
-    ]
+    ], 
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-native",
+    "lib": ["dom", "esnext"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "noEmit": true,
+    "target": "es6",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@src/*": ["src/*"],
+    }
   },
   "extends": "expo/tsconfig.base"
 }

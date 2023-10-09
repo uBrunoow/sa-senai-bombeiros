@@ -48,11 +48,9 @@ export async function reportFindOneRoutes(
         PreHospitalMethods: true,
         Anamnesis: true,
         GestationalAnamnesis: true,
-        SuspectProblems: true,
         Report_PreHospitalMethod: true,
         Report_Symptoms: true,
         Glasglow: true,
-        _count: true,
       },
     })
 

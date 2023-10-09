@@ -4,18 +4,17 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  StyleSheet,
 } from 'react-native'
 import React, { useState } from 'react'
 import Icon from '@expo/vector-icons/Feather'
 import { AntDesign } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import loginUser from '../../src/api/loginUser'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import loginUser from '@src/api/users/loginUser'
+import Header from '@app/components/Header'
+import Footer from '@app/components/Footer'
 import { useDispatch } from 'react-redux'
-import { saveToken } from '../../src/redux/actions/authActions'
-import { styles as s } from '../components/styles/boxShadow'
+import { saveToken } from '@src/redux/actions/authActions'
+import { styles as s } from '@app/styles/boxShadow'
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch()
@@ -72,7 +71,7 @@ export default function Login({ navigation }) {
             className=" w-full rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
           >
             {/* Div que engloba o cpf e a senha */}
-            <View className="h-[152px] flex-col items-center justify-between">
+            <View className="h-[152px] flex-col items-center justify-between ">
               <View className="relative h-[76px] gap-[5px]">
                 <Text className=" text-[21px] font-normal leading-[21px] text-preto">
                   E-mail
@@ -92,7 +91,7 @@ export default function Login({ navigation }) {
                 {/* Input do texto para senha */}
                 <View className=" relative items-center justify-center">
                   <TextInput
-                    placeholder="___.___.___-__"
+                    placeholder="***********"
                     secureTextEntry
                     onChangeText={handleChangePassword}
                     value={password}

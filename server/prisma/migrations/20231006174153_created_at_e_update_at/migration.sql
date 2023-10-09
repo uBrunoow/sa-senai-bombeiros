@@ -1,0 +1,43 @@
+-- AlterTable
+ALTER TABLE "Anamnesis" ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedAt" TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE "CinematicAvaliation" ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedAt" TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE "GestationalAnamnesis" ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedAt" TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE "Glasglow" ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedAt" TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE "PreHospitalMethod" ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedAt" TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE "Problems" ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedAt" TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE "Report_PreHospitalMethod" ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedAt" TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE "Report_Symptoms" ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedAt" TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE "SuspectProblems" ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedAt" TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE "Symptoms" ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedAt" TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedAt" TIMESTAMP(3);

@@ -7,10 +7,12 @@ const initialAnamnesisState: AnamnesisState = {
   anamnesisId: null,
 }
 
-type AnamnesisAction = {
-  type: 'SAVE_ANAMNESIS'
-  payload: { anamnesisId: number }
-}
+type AnamnesisAction =
+  | {
+      type: 'SAVE_ANAMNESIS'
+      payload: { anamnesisId: number }
+    }
+  | { type: 'CLEAR_ANAMNESIS_ID' }
 
 const anamnesisReducer = (
   state = initialAnamnesisState,
@@ -22,6 +24,14 @@ const anamnesisReducer = (
       return {
         ...state,
         anamnesisId: action.payload.anamnesisId,
+      }
+
+    case 'CLEAR_ANAMNESIS_ID':
+      AsyncStorage.removeItem('anamnesisId')
+
+      return {
+        ...state,
+        anamnesisId: null,
       }
 
     default:

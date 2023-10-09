@@ -34,9 +34,12 @@ export default function GestationPeriod() {
       setDateEnd(formattedDate)
     }
   }
+
+  console.log(dateEnd)
+
   return (
     <View className=" m-auto mb-4 w-5/6 flex-row flex-wrap justify-around">
-      <Text className="mb-2 w-full text-center text-lg">
+      <Text className="mb-2 w-full text-center text-lg font-medium">
         Período de Gestação
       </Text>
       {showPicker1 && (
@@ -57,9 +60,9 @@ export default function GestationPeriod() {
           onChange={onDateEndChange}
         />
       )}
-      <Pressable onPress={toggleDatePicker1}>
+      <Pressable onPress={toggleDatePicker1} className="w-2/6">
         <TextInput
-          className="w-full flex-1 rounded-lg border p-4"
+          className=" w-full rounded-lg border px-3 py-2 text-center text-black"
           placeholder="Data de ínicio"
           editable={false}
           value={dateStart}
@@ -68,9 +71,9 @@ export default function GestationPeriod() {
       </Pressable>
       <Text className="text-lg"> - </Text>
 
-      <Pressable onPress={toggleDatePicker2}>
+      <Pressable onPress={toggleDatePicker2} className="w-2/6">
         <TextInput
-          className=" flex-1 rounded-lg border p-4"
+          className="w-full rounded-lg border px-3 py-2 text-center text-black"
           placeholder="Data de término"
           editable={false}
           value={dateEnd}
