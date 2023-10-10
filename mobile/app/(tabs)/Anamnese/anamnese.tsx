@@ -62,6 +62,7 @@ export default function Anamnese({ navigation }) {
   const [horasIngeriuAlimento, setHorasIngeriuAlimento] = useState('')
   const [observacoesFinais, setObservacoesFinais] = useState('')
   const [loading, setLoading] = useState(false)
+  const [buttonLoading, setButtonLoading] = useState(false)
 
   useEffect(() => {
     const findAnamnesisData = async () => {
@@ -147,32 +148,39 @@ export default function Anamnese({ navigation }) {
   }
 
   const handleSubmitAnamnesis = async () => {
-    const response = await updateAnamnesis(
-      reportId,
-      anamnesisId,
-      sinaisESintomas,
-      outrasVezes,
-      tempoAconteceu,
-      problemaSaude,
-      quaisProblemas,
-      usoMedicacao,
-      quaisMedicacoes,
-      horasMedicacao,
-      alergia,
-      quaisAlergias,
-      ingeriuAlimento,
-      horasIngeriuAlimento,
-      observacoesFinais,
-    )
+    try {
+      setButtonLoading(true)
+      const response = await updateAnamnesis(
+        reportId,
+        anamnesisId,
+        sinaisESintomas,
+        outrasVezes,
+        tempoAconteceu,
+        problemaSaude,
+        quaisProblemas,
+        usoMedicacao,
+        quaisMedicacoes,
+        horasMedicacao,
+        alergia,
+        quaisAlergias,
+        ingeriuAlimento,
+        horasIngeriuAlimento,
+        observacoesFinais,
+      )
 
-    console.log(response)
+      console.log(response)
 
-    if (response && response.updatedAnamnese) {
-      navigation.navigate('ocorrencia', { reportId })
+      if (response && response.updatedAnamnese) {
+        navigation.navigate('ocorrencia', { reportId })
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setButtonLoading(false)
     }
   }
 
-  console.log(tempoAconteceu)
+  console.log(buttonLoading)
 
   return (
     <ScrollView
@@ -308,6 +316,7 @@ export default function Anamnese({ navigation }) {
             </View>
             <MainButton
               innerText="SALVAR"
+              isLoading={buttonLoading}
               onPress={() => handleSubmitAnamnesis()}
             />
           </View>

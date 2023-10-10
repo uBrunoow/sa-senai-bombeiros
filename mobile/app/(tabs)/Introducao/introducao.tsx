@@ -31,6 +31,7 @@ export default function Introducao({ navigation }) {
   const [phone, setPhone] = useState('')
   const [reportPlace, setReportPlace] = useState('')
   const [loading, setLoading] = useState(false)
+  const [buttonLoading, setButtonLoading] = useState(false)
 
   useEffect(() => {
     const findReportsData = async () => {
@@ -68,6 +69,7 @@ export default function Introducao({ navigation }) {
 
   const handleSubmitIntroduction = async () => {
     try {
+      setButtonLoading(true)
       const reportDate = formatReportDate(reportDateTime)
 
       const response = await updateReport(
@@ -87,12 +89,16 @@ export default function Introducao({ navigation }) {
       }
     } catch (error) {
       console.error(error)
+    } finally {
+      setButtonLoading(false)
     }
   }
 
   const handleSelectGender = (selectedGender: 'MASC' | 'FEM') => {
     setGender(selectedGender)
   }
+
+  console.log(buttonLoading)
 
   return (
     <ScrollView
@@ -172,16 +178,13 @@ export default function Introducao({ navigation }) {
               />
               <View className="mx-auto flex-1 flex-row">
                 <InputLowPadding title="Acompanhante" size="regular" />
-                <InputLowPadding
-                  title="Idade"
-                  size="small"
-                  keyBoardType="numeric"
-                />
+                <InputLowPadding title="Idade" size="small" />
               </View>
             </View>
             <MainButton
               innerText="SALVAR"
               onPress={() => handleSubmitIntroduction()}
+              isLoading={buttonLoading}
             />
           </View>
           <Footer />
