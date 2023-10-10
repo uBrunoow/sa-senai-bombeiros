@@ -157,9 +157,6 @@ const Finalizacao = () => {
                     <View>
                       <Pressable
                         style={({ pressed }) => [
-                          // {
-                          //   backgroundColor: pressed ? '#000' : 'transparent',
-                          // },
                           s.button,
                           getButtonStyle('critico'),
                           selectedOption === 'critico' && {

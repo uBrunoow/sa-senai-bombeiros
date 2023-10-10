@@ -1,4 +1,4 @@
-import { IReport } from '@src/interfaces/IReport'
+import { IReport } from 'src/interfaces/IReport'
 import { api } from '@src/lib/api'
 
 const updateReport = async (

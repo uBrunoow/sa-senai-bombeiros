@@ -96,22 +96,22 @@ model Symptoms {
 
 model GestationalAnamnesis {
   id                  Int       @id @default(autoincrement())
-  gestationalPeriod   DateTime
-  PreNatal            Boolean
-  DoctorName          String
-  Complications       Boolean
-  NumberSon           Int
-  ContractionSchedule DateTime
-  Duration            DateTime
-  Interval            DateTime
-  HiPressure          Boolean
-  BagRuptured         Boolean
-  VisualInspection    Boolean
-  Childbirth          Boolean
-  BabyGender          String
-  BornHour            DateTime
-  BabyName            String
-  FinalRemarks        String
+  gestationalPeriod   DateTime?
+  PreNatal            Boolean?
+  DoctorName          String?
+  Complications       Boolean?
+  NumberSon           Int?
+  ContractionSchedule DateTime?
+  Duration            DateTime?
+  Interval            DateTime?
+  HiPressure          Boolean?
+  BagRuptured         Boolean?
+  VisualInspection    Boolean?
+  Childbirth          Boolean?
+  BabyGender          String?
+  BornHour            DateTime?
+  BabyName            String?
+  FinalRemarks        String?
   createdAt           DateTime? @default(now())
   updatedAt           DateTime? @updatedAt
   reportOwner         Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)

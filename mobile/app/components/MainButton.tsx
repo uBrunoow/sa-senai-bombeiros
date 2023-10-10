@@ -12,15 +12,17 @@ export default function MainButton(props: MainButtonProps) {
     <Pressable onPress={props.onPress}>
       {props.isLoading ? (
         <View className="m-auto mb-4 w-4/6 items-center rounded-lg bg-[#900e0e] p-3">
-          <Text className="text-xl font-bold text-white">
+          <View className="h-[30px]">
             <ActivityIndicator size="large" color="#ffffff" />
-          </Text>
+          </View>
         </View>
       ) : (
         <View className="m-auto mb-4 w-4/6 items-center rounded-lg bg-[#A00E00] p-3">
-          <Text className="text-xl font-bold text-white">
-            {props.innerText}
-          </Text>
+          <View className="h-[30px]">
+            <Text className="text-xl font-bold text-white">
+              {props.innerText}
+            </Text>
+          </View>
         </View>
       )}
     </Pressable>

@@ -180,8 +180,6 @@ export default function Anamnese({ navigation }) {
     }
   }
 
-  console.log(buttonLoading)
-
   return (
     <ScrollView
       className="flex-1"
