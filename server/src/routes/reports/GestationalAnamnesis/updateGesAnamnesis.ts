@@ -67,7 +67,7 @@ export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
       gestationalPeriod?: string
       PreNatal?: boolean
       DoctorName?: string
-      Complications?: string
+      Complications?: boolean
       NumberSon?: number
       ContractionSchedule?: string
       Duration?: string
@@ -135,17 +135,25 @@ export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
       updateGestacionalAnamnesisData.ReportOwnerId = ReportOwnerId
     }
 
-    const updatedGestacionalAnamnesis =
-      await prisma.gestationalAnamnesis.update({
-        where: {
-          id: parseInt(id),
-        },
-        data: updateGestacionalAnamnesisData,
-      })
+    try {
+      const updatedGestacionalAnamnesis =
+        await prisma.gestationalAnamnesis.update({
+          where: {
+            id: parseInt(id),
+          },
+          data: updateGestacionalAnamnesisData,
+        })
 
-    return res.send({
-      msg: '🟢 Gestacional Anamnesis atualizado com sucesso.',
-      updatedGestacionalAnamnesis,
-    })
+      return res.send({
+        msg: '🟢 Gestacional Anamnesis atualizado com sucesso.',
+        updatedGestacionalAnamnesis,
+      })
+    } catch (error) {
+      console.error('Erro durante a atualização:', error)
+      return res.status(500).send({
+        message:
+          '🔴 Ocorreu um erro durante a atualização do Gestacional Anamnesis.',
+      })
+    }
   })
 }

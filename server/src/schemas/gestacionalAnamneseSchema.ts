@@ -24,7 +24,7 @@ export const updateGestacionalAnamnese = z.object({
   gestationalPeriod: z.string().optional(),
   PreNatal: z.boolean().optional(),
   DoctorName: z.string().optional(),
-  Complications: z.string().optional(),
+  Complications: z.boolean().optional(),
   NumberSon: z.number().optional(),
   ContractionSchedule: z.string().optional(),
   Duration: z.string().optional(),
