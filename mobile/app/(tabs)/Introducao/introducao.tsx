@@ -18,7 +18,10 @@ import findReports from '@src/api/reports/findReport'
 import InputCpf from '@app/components/inputCpf'
 import InputTelefone from '@app/components/inputTelefone'
 
-import { MultipleSelectList } from 'react-native-dropdown-select-list'
+import {
+  MultipleSelectList,
+  SelectList,
+} from 'react-native-dropdown-select-list'
 
 export default function Introducao({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
@@ -262,37 +265,58 @@ export default function Introducao({ navigation }) {
               <InputLowPadding title="Acompanhante" size="regular" />
               <InputLowPadding title="Idade" size="small" />
             </View>
-            <MultipleSelectList
-              setSelected={(val) => setCategories(val)}
-              data={preHospitalarData}
-              save="value"
-              label="Pré-Hospitalar"
-              boxStyles={{ padding: 10 }}
-              badgeStyles={{
-                backgroundColor: '#A00E00',
-                paddingHorizontal: 10,
-              }}
-              placeholder="PRÉ-HOSPITALAR"
-              searchPlaceholder="Escolha quantos for necessário"
-              notFoundText="Nenhuma categoria encontrada"
-              maxHeight={450}
-            />
-            {/* Sinais e Sintomas */}
-            <MultipleSelectList
-              setSelected={(val) => setCategories(val)}
-              data={sinaisESintomasData}
-              save="value"
-              label="Sinais e Sintomas"
-              boxStyles={{ padding: 10 }}
-              badgeStyles={{
-                backgroundColor: '#A00E00',
-                paddingHorizontal: 10,
-              }}
-              placeholder="SINAIS E SINTOMAS"
-              searchPlaceholder="Escolha quantos for necessário"
-              notFoundText="Nenhuma categoria encontrada"
-              maxHeight={750}
-            />
+            <View className="mx-auto flex-1 flex-col">
+              {/* <View className="mb-[40px] mt-[34px] flex-row items-center justify-center">
+                <FontAwesome5 name="suitcase" size={24} color="#A00E00" />
+                <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
+                  Introdução
+                </Text>
+              </View> */}
+              <MultipleSelectList
+                setSelected={(val) => setCategories(val)}
+                data={preHospitalarData}
+                save="value"
+                label="Pré-Hospitalar"
+                boxStyles={{
+                  flexGrow: 1,
+                  width: 305,
+                  flex: 1,
+                  borderColor: 'black',
+                  borderRadius: 8,
+                }}
+                badgeStyles={{
+                  backgroundColor: '#A00E00',
+                  paddingHorizontal: 10,
+                }}
+                placeholder="PRÉ-HOSPITALAR"
+                searchPlaceholder="Escolha quantos for necessário"
+                notFoundText="Nenhuma categoria encontrada"
+                maxHeight={450}
+              />
+            </View>
+            <View className="mx-auto flex-1 flex-row">
+              <MultipleSelectList
+                setSelected={(val) => setCategories(val)}
+                data={sinaisESintomasData}
+                save="value"
+                label="Sinais e Sintomas"
+                boxStyles={{
+                  flexGrow: 1,
+                  width: 305,
+                  flex: 1,
+                  borderColor: 'black',
+                  borderRadius: 8,
+                }}
+                badgeStyles={{
+                  backgroundColor: '#A00E00',
+                  paddingHorizontal: 10,
+                }}
+                placeholder="SINAIS E SINTOMAS"
+                searchPlaceholder="Escolha quantos for necessário"
+                notFoundText="Nenhuma categoria encontrada"
+                maxHeight={750}
+              />
+            </View>
           </View>
 
           <MainButton

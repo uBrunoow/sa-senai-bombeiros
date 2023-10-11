@@ -1,40 +1,46 @@
 import { FastifyInstance } from 'fastify'
-import { registerAnamnese } from '../../../schemas/anamneseSchemas'
+import { registerGestacionalAnamnese } from '../../../schemas/gestacionalAnamneseSchema'
 import { prisma } from '../../../lib/prisma'
 
 export async function registerAnamneseRoutes(app: FastifyInstance) {
   app.post('/api/anamnese', async (req, res) => {
     const {
-      SignsAndSymptoms,
-      HappenedTimes,
-      SinceHappened,
-      HealthProblem,
-      HealthProlemsWhich,
-      Medication,
-      MedicationWhich,
-      HourMedication,
-      Allergies,
-      AllergiesWhich,
-      IngestedFood,
-      WhatTimeFood,
+      gestationalPeriod,
+      PreNatal,
+      DoctorName,
+      Complications,
+      NumberSon,
+      ContractionSchedule,
+      Duration,
+      Interval,
+      HiPressure,
+      BagRuptured,
+      VisualInspection,
+      Childbirth,
+      BabyGender,
+      BornHour,
+      BabyName,
       FinalRemarks,
       ReportOwnerId,
-    } = registerAnamnese.parse(req.body)
+    } = registerGestacionalAnamnese.parse(req.body)
 
-    const newAnamneses = await prisma.anamnesis.create({
+    const newGesAnamneses = await prisma.gestationalAnamnesis.create({
       data: {
-        SignsAndSymptoms: SignsAndSymptoms || '',
-        HappenedTimes: HappenedTimes || false,
-        SinceHappened: SinceHappened || '',
-        HealthProblem: HealthProblem || false,
-        HealthProlemsWhich: HealthProlemsWhich || '',
-        Medication: Medication || false,
-        MedicationWhich: MedicationWhich || '',
-        HourMedication: HourMedication || '',
-        Allergies: Allergies || false,
-        AllergiesWhich: AllergiesWhich || '',
-        IngestedFood: IngestedFood || false,
-        WhatTimeFood: WhatTimeFood || '',
+        gestationalPeriod: gestationalPeriod || null,
+        PreNatal: PreNatal || false,
+        DoctorName: DoctorName || '',
+        Complications: Complications || false,
+        NumberSon: NumberSon || 0,
+        ContractionSchedule: ContractionSchedule || null,
+        Duration: Duration || null,
+        Interval: Interval || null,
+        HiPressure: HiPressure || false,
+        BagRuptured: BagRuptured || false,
+        VisualInspection: VisualInspection || false,
+        Childbirth: Childbirth || false,
+        BabyGender: BabyGender || '',
+        BornHour: BornHour || null,
+        BabyName: BabyName || '',
         FinalRemarks: FinalRemarks || '',
         ReportOwnerId,
       },
@@ -42,7 +48,7 @@ export async function registerAnamneseRoutes(app: FastifyInstance) {
 
     return res.send({
       msg: '🟢 Anamnese criada com sucesso.',
-      anamnesis: newAnamneses,
+      gesAnamnesis: newGesAnamneses,
     })
   })
 }

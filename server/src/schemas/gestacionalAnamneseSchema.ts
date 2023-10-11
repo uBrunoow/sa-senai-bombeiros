@@ -1,15 +1,15 @@
 import { z } from 'zod'
 
 export const registerGestacionalAnamnese = z.object({
-  gestationalPeriod: z.string().nullable(),
+  gestationalPeriod: z.string().optional().nullable(),
   PreNatal: z.boolean().optional(),
   DoctorName: z.string().optional(),
   Complications: z.boolean().optional(),
   NumberSon: z.number().optional(),
-  ContractionSchedule: z.string().nullable(),
-  Duration: z.string().nullable(),
+  ContractionSchedule: z.string().optional().nullable(),
+  Duration: z.string().optional().nullable(),
   Interval: z.string().optional().nullable(),
-  HiPressure: z.boolean().optional(),
+  HiPressure: z.boolean().optional().nullable(),
   BagRuptured: z.boolean().optional(),
   VisualInspection: z.boolean().optional(),
   Childbirth: z.boolean().optional(),
