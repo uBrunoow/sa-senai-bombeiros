@@ -27,26 +27,6 @@ export async function reportsUpdateRoutes(
 
     const reportDateValue = reportDate ? new Date(reportDate) : null
 
-    // Validação dos dados recebidos
-    if (
-      !age &&
-      !gender &&
-      !name &&
-      !cpf &&
-      !phone &&
-      !reportPlace &&
-      !bloodPressure &&
-      !reportDate === undefined &&
-      !bodyTemp &&
-      !bodyPulse &&
-      !breathing &&
-      !saturation
-    ) {
-      return res
-        .status(400)
-        .send({ message: '🔴 Nenhuma informação foi fornecida' })
-    }
-
     // Buscar usuário pelo ID se não existir retorna um erro
     const existingReport = await prisma.report.findUnique({
       where: {
@@ -63,33 +43,48 @@ export async function reportsUpdateRoutes(
     // Informações para serem atualizadas
     const updatedReportData: {
       reportDate?: Date | null
-      age?: number
-      gender?: string
-      name?: string
-      cpf?: string
-      phone?: string
-      reportPlace?: string
-      bloodPressure?: number
-      parsedReportDate?: string
-      bodyTemp?: number
-      bodyPulse?: number
-      breathing?: number
-      saturation?: number
+      age?: number | null
+      gender?: string | null
+      name?: string | null
+      cpf?: string | null
+      phone?: string | null
+      reportPlace?: string | null
+      bloodPressure?: number | null
+      parsedReportDate?: string | null
+      bodyTemp?: number | null
+      bodyPulse?: number | null
+      breathing?: number | null
+      saturation?: number | null
     } = {}
 
     if (age) updatedReportData.age = age
+    if (!age && age !== undefined) updatedReportData.age = null
     if (gender) updatedReportData.gender = gender
     if (name) updatedReportData.name = name
+    if (!name && name !== undefined) updatedReportData.name = null
     if (cpf) updatedReportData.cpf = cpf
+    if (!cpf && cpf !== undefined) updatedReportData.cpf = null
     if (phone) updatedReportData.phone = phone
+    if (!phone && phone !== undefined) updatedReportData.phone = null
     if (reportPlace) updatedReportData.reportPlace = reportPlace
+    if (!reportPlace && reportPlace !== undefined)
+      updatedReportData.reportPlace = null
     if (bloodPressure) updatedReportData.bloodPressure = bloodPressure
+    if (!bloodPressure && bloodPressure !== undefined)
+      updatedReportData.bloodPressure = null
     if (reportDateValue !== undefined)
       updatedReportData.reportDate = reportDateValue
     if (bodyTemp) updatedReportData.bodyTemp = bodyTemp
+    if (!bodyTemp && bodyTemp !== undefined) updatedReportData.bodyTemp = null
     if (bodyPulse) updatedReportData.bodyPulse = bodyPulse
+    if (!bodyPulse && bodyPulse !== undefined)
+      updatedReportData.bodyPulse = null
     if (breathing) updatedReportData.breathing = breathing
+    if (!breathing && breathing !== undefined)
+      updatedReportData.breathing = null
     if (saturation) updatedReportData.saturation = saturation
+    if (!saturation && saturation !== undefined)
+      updatedReportData.saturation = null
 
     // Atualizar o usuário buscando pelo ID
     const updatedReport = await prisma.report.update({

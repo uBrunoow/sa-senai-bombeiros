@@ -51,6 +51,7 @@ export default function InputLowPadding(props: InputProps) {
     >
       {props.title && (
         <Text
+          className="text-base font-medium"
           style={{
             textAlign: handleAlignText(),
           }}

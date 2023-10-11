@@ -26,12 +26,12 @@ export default function Introducao({ navigation }) {
   const ownerId = useSelector((state: RootState) => state.auth.userId)
 
   const [reportDateTime, setReportDateTime] = useState('')
-  const [name, setName] = useState('')
+  const [name, setName] = useState(' ')
   const [age, setAge] = useState(0)
-  const [gender, setGender] = useState('')
-  const [cpf, setCpf] = useState('')
-  const [phone, setPhone] = useState('')
-  const [reportPlace, setReportPlace] = useState('')
+  const [gender, setGender] = useState(' ')
+  const [cpf, setCpf] = useState('0')
+  const [phone, setPhone] = useState('0')
+  const [reportPlace, setReportPlace] = useState(' ')
   const [loading, setLoading] = useState(false)
   const [buttonLoading, setButtonLoading] = useState(false)
 
