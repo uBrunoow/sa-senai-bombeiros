@@ -41,8 +41,8 @@ export default function InputFull(props: InputProps) {
       <Text className="text-lg font-medium">{props.title}</Text>
       <View className="mb-4 mt-2 w-5/6 rounded-lg border">
         <TextInput
-          multiline={true}
-          numberOfLines={100}
+          multiline={props.isBig}
+          numberOfLines={props.isBig ? 100 : 1}
           style={{
             height: props.isBig ? 100 : 38,
             textAlignVertical: 'top',

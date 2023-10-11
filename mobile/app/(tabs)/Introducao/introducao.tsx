@@ -155,7 +155,7 @@ export default function Introducao({ navigation }) {
             Introdução
           </Text>
         </View>
-        <View style={s.boxShadow} className=" mx-auto mb-12">
+        <View style={s.boxShadow} className=" mx-auto ">
           <View className="w-full flex-1 flex-row items-center">
             <View className="w-3/6 p-2">
               <InputDatePicker
