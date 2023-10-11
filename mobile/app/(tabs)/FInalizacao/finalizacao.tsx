@@ -147,6 +147,10 @@ const Finalizacao = () => {
                     label="Categorias"
                     boxStyles={{ padding: 10 }}
                     placeholder="Selecione"
+                    badgeStyles={{
+                      backgroundColor: '#A00E00',
+                      paddingHorizontal: 10,
+                    }}
                     searchPlaceholder="Busque pela forma de condução"
                     notFoundText="Nenhuma categoria encontrada"
                   />

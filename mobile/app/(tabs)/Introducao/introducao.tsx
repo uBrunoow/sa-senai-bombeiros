@@ -204,7 +204,10 @@ export default function Introducao({ navigation }) {
               Introdução
             </Text>
           </View>
-          <View style={s.boxShadow} className=" mx-auto mb-12">
+          <View
+            style={s.boxShadow}
+            className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
+          >
             <View className="w-full flex-1 flex-row items-center">
               <View className="w-3/6 p-2">
                 <InputDatePicker
@@ -212,73 +215,92 @@ export default function Introducao({ navigation }) {
                   setReportDate={setReportDateTime}
                 />
               </View>
-              <View
-                style={s.boxShadow}
-                className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
-              >
-                <View className="w-full flex-1 flex-row items-center">
-                  <View className="w-3/6 p-2">
-                    <InputDatePicker
-                      reportDate={reportDateTime}
-                      setReportDate={setReportDateTime}
-                    />
-                  </View>
-                  <View className="h-full w-3/6 items-center justify-center">
-                    <Options
-                      title="Sexo"
-                      Option1="Masc."
-                      Option2="Fem."
-                      selectedOption={gender}
-                      onSelectOption={handleSelectGender}
-                    />
-                  </View>
-                </View>
-                <View className="mx-auto flex-1 flex-row">
-                  <InputLowPadding
-                    title="Nome"
-                    size="regular"
-                    alignText="left"
-                    value={name}
-                    placeholder={name || ''}
-                    onChangeText={(e) => setName(e)}
-                  />
-                  <InputNumeric
-                    title="Idade"
-                    size="small"
-                    value={age}
-                    onChangeText={(e) => setAge(e)}
-                  />
-                </View>
-                <InputCpf
-                  title="RG/CPF"
-                  placeholder="___.___.___-__"
-                  value={cpf}
-                  onChangeText={(e) => setCpf(e)}
+              <View className="h-full w-3/6 items-center justify-center">
+                <Options
+                  title="Sexo"
+                  Option1="Masc."
+                  Option2="Fem."
+                  selectedOption={gender}
+                  onSelectOption={handleSelectGender}
                 />
-                <InputTelefone
-                  title="Fone"
-                  placeholder="(__) _____-____"
-                  value={phone}
-                  onChangeText={(e) => setPhone(e)}
-                />
-                <InputLowPadding
-                  title="Local da Ocorrência"
-                  value={reportPlace}
-                  onChangeText={(e) => setReportPlace(e)}
-                />
-                <View className="mx-auto flex-1 flex-row">
-                  <InputLowPadding title="Acompanhante" size="regular" />
-                  <InputLowPadding title="Idade" size="small" />
-                </View>
               </View>
-              <MainButton
-                innerText="SALVAR"
-                onPress={() => handleSubmitIntroduction()}
-                isLoading={buttonLoading}
+            </View>
+            <View className="mx-auto flex-1 flex-row">
+              <InputLowPadding
+                title="Nome"
+                size="regular"
+                alignText="left"
+                value={name}
+                placeholder={name || ''}
+                onChangeText={(e) => setName(e)}
+              />
+              <InputNumeric
+                title="Idade"
+                size="small"
+                value={age}
+                onChangeText={(e) => setAge(e)}
               />
             </View>
-            <Footer />
+            <InputCpf
+              title="RG/CPF"
+              placeholder="___.___.___-__"
+              value={cpf}
+              onChangeText={(e) => setCpf(e)}
+            />
+            <InputTelefone
+              title="Fone"
+              placeholder="(__) _____-____"
+              value={phone}
+              onChangeText={(e) => setPhone(e)}
+            />
+            <InputLowPadding
+              title="Local da Ocorrência"
+              value={reportPlace}
+              onChangeText={(e) => setReportPlace(e)}
+            />
+            <View className="mx-auto flex-1 flex-row">
+              <InputLowPadding title="Acompanhante" size="regular" />
+              <InputLowPadding title="Idade" size="small" />
+            </View>
+            <MultipleSelectList
+              setSelected={(val) => setCategories(val)}
+              data={preHospitalarData}
+              save="value"
+              label="Pré-Hospitalar"
+              boxStyles={{ padding: 10 }}
+              badgeStyles={{
+                backgroundColor: '#A00E00',
+                paddingHorizontal: 10,
+              }}
+              placeholder="PRÉ-HOSPITALAR"
+              searchPlaceholder="Escolha quantos for necessário"
+              notFoundText="Nenhuma categoria encontrada"
+              maxHeight={450}
+            />
+            {/* Sinais e Sintomas */}
+            <MultipleSelectList
+              setSelected={(val) => setCategories(val)}
+              data={sinaisESintomasData}
+              save="value"
+              label="Sinais e Sintomas"
+              boxStyles={{ padding: 10 }}
+              badgeStyles={{
+                backgroundColor: '#A00E00',
+                paddingHorizontal: 10,
+              }}
+              placeholder="SINAIS E SINTOMAS"
+              searchPlaceholder="Escolha quantos for necessário"
+              notFoundText="Nenhuma categoria encontrada"
+              maxHeight={750}
+            />
           </View>
+
+          <MainButton
+            innerText="SALVAR"
+            onPress={() => handleSubmitIntroduction()}
+            isLoading={buttonLoading}
+          />
+          <Footer />
         </>
       )}
     </ScrollView>
