@@ -16,10 +16,11 @@ export default function InputFull(props: InputProps) {
   const [inputValue, setInputValue] = useState(props.value)
 
   const handleTextChange = (text: string) => {
-    setInputValue(text)
+    const updatedText = text.trim() === '' ? ' ' : text
+    setInputValue(updatedText)
 
     if (props.onChangeText) {
-      props.onChangeText(text)
+      props.onChangeText(updatedText)
     }
   }
 

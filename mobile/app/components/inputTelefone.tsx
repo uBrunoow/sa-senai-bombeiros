@@ -4,24 +4,15 @@ import React, { useState } from 'react'
 type InputProps = {
   title?: string
   size?: 'small' | 'regular' | 'big'
-  isCalendar?: boolean
   alignText?: 'center' | 'left' | 'right'
   isBig?: boolean
   value?: string | null
   placeholder?: string
-  onChangeText?: (text: string) => void
+  onChangeText?: (formattedValue: string) => void
 }
 
-export default function InputLowPadding(props: InputProps) {
+export default function InputTelefone(props: InputProps) {
   const [inputValue, setInputValue] = useState(props.value || '')
-
-  const handleTextChange = (text: string) => {
-    setInputValue(text)
-
-    if (props.onChangeText) {
-      props.onChangeText(text)
-    }
-  }
 
   const handleWidth = () => {
     if (props.size === 'small') {
@@ -42,6 +33,31 @@ export default function InputLowPadding(props: InputProps) {
     }
   }
 
+  const formatPhoneNumber = (phoneNumber: string) => {
+    // Remova todos os caracteres não numéricos
+    const cleaned = phoneNumber.replace(/\D/g, '')
+
+    // Limite o número máximo de dígitos a 11
+    const truncated = cleaned.slice(0, 11)
+
+    // Use regex para adicionar os parênteses e hífen no formato desejado
+    const formatted = truncated.replace(
+      /^(\d{2})(\d{4,5})(\d{4})$/,
+      '($1) $2-$3',
+    )
+
+    return formatted
+  }
+
+  const handleTextChange = (text: string) => {
+    const formattedValue = text.trim() ? formatPhoneNumber(text) : '0'
+    setInputValue(formattedValue)
+
+    if (props.onChangeText) {
+      props.onChangeText(formattedValue)
+    }
+  }
+
   return (
     <View
       style={{
@@ -51,6 +67,7 @@ export default function InputLowPadding(props: InputProps) {
     >
       {props.title && (
         <Text
+          className="text-base font-medium"
           style={{
             textAlign: handleAlignText(),
           }}
@@ -58,20 +75,21 @@ export default function InputLowPadding(props: InputProps) {
           {props.title}
         </Text>
       )}
-      <View className="my-1 w-full rounded-lg border">
+      <View className="my-1 w-full rounded-lg border p-4">
         <TextInput
-          multiline={props.isBig}
-          numberOfLines={props.isBig ? 100 : 1}
+          multiline={true}
+          numberOfLines={100}
           style={{
-            height: props.isBig ? 100 : 45,
-            textAlignVertical: 'center',
+            height: props.isBig ? 100 : 20,
+            textAlignVertical: 'top',
+            paddingVertical: 2,
+            paddingHorizontal: 2,
             fontSize: 16,
-            paddingLeft: 10,
           }}
-          value={props.value}
+          value={inputValue}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
-          keyboardType={'default'}
+          keyboardType={'numeric'}
         />
       </View>
     </View>

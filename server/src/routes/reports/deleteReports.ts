@@ -20,7 +20,7 @@ export async function reportsDeleteRoutes(
           GestationalAnamnesis: true,
           Glasglow: true,
           PreHospitalMethods: true,
-          SuspectProblems: true,
+          // SuspectProblems: true,
           Symptoms: true,
         },
       })
@@ -54,11 +54,11 @@ export async function reportsDeleteRoutes(
             ReportOwnerId: parseInt(id),
           },
         }),
-        prisma.suspectProblems.deleteMany({
-          where: {
-            reportId: parseInt(id),
-          },
-        }),
+        // prisma.suspectProblems.deleteMany({
+        //   where: {
+        //     reportId: parseInt(id),
+        //   },
+        // }),
         prisma.glasglow.deleteMany({
           where: {
             ReportOwnerId: parseInt(id),

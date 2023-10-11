@@ -1,9 +1,9 @@
 import DateTimePickerAndroid from '@react-native-community/datetimepicker'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextInput, Text, View, Pressable, Platform } from 'react-native'
 
 type InputDatePickerProps = {
-  reportDate: string // assuming reportDate is a string, adjust the type as needed
+  reportDate: string
   setReportDate: React.Dispatch<React.SetStateAction<string>>
 }
 
@@ -15,6 +15,16 @@ export default function InputDatePicker({
   const [showPicker, setShowPicker] = useState(false)
   const [selectedDate, setSelectedDate] = useState('')
 
+  // Atualiza a data e o valor inicial ao receber um novo reportDate
+  useEffect(() => {
+    if (reportDate) {
+      const parsedDate = new Date(reportDate)
+      setDate(parsedDate)
+      const formattedDate = new Intl.DateTimeFormat('pt-BR').format(parsedDate)
+      setSelectedDate(formattedDate)
+    }
+  }, [reportDate])
+
   const toggleDatePicker = () => {
     setShowPicker(!showPicker)
   }
@@ -24,18 +34,12 @@ export default function InputDatePicker({
     if (event.type === 'set' && selectedDate) {
       setDate(selectedDate)
 
-      const day = selectedDate.getDate()
-      const month = selectedDate.getMonth() + 1
-      const year = selectedDate.getFullYear()
-
-      const formattedDate = `${day < 10 ? '0' + day : day}/${
-        month < 10 ? '0' + month : month
-      }/${year}`
+      const formattedDate = new Intl.DateTimeFormat('pt-BR').format(
+        selectedDate,
+      )
       setSelectedDate(formattedDate)
 
-      const formattedApiDate = `${year}-${month < 10 ? '0' + month : month}-${
-        day < 10 ? '0' + day : day
-      }`
+      const formattedApiDate = selectedDate.toISOString().split('T')[0]
       setReportDate(formattedApiDate)
     }
   }

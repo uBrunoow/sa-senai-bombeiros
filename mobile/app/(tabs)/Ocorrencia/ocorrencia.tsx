@@ -22,12 +22,14 @@ import {
   clearAnamnesisId,
   clearReportId,
   saveAnamnesisId,
+  saveGestacionalAnamnesisId,
 } from '@src/redux/actions/reportActions'
 import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
 import { calculateAnamnesisCompleteness } from '@src/utils/calculateAnamnesisCompleteness'
 import ExcluirOcorrenciaModal from '@app/modal/ExcluirOcorrenciaModal'
 import { styles as s } from '@app/styles/boxShadow'
 import deleteReport from '@src/api/reports/deleteReport'
+import registerGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/registerGestacionalAnamnesis'
 
 export default function Ocorrencia({ navigation }) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
@@ -80,6 +82,32 @@ export default function Ocorrencia({ navigation }) {
         navigation.navigate('anamnese', {
           screen: 'anamnese',
           params: { anamnesisId: response.anamnesis.id },
+        })
+      }
+    }
+  }
+
+  const existingGestacionalAnamnesisId = useSelector(
+    (state: RootState) => state.gestacionalAnamnesis.gestacionalAnamnesisId,
+  )
+
+  const handleClickGestacionalAnamnese = async () => {
+    if (existingGestacionalAnamnesisId) {
+      navigation.navigate('anamnese-gestacional', {
+        screen: 'anamnese-gestacional',
+        params: { gestacionalAnamnesisId: existingGestacionalAnamnesisId },
+      })
+    } else {
+      const response = await registerGesAnamnesis(ReportOwnerId)
+      console.log(response)
+
+      if (response && response.gestacionalAnamnesis) {
+        dispatch(saveGestacionalAnamnesisId(response.gestacionalAnamnesis.id))
+        console.log('Ges Anamnese n°: ', response.gestacionalAnamnesis.id)
+
+        navigation.navigate('anamnese-gestacional', {
+          screen: 'anamnese-gestacional',
+          params: { gestacionalAnamnesisId: response.gestacionalAnamnesis.id },
         })
       }
     }
@@ -194,7 +222,7 @@ export default function Ocorrencia({ navigation }) {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate(`anamnese-gestacional`)}
+          onPress={handleClickGestacionalAnamnese}
           activeOpacity={0.7}
         >
           <Grouper

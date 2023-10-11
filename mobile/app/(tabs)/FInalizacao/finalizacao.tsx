@@ -147,6 +147,10 @@ const Finalizacao = () => {
                     label="Categorias"
                     boxStyles={{ padding: 10 }}
                     placeholder="Selecione"
+                    badgeStyles={{
+                      backgroundColor: '#A00E00',
+                      paddingHorizontal: 10,
+                    }}
                     searchPlaceholder="Busque pela forma de condução"
                     notFoundText="Nenhuma categoria encontrada"
                   />
@@ -158,9 +162,6 @@ const Finalizacao = () => {
                     <View>
                       <Pressable
                         style={({ pressed }) => [
-                          // {
-                          //   backgroundColor: pressed ? '#000' : 'transparent',
-                          // },
                           s.button,
                           getButtonStyle('critico'),
                           selectedOption === 'critico' && {

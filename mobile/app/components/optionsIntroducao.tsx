@@ -1,50 +1,63 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 
-type optionsProps = {
-  title?: String
-  Option1?: String
-  Option2?: String
+type OptionsProps = {
+  title?: string
+  selectedOption: string
+  onSelectOption: (option: 'MASC' | 'FEM') => void
+  Option1?: string // You need to define these props
+  Option2?: string // You need to define these props
 }
 
-export default function Options(props: optionsProps) {
-  const [selectedOption, setSelectedOption] = useState<'MASC' | 'FEM' | null>(
-    null,
-  )
-
+export default function Options(props: OptionsProps) {
   return (
-    <View className="flex-col items-center justify-center">
+    <View
+      style={{
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       {props.title && (
-        <Text className="text-center text-base font-medium">{props.title}</Text>
+        <Text style={{ textAlign: 'center', fontSize: 16, fontWeight: 'bold' }}>
+          {props.title}
+        </Text>
       )}
-      <View className="mt-2 flex-row">
+      <View className="mt-3 flex-row">
         <TouchableOpacity
           className="w-[70px] items-center justify-center py-2"
           style={[
             styles.button,
-            selectedOption === 'MASC' ? styles.selected : null,
+            props.selectedOption === 'MASC' ? styles.selected : null,
           ]}
-          onPress={() => setSelectedOption('MASC')}
+          onPress={() => props.onSelectOption('MASC')}
         >
           <Text
+            className="text-center"
             style={
-              selectedOption === 'MASC' ? styles.whiteText : styles.blackText
+              props.selectedOption === 'MASC'
+                ? styles.whiteText
+                : styles.blackText
             }
           >
             {props.Option1}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+
           className="ml-1 w-[70px] items-center justify-center py-3"
           style={[
             styles.button,
-            selectedOption === 'FEM' ? styles.selected : null,
+            props.selectedOption === 'FEM' ? styles.selected : null,
           ]}
-          onPress={() => setSelectedOption('FEM')}
+          onPress={() => props.onSelectOption('FEM')}
         >
           <Text
+            className="text-center"
             style={
-              selectedOption === 'FEM' ? styles.whiteText : styles.blackText
+              props.selectedOption === 'FEM'
+                ? styles.whiteText
+                : styles.blackText
             }
           >
             {props.Option2}
@@ -60,6 +73,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: 'rgba(0, 0, 0, 0.28)',
     borderWidth: 1,
+    marginRight: 5,
+    padding: 10,
   },
   selected: {
     backgroundColor: '#A00E00',
@@ -70,8 +85,5 @@ const styles = StyleSheet.create({
   },
   whiteText: {
     color: '#FFFFFF',
-  },
-  buttonText: {
-    color: 'black',
   },
 })
