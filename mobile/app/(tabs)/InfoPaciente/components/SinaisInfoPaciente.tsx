@@ -16,7 +16,7 @@ export default function SinaisInfoPaciente() {
             <Text className="text-center text-base font-medium">
               Pressão arterial
             </Text>
-            <View className="w-[150px] flex-row items-center justify-center">
+            <View className="flex-row items-center justify-center">
               <InputLowPadding />
               <Text className="uppercase">X</Text>
               <InputLowPadding />
