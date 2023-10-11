@@ -148,6 +148,7 @@ const Finalizacao = () => {
                     boxStyles={{ padding: 10 }}
                     placeholder="Selecione"
                     searchPlaceholder="Busque pela forma de condução"
+                    notFoundText="Nenhuma categoria encontrada"
                   />
                 </View>
 
