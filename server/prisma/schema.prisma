@@ -109,7 +109,7 @@ model GestationalAnamnesis {
   VisualInspection    Boolean?
   Childbirth          Boolean?
   BabyGender          String?
-  BornHour            DateTime?
+  BornHour            String?
   BabyName            String?
   FinalRemarks        String?
   createdAt           DateTime? @default(now())

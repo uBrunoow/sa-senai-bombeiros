@@ -26,22 +26,20 @@ export async function registerGestacionalAnamnesisRoutes(app: FastifyInstance) {
 
     const newGestacionalAnamnesis = await prisma.gestationalAnamnesis.create({
       data: {
-        gestationalPeriod: gestationalPeriod
-          ? new Date(gestationalPeriod)
-          : null,
+        gestationalPeriod: gestationalPeriod || null,
         PreNatal: PreNatal || false,
         DoctorName: DoctorName || '',
         Complications: Complications || false,
         NumberSon: NumberSon || 0,
         ContractionSchedule,
-        Duration: Duration ? new Date(Duration) : null,
-        Interval: Interval ? new Date(Interval) : null,
+        Duration,
+        Interval: Interval || null,
         HiPressure: HiPressure || false,
         BagRuptured: BagRuptured || false,
         VisualInspection: VisualInspection || false,
         Childbirth: Childbirth || false,
         BabyGender: BabyGender || '',
-        BornHour: BornHour ? new Date(BornHour) : null,
+        BornHour: BornHour || '',
         BabyName: BabyName || '',
         FinalRemarks: FinalRemarks || '',
         ReportOwnerId,
