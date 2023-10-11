@@ -1,27 +1,24 @@
 import { View, Text, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 type InputProps = {
   title?: string
   size?: 'small' | 'regular' | 'big'
-  isCalendar?: boolean
   alignText?: 'center' | 'left' | 'right'
   isBig?: boolean
-  value?: string | null
+  value?: number | null
   placeholder?: string
-  onChangeText?: (text: string) => void
+  onChangeText?: (text: number) => void
 }
 
-export default function InputLowPadding(props: InputProps) {
-  const [inputValue, setInputValue] = useState(props.value || '')
+export default function InputNumeric(props: InputProps) {
+  const [inputValue, setInputValue] = useState(
+    props.value !== null ? props.value.toString() : '',
+  )
 
-  const handleTextChange = (text: string) => {
-    setInputValue(text)
-
-    if (props.onChangeText) {
-      props.onChangeText(text)
-    }
-  }
+  useEffect(() => {
+    setInputValue(props.value !== null ? props.value.toString() : '')
+  }, [props.value])
 
   const handleWidth = () => {
     if (props.size === 'small') {
@@ -42,6 +39,18 @@ export default function InputLowPadding(props: InputProps) {
     }
   }
 
+  const handleTextChange = (text: string) => {
+    const numericValue = text.replace(/[^0-9]/g, '')
+
+    if (!isNaN(Number(numericValue))) {
+      setInputValue(numericValue)
+
+      if (props.onChangeText) {
+        props.onChangeText(Number(numericValue))
+      }
+    }
+  }
+
   return (
     <View
       style={{
@@ -59,21 +68,15 @@ export default function InputLowPadding(props: InputProps) {
           {props.title}
         </Text>
       )}
-      <View className="my-1 w-full rounded-lg border">
+      <View className="my-1 w-full rounded-lg border p-4">
         <TextInput
-          multiline={true}
-          numberOfLines={100}
+          keyboardType="numeric"
           style={{
-            height: props.isBig ? 100 : 45,
-            textAlignVertical: 'center',
-            padding: 6,
+            height: props.isBig ? 100 : 20,
             fontSize: 16,
-            paddingLeft: 10,
           }}
-          value={props.value}
+          value={inputValue}
           onChangeText={handleTextChange}
-          placeholder={props.placeholder}
-          keyboardType={'default'}
         />
       </View>
     </View>

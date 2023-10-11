@@ -1,5 +1,5 @@
 import { View, ScrollView, Text, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Footer from '@app/components/Footer'
@@ -9,6 +9,10 @@ import YesOrNo from '@app/components/YesOrNo'
 import GestationPeriod from '@app/(tabs)/AnamneseGestacional/components/GestationPeriod'
 import InputFull from '@app/components/InputFull'
 import { styles as s } from '@app/styles/boxShadow'
+import findGestacionalAnamnesis from '@src/api/reports/gestacionalAnamnesis/findGestacionalAnamnesis'
+import { RootState } from '@src/redux/stores/stores'
+import { useSelector } from 'react-redux'
+import updateGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/updateGestacionalAnamnesis'
 
 export default function AnamneseGestacional({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
@@ -19,6 +23,45 @@ export default function AnamneseGestacional({ navigation }) {
   const [BagRuptured, setBagRuptured] = useState(false)
   const [VisualInspection, setVisualInspection] = useState(false)
   const [Childbirth, setChildbirth] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [buttonLoading, setButtonLoading] = useState(false)
+
+  const gestacionalAnamnesisId = useSelector(
+    (state: RootState) => state.gestacionalAnamnesis.gestacionalAnamnesisId,
+  )
+  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
+
+  useEffect(() => {
+    const findGesAnamnesisData = async () => {
+      try {
+        setLoading(true)
+        const response = await findGestacionalAnamnesis(gestacionalAnamnesisId)
+
+        const preNatalResponse = response.gestacionalAnamnesis.PreNatal
+        const complicationsResponse =
+          response.gestacionalAnamnesis.Complications
+        const hiPressureResponse = response.gestacionalAnamnesis.HiPressure
+        const bagRupturedResponse = response.gestacionalAnamnesis.BagRuptured
+        const visualInspectionResponse =
+          response.gestacionalAnamnesis.VisualInspection
+        const childbirthResponse = response.gestacionalAnamnesis.Childbirth
+
+        setPreNatal(preNatalResponse || false)
+        setComplications(complicationsResponse || false)
+        setHiPressure(hiPressureResponse || false)
+        setBagRuptured(bagRupturedResponse || false)
+        setVisualInspection(visualInspectionResponse || false)
+        setChildbirth(childbirthResponse || false)
+
+        console.log(response)
+      } catch (error) {
+        console.error('Error fetching ges anamnesis data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    findGesAnamnesisData()
+  }, [gestacionalAnamnesisId])
 
   const handlePreNatal = (option: 'SIM' | 'NÃO') => {
     setPreNatal(option === 'SIM')
@@ -37,6 +80,34 @@ export default function AnamneseGestacional({ navigation }) {
   }
   const handleChildbirth = (option: 'SIM' | 'NÃO') => {
     setChildbirth(option === 'SIM')
+  }
+
+  console.log(PreNatal)
+
+  const handleSubmitGesAnamnesis = async () => {
+    try {
+      setButtonLoading(true)
+
+      const response = await updateGesAnamnesis(
+        gestacionalAnamnesisId,
+        ReportOwnerId,
+        PreNatal,
+        Complications,
+        HiPressure,
+        BagRuptured,
+        VisualInspection,
+        Childbirth,
+      )
+      console.log(response)
+
+      if (response && response.updatedGestacionalAnamnesis) {
+        navigation.navigate('ocorrencia', { gestacionalAnamnesisId })
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setButtonLoading(false)
+    }
   }
 
   return (
@@ -90,7 +161,10 @@ export default function AnamneseGestacional({ navigation }) {
           />
         </View>
         <Pressable onPress={() => navigation.navigate(`ocorrencia`)}>
-          <MainButton innerText="SALVAR"></MainButton>
+          <MainButton
+            innerText="SALVAR"
+            onPress={handleSubmitGesAnamnesis}
+          ></MainButton>
         </Pressable>
       </View>
       <Footer />

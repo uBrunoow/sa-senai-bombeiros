@@ -19,29 +19,28 @@ import { RootState } from '@src/redux/stores/stores'
 import updateAnamnesis from '@src/api/reports/anamnesis/updateAnamnesis'
 import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
 import { RouteProp } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
 
-type RootStackParamList = {
-  anamnese: {
-    anamnesisId: number
-  }
-  ocorrencia: {
-    reportId: number
-  }
-}
+// type RootStackParamList = {
+//   anamnese: {
+//     anamnesisId: number
+//   }
+//   ocorrencia: {
+//     reportId: number
+//   }
+// }
 
-type AnamneseScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'anamnese'
->
-type AnamneseScreenRouteProp = RouteProp<RootStackParamList, 'anamnese'>
+// type AnamneseScreenNavigationProp = StackNavigationProp<
+//   RootStackParamList,
+//   'anamnese'
+// >
+// type AnamneseScreenRouteProp = RouteProp<RootStackParamList, 'anamnese'>
 
-interface AnamneseProps {
-  navigation: AnamneseScreenNavigationProp
-  route: AnamneseScreenRouteProp
-}
+// interface AnamneseProps {
+//   navigation: AnamneseScreenNavigationProp
+//   route: AnamneseScreenRouteProp
+// }
 
-export default function Anamnese({ navigation }: AnamneseProps) {
+export default function Anamnese({ navigation }) {
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const anamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,
@@ -63,6 +62,7 @@ export default function Anamnese({ navigation }: AnamneseProps) {
   const [horasIngeriuAlimento, setHorasIngeriuAlimento] = useState('')
   const [observacoesFinais, setObservacoesFinais] = useState('')
   const [loading, setLoading] = useState(false)
+  const [buttonLoading, setButtonLoading] = useState(false)
 
   useEffect(() => {
     const findAnamnesisData = async () => {
@@ -148,32 +148,37 @@ export default function Anamnese({ navigation }: AnamneseProps) {
   }
 
   const handleSubmitAnamnesis = async () => {
-    const response = await updateAnamnesis(
-      reportId,
-      anamnesisId,
-      sinaisESintomas,
-      outrasVezes,
-      tempoAconteceu,
-      problemaSaude,
-      quaisProblemas,
-      usoMedicacao,
-      quaisMedicacoes,
-      horasMedicacao,
-      alergia,
-      quaisAlergias,
-      ingeriuAlimento,
-      horasIngeriuAlimento,
-      observacoesFinais,
-    )
+    try {
+      setButtonLoading(true)
+      const response = await updateAnamnesis(
+        reportId,
+        anamnesisId,
+        sinaisESintomas,
+        outrasVezes,
+        tempoAconteceu,
+        problemaSaude,
+        quaisProblemas,
+        usoMedicacao,
+        quaisMedicacoes,
+        horasMedicacao,
+        alergia,
+        quaisAlergias,
+        ingeriuAlimento,
+        horasIngeriuAlimento,
+        observacoesFinais,
+      )
 
-    console.log(response)
+      console.log(response)
 
-    if (response && response.updatedAnamnese) {
-      navigation.navigate('ocorrencia', { reportId })
+      if (response && response.updatedAnamnese) {
+        navigation.navigate('ocorrencia', { reportId })
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setButtonLoading(false)
     }
   }
-
-  console.log(tempoAconteceu)
 
   return (
     <ScrollView
@@ -309,6 +314,7 @@ export default function Anamnese({ navigation }: AnamneseProps) {
             </View>
             <MainButton
               innerText="SALVAR"
+              isLoading={buttonLoading}
               onPress={() => handleSubmitAnamnesis()}
             />
           </View>
