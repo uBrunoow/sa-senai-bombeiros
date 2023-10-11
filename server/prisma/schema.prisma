@@ -8,13 +8,15 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  name     String?
-  gender   String?
-  password String
-  isActive Boolean
-  Reports  Report[]
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  name      String?
+  gender    String?
+  password  String
+  isActive  Boolean
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  Reports   Report[]
 }
 
 model Report {
@@ -43,6 +45,7 @@ model Report {
   Glasglow                 Glasglow[]
   Report_PreHospitalMethod Report_PreHospitalMethod[]
   Report_Symptoms          Report_Symptoms[]
+  Finalization             Finalization[]
 }
 
 //  Tabela N para N entre relatório e método pré-hospitalar
@@ -52,17 +55,21 @@ model Report_PreHospitalMethod {
   reportOwner              Report            @relation(fields: [ReportOwnerId], references: [id])
   PreHospitalMethodOwnerId Int
   ReportOwnerId            Int
+  createdAt                DateTime?         @default(now())
+  updatedAt                DateTime?         @updatedAt
 
   @@unique([ReportOwnerId, PreHospitalMethodOwnerId])
 }
 
 //  Tabela N para N entre relatório e sintoma
 model Report_Symptoms {
-  id              Int      @id @default(autoincrement())
-  symptomsOwner   Symptoms @relation(fields: [SymptomsOwnerId], references: [id])
-  reportOwner     Report   @relation(fields: [ReportOwnerId], references: [id])
+  id              Int       @id @default(autoincrement())
+  symptomsOwner   Symptoms  @relation(fields: [SymptomsOwnerId], references: [id])
+  reportOwner     Report    @relation(fields: [ReportOwnerId], references: [id])
   SymptomsOwnerId Int
   ReportOwnerId   Int
+  createdAt       DateTime? @default(now())
+  updatedAt       DateTime? @updatedAt
 
   @@unique([ReportOwnerId, SymptomsOwnerId])
 }
@@ -72,6 +79,8 @@ model PreHospitalMethod {
   description              String
   reportOwner              Report                     @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId            Int
+  createdAt                DateTime?                  @default(now())
+  updatedAt                DateTime?                  @updatedAt
   Report_PreHospitalMethod Report_PreHospitalMethod[]
 }
 
@@ -80,33 +89,37 @@ model Symptoms {
   description     String
   reportOwner     Report            @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId   Int
+  createdAt       DateTime?         @default(now())
+  updatedAt       DateTime?         @updatedAt
   Report_Symptoms Report_Symptoms[]
 }
 
 model GestationalAnamnesis {
-  id                  Int      @id @default(autoincrement())
-  gestationalPeriod   DateTime
-  PreNatal            Boolean
-  DoctorName          String
-  Complications       String
-  NumberSon           Int
-  ContractionSchedule DateTime
-  Duration            DateTime
-  Interval            DateTime
-  HiPressure          Boolean
-  BagRuptured         Boolean
-  VisualInspection    Boolean
-  Childbirth          Boolean
-  BabyGender          String
-  BornHour            DateTime
-  BabyName            String
-  FinalRemarks        String
-  reportOwner         Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  id                  Int       @id @default(autoincrement())
+  gestationalPeriod   DateTime?
+  PreNatal            Boolean?
+  DoctorName          String?
+  Complications       Boolean?
+  NumberSon           Int?
+  ContractionSchedule DateTime?
+  Duration            DateTime?
+  Interval            DateTime?
+  HiPressure          Boolean?
+  BagRuptured         Boolean?
+  VisualInspection    Boolean?
+  Childbirth          Boolean?
+  BabyGender          String?
+  BornHour            String?
+  BabyName            String?
+  FinalRemarks        String?
+  createdAt           DateTime? @default(now())
+  updatedAt           DateTime? @updatedAt
+  reportOwner         Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId       Int
 }
 
 model Anamnesis {
-  id                 Int      @id @default(autoincrement())
+  id                 Int       @id @default(autoincrement())
   SignsAndSymptoms   String?
   HappenedTimes      Boolean?
   SinceHappened      String?
@@ -120,25 +133,31 @@ model Anamnesis {
   IngestedFood       Boolean?
   WhatTimeFood       String?
   FinalRemarks       String?
-  reportOwner        Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  createdAt          DateTime? @default(now())
+  updatedAt          DateTime? @updatedAt
+  reportOwner        Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId      Int
 }
 
 model Glasglow {
-  id                    Int    @id @default(autoincrement())
-  reportOwner           Report @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  id                    Int       @id @default(autoincrement())
+  reportOwner           Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId         Int
   eyeOpeningOwnerId     Int
   verbalResponseOwnerId Int
   motorResponseOwnerId  Int
+  createdAt             DateTime? @default(now())
+  updatedAt             DateTime? @updatedAt
 }
 
 model SuspectProblems {
-  id       Int        @id @default(autoincrement())
-  Problem  Problems[]
-  Another  String
-  Report   Report?    @relation(fields: [reportId], references: [id], onDelete: Cascade)
-  reportId Int?
+  id            Int        @id @default(autoincrement())
+  Problem       Problems[]
+  Another       String
+  Report        Report?    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  ReportOwnerId Int?
+  createdAt     DateTime?  @default(now())
+  updatedAt     DateTime?  @updatedAt
 }
 
 model Problems {
@@ -147,12 +166,26 @@ model Problems {
   Description       String
   SuspectProblems   SuspectProblems? @relation(fields: [suspectProblemsId], references: [id], onDelete: Cascade)
   suspectProblemsId Int?
+  createdAt         DateTime?        @default(now())
+  updatedAt         DateTime?        @updatedAt
 }
 
 model CinematicAvaliation {
-  id                    Int     @id @default(autoincrement())
+  id                    Int       @id @default(autoincrement())
   comportamentalDisturb Boolean
   foundWithHelmet       Boolean
   foundWithSeatbelt     Boolean
   walkingInTheScene     Boolean
+  createdAt             DateTime? @default(now())
+  updatedAt             DateTime? @updatedAt
+}
+
+model Finalization {
+  id             Int      @id @default(autoincrement())
+  responsable    String?
+  conduction     String[]
+  transportation String?
+  finalRemarks   String?
+  reportOwner    Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  ReportOwnerId  Int
 }

@@ -1,24 +1,25 @@
 import { View, Text, TextInput } from 'react-native'
 import React, { useState } from 'react'
-// import { Entypo } from '@expo/vector-icons'
 
 type InputProps = {
-  title: string
+  title?: string
   size?: 'small' | 'regular' | 'big'
   isCalendar?: boolean
+  alignText?: 'center' | 'left' | 'right'
   isBig?: boolean
-  value?: string
+  value?: string | null
+  placeholder?: string
   onChangeText?: (text: string) => void
 }
 
-export default function InputFull(props: InputProps) {
+export default function InputLowPadding(props: InputProps) {
   const [inputValue, setInputValue] = useState(props.value || '')
 
   const handleTextChange = (text: string) => {
     setInputValue(text)
 
     if (props.onChangeText) {
-      props.onChangeText(text) // Use onChangeText no lugar de onChange
+      props.onChangeText(text)
     }
   }
 
@@ -30,39 +31,50 @@ export default function InputFull(props: InputProps) {
     }
     return 3
   }
+
+  const handleAlignText = () => {
+    if (props.alignText === 'center') {
+      return 'center'
+    } else if (props.alignText === 'left') {
+      return 'left'
+    } else if (props.alignText === 'right') {
+      return 'right'
+    }
+  }
+
   return (
     <View
       style={{
         flexGrow: handleWidth(),
       }}
-      className="justfy-between m-auto w-5/6 flex-1 p-2"
+      className="h-full w-full flex-1 p-2"
     >
-      <Text className="text-lg">{props.title}</Text>
-      <View className="w-6/6 rounded-lg border p-2">
+      {props.title && (
+        <Text
+          className="text-base font-medium"
+          style={{
+            textAlign: handleAlignText(),
+          }}
+        >
+          {props.title}
+        </Text>
+      )}
+      <View className="my-1 w-full rounded-lg border p-4">
         <TextInput
           multiline={true}
           numberOfLines={100}
           style={{
-            height: props.isBig ? 100 : 28,
+            height: props.isBig ? 100 : 20,
             textAlignVertical: 'top',
-            paddingVertical: 3,
-            paddingHorizontal: 5,
+            paddingVertical: 2,
+            paddingHorizontal: 2,
             fontSize: 16,
           }}
-          value={inputValue}
+          value={props.value}
           onChangeText={handleTextChange}
-        >
-          {/* {props.isCalendar && (
-            <>
-              <Entypo
-                className="absolute right-0 m-5"
-                name="calendar"
-                size={20}
-                color="black"
-              />
-            </>
-          )} */}
-        </TextInput>
+          placeholder={props.placeholder}
+          keyboardType={'default'}
+        />
       </View>
     </View>
   )

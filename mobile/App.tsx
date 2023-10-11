@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import React, { useEffect } from 'react'
 import Routes from './routes/index'
 import { Provider, useDispatch } from 'react-redux'
@@ -19,6 +19,7 @@ export default function App() {
 
 function AuthChecker({ children }) {
   const dispatch = useDispatch()
+  const navigation = useNavigation()
 
   useEffect(() => {
     const checkAuth = async () => {

@@ -1,59 +1,79 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 
-type optionsProps = {
-  title: String
+type OptionsProps = {
+  title?: string
+  selectedOption: string
+  onSelectOption: (option: 'MASC' | 'FEM') => void
+  Option1?: string // You need to define these props
+  Option2?: string // You need to define these props
 }
 
-export default function Options(props: optionsProps) {
-  const [selectedOption, setSelectedOption] = useState<'MASC' | 'FEM' | null>(
-    null,
-  )
-
+export default function Options(props: OptionsProps) {
   return (
-    <View className="m-auto flex-col items-center justify-center">
-      <Text className=" text-center text-lg">{props.title}</Text>
-      <TouchableOpacity
-        style={[
-          styles.button,
-          selectedOption === 'MASC' ? styles.selected : null,
-        ]}
-        onPress={() => setSelectedOption('MASC')}
-      >
-        <Text
-          style={
-            selectedOption === 'MASC' ? styles.whiteText : styles.blackText
-          }
-        >
-          Masc.
+    <View
+      style={{
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {props.title && (
+        <Text style={{ textAlign: 'center', fontSize: 16, fontWeight: 'bold' }}>
+          {props.title}
         </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.button,
-          selectedOption === 'FEM' ? styles.selected : null,
-        ]}
-        onPress={() => setSelectedOption('FEM')}
-      >
-        <Text
-          style={selectedOption === 'FEM' ? styles.whiteText : styles.blackText}
+      )}
+      <View className="mt-3 flex-row">
+        <TouchableOpacity
+          className="flex-grow"
+          style={[
+            styles.button,
+            props.selectedOption === 'MASC' ? styles.selected : null,
+          ]}
+          onPress={() => props.onSelectOption('MASC')}
         >
-          Fem.
-        </Text>
-      </TouchableOpacity>
+          <Text
+            className="text-center"
+            style={
+              props.selectedOption === 'MASC'
+                ? styles.whiteText
+                : styles.blackText
+            }
+          >
+            {props.Option1}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className="flex-grow"
+          style={[
+            styles.button,
+            props.selectedOption === 'FEM' ? styles.selected : null,
+          ]}
+          onPress={() => props.onSelectOption('FEM')}
+        >
+          <Text
+            className="text-center"
+            style={
+              props.selectedOption === 'FEM'
+                ? styles.whiteText
+                : styles.blackText
+            }
+          >
+            {props.Option2}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 7,
-    paddingHorizontal: 50,
     borderRadius: 5,
     borderColor: 'rgba(0, 0, 0, 0.28)',
     borderWidth: 1,
-    marginVertical: 5,
-    marginHorizontal: 15,
+    marginRight: 5,
+    padding: 10,
   },
   selected: {
     backgroundColor: '#A00E00',
@@ -64,8 +84,5 @@ const styles = StyleSheet.create({
   },
   whiteText: {
     color: '#FFFFFF',
-  },
-  buttonText: {
-    color: 'black',
   },
 })

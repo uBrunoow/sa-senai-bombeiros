@@ -5,7 +5,30 @@ export const saveReportId = (reportId: number) => {
   }
 }
 
+export const clearReportId = () => {
+  return {
+    type: 'CLEAR_REPORT_ID',
+  }
+}
+
 export const saveAnamnesisId = (anamnesisId: number) => ({
   type: 'SAVE_ANAMNESIS',
   payload: { anamnesisId },
 })
+
+export const clearAnamnesisId = () => {
+  return {
+    type: 'CLEAR_ANAMNESIS_ID',
+  }
+}
+
+export const saveGestacionalAnamnesisId = (gestacionalAnamnesisId: number) => ({
+  type: 'SAVE_GESTACIONAL_ANAMNESIS',
+  payload: { gestacionalAnamnesisId },
+})
+
+export const clearGestacionalAnamnesisId = () => {
+  return {
+    type: 'CLEAR_GESTACIONAL_ANAMNESIS_ID',
+  }
+}

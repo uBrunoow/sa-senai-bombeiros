@@ -1,10 +1,12 @@
 import { Platform, TextInput, Pressable, View, Text } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DateTimePickerAndroid from '@react-native-community/datetimepicker'
 // import { Entypo } from '@expo/vector-icons'
 
 type InputClockProps = {
   title?: string
+  initialValue: string
+  onChange: (newValue: string) => void
 }
 
 const InputClock = (props: InputClockProps) => {
@@ -24,9 +26,13 @@ const InputClock = (props: InputClockProps) => {
         hour: '2-digit',
         minute: '2-digit',
       })
-      setTimeMedication(formattedTime)
+      props.onChange(formattedTime)
     }
   }
+
+  useEffect(() => {
+    setTimeMedication(props.initialValue)
+  }, [props.initialValue])
 
   return (
     <View className="justfy-between m-auto my-2 w-5/6 flex-1 items-center ">
@@ -41,17 +47,17 @@ const InputClock = (props: InputClockProps) => {
           />
         </>
       )}
-      <View className="mb-4 mt-2 w-5/6 rounded-lg">
+      <View className="mb-4  mt-2 w-5/6 rounded-lg">
         <Pressable onPress={toggleDatePicker} className="relative ">
           <TextInput
-            className=" realtive flex-1 rounded-lg border px-2 text-black"
+            className=" realtive rounded-lg border text-black"
             placeholder="00:00"
             editable={false}
             value={timeMedication}
             style={{
-              textAlignVertical: 'top',
+              textAlignVertical: 'center',
               paddingVertical: 6,
-              paddingHorizontal: 9,
+              paddingHorizontal: 10,
             }}
           ></TextInput>
         </Pressable>

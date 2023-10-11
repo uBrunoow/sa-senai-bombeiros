@@ -67,6 +67,15 @@ import {
 } from './src/routes/reports/GestationalAnamnesis/findGesAnamnesis'
 import { gestacionalAnamnesisDeleteRoutes } from './src/routes/reports/GestationalAnamnesis/deleteGesAnamnesis'
 
+// Finalization
+import { registerFinalizationRoutes } from './src/routes/reports/Finalization/registerFinalization'
+import { updateFinalizationRoutes } from './src/routes/reports/Finalization/updateFinalization'
+import {
+  finalizationFindOneRoutes,
+  finalizationFindRoutes,
+} from './src/routes/reports/Finalization/findFinalization'
+import { finalizationDeleteRoutes } from './src/routes/reports/Finalization/deleteFinalization'
+
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
 app.register(cors, {
@@ -128,6 +137,13 @@ app.register(updateGestacionalAnamnesisRoutes)
 app.register(gestacionalAnamnesisFindRoutes)
 app.register(gestacionalAnamnesisFindOneRoutes)
 app.register(gestacionalAnamnesisDeleteRoutes)
+
+// FINALIZATION
+app.register(registerFinalizationRoutes)
+app.register(updateFinalizationRoutes)
+app.register(finalizationFindRoutes)
+app.register(finalizationFindOneRoutes)
+app.register(finalizationDeleteRoutes)
 
 app
   .listen({

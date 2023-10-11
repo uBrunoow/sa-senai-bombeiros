@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 export const reportSchema = z.object({
-  reportDate: z.string().optional(),
-  age: z.number().optional(),
+  reportDate: z.string().optional().nullable(),
+  age: z.number().optional().nullable(),
   gender: z.string().optional(),
   name: z.string().optional(),
   cpf: z.string().optional(),
@@ -17,7 +17,7 @@ export const reportSchema = z.object({
 })
 
 export const reportsUpdateSchema = z.object({
-  reportDate: z.string().optional(),
+  reportDate: z.string().optional().nullable(),
   age: z.number().optional(),
   gender: z.string().optional(),
   name: z.string().optional(),
@@ -29,4 +29,5 @@ export const reportsUpdateSchema = z.object({
   bodyPulse: z.number().optional(),
   breathing: z.number().optional(),
   saturation: z.number().optional(),
+  ownerId: z.number(),
 })
