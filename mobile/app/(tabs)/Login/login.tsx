@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, TextInput, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import Icon from '@expo/vector-icons/Feather'
 import { AntDesign } from '@expo/vector-icons'
@@ -8,6 +8,7 @@ import Footer from '@app/components/Footer'
 import { useDispatch } from 'react-redux'
 import { saveToken } from '@src/redux/actions/authActions'
 import { styles as s } from '@app/styles/boxShadow'
+import { Stack, Box, FormControl, Input, Text, Flex } from 'native-base'
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch()
@@ -39,23 +40,15 @@ export default function Login({ navigation }) {
 
   return (
     <View className=" h-screen items-center justify-between ">
-      {/* Top Bar */}
       <Header />
-      {/* Div pai do conteúdo da página */}
       <View className=" h-[370] justify-around ">
-        {/* Div do texto escrito login com o ícone de user */}
         <View className=" flex-row justify-center ">
-          {/* Ícone do user */}
           <Icon name="user" size={40} color="#A00e00" />
-          {/* Título de Login */}
           <Text className=" pl-2 text-3xl">Login</Text>
         </View>
-        {/* Div da parte de login */}
         <View style={s.boxShadow} className="p-6">
-          {/* Div que engloba o cpf e a senha */}
           <View className="mb-4">
             <Text className="text-xl">E-mail</Text>
-            {/* Input do texto para cpf */}
             <TextInput
               className=" w-[300px] rounded-md border-width1 p-2"
               onChangeText={handleChangeEmail}
@@ -65,7 +58,6 @@ export default function Login({ navigation }) {
 
           <View className="mb-4">
             <Text className=" text-xl">Senha</Text>
-            {/* Input do texto para senha */}
             <View className=" items-center justify-center">
               <TextInput
                 placeholder="••••••••••"
@@ -79,10 +71,7 @@ export default function Login({ navigation }) {
               </TouchableOpacity>
             </View>
           </View>
-          {/* Div da linha */}
-          {/* Div do botão para avançar */}
           <View className="items-center justify-center">
-            {/* Botão para avançar */}
             <TouchableOpacity
               className=" rounded-md bg-[#A00E00] px-8 py-3"
               onPress={handleLoginUser}
@@ -94,5 +83,32 @@ export default function Login({ navigation }) {
       </View>
       <Footer />
     </View>
+    // <ScrollView className="flex-1">
+    //   <Flex flex="1" justifyContent="space-between">
+    //     <Header />
+
+    //     <Flex
+    //       direction="column"
+    //       alignItems="center"
+    //       justifyContent="space-around"
+    //       flex="1"
+    //       p="4"
+    //       h="100%"
+    //     >
+    //       <Text fontSize="xl" mb="4">
+    //         Default
+    //       </Text>
+    //       <FormControl mb="5" isRequired>
+    //         <FormControl.Label>E-mail</FormControl.Label>
+    //         <Input type="text" />
+    //         <FormControl.HelperText>
+    //           Give your project a title.
+    //         </FormControl.HelperText>
+    //       </FormControl>
+    //     </Flex>
+
+    //     <Footer />
+    //   </Flex>
+    // </ScrollView>
   )
 }

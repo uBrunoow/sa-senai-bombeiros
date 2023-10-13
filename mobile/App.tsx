@@ -4,14 +4,17 @@ import Routes from './routes/index'
 import { Provider, useDispatch } from 'react-redux'
 import store from './src/redux/stores/stores'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { NativeBaseProvider } from 'native-base'
 
 export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <AuthChecker>
-          <Routes />
-        </AuthChecker>
+        <NativeBaseProvider>
+          <AuthChecker>
+            <Routes />
+          </AuthChecker>
+        </NativeBaseProvider>
       </NavigationContainer>
     </Provider>
   )

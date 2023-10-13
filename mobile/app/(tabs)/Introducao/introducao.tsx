@@ -17,7 +17,7 @@ import InputNumeric from '@app/components/inputNumeric'
 import findReports from '@src/api/reports/findReport'
 import InputCpf from '@app/components/inputCpf'
 import InputTelefone from '@app/components/inputTelefone'
-
+import { Select } from 'native-base'
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import registerPreHospitalarMethods from '@src/api/reports/preHospitalarMethod/registerPreHospitalarMethod'
 import registerSignsAndSymptoms from '@src/api/reports/symptoms/registerSymptoms'
@@ -39,6 +39,7 @@ export default function Introducao({ navigation }) {
   const [buttonLoading, setButtonLoading] = useState(false)
   const [preHospitalar, setPreHospitalar] = useState([])
   const [sinaisESintomas, setSinaisESintomas] = useState([])
+  const [service, setService] = useState('')
 
   useEffect(() => {
     const findReportsData = async () => {
@@ -334,7 +335,6 @@ export default function Introducao({ navigation }) {
               <MultipleSelectList
                 setSelected={(val) => setPreHospitalar(val)}
                 data={preHospitalarData}
-                defaultOption={preHospitalar}
                 save="value"
                 label="Pré-Hospitalar"
                 boxStyles={{
@@ -377,6 +377,23 @@ export default function Introducao({ navigation }) {
                 maxHeight={750}
               />
             </View>
+            <Select
+              selectedValue={service}
+              minWidth="200"
+              accessibilityLabel="Choose Service"
+              placeholder="Choose Service"
+              _selectedItem={{
+                bg: 'teal.600',
+              }}
+              mt={1}
+              onValueChange={(itemValue) => setService(itemValue)}
+            >
+              <Select.Item label="UX Research" value="ux" />
+              <Select.Item label="Web Development" value="web" />
+              <Select.Item label="Cross Platform Development" value="cross" />
+              <Select.Item label="UI Designing" value="ui" />
+              <Select.Item label="Backend Development" value="backend" />
+            </Select>
           </View>
 
           <MainButton
