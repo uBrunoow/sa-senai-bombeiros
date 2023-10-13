@@ -1,54 +1,48 @@
 import { FastifyInstance } from 'fastify'
-import { registerGestacionalAnamnese } from '../../../schemas/gestacionalAnamneseSchema'
 import { prisma } from '../../../lib/prisma'
+import { registerAnamnese } from '../../../schemas/anamneseSchemas'
 
 export async function registerAnamneseRoutes(app: FastifyInstance) {
   app.post('/api/anamnese', async (req, res) => {
     const {
-      gestationalPeriod,
-      PreNatal,
-      DoctorName,
-      Complications,
-      NumberSon,
-      ContractionSchedule,
-      Duration,
-      Interval,
-      HiPressure,
-      BagRuptured,
-      VisualInspection,
-      Childbirth,
-      BabyGender,
-      BornHour,
-      BabyName,
+      SignsAndSymptoms,
+      HappenedTimes,
+      SinceHappened,
+      HealthProblem,
+      HealthProlemsWhich,
+      Medication,
+      MedicationWhich,
+      HourMedication,
+      Allergies,
+      AllergiesWhich,
+      IngestedFood,
+      WhatTimeFood,
       FinalRemarks,
       ReportOwnerId,
-    } = registerGestacionalAnamnese.parse(req.body)
+    } = registerAnamnese.parse(req.body)
 
-    const newGesAnamneses = await prisma.gestationalAnamnesis.create({
+    const newAnamneses = await prisma.anamnesis.create({
       data: {
-        gestationalPeriod: gestationalPeriod || null,
-        PreNatal: PreNatal || false,
-        DoctorName: DoctorName || '',
-        Complications: Complications || false,
-        NumberSon: NumberSon || 0,
-        ContractionSchedule: ContractionSchedule || null,
-        Duration: Duration || null,
-        Interval: Interval || null,
-        HiPressure: HiPressure || false,
-        BagRuptured: BagRuptured || false,
-        VisualInspection: VisualInspection || false,
-        Childbirth: Childbirth || false,
-        BabyGender: BabyGender || '',
-        BornHour: BornHour || null,
-        BabyName: BabyName || '',
-        FinalRemarks: FinalRemarks || '',
+        SignsAndSymptoms,
+        HappenedTimes,
+        SinceHappened,
+        HealthProblem,
+        HealthProlemsWhich,
+        Medication,
+        MedicationWhich,
+        HourMedication,
+        Allergies,
+        AllergiesWhich,
+        IngestedFood,
+        WhatTimeFood,
+        FinalRemarks,
         ReportOwnerId,
       },
     })
 
     return res.send({
       msg: '🟢 Anamnese criada com sucesso.',
-      gesAnamnesis: newGesAnamneses,
+      anamnesis: newAnamneses,
     })
   })
 }

@@ -20,7 +20,7 @@ import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
 import updateGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/updateGestacionalAnamnesis'
 
-export default function AnamneseGestacional({ navigation }) {
+export default function AnamneseGestacional({ navigation }: any) {
   const { bottom, top } = useSafeAreaInsets()
 
   const [PreNatal, setPreNatal] = useState(false)

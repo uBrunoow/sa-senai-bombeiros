@@ -40,7 +40,7 @@ import { RouteProp } from '@react-navigation/native'
 //   route: AnamneseScreenRouteProp
 // }
 
-export default function Anamnese({ navigation }) {
+export default function Anamnese({ navigation }: any) {
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const anamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,

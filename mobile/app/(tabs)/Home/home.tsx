@@ -16,7 +16,7 @@ import React from 'react'
 import { saveReportId } from '@src/redux/actions/reportActions'
 // import { saveReportId } from '../../src/actions/reportActions' // Importe a ação
 
-function App({ navigation }) {
+function App({ navigation }: any) {
   const dispatch = useDispatch()
   const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
   const ownerId = useSelector((state: RootState) => state.auth.userId)

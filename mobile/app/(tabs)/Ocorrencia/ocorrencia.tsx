@@ -47,24 +47,24 @@ export default function Ocorrencia({ navigation }) {
   const existingAnamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,
   )
-  const [anamnesisCompleteness, setAnamnesisCompleteness] = useState(0)
+  // const [anamnesisCompleteness, setAnamnesisCompleteness] = useState(0)
 
-  useEffect(() => {
-    const fetchAnamnesisCompleteness = async () => {
-      try {
-        if (existingAnamnesisId) {
-          const response = await findAnamnesis(existingAnamnesisId)
-          const completeness = calculateAnamnesisCompleteness(response.anamese)
-          setAnamnesisCompleteness(completeness)
-          console.log(response.anamese)
-        }
-      } catch (error) {
-        console.error('Error fetching anamnesis completeness:', error)
-      }
-    }
+  // useEffect(() => {
+  //   const fetchAnamnesisCompleteness = async () => {
+  //     try {
+  //       if (existingAnamnesisId) {
+  //         const response = await findAnamnesis(existingAnamnesisId)
+  //         const completeness = calculateAnamnesisCompleteness(response.anamese)
+  //         setAnamnesisCompleteness(completeness)
+  //         console.log(response.anamese)
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching anamnesis completeness:', error)
+  //     }
+  //   }
 
-    fetchAnamnesisCompleteness()
-  }, [existingAnamnesisId])
+  //   fetchAnamnesisCompleteness()
+  // }, [existingAnamnesisId])
 
   const handleClickAnamnese = async () => {
     if (existingAnamnesisId) {
@@ -178,7 +178,7 @@ export default function Ocorrencia({ navigation }) {
           <Grouper
             title="Anamnese de Emergência"
             desc="Sinais e sintomas, observações..."
-            isCompleted={anamnesisCompleteness}
+            isCompleted={0}
           />
         </TouchableOpacity>
         <TouchableOpacity
