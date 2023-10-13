@@ -8,7 +8,7 @@ export async function registerPreHospitalarMethodsRoutes(app: FastifyInstance) {
       req.body,
     )
 
-    const newSymptoms = await prisma.preHospitalMethod.create({
+    const newPreHospitalarMethod = await prisma.preHospitalMethod.create({
       data: {
         description,
         ReportOwnerId,
@@ -17,7 +17,7 @@ export async function registerPreHospitalarMethodsRoutes(app: FastifyInstance) {
 
     return res.send({
       msg: '🟢 Método pré-hospitalar criado com sucesso.',
-      symptoms: newSymptoms,
+      preHospitalarMethod: newPreHospitalarMethod,
     })
   })
 }

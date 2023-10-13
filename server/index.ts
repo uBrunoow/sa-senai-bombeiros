@@ -39,6 +39,7 @@ import { anamneseUpdateRoutes } from './src/routes/reports/Anamnesis/updateAname
 import { registerPreHospitalarMethodsRoutes } from './src/routes/reports/PreHospitalarMethod/registerPreHosMethod'
 import { updatePreHospitalarMethodsRoutes } from './src/routes/reports/PreHospitalarMethod/updatePreHosMethod'
 import {
+  preHospitalarMethodsFindByReportRoutes,
   preHospitalarMethodsFindOneRoutes,
   preHospitalarMethodsFindRoutes,
 } from './src/routes/reports/PreHospitalarMethod/findPreHosMethod'
@@ -123,6 +124,7 @@ app.register(updatePreHospitalarMethodsRoutes)
 app.register(preHospitalarMethodsFindRoutes)
 app.register(preHospitalarMethodsFindOneRoutes)
 app.register(preHospitalarMethodsDeleteRoutes)
+app.register(preHospitalarMethodsFindByReportRoutes)
 
 // GLASGOW
 app.register(registerGlasgowRoutes)

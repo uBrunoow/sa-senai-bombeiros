@@ -18,10 +18,10 @@ import findReports from '@src/api/reports/findReport'
 import InputCpf from '@app/components/inputCpf'
 import InputTelefone from '@app/components/inputTelefone'
 
-import {
-  MultipleSelectList,
-  SelectList,
-} from 'react-native-dropdown-select-list'
+import { MultipleSelectList } from 'react-native-dropdown-select-list'
+import registerPreHospitalarMethods from '@src/api/reports/preHospitalarMethod/registerPreHospitalarMethod'
+import registerSignsAndSymptoms from '@src/api/reports/symptoms/registerSymptoms'
+import findPreHospitalarMethodByReport from '@src/api/reports/preHospitalarMethod/findPreHospitalarMethodByReport'
 
 export default function Introducao({ navigation }) {
   const { bottom, top } = useSafeAreaInsets()
@@ -37,6 +37,8 @@ export default function Introducao({ navigation }) {
   const [reportPlace, setReportPlace] = useState(' ')
   const [loading, setLoading] = useState(false)
   const [buttonLoading, setButtonLoading] = useState(false)
+  const [preHospitalar, setPreHospitalar] = useState([])
+  const [sinaisESintomas, setSinaisESintomas] = useState([])
 
   useEffect(() => {
     const findReportsData = async () => {
@@ -69,14 +71,34 @@ export default function Introducao({ navigation }) {
       }
     }
 
+    const findPreHospitalarMethodByReportData = async () => {
+      try {
+        setLoading(true)
+
+        const response = await findPreHospitalarMethodByReport(reportId)
+
+        const descriptions = response.preHospitalarMethods.map(
+          (method) => method.description,
+        )
+
+        setPreHospitalar(descriptions)
+
+        console.log(response)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     findReportsData()
+    findPreHospitalarMethodByReportData()
   }, [reportId])
 
-  const [categories, setCategories] = React.useState([])
+  console.log(preHospitalar)
 
   const handleSubmitIntroduction = async () => {
     try {
-      setButtonLoading(true)
       const reportDate = formatReportDate(reportDateTime)
 
       const response = await updateReport(
@@ -96,6 +118,45 @@ export default function Introducao({ navigation }) {
       }
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  const handleSubmitPreHospitalarMethod = async () => {
+    try {
+      const response = await registerPreHospitalarMethods(
+        preHospitalar,
+        reportId,
+      )
+
+      if (response) {
+        navigation.navigate('ocorrencia')
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleSubmitSignsAndSymptoms = async () => {
+    try {
+      const response = await registerSignsAndSymptoms(sinaisESintomas, reportId)
+
+      if (response) {
+        navigation.navigate('ocorrencia')
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleSave = async () => {
+    try {
+      setButtonLoading(true)
+
+      await handleSubmitIntroduction()
+      await handleSubmitPreHospitalarMethod()
+      await handleSubmitSignsAndSymptoms()
+    } catch (error) {
+      console.error(error)
     } finally {
       setButtonLoading(false)
     }
@@ -104,8 +165,6 @@ export default function Introducao({ navigation }) {
   const handleSelectGender = (selectedGender: 'MASC' | 'FEM') => {
     setGender(selectedGender)
   }
-
-  console.log(buttonLoading)
 
   const preHospitalarData = [
     { value: 'Afogamento' },
@@ -273,8 +332,9 @@ export default function Introducao({ navigation }) {
                 </Text>
               </View> */}
               <MultipleSelectList
-                setSelected={(val) => setCategories(val)}
+                setSelected={(val) => setPreHospitalar(val)}
                 data={preHospitalarData}
+                defaultOption={preHospitalar}
                 save="value"
                 label="Pré-Hospitalar"
                 boxStyles={{
@@ -289,14 +349,14 @@ export default function Introducao({ navigation }) {
                   paddingHorizontal: 10,
                 }}
                 placeholder="PRÉ-HOSPITALAR"
-                searchPlaceholder="Escolha quantos for necessário"
+                searchPlaceholder="Escolha quantos forem necessários"
                 notFoundText="Nenhuma categoria encontrada"
                 maxHeight={450}
               />
             </View>
             <View className="mx-auto flex-1 flex-row">
               <MultipleSelectList
-                setSelected={(val) => setCategories(val)}
+                setSelected={(val) => setSinaisESintomas(val)}
                 data={sinaisESintomasData}
                 save="value"
                 label="Sinais e Sintomas"
@@ -321,7 +381,7 @@ export default function Introducao({ navigation }) {
 
           <MainButton
             innerText="SALVAR"
-            onPress={() => handleSubmitIntroduction()}
+            onPress={() => handleSave()}
             isLoading={buttonLoading}
           />
           <Footer />
