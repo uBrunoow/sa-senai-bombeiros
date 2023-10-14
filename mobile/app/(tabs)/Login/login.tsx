@@ -1,7 +1,6 @@
-import { View, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import Icon from '@expo/vector-icons/Feather'
-import { AntDesign } from '@expo/vector-icons'
 import loginUser from '@src/api/users/loginUser'
 import Header from '@app/components/Header'
 import Footer from '@app/components/Footer'
@@ -10,11 +9,9 @@ import { saveToken } from '@src/redux/actions/authActions'
 import { styles as s } from '@app/styles/boxShadow'
 import {
   Stack,
-  Box,
   FormControl,
   Input,
   Text,
-  Flex,
   WarningOutlineIcon,
 } from 'native-base'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -38,9 +35,6 @@ export default function Login({ navigation }: any) {
     setPassword(value)
   }
 
-  const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
-  const ownerId = useSelector((state: RootState) => state.auth.userId)
-
   const handleLoginUser = async () => {
     try {
       const response = await loginUser(email, password)
@@ -54,25 +48,10 @@ export default function Login({ navigation }: any) {
     }
   }
 
-  const handleRegisterReport = async () => {
-    try {
-      if (isLoggedIn) {
-        const response = await registerReport(ownerId)
-        const reportId = response.report.id
-        dispatch(saveReportId(reportId))
-      } else {
-        navigation.navigate('login')
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   const handleClickButton = async () => {
     try {
       setButtonLoading(true)
       await handleLoginUser()
-      await handleRegisterReport()
     } catch (error) {
       console.error(error)
     } finally {

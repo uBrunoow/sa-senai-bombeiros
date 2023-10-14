@@ -24,31 +24,31 @@ export async function registerGestacionalAnamnesisRoutes(app: FastifyInstance) {
       ReportOwnerId,
     } = registerGestacionalAnamnese.parse(req.body)
 
-    const newGestacionalAnamnesis = await prisma.gestationalAnamnesis.create({
+    const newGesAnamneses = await prisma.gestationalAnamnesis.create({
       data: {
-        gestationalPeriod: gestationalPeriod || null,
-        PreNatal: PreNatal || false,
-        DoctorName: DoctorName || '',
-        Complications: Complications || false,
-        NumberSon: NumberSon || 0,
+        gestationalPeriod,
+        PreNatal,
+        DoctorName,
+        Complications,
+        NumberSon,
         ContractionSchedule,
         Duration,
-        Interval: Interval || null,
-        HiPressure: HiPressure || false,
-        BagRuptured: BagRuptured || false,
-        VisualInspection: VisualInspection || false,
-        Childbirth: Childbirth || false,
-        BabyGender: BabyGender || '',
-        BornHour: BornHour || '',
-        BabyName: BabyName || '',
+        Interval,
+        HiPressure,
+        BagRuptured,
+        VisualInspection,
+        Childbirth,
+        // BabyGender,
+        BornHour,
+        BabyName,
         FinalRemarks: FinalRemarks || '',
         ReportOwnerId,
       },
     })
 
     return res.send({
-      msg: '🟢 Gestacional Anamnesis criado com sucesso.',
-      gestacionalAnamnesis: newGestacionalAnamnesis,
+      msg: '🟢 Ges Anamnese criada com sucesso.',
+      gesAnamnesis: newGesAnamneses,
     })
   })
 }

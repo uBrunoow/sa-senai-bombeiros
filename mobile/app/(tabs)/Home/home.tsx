@@ -4,6 +4,8 @@ import {
   Linking,
   TouchableOpacity,
   SafeAreaView,
+  ActivityIndicator,
+  Pressable,
 } from 'react-native'
 import NOARLogo from '@src/public/logo-noar.svg'
 import Firefighter from '@src/public/firefighter.svg'
@@ -12,24 +14,32 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'src/redux/stores/stores'
 import registerReport from '@src/api/reports/registerReport'
 import { Entypo } from '@expo/vector-icons'
-import React from 'react'
+import React, { useState } from 'react'
 import { saveReportId } from '@src/redux/actions/reportActions'
 // import { saveReportId } from '../../src/actions/reportActions' // Importe a ação
 
 function App({ navigation }: any) {
+  const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
   const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
   const ownerId = useSelector((state: RootState) => state.auth.userId)
 
   const handleButtonClick = async () => {
-    if (isLoggedIn) {
-      const response = await registerReport(ownerId)
-      const reportId = response.report.id
-      console.log('Report de n°:', reportId)
-      dispatch(saveReportId(reportId))
-      navigation.navigate('ocorrencia')
-    } else {
-      navigation.navigate('login')
+    try {
+      setIsLoading(true)
+      if (isLoggedIn) {
+        const response = await registerReport(ownerId)
+        const reportId = response.report.id
+        console.log('Report de n°:', reportId)
+        dispatch(saveReportId(reportId))
+        navigation.navigate('ocorrencia')
+      } else {
+        navigation.navigate('login')
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsLoading(false)
     }
   }
   return (
@@ -51,12 +61,29 @@ function App({ navigation }: any) {
             situações de emergência, e para ajuda-los é necessário um meio mais
             ágil de relatórios
           </Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={handleButtonClick}
             className="w-2/6 rounded-md bg-red-600 px-5 py-2"
           >
             <Text className="text-center text-lg text-white">RELATÓRIO</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <Pressable onPress={handleButtonClick}>
+            {isLoading ? (
+              <View className="w-[150px] rounded-md bg-red-700 px-5 py-2">
+                <View className="h-[30px]">
+                  <ActivityIndicator size="large" color="#ffffff" />
+                </View>
+              </View>
+            ) : (
+              <View className="w-[150px] rounded-md bg-red-600 px-5 py-2">
+                <View className="h-[30px]">
+                  <Text className="text-center text-lg text-white">
+                    RELATÓRIO
+                  </Text>
+                </View>
+              </View>
+            )}
+          </Pressable>
           {/* End main view */}
         </View>
         {/* Footer */}

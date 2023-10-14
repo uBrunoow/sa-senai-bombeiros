@@ -9,7 +9,7 @@ type YesOrNoProps = {
 
 export default function YesOrNo(props: YesOrNoProps) {
   return (
-    <View className="m-auto flex-row flex-wrap items-center justify-center">
+    <View className="m-auto mb-3 flex-row flex-wrap items-center justify-center">
       <Text className="w-5/6 text-center text-lg font-medium">
         {props.Question}
       </Text>

@@ -62,25 +62,25 @@ export async function anamneseUpdateRoutes(
     }
 
     const updatedAnamneseData: {
-      SignsAndSymptoms?: string | null
-      HappenedTimes?: boolean | null
-      SinceHappened?: string | null
-      HealthProblem?: boolean | null
-      HealthProlemsWhich?: string | null
-      Medication?: boolean | null
-      MedicationWhich?: string | null
-      HourMedication?: string | null
-      Allergies?: boolean | null
-      AllergiesWhich?: string | null
-      IngestedFood?: boolean | null
-      WhatTimeFood?: string | null
-      FinalRemarks?: string | null
+      SignsAndSymptoms?: string
+      HappenedTimes?: boolean
+      SinceHappened?: string
+      HealthProblem?: boolean
+      HealthProlemsWhich?: string
+      Medication?: boolean
+      MedicationWhich?: string
+      HourMedication?: string
+      Allergies?: boolean
+      AllergiesWhich?: string
+      IngestedFood?: boolean
+      WhatTimeFood?: string
+      FinalRemarks?: string
     } = {}
 
     if (SignsAndSymptoms)
       updatedAnamneseData.SignsAndSymptoms = SignsAndSymptoms
     if (!SignsAndSymptoms && SignsAndSymptoms !== undefined)
-      updatedAnamneseData.SignsAndSymptoms = null
+      updatedAnamneseData.SignsAndSymptoms = ''
 
     if (HappenedTimes) updatedAnamneseData.HappenedTimes = HappenedTimes
     if (!HappenedTimes && HappenedTimes !== undefined)
@@ -88,7 +88,7 @@ export async function anamneseUpdateRoutes(
 
     if (SinceHappened) updatedAnamneseData.SinceHappened = SinceHappened
     if (!SinceHappened && SinceHappened !== undefined)
-      updatedAnamneseData.SinceHappened = null
+      updatedAnamneseData.SinceHappened = ''
 
     if (HealthProblem) updatedAnamneseData.HealthProblem = HealthProblem
     if (!HealthProblem && HealthProblem !== undefined)
@@ -97,7 +97,7 @@ export async function anamneseUpdateRoutes(
     if (HealthProlemsWhich)
       updatedAnamneseData.HealthProlemsWhich = HealthProlemsWhich
     if (!HealthProlemsWhich && HealthProlemsWhich !== undefined)
-      updatedAnamneseData.HealthProlemsWhich = null
+      updatedAnamneseData.HealthProlemsWhich = ''
 
     if (Medication) updatedAnamneseData.Medication = Medication
     if (!Medication && Medication !== undefined)
@@ -105,11 +105,11 @@ export async function anamneseUpdateRoutes(
 
     if (MedicationWhich) updatedAnamneseData.MedicationWhich = MedicationWhich
     if (!MedicationWhich && MedicationWhich !== undefined)
-      updatedAnamneseData.MedicationWhich = null
+      updatedAnamneseData.MedicationWhich = ''
 
     if (HourMedication) updatedAnamneseData.HourMedication = HourMedication
     if (!HourMedication && HourMedication !== undefined)
-      updatedAnamneseData.HourMedication = null
+      updatedAnamneseData.HourMedication = ''
 
     if (Allergies) updatedAnamneseData.Allergies = Allergies
     if (!Allergies && Allergies !== undefined)
@@ -117,7 +117,7 @@ export async function anamneseUpdateRoutes(
 
     if (AllergiesWhich) updatedAnamneseData.AllergiesWhich = AllergiesWhich
     if (!AllergiesWhich && AllergiesWhich !== undefined)
-      updatedAnamneseData.AllergiesWhich = null
+      updatedAnamneseData.AllergiesWhich = ''
 
     if (IngestedFood) updatedAnamneseData.IngestedFood = IngestedFood
     if (!IngestedFood && IngestedFood !== undefined)
@@ -125,11 +125,11 @@ export async function anamneseUpdateRoutes(
 
     if (WhatTimeFood) updatedAnamneseData.WhatTimeFood = WhatTimeFood
     if (!WhatTimeFood && WhatTimeFood !== undefined)
-      updatedAnamneseData.WhatTimeFood = null
+      updatedAnamneseData.WhatTimeFood = ''
 
     if (FinalRemarks) updatedAnamneseData.FinalRemarks = FinalRemarks
     if (!FinalRemarks && FinalRemarks !== undefined)
-      updatedAnamneseData.FinalRemarks = null
+      updatedAnamneseData.FinalRemarks = ''
 
     // Atualizar o usuário buscando pelo ID
     const updatedAnamnese = await prisma.anamnesis.update({

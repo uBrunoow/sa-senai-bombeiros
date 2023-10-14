@@ -23,7 +23,7 @@ import registerPreHospitalarMethods from '@src/api/reports/preHospitalarMethod/r
 import registerSignsAndSymptoms from '@src/api/reports/symptoms/registerSymptoms'
 import findPreHospitalarMethodByReport from '@src/api/reports/preHospitalarMethod/findPreHospitalarMethodByReport'
 
-export default function Introducao({ navigation }) {
+export default function Introducao({ navigation }: any) {
   const { bottom, top } = useSafeAreaInsets()
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const ownerId = useSelector((state: RootState) => state.auth.userId)
