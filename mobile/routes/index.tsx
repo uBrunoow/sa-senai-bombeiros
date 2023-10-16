@@ -5,6 +5,7 @@ import Login from '../app/(tabs)/Login/login'
 import Anamnese from '../app/(tabs)/Anamnese/anamnese'
 import AnamneseGestacional from '../app/(tabs)/AnamneseGestacional/anamneseGestacional'
 import InfoPaciente from '../app/(tabs)/InfoPaciente/infoPaciente'
+import InfoTransporte from '../app/(tabs)/infoTransporte/infoTransporte'
 import Introducao from '../app/(tabs)/Introducao/introducao'
 import LocalTraumas from '../app/(tabs)/LocalTraumas/localTraumas'
 import Ocorrencia from '../app/(tabs)/Ocorrencia/ocorrencia'
@@ -43,6 +44,11 @@ export default function Routes() {
       <Stack.Screen
         name="info-paciente"
         component={InfoPaciente}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="info-transporte"
+        component={InfoTransporte}
         options={{ headerShown: false }}
       />
       <Stack.Screen
