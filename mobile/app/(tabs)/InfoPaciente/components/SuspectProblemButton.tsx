@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import { FontAwesome5 } from '@expo/vector-icons'
 import classNames from 'classnames'
@@ -6,29 +6,30 @@ import classNames from 'classnames'
 type SuspectProblemButtonProps = {
   content: string
   iconName: string
-  subCategories?: string[]
+  buttonState: boolean
+  setButtonState: Dispatch<SetStateAction<boolean>>
 }
 
 export default function SuspectProblemButton({
-  content,
   iconName,
+  content,
+  buttonState,
+  setButtonState,
 }: SuspectProblemButtonProps) {
-  const [buttonSelected, setButtonSelected] = useState(false)
-
   function handleSetButtonSelected() {
-    setButtonSelected(!buttonSelected)
+    setButtonState(!buttonState)
   }
 
   const buttonClasses = classNames({
     'grow py-3 w-2/5 justify-center items-center flex-row m-1 rounded-lg': true,
-    'bg-red-700 border-1 border-red-900': buttonSelected,
-    'bg-white border': !buttonSelected,
+    'bg-red-700 border-1 border-red-900': buttonState,
+    'bg-white border': !buttonState,
   })
 
   const buttonTextClasses = classNames({
     'font-xl font-extrabold ml-3': true,
-    'text-white': buttonSelected,
-    'text-black': !buttonSelected,
+    'text-white': buttonState,
+    'text-black': !buttonState,
   })
 
   return (
@@ -39,7 +40,7 @@ export default function SuspectProblemButton({
       <FontAwesome5
         name={iconName}
         size={30}
-        color={buttonSelected ? 'white' : 'black'}
+        color={buttonState ? 'white' : 'black'}
       />
       <Text className={buttonTextClasses}>{content}</Text>
     </TouchableOpacity>
