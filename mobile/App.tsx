@@ -20,7 +20,7 @@ export default function App() {
   )
 }
 
-function AuthChecker({ children }) {
+function AuthChecker({ children }: any) {
   const dispatch = useDispatch()
   const navigation = useNavigation()
 

@@ -44,7 +44,6 @@ export default function Options(props: OptionsProps) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-
           className="ml-1 w-[70px] items-center justify-center py-3"
           style={[
             styles.button,

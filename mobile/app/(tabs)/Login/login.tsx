@@ -37,26 +37,18 @@ export default function Login({ navigation }: any) {
 
   const handleLoginUser = async () => {
     try {
+      setButtonLoading(true)
       const response = await loginUser(email, password)
       if (response && response.user) {
         dispatch(saveToken(response.token, response.user.id))
+        navigation.navigate('ocorrencia')
       }
       setEmail('')
       setPassword('')
     } catch (error) {
       console.error(error)
-    }
-  }
-
-  const handleClickButton = async () => {
-    try {
-      setButtonLoading(true)
-      await handleLoginUser()
-    } catch (error) {
-      console.error(error)
     } finally {
       setButtonLoading(false)
-      navigation.navigate('ocorrencia')
     }
   }
 
@@ -137,7 +129,7 @@ export default function Login({ navigation }: any) {
             <MainButton
               innerText="AVANÇAR"
               isLoading={buttonLoading}
-              onPress={() => handleClickButton()}
+              onPress={() => handleLoginUser()}
             />
           </View>
         </View>

@@ -16,7 +16,7 @@ import Footer from '@app/components/Footer'
 import { FontAwesome5, AntDesign } from '@expo/vector-icons'
 import MainButton from '@app/components/MainButton'
 import { useDispatch, useSelector } from 'react-redux'
-import registerAnamnesis from '@src/api/reports/Anamnesis/registerAnamnesis'
+import registerAnamnesis from '@src/api/reports/anamnesis/registerAnamnesis'
 import { RootState } from '@src/redux/stores/stores'
 import {
   clearAnamnesisId,
