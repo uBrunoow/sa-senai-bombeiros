@@ -21,3 +21,14 @@ export const clearAnamnesisId = () => {
     type: 'CLEAR_ANAMNESIS_ID',
   }
 }
+
+export const saveGestacionalAnamnesisId = (gestacionalAnamnesisId: number) => ({
+  type: 'SAVE_GESTACIONAL_ANAMNESIS',
+  payload: { gestacionalAnamnesisId },
+})
+
+export const clearGestacionalAnamnesisId = () => {
+  return {
+    type: 'CLEAR_GESTACIONAL_ANAMNESIS_ID',
+  }
+}

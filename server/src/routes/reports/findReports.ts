@@ -43,17 +43,15 @@ export async function reportFindOneRoutes(
       where: {
         id: parseInt(id),
       },
-      // include: {
-      //   Symptoms: true,
-      //   PreHospitalMethods: true,
-      //   Anamnesis: true,
-      //   GestationalAnamnesis: true,
-      //   SuspectProblems: true,
-      //   Report_PreHospitalMethod: true,
-      //   Report_Symptoms: true,
-      //   Glasglow: true,
-      //   _count: true,
-      // },
+      include: {
+        Symptoms: true,
+        PreHospitalMethods: true,
+        Anamnesis: true,
+        GestationalAnamnesis: true,
+        Report_PreHospitalMethod: true,
+        Report_Symptoms: true,
+        Glasglow: true,
+      },
     })
 
     // Se não existir usuário retorna um erro

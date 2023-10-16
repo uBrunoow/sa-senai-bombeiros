@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 export const reportSchema = z.object({
-  reportDate: z.string().optional(),
-  age: z.number().optional(),
+  reportDate: z.string().optional().nullable(),
+  age: z.number().optional().nullable(),
   gender: z.string().optional(),
   name: z.string().optional(),
   cpf: z.string().optional(),

@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 type InputProps = {
   title?: string
   size?: 'small' | 'regular' | 'big'
-  isCalendar?: boolean
   alignText?: 'center' | 'left' | 'right'
   isBig?: boolean
   value?: string | null
@@ -12,16 +11,8 @@ type InputProps = {
   onChangeText?: (text: string) => void
 }
 
-export default function InputLowPadding(props: InputProps) {
-  const [inputValue, setInputValue] = useState(props.value || '')
-
-  const handleTextChange = (text: string) => {
-    setInputValue(text)
-
-    if (props.onChangeText) {
-      props.onChangeText(text)
-    }
-  }
+export default function InputCpf(props: InputProps) {
+  const [inputValue, setInputValue] = useState(props.value?.toString() || '')
 
   const handleWidth = () => {
     if (props.size === 'small') {
@@ -40,6 +31,40 @@ export default function InputLowPadding(props: InputProps) {
     } else if (props.alignText === 'right') {
       return 'right'
     }
+  }
+
+  const handleTextChange = (text: string) => {
+    const numericValue = text.replace(/\D/g, '')
+    const formattedValue = numericValue ? formatCpf(numericValue) : ''
+
+    setInputValue(formattedValue)
+
+    if (props.onChangeText) {
+      props.onChangeText(formattedValue || '0')
+    }
+  }
+
+  const formatCpf = (cpf: string) => {
+    let formattedText = cpf
+
+    if (formattedText.length > 11) {
+      formattedText = formattedText.substring(0, 11)
+    }
+
+    if (formattedText.length > 3) {
+      formattedText = formattedText.replace(/^(\d{3})/, '$1.')
+      if (formattedText.length > 7) {
+        formattedText = formattedText.replace(/^(\d{3})\.(\d{3})/, '$1.$2.')
+        if (formattedText.length > 11) {
+          formattedText = formattedText.replace(
+            /^(\d{3})\.(\d{3})\.(\d{3})/,
+            '$1.$2.$3-',
+          )
+        }
+      }
+    }
+
+    return formattedText
   }
 
   return (
@@ -73,7 +98,7 @@ export default function InputLowPadding(props: InputProps) {
           value={props.value}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
-          keyboardType={'default'}
+          keyboardType={'numeric'}
         />
       </View>
     </View>
