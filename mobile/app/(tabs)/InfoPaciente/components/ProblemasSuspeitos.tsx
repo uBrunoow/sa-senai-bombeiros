@@ -54,7 +54,7 @@ export default function AvalPacienteGroup() {
           <InputFull />
         </View>
         <View>
-          <Select
+          {/* <Select
             selectedValue={victimWas}
             minWidth="200"
             accessibilityLabel="Choose Service"
@@ -75,7 +75,7 @@ export default function AvalPacienteGroup() {
             <Select.Item label="PASS. BAN. FRENTE" value="PASS. BAN. FRENTE" />
             <Select.Item label="PAS. MOTO" value="TRAUMA" />
             <Select.Item label="PEDESTRE" value="PEDESTRE" />
-          </Select>
+          </Select> */}
         </View>
       </View>
       <View className="hidden">

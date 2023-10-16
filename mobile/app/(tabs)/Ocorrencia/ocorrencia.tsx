@@ -99,7 +99,7 @@ export default function Ocorrencia({ navigation }: any) {
   const reportId = useSelector((state: RootState) => state.report.reportId)
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
       if (reportId) {
         setShowModal(true)
         e.preventDefault()
