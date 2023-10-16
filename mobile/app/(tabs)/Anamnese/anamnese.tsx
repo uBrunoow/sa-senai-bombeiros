@@ -18,29 +18,8 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
 import updateAnamnesis from '@src/api/reports/anamnesis/updateAnamnesis'
 import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
-import { RouteProp } from '@react-navigation/native'
 
-// type RootStackParamList = {
-//   anamnese: {
-//     anamnesisId: number
-//   }
-//   ocorrencia: {
-//     reportId: number
-//   }
-// }
-
-// type AnamneseScreenNavigationProp = StackNavigationProp<
-//   RootStackParamList,
-//   'anamnese'
-// >
-// type AnamneseScreenRouteProp = RouteProp<RootStackParamList, 'anamnese'>
-
-// interface AnamneseProps {
-//   navigation: AnamneseScreenNavigationProp
-//   route: AnamneseScreenRouteProp
-// }
-
-export default function Anamnese({ navigation }) {
+export default function Anamnese({ navigation }: any) {
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const anamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,

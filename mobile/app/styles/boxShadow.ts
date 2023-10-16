@@ -9,11 +9,10 @@ export const styles = StyleSheet.create({
     elevation: 5, // Android
     textShadowOffset: { width: 8, height: 2 },
     backgroundColor: '#fff',
-    // width: '90%',
-    // marginLeft: 'auto',
-    // marginRight: 'auto',
-    // borderRadius: 8,
-    // padding: 16,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    width: '90%',
   },
 
   button: {

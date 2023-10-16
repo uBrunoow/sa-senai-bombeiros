@@ -21,7 +21,7 @@
     "@fastify/jwt": "^6.7.1",
     "@fastify/multipart": "^7.6.0",
     "@fastify/static": "^6.10.1",
-    "@prisma/client": "^5.4.1",
+    "@prisma/client": "^5.4.2",
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",
     "fastify": "^4.17.0",

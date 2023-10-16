@@ -1,4 +1,10 @@
-import { View, ScrollView, Text, Pressable } from 'react-native'
+import {
+  View,
+  ScrollView,
+  Text,
+  Pressable,
+  ActivityIndicator,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -14,7 +20,7 @@ import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
 import updateGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/updateGestacionalAnamnesis'
 
-export default function AnamneseGestacional({ navigation }) {
+export default function AnamneseGestacional({ navigation }: any) {
   const { bottom, top } = useSafeAreaInsets()
 
   const [PreNatal, setPreNatal] = useState(false)
@@ -115,59 +121,71 @@ export default function AnamneseGestacional({ navigation }) {
       className="flex-1"
       contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
     >
-      <View>
-        <Header />
-        <View className="mb-[40px] mt-[34px] flex-row items-center justify-center">
-          <FontAwesome5 name="fire" size={24} color="#A00E00" />
-          <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
-            Anamnese Gestacional
+      {loading ? (
+        <View className="mx-auto h-screen w-[320px] items-center justify-center">
+          <ActivityIndicator size="large" color="#ff0000" />
+          <Text className="mt-3 text-center text-lg font-bold uppercase">
+            Carregando...
           </Text>
         </View>
-        <View
-          style={s.boxShadow}
-          className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white py-[30px] shadow-md"
-        >
-          <GestationPeriod />
-          <YesOrNo
-            Question="Fez pré-natal?"
-            selectedOption={PreNatal ? 'SIM' : 'NÃO'}
-            onSelectOption={handlePreNatal}
-          />
-          <InputFull title="Nome do médico"></InputFull>
-          <YesOrNo
-            Question="Possibilidade de complicações?"
-            selectedOption={Complications ? 'SIM' : 'NÃO'}
-            onSelectOption={handleComplications}
-          />
-          <YesOrNo
-            Question="Pressão no quadril/vontade de evacuar?"
-            selectedOption={HiPressure ? 'SIM' : 'NÃO'}
-            onSelectOption={handleHiPressure}
-          />
-          <YesOrNo
-            Question="Já houve ruptura da bolsa?"
-            selectedOption={BagRuptured ? 'SIM' : 'NÃO'}
-            onSelectOption={handleBagRuptured}
-          />
-          <YesOrNo
-            Question="Foi feito inspeção visual?"
-            selectedOption={VisualInspection ? 'SIM' : 'NÃO'}
-            onSelectOption={handleVisualInspection}
-          />
-          <YesOrNo
-            Question="Parto realizado?"
-            selectedOption={Childbirth ? 'SIM' : 'NÃO'}
-            onSelectOption={handleChildbirth}
-          />
-        </View>
-        <Pressable onPress={() => navigation.navigate(`ocorrencia`)}>
-          <MainButton
-            innerText="SALVAR"
-            onPress={handleSubmitGesAnamnesis}
-          ></MainButton>
-        </Pressable>
-      </View>
-      <Footer />
+      ) : (
+        <>
+          <View>
+            <Header />
+            <View className="mb-[40px] mt-[34px] flex-row items-center justify-center">
+              <FontAwesome5 name="fire" size={24} color="#A00E00" />
+              <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
+                Anamnese Gestacional
+              </Text>
+            </View>
+            <View
+              style={s.boxShadow}
+              className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white py-[30px] shadow-md"
+            >
+              <GestationPeriod />
+              <YesOrNo
+                Question="Fez pré-natal?"
+                selectedOption={PreNatal ? 'SIM' : 'NÃO'}
+                onSelectOption={handlePreNatal}
+              />
+              <InputFull title="Nome do médico"></InputFull>
+              <YesOrNo
+                Question="Possibilidade de complicações?"
+                selectedOption={Complications ? 'SIM' : 'NÃO'}
+                onSelectOption={handleComplications}
+              />
+              <YesOrNo
+                Question="Pressão no quadril/vontade de evacuar?"
+                selectedOption={HiPressure ? 'SIM' : 'NÃO'}
+                onSelectOption={handleHiPressure}
+              />
+              <YesOrNo
+                Question="Já houve ruptura da bolsa?"
+                selectedOption={BagRuptured ? 'SIM' : 'NÃO'}
+                onSelectOption={handleBagRuptured}
+              />
+              <YesOrNo
+                Question="Foi feito inspeção visual?"
+                selectedOption={VisualInspection ? 'SIM' : 'NÃO'}
+                onSelectOption={handleVisualInspection}
+              />
+              <YesOrNo
+                Question="Parto realizado?"
+                selectedOption={Childbirth ? 'SIM' : 'NÃO'}
+                onSelectOption={handleChildbirth}
+              />
+            </View>
+            <Pressable onPress={() => navigation.navigate(`ocorrencia`)}>
+              <MainButton
+                isLoading={buttonLoading}
+                innerText="SALVAR"
+                onPress={handleSubmitGesAnamnesis}
+              ></MainButton>
+            </Pressable>
+          </View>
+          <Footer />
+        </>
+      )}
     </ScrollView>
   )
 }

@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
-import { registerAnamnese } from '../../../schemas/anamneseSchemas'
 import { prisma } from '../../../lib/prisma'
+import { registerAnamnese } from '../../../schemas/anamneseSchemas'
 
 export async function registerAnamneseRoutes(app: FastifyInstance) {
   app.post('/api/anamnese', async (req, res) => {

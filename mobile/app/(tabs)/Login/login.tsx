@@ -1,50 +1,58 @@
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native'
+import { View, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import Icon from '@expo/vector-icons/Feather'
-import { AntDesign } from '@expo/vector-icons'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import loginUser from '@src/api/users/loginUser'
 import Header from '@app/components/Header'
 import Footer from '@app/components/Footer'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { saveToken } from '@src/redux/actions/authActions'
 import { styles as s } from '@app/styles/boxShadow'
+import {
+  Stack,
+  FormControl,
+  Input,
+  Text,
+  WarningOutlineIcon,
+} from 'native-base'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import MainButton from '@app/components/MainButton'
+import registerReport from '@src/api/reports/registerReport'
+import { saveReportId } from '@src/redux/actions/reportActions'
+import { RootState } from '@src/redux/stores/stores'
 
-export default function Login({ navigation }) {
+export default function Login({ navigation }: any) {
   const dispatch = useDispatch()
-
-  const { bottom, top } = useSafeAreaInsets()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [buttonLoading, setButtonLoading] = useState(false)
 
-  const handleChangeEmail = (value) => {
+  const handleChangeEmail = (value: string) => {
     setEmail(value)
   }
 
-  const handleChangePassword = (value) => {
+  const handleChangePassword = (value: string) => {
     setPassword(value)
   }
 
-  const handleLoginUser = async (e) => {
-    e.preventDefault()
-
-    const response = await loginUser(email, password)
-    if (response && response.user) {
-      dispatch(saveToken(response.token, response.user.id))
-      navigation.navigate('ocorrencia')
+  const handleLoginUser = async () => {
+    try {
+      setButtonLoading(true)
+      const response = await loginUser(email, password)
+      if (response && response.user) {
+        dispatch(saveToken(response.token, response.user.id))
+        navigation.navigate('ocorrencia')
+      }
+      setEmail('')
+      setPassword('')
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setButtonLoading(false)
     }
-
-    console.log('Id:', response.user.id)
-    setEmail('')
-    setPassword('')
   }
+
+  const { bottom, top } = useSafeAreaInsets()
 
   return (
     <ScrollView
@@ -52,71 +60,77 @@ export default function Login({ navigation }) {
       contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
     >
       <View className=" h-screen items-center justify-between ">
-        {/* Top Bar */}
         <Header />
-        {/* Div pai do conteúdo da página */}
-        <View className=" h-[370] w-[347px] shrink-0 flex-col items-center justify-between p-[10px]">
-          {/* Div do texto escrito login com o ícone de user */}
-          <View className=" flex-row items-center justify-center gap-[5px]">
-            {/* Ícone do user */}
+        <View className=" h-[370] justify-around ">
+          <View className=" flex-row justify-center ">
             <Icon name="user" size={40} color="#A00e00" />
-            {/* Título de Login */}
-            <Text className=" text-[32px] font-normal leading-[32px] text-[#202020]">
-              Login
-            </Text>
+            <Text className=" pl-2 text-3xl">Login</Text>
           </View>
-          {/* Div da parte de login */}
-          <View
-            style={s.boxShadow}
-            className=" w-full rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
-          >
-            {/* Div que engloba o cpf e a senha */}
-            <View className="h-[152px] flex-col items-center justify-between ">
-              <View className="relative h-[76px] gap-[5px]">
-                <Text className=" text-[21px] font-normal leading-[21px] text-preto">
-                  E-mail
-                </Text>
-                {/* Input do texto para cpf */}
-                <TextInput
-                  className=" w-[290px] items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]"
+          <View style={s.boxShadow} className="mt-10 p-6">
+            <FormControl isRequired>
+              <Stack w="300px" mb="20px">
+                <FormControl.Label color={'black'}>E-mail</FormControl.Label>
+                <Input
+                  type="text"
+                  placeholder="exemplo@gmail.com"
                   onChangeText={handleChangeEmail}
                   value={email}
                 />
-              </View>
+                <FormControl.HelperText>
+                  Must be atleast 6 characters.
+                </FormControl.HelperText>
+                <FormControl.ErrorMessage
+                  leftIcon={<WarningOutlineIcon size="xs" />}
+                >
+                  Atleast 6 characters are required.
+                </FormControl.ErrorMessage>
 
-              <View className="h-[76px] gap-[5px]">
-                <Text className="  text-[21px] font-normal leading-[21px] text-preto">
-                  Senha
-                </Text>
-                {/* Input do texto para senha */}
-                <View className=" relative items-center justify-center">
-                  <TextInput
-                    placeholder="***********"
-                    secureTextEntry
-                    onChangeText={handleChangePassword}
-                    value={password}
-                    className=" w-[290px] items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]"
-                  />
-                  <TouchableOpacity className="absolute right-5">
-                    <AntDesign name="eye" size={24} color="black" />
-                  </TouchableOpacity>
-                </View>
+                <FormControl.Label>Password</FormControl.Label>
+                <Input
+                  type="password"
+                  placeholder="password"
+                  onChangeText={handleChangePassword}
+                  value={password}
+                />
+                <FormControl.HelperText>
+                  Must be atleast 6 characters.
+                </FormControl.HelperText>
+                <FormControl.ErrorMessage
+                  leftIcon={<WarningOutlineIcon size="xs" />}
+                >
+                  Atleast 6 characters are required.
+                </FormControl.ErrorMessage>
+              </Stack>
+            </FormControl>
+            {/* <View className="mb-4">
+              <Text className="text-xl">E-mail</Text>
+              <TextInput
+                className=" w-[300px] rounded-md border-width1 p-2"
+                onChangeText={handleChangeEmail}
+                value={email}
+              />
+            </View> */}
+
+            {/* <View className="mb-4">
+              <Text className=" text-xl">Senha</Text>
+              <View className=" items-center justify-center">
+                <TextInput
+                  placeholder="••••••••••"
+                  secureTextEntry
+                  onChangeText={handleChangePassword}
+                  value={password}
+                  className=" w-[300px] rounded-md border-width1 p-2"
+                />
+                <TouchableOpacity className="absolute right-4">
+                  <AntDesign name="eye" size={24} color="black" />
+                </TouchableOpacity>
               </View>
-            </View>
-            {/* Div da linha */}
-            <View className="my-[20px] h-[1px] w-full bg-black"></View>
-            {/* Div do botão para avançar */}
-            <View className="items-center justify-center">
-              {/* Botão para avançar */}
-              <TouchableOpacity
-                className=" items-center justify-center rounded-[7px] bg-[#A00E00] px-[30px] py-[13px]"
-                onPress={handleLoginUser}
-              >
-                <Text className=" text-[21px] font-normal leading-[21px] text-offwhite">
-                  AVANÇAR
-                </Text>
-              </TouchableOpacity>
-            </View>
+            </View> */}
+            <MainButton
+              innerText="AVANÇAR"
+              isLoading={buttonLoading}
+              onPress={() => handleLoginUser()}
+            />
           </View>
         </View>
         <Footer />

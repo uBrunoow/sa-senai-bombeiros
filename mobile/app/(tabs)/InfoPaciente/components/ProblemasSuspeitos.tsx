@@ -53,6 +53,30 @@ export default function AvalPacienteGroup() {
           <Text className="text-center text-lg">Outro:</Text>
           <InputFull />
         </View>
+        <View>
+          <Select
+            selectedValue={victimWas}
+            minWidth="200"
+            accessibilityLabel="Choose Service"
+            placeholder="Choose Service"
+            _selectedItem={{
+              bg: 'teal.600',
+              endIcon: <CheckIcon size="5" />,
+            }}
+            mt={1}
+            onValueChange={(itemValue) => setVictimWas(itemValue)}
+          >
+            <Select.Item label="CICLISTA" value="CICLISTA" />
+            <Select.Item label="CONDUTOR MOTO" value="CONDUTOR MOTO" />
+            <Select.Item label="GESTANTE" value="GESTANTE" />
+            <Select.Item label="CONDUTOR CARRO" value="CONDUTOR CARRO" />
+            <Select.Item label="TRAUMA" value="TRAUMA" />
+            <Select.Item label="PAS. BCO. ATRAS" value="PAS. BCO. ATRAS" />
+            <Select.Item label="PASS. BAN. FRENTE" value="PASS. BAN. FRENTE" />
+            <Select.Item label="PAS. MOTO" value="TRAUMA" />
+            <Select.Item label="PEDESTRE" value="PEDESTRE" />
+          </Select>
+        </View>
       </View>
       <View className="hidden">
         <Text>Mano</Text>

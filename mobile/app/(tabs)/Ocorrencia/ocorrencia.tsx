@@ -24,14 +24,12 @@ import {
   saveAnamnesisId,
   saveGestacionalAnamnesisId,
 } from '@src/redux/actions/reportActions'
-import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
-import { calculateAnamnesisCompleteness } from '@src/utils/calculateAnamnesisCompleteness'
 import ExcluirOcorrenciaModal from '@app/modal/ExcluirOcorrenciaModal'
 import { styles as s } from '@app/styles/boxShadow'
 import deleteReport from '@src/api/reports/deleteReport'
 import registerGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/registerGestacionalAnamnesis'
 
-export default function Ocorrencia({ navigation }) {
+export default function Ocorrencia({ navigation }: any) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
 
   const { bottom, top } = useSafeAreaInsets()
@@ -47,24 +45,6 @@ export default function Ocorrencia({ navigation }) {
   const existingAnamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,
   )
-  const [anamnesisCompleteness, setAnamnesisCompleteness] = useState(0)
-
-  useEffect(() => {
-    const fetchAnamnesisCompleteness = async () => {
-      try {
-        if (existingAnamnesisId) {
-          const response = await findAnamnesis(existingAnamnesisId)
-          const completeness = calculateAnamnesisCompleteness(response.anamese)
-          setAnamnesisCompleteness(completeness)
-          console.log(response.anamese)
-        }
-      } catch (error) {
-        console.error('Error fetching anamnesis completeness:', error)
-      }
-    }
-
-    fetchAnamnesisCompleteness()
-  }, [existingAnamnesisId])
 
   const handleClickAnamnese = async () => {
     if (existingAnamnesisId) {
@@ -91,6 +71,8 @@ export default function Ocorrencia({ navigation }) {
     (state: RootState) => state.gestacionalAnamnesis.gestacionalAnamnesisId,
   )
 
+  console.log(existingGestacionalAnamnesisId)
+
   const handleClickGestacionalAnamnese = async () => {
     if (existingGestacionalAnamnesisId) {
       navigation.navigate('anamnese-gestacional', {
@@ -101,13 +83,13 @@ export default function Ocorrencia({ navigation }) {
       const response = await registerGesAnamnesis(ReportOwnerId)
       console.log(response)
 
-      if (response && response.gestacionalAnamnesis) {
-        dispatch(saveGestacionalAnamnesisId(response.gestacionalAnamnesis.id))
-        console.log('Ges Anamnese n°: ', response.gestacionalAnamnesis.id)
+      if (response && response.gesAnamnesis) {
+        dispatch(saveGestacionalAnamnesisId(response.gesAnamnesis.id))
+        console.log('Ges Anamnese n°: ', response.gesAnamnesis.id)
 
         navigation.navigate('anamnese-gestacional', {
           screen: 'anamnese-gestacional',
-          params: { gestacionalAnamnesisId: response.gestacionalAnamnesis.id },
+          params: { gestacionalAnamnesisId: response.gesAnamnesis.id },
         })
       }
     }
@@ -178,7 +160,7 @@ export default function Ocorrencia({ navigation }) {
           <Grouper
             title="Anamnese de Emergência"
             desc="Sinais e sintomas, observações..."
-            isCompleted={anamnesisCompleteness}
+            isCompleted={0}
           />
         </TouchableOpacity>
         <TouchableOpacity

@@ -44,3 +44,31 @@ export async function preHospitalarMethodsFindOneRoutes(app: FastifyInstance) {
     })
   })
 }
+
+export async function preHospitalarMethodsFindByReportRoutes(
+  app: FastifyInstance,
+) {
+  app.get('/api/reports/:reportId/preHospitalarMethods', async (req, res) => {
+    const { reportId } = req.params as { reportId: string }
+
+    try {
+      const preHospitalarMethods = await prisma.preHospitalMethod.findMany({
+        where: {
+          reportOwner: {
+            id: parseInt(reportId),
+          },
+        },
+      })
+
+      return res.send({
+        msg: `🟢 Métodos pré-hospitalares localizados com sucesso.`,
+        preHospitalarMethods,
+      })
+    } catch (error) {
+      console.error('Erro ao buscar métodos pré-hospitalares:', error)
+      return res.status(500).send({
+        message: 'Erro interno do servidor ao buscar métodos pré-hospitalares.',
+      })
+    }
+  })
+}

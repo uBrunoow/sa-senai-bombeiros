@@ -31,12 +31,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { styles as s } from '@app/styles/boxShadow'
 import InputLowPadding from '@app/components/InputLowPadding'
+import Cinematica from './components/Cinematica'
 
 const Finalizacao = () => {
-  const [selected, setSelected] = React.useState('')
-  const [categories, setCategories] = React.useState([])
+  const [selected, setSelected] = useState('')
+  const [categories, setCategories] = useState([])
   const [isPressed, setIsPressed] = useState(false)
-  const [selectedOption, setSelectedOption] = React.useState(null)
+  const [selectedOption, setSelectedOption] = useState(null)
   const [changeResponsable, setChangeResponsable] = useState(false)
   const [responsable, setResponsable] = useState('')
   const [observacoesFinais, setObservacoesFinais] = useState('')
@@ -147,7 +148,12 @@ const Finalizacao = () => {
                     label="Categorias"
                     boxStyles={{ padding: 10 }}
                     placeholder="Selecione"
+                    badgeStyles={{
+                      backgroundColor: '#A00E00',
+                      paddingHorizontal: 10,
+                    }}
                     searchPlaceholder="Busque pela forma de condução"
+                    notFoundText="Nenhuma categoria encontrada"
                   />
                 </View>
 
@@ -252,6 +258,9 @@ const Finalizacao = () => {
                     onChangeText={(e) => setObservacoesFinais(e)}
                   />
                 </View>
+              </View>
+              <View>
+                <Cinematica />
               </View>
               {changeResponsable && (
                 <Modal
