@@ -32,6 +32,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { styles as s } from '@app/styles/boxShadow'
 import InputLowPadding from '@app/components/InputLowPadding'
 import Cinematica from './components/Cinematica'
+import findFinalization from '@src/api/reports/finalization/findFinalization'
 
 const Finalizacao = () => {
   const [selected, setSelected] = useState('')
@@ -74,15 +75,27 @@ const Finalizacao = () => {
   }
 
   const ownerId = useSelector((state: RootState) => state.auth.userId)
+  const finalizationId = useSelector(
+    (state: RootState) => state.finalization.finalizationId,
+  )
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         setLoading(true)
-        if (ownerId) {
-          const response = await findUser(ownerId)
-          const userNameResponse = response.user.name
-          setResponsable(userNameResponse)
+
+        const finalizationResponse = await findFinalization(finalizationId)
+
+        if (finalizationResponse.finalization.responsable !== '') {
+          const responsableResponse =
+            finalizationResponse.finalization.responsable
+          setResponsable(responsableResponse)
+        } else {
+          if (ownerId) {
+            const response = await findUser(ownerId)
+            const userNameResponse = response.user.name
+            setResponsable(userNameResponse)
+          }
         }
       } catch (error) {
         console.error('Error fetching users:', error)

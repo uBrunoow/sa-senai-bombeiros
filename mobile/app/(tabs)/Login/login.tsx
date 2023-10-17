@@ -1,4 +1,4 @@
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import Icon from '@expo/vector-icons/Feather'
 import loginUser from '@src/api/users/loginUser'
@@ -13,6 +13,7 @@ import MainButton from '@app/components/MainButton'
 import { useForm, Controller, FieldValues, FieldError } from 'react-hook-form'
 import { z, ZodError, ZodIssue } from 'zod'
 import loginSchema from './schemas/loginSchema'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 type FormDataType = {
   email: string
@@ -23,6 +24,8 @@ export default function Login({ navigation }: any) {
   const dispatch = useDispatch()
 
   const [buttonLoading, setButtonLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [loginError, setLoginError] = useState('')
 
   const {
     control,
@@ -45,6 +48,8 @@ export default function Login({ navigation }: any) {
       if (response && response.user) {
         dispatch(saveToken(response.token, response.user.id))
         navigation.navigate('ocorrencia')
+      } else {
+        setLoginError('Invalid email or password')
       }
 
       setValue('email', '')
@@ -59,6 +64,8 @@ export default function Login({ navigation }: any) {
       setButtonLoading(false)
     }
   }
+
+  console.log(loginError)
 
   const { bottom, top } = useSafeAreaInsets()
   return (
@@ -94,23 +101,50 @@ export default function Login({ navigation }: any) {
                   }}
                 />
                 <FormControl.ErrorMessage>
-                  {errors.email?.message}
+                  {(errors && errors.email?.message) || loginError}
                 </FormControl.ErrorMessage>
               </Stack>
             </FormControl>
-            <FormControl isRequired isInvalid={'password' in errors}>
+            <FormControl
+              isRequired
+              isInvalid={'password' in errors}
+              position={'relative'}
+            >
               <Stack w="300px" mb="20px">
                 <FormControl.Label color={'black'}>Password</FormControl.Label>
                 <Controller
                   control={control}
                   render={({ field }) => (
-                    <Input
-                      onBlur={field.onBlur}
-                      type="password"
-                      placeholder="*********"
-                      onChangeText={(val) => field.onChange(val)}
-                      value={field.value}
-                    />
+                    <>
+                      <Input
+                        onBlur={field.onBlur}
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="*********"
+                        onChangeText={(val) => field.onChange(val)}
+                        value={field.value}
+                        position={'relative'}
+                      />
+                      <Pressable
+                        onPress={() => setShowPassword(!showPassword)}
+                        className="absolute bottom-2 right-2"
+                      >
+                        <Text>
+                          {showPassword ? (
+                            <MaterialCommunityIcons
+                              name="eye"
+                              size={24}
+                              color="black"
+                            />
+                          ) : (
+                            <MaterialCommunityIcons
+                              name="eye-off"
+                              size={24}
+                              color="black"
+                            />
+                          )}
+                        </Text>
+                      </Pressable>
+                    </>
                   )}
                   name="password"
                   rules={{
@@ -118,8 +152,9 @@ export default function Login({ navigation }: any) {
                   }}
                   defaultValue=""
                 />
+
                 <FormControl.ErrorMessage>
-                  {errors.password && errors.password.message}
+                  {(errors.password && errors.password.message) || loginError}
                 </FormControl.ErrorMessage>
               </Stack>
             </FormControl>
