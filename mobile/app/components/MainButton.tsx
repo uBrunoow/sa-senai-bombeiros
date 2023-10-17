@@ -3,7 +3,7 @@ import { ActivityIndicator, Pressable, Text, View } from 'react-native'
 
 type MainButtonProps = {
   innerText: String
-  isLoading: boolean
+  isLoading?: boolean
   onPress: () => void
 }
 
