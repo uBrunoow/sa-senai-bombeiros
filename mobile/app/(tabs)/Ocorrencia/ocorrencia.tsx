@@ -20,14 +20,18 @@ import registerAnamnesis from '@src/api/reports/anamnesis/registerAnamnesis'
 import { RootState } from '@src/redux/stores/stores'
 import {
   clearAnamnesisId,
+  clearFinalizationId,
+  clearGestacionalAnamnesisId,
   clearReportId,
   saveAnamnesisId,
+  saveFinalizationId,
   saveGestacionalAnamnesisId,
 } from '@src/redux/actions/reportActions'
 import ExcluirOcorrenciaModal from '@app/modal/ExcluirOcorrenciaModal'
 import { styles as s } from '@app/styles/boxShadow'
 import deleteReport from '@src/api/reports/deleteReport'
 import registerGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/registerGestacionalAnamnesis'
+import registerFinalization from '@src/api/reports/finalization/registerFinalization'
 
 export default function Ocorrencia({ navigation }: any) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
@@ -71,8 +75,6 @@ export default function Ocorrencia({ navigation }: any) {
     (state: RootState) => state.gestacionalAnamnesis.gestacionalAnamnesisId,
   )
 
-  console.log(existingGestacionalAnamnesisId)
-
   const handleClickGestacionalAnamnese = async () => {
     if (existingGestacionalAnamnesisId) {
       navigation.navigate('anamnese-gestacional', {
@@ -95,11 +97,37 @@ export default function Ocorrencia({ navigation }: any) {
     }
   }
 
+  const existingFinalizationId = useSelector(
+    (state: RootState) => state.finalization.finalizationId,
+  )
+
+  const handleClickFinalization = async () => {
+    if (existingFinalizationId) {
+      navigation.navigate('finalizacao', {
+        screen: 'finalizacao',
+        params: { finalizationId: existingFinalizationId },
+      })
+    } else {
+      const response = await registerFinalization(ReportOwnerId)
+      console.log(response)
+
+      if (response && response.finalization) {
+        dispatch(saveFinalizationId(response.finalization.id))
+        console.log('Finalization n°: ', response.finalization.id)
+
+        navigation.navigate('finalizacao', {
+          screen: 'finalizacao',
+          params: { finalizationId: response.finalization.id },
+        })
+      }
+    }
+  }
+
   const [showModal, setShowModal] = useState(false)
   const reportId = useSelector((state: RootState) => state.report.reportId)
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
       if (reportId) {
         setShowModal(true)
         e.preventDefault()
@@ -119,6 +147,8 @@ export default function Ocorrencia({ navigation }: any) {
       if (response.msg) {
         dispatch(clearReportId())
         dispatch(clearAnamnesisId())
+        dispatch(clearGestacionalAnamnesisId())
+        dispatch(clearFinalizationId())
         setShowModal(false)
         navigation.navigate('home')
       }
@@ -213,10 +243,7 @@ export default function Ocorrencia({ navigation }: any) {
             isCompleted={0}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(`finalizacao`)}
-          activeOpacity={0.7}
-        >
+        <TouchableOpacity onPress={handleClickFinalization} activeOpacity={0.7}>
           <Grouper
             title="Finalização"
             desc="Observações, objetos..."

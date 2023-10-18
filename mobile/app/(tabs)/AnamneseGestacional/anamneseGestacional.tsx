@@ -20,6 +20,15 @@ import findGestacionalAnamnesis from '@src/api/reports/gestacionalAnamnesis/find
 import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
 import updateGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/updateGestacionalAnamnesis'
+import {
+  FormControl,
+  Stack,
+  Input,
+  WarningOutlineIcon,
+  TextArea,
+} from 'native-base'
+import Options from '@app/components/optionsIntroducao'
+import InputNumeric from '@app/components/inputNumeric'
 
 export default function AnamneseGestacional({ navigation }: any) {
   const { bottom, top } = useSafeAreaInsets()
@@ -30,8 +39,14 @@ export default function AnamneseGestacional({ navigation }: any) {
   const [BagRuptured, setBagRuptured] = useState(false)
   const [VisualInspection, setVisualInspection] = useState(false)
   const [Childbirth, setChildbirth] = useState(false)
+  const [gender, setGender] = useState(' ')
+  const [NumberSon, setNumberSon] = useState(0)
   const [loading, setLoading] = useState(false)
   const [buttonLoading, setButtonLoading] = useState(false)
+
+  const handleSelectGender = (selectedGender: 'MASC' | 'FEM') => {
+    setGender(selectedGender)
+  }
 
   const gestacionalAnamnesisId = useSelector(
     (state: RootState) => state.gestacionalAnamnesis.gestacionalAnamnesisId,
@@ -150,26 +165,63 @@ export default function AnamneseGestacional({ navigation }: any) {
                 selectedOption={Complications ? 'SIM' : 'NÃO'}
                 onSelectOption={handleComplications}
               />
-              <YesOrNo
-                Question="Pressão no quadril/vontade de evacuar?"
-                selectedOption={HiPressure ? 'SIM' : 'NÃO'}
-                onSelectOption={handleHiPressure}
-              />
-              <YesOrNo
-                Question="Já houve ruptura da bolsa?"
-                selectedOption={BagRuptured ? 'SIM' : 'NÃO'}
-                onSelectOption={handleBagRuptured}
-              />
-              <YesOrNo
-                Question="Foi feito inspeção visual?"
-                selectedOption={VisualInspection ? 'SIM' : 'NÃO'}
-                onSelectOption={handleVisualInspection}
-              />
-              <YesOrNo
-                Question="Parto realizado?"
-                selectedOption={Childbirth ? 'SIM' : 'NÃO'}
-                onSelectOption={handleChildbirth}
-              />
+              <FormControl>
+                <Stack mx="4">
+                  <FormControl.Label>Filho de número</FormControl.Label>
+                  <InputNumeric
+                    title="Idade"
+                    size="small"
+                    value={NumberSon}
+                    onChangeText={(e) => setNumberSon(e)}
+                  />
+                </Stack>
+                <Stack mx="4">
+                  <FormControl.Label>Duração</FormControl.Label>
+                  <Input placeholder="Duração" />
+                  <FormControl.Label>Intervalo</FormControl.Label>
+                  <Input placeholder="Intervalo" />
+                </Stack>
+                <YesOrNo
+                  Question="Pressão no quadril/vontade de evacuar?"
+                  selectedOption={HiPressure ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleHiPressure}
+                />
+                <YesOrNo
+                  Question="Já houve ruptura da bolsa?"
+                  selectedOption={BagRuptured ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleBagRuptured}
+                />
+                <YesOrNo
+                  Question="Foi feito inspeção visual?"
+                  selectedOption={VisualInspection ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleVisualInspection}
+                />
+                <YesOrNo
+                  Question="Parto realizado?"
+                  selectedOption={Childbirth ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleChildbirth}
+                />
+                <Options
+                  title="Sexo"
+                  Option1="Masc."
+                  Option2="Fem."
+                  selectedOption={gender}
+                  onSelectOption={handleSelectGender}
+                />
+                <Stack mx="4">
+                  <FormControl.Label>Nome do bebê</FormControl.Label>
+                  <Input type="text" />
+                </Stack>
+                <Stack mx="4">
+                  <FormControl.Label>Observações Finais</FormControl.Label>
+                  <TextArea
+                    h={20}
+                    placeholder="Text Area Placeholder"
+                    w="75%"
+                    maxW="100%"
+                  />
+                </Stack>
+              </FormControl>
             </View>
             <Pressable onPress={() => navigation.navigate(`ocorrencia`)}>
               <MainButton

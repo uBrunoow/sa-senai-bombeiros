@@ -32,3 +32,14 @@ export const clearGestacionalAnamnesisId = () => {
     type: 'CLEAR_GESTACIONAL_ANAMNESIS_ID',
   }
 }
+
+export const saveFinalizationId = (finalizationId: number) => ({
+  type: 'SAVE_FINALIZATION',
+  payload: { finalizationId },
+})
+
+export const clearFinalizationId = () => {
+  return {
+    type: 'CLEAR_FINALIZATION_ID',
+  }
+}

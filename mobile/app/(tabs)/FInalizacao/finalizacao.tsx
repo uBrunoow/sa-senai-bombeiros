@@ -33,6 +33,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { styles as s } from '@app/styles/boxShadow'
 import InputLowPadding from '@app/components/InputLowPadding'
 import Cinematica from './components/Cinematica'
+import findFinalization from '@src/api/reports/finalization/findFinalization'
 
 const Finalizacao = () => {
   const [selected, setSelected] = useState('')
@@ -75,16 +76,32 @@ const Finalizacao = () => {
   }
 
   const ownerId = useSelector((state: RootState) => state.auth.userId)
+  const finalizationId = useSelector(
+    (state: RootState) => state.finalization.finalizationId,
+  )
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         setLoading(true)
-        if (ownerId) {
-          const response = await findUser(ownerId)
-          const userNameResponse = response.user.name
-          setResponsable(userNameResponse)
+
+        const finalizationResponse = await findFinalization(finalizationId)
+
+        console.log(finalizationResponse)
+
+        if (finalizationResponse.finalization.responsable === null || '') {
+          if (ownerId) {
+            const response = await findUser(ownerId)
+            const userNameResponse = response.user.name
+            setResponsable(userNameResponse)
+          }
+        } else {
+          const responsableResponse =
+            finalizationResponse.finalization.responsable
+          setResponsable(responsableResponse)
         }
+
+        console.log(finalizationId)
       } catch (error) {
         console.error('Error fetching users:', error)
       } finally {
@@ -93,9 +110,17 @@ const Finalizacao = () => {
     }
 
     fetchUserData()
-  }, [ownerId])
+  }, [ownerId, finalizationId])
 
   const { bottom, top } = useSafeAreaInsets()
+
+  const handleModalClose = () => {
+    setChangeResponsable(false)
+  }
+
+  const handleResponsableChange = (newResponsable: string) => {
+    setResponsable(newResponsable)
+  }
 
   return (
     <>
@@ -270,7 +295,10 @@ const Finalizacao = () => {
                       className="rounded-[7px] bg-white p-4 "
                     >
                       <View className="relative flex-row items-center justify-center">
-                        <FInalizacaoModal />
+                        <FInalizacaoModal
+                          onClose={handleModalClose}
+                          onResponsableChange={handleResponsableChange}
+                        />
                         <Pressable
                           onPress={() => setChangeResponsable(false)}
                           className="absolute right-[-5px] top-1"

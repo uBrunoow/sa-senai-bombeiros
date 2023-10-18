@@ -5,6 +5,7 @@ import authReducer from '../reducers/authReducer'
 import reportReducer from '../reducers/reportReducer'
 import anamnesisReducer from '../reducers/anamnesisReducer'
 import gestacionalReducer from '../reducers/gestacionalReducer'
+import finalizationReducer from '../reducers/finalizationReducer'
 
 export interface RootState {
   auth: {
@@ -21,6 +22,9 @@ export interface RootState {
   gestacionalAnamnesis: {
     gestacionalAnamnesisId: number
   }
+  finalization: {
+    finalizationId: number
+  }
 }
 const store = configureStore({
   reducer: {
@@ -28,6 +32,7 @@ const store = configureStore({
     report: reportReducer,
     anamnesis: anamnesisReducer,
     gestacionalAnamnesis: gestacionalReducer,
+    finalization: finalizationReducer,
   },
   middleware: [thunk],
 })
