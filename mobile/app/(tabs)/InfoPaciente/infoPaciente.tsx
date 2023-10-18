@@ -11,9 +11,9 @@ import { MaterialIcons } from '@expo/vector-icons'
 
 export default function Ocorrencia() {
   return (
-    <SafeAreaView className="m-0 flex-1 p-0">
+    <SafeAreaView>
       <ScrollView>
-        <View className="">
+        <View>
           <Header />
           <View className=" mt-[34px] flex-row items-center justify-center">
             <MaterialIcons name="person-search" size={24} color="#A00e00" />

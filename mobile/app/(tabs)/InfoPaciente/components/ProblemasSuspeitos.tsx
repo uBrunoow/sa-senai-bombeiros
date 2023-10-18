@@ -2,10 +2,13 @@ import { Text, View } from 'react-native'
 import SuspectProblemButton from './SuspectProblemButton'
 import InputFull from '@app/components/InputLowPadding'
 import { styles as s } from '@app/styles/boxShadow'
+import React, { useState } from 'react'
+import { CheckIcon, Select } from 'native-base'
 import { useState } from 'react'
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
 export default function AvalPacienteGroup() {
+  const [victimWas, setVictimWas] = useState('')
   const [transportButtonSelected, setTransportButtonSelected] = useState(false)
   const [diabetesButtonSelected, setDiabetesButtonSelected] = useState(false)
   const [obstericoButtonSelected, setObstericoButtonSelected] = useState(false)
