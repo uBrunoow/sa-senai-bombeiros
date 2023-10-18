@@ -8,6 +8,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Header from '@app/components/Header'
+import Title from '@app/components/Title'
 import Footer from '@app/components/Footer'
 import InputFull from '@app/components/InputFull'
 import YesOrNo from '@app/components/YesOrNo'
@@ -175,12 +176,7 @@ export default function Anamnese({ navigation }: any) {
         <View>
           <Header />
           <View className="justfy-between aling-items mb-4 flex-1 px-[21.5px]">
-            <View className="mb-[25px] mt-[34px] flex-row items-center justify-center">
-              <AntDesign name="questioncircle" size={24} color="#A00E00" />
-              <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
-                Anamnese de emergência
-              </Text>
-            </View>
+            <Title iconName="question-circle" title="Anamnese de Emergência" />
             <View
               className=" mx-auto mb-12 rounded-[14px] bg-white py-[30px] shadow-md"
               style={styles.boxShadow}

@@ -1,4 +1,4 @@
-import { View, ScrollView, SafeAreaView, Text } from 'react-native'
+import { View, ScrollView, SafeAreaView } from 'react-native'
 import React from 'react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
@@ -7,7 +7,7 @@ import SinaisInfoPaciente from '@app/(tabs)/InfoPaciente/components/SinaisInfoPa
 import AvalPacienteGroup from '@app/(tabs)/InfoPaciente/components/AvalPacienteGroup'
 import ProblemasSuspeitos from '@app/(tabs)/InfoPaciente/components/ProblemasSuspeitos'
 import MainButton from '../../components/MainButton'
-import { MaterialIcons } from '@expo/vector-icons'
+import Title from '@app/components/Title'
 
 export default function Ocorrencia() {
   return (
@@ -15,12 +15,7 @@ export default function Ocorrencia() {
       <ScrollView>
         <View>
           <Header />
-          <View className=" mt-[34px] flex-row items-center justify-center">
-            <MaterialIcons name="person-search" size={24} color="#A00e00" />
-            <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
-              Info. Paciente
-            </Text>
-          </View>
+          <Title iconName="user-alt" title="Informações do Paciente" />
           <InfoPacienteTitle content="Sinais Vitais" />
           <SinaisInfoPaciente />
           <InfoPacienteTitle content="Aval. do Paciênte (GLASGOW)" />

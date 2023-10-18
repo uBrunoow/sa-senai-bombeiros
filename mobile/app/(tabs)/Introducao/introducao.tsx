@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { FontAwesome5 } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
+import Title from '@app/components/Title'
 import Footer from '@app/components/Footer'
 import Options from '@app/components/optionsIntroducao'
 import InputLowPadding from '@app/components/InputLowPadding'
@@ -261,12 +262,7 @@ export default function Introducao({ navigation }: any) {
       ) : (
         <>
           <Header />
-          <View className="mb-[40px] mt-[34px] flex-row items-center justify-center">
-            <FontAwesome5 name="suitcase" size={24} color="#A00E00" />
-            <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
-              Introdução
-            </Text>
-          </View>
+          <Title iconName="suitcase" title="Introdução" />
           <View
             style={s.boxShadow}
             className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
