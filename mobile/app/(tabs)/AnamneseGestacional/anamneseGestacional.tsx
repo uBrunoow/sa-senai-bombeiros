@@ -10,7 +10,7 @@ import Header from '@app/components/Header'
 import Title from '@app/components/Title'
 import Footer from '@app/components/Footer'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { FontAwesome5 } from '@expo/vector-icons'
+import TestInput from '@app/components/TestInput'
 import MainButton from '@app/components/MainButton'
 import YesOrNo from '@app/components/YesOrNo'
 import GestationPeriod from '@app/(tabs)/AnamneseGestacional/components/GestationPeriod'
@@ -208,6 +208,9 @@ export default function AnamneseGestacional({ navigation }: any) {
                   selectedOption={gender}
                   onSelectOption={handleSelectGender}
                 />
+                <TestInput title="TESTE" name="teste"></TestInput>
+                <TestInput title="TESTE2" name="teste2"></TestInput>
+                <TestInput title="TESTE3" name="teste3"></TestInput>
                 <Stack mx="4">
                   <FormControl.Label>Nome do bebê</FormControl.Label>
                   <Input type="text" />

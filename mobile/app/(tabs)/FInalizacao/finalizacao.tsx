@@ -3,7 +3,6 @@ import {
   Text,
   SafeAreaView,
   Pressable,
-  // TextInput,
   Modal,
   ScrollView,
   ActivityIndicator,
@@ -13,7 +12,6 @@ import Header from '@app/components/Header'
 import Title from '@app/components/Title'
 import Footer from '@app/components/Footer'
 import {
-  FontAwesome5,
   Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
@@ -61,7 +59,7 @@ const Finalizacao = () => {
     return {
       borderColor: selectedOption === option ? '#6d1111' : 'transparent',
       borderWidth: 5,
-      borderRadius: 10,
+      borderRadius: 7,
     }
   }
 
@@ -178,15 +176,18 @@ const Finalizacao = () => {
                 </View>
 
                 <View>
-                  <Text>Decisão transporte</Text>
+                  <Text className="text-lg font-medium">
+                    Decisão transporte
+                  </Text>
                   <View className="flex-row items-center justify-between">
                     <View>
                       <Pressable
                         style={({ pressed }) => [
-                          s.button,
+                          s.TransporteButton,
+                          s.TransporteButtonRed,
                           getButtonStyle('critico'),
                           selectedOption === 'critico' && {
-                            borderColor: '#6d1111',
+                            borderColor: '#a30000',
                           },
                         ]}
                         onPress={() => handleOptionPress('critico')}
@@ -204,10 +205,11 @@ const Finalizacao = () => {
                     <View>
                       <Pressable
                         style={({ pressed }) => [
-                          s.buttonOrange,
+                          s.TransporteButton,
+                          s.TransporteButtonOrange,
                           getButtonStyle('instavel'),
                           selectedOption === 'instavel' && {
-                            borderColor: '#6d4011',
+                            borderColor: '#ab4800',
                           },
                         ]}
                         onPress={() => handleOptionPress('instavel')}
@@ -225,10 +227,11 @@ const Finalizacao = () => {
                     <View>
                       <Pressable
                         style={({ pressed }) => [
-                          s.buttonYellow,
+                          s.TransporteButton,
+                          s.TransporteButtonYellow,
                           getButtonStyle('possivelmente estavel'),
                           selectedOption === 'possivelmente estavel' && {
-                            borderColor: '#656d11',
+                            borderColor: '#cfa100',
                           },
                         ]}
                         onPress={() =>
@@ -248,10 +251,11 @@ const Finalizacao = () => {
                     <View>
                       <Pressable
                         style={({ pressed }) => [
-                          s.buttonGreen,
+                          s.TransporteButton,
+                          s.TransporteButtonGreen,
                           getButtonStyle('estavel'),
                           selectedOption === 'estavel' && {
-                            borderColor: '#1a6d11',
+                            borderColor: '#0c9100',
                           },
                         ]}
                         onPress={() => handleOptionPress('estavel')}
