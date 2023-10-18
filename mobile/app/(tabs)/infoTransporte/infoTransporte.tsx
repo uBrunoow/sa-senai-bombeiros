@@ -1,10 +1,12 @@
 import { ScrollView, View, Text, SafeAreaView } from 'react-native'
-import Header from '../../components/Header'
 import React, { useState } from 'react'
 import { FontAwesome5 } from '@expo/vector-icons'
 import Options from '@app/components/optionsIntroducao'
 import { styles as s } from '../../styles/boxShadow'
 import InputLowPadding from '@app/components/InputLowPadding'
+import Header from '../../components/Header'
+import Title from '../../components/Title'
+import Footer from '@app/components/Footer'
 
 export default function InfoTransporte() {
   const [IRPS, setIRPS] = useState(' ')
@@ -15,12 +17,7 @@ export default function InfoTransporte() {
     <SafeAreaView>
       <ScrollView>
         <Header />
-        <View className="mb-[40px] mt-[34px] flex-row items-center justify-center">
-          <FontAwesome5 name="ambulance" size={24} color="#A00E00" />
-          <Text className="ml-[10px] text-[20px] leading-[20px]">
-            Informações de Transporte
-          </Text>
-        </View>
+        <Title iconName="ambulance" title="Informações de Transporte" />
         <View style={s.boxShadow} className="mx-auto">
           <View className="flex-row">
             <View className="w-3/6">
@@ -58,6 +55,7 @@ export default function InfoTransporte() {
             </View>
           </View>
         </View>
+        <Footer />
       </ScrollView>
     </SafeAreaView>
   )
