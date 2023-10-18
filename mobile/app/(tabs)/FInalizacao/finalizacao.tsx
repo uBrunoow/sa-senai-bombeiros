@@ -86,17 +86,21 @@ const Finalizacao = () => {
 
         const finalizationResponse = await findFinalization(finalizationId)
 
-        if (finalizationResponse.finalization.responsable !== '') {
-          const responsableResponse =
-            finalizationResponse.finalization.responsable
-          setResponsable(responsableResponse)
-        } else {
+        console.log(finalizationResponse)
+
+        if (finalizationResponse.finalization.responsable === null || '') {
           if (ownerId) {
             const response = await findUser(ownerId)
             const userNameResponse = response.user.name
             setResponsable(userNameResponse)
           }
+        } else {
+          const responsableResponse =
+            finalizationResponse.finalization.responsable
+          setResponsable(responsableResponse)
         }
+
+        console.log(finalizationId)
       } catch (error) {
         console.error('Error fetching users:', error)
       } finally {
@@ -105,9 +109,17 @@ const Finalizacao = () => {
     }
 
     fetchUserData()
-  }, [ownerId])
+  }, [ownerId, finalizationId])
 
   const { bottom, top } = useSafeAreaInsets()
+
+  const handleModalClose = () => {
+    setChangeResponsable(false)
+  }
+
+  const handleResponsableChange = (newResponsable: string) => {
+    setResponsable(newResponsable)
+  }
 
   return (
     <>
@@ -288,7 +300,10 @@ const Finalizacao = () => {
                       className="rounded-[7px] bg-white p-4 "
                     >
                       <View className="relative flex-row items-center justify-center">
-                        <FInalizacaoModal />
+                        <FInalizacaoModal
+                          onClose={handleModalClose}
+                          onResponsableChange={handleResponsableChange}
+                        />
                         <Pressable
                           onPress={() => setChangeResponsable(false)}
                           className="absolute right-[-5px] top-1"

@@ -6,13 +6,20 @@ import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
 import updateFinalization from '@src/api/reports/finalization/updateFinalization'
 import MainButton from '@app/components/MainButton'
-import { useNavigation } from '@react-navigation/core'
 
 type FormDataType = {
   responsable: string
 }
-const FInalizacaoModal = () => {
-  const navigation = useNavigation()
+
+interface FinalizacaoModalProps {
+  onClose: () => void
+  onResponsableChange: (newResponsable: string) => void
+}
+
+const FInalizacaoModal = ({
+  onClose,
+  onResponsableChange,
+}: FinalizacaoModalProps) => {
   const { control, handleSubmit, setValue } = useForm<FormDataType>({
     defaultValues: {
       responsable: '',
@@ -28,6 +35,7 @@ const FInalizacaoModal = () => {
 
   const handleFinalization = async (data: FormDataType) => {
     try {
+      setButtonLoading(true)
       const response = await updateFinalization(
         reportId,
         finalizationId,
@@ -35,13 +43,15 @@ const FInalizacaoModal = () => {
       )
 
       if (response && response.updatedFinalization) {
-        navigation.navigate('finalizacao')
+        onClose()
+        onResponsableChange(data.responsable)
       }
 
       console.log(response)
     } catch (error) {
       console.error(error)
     } finally {
+      setButtonLoading(false)
     }
   }
 
@@ -83,14 +93,6 @@ const FInalizacaoModal = () => {
             </Stack>
           </FormControl>
         </View>
-        {/* <Pressable
-          className=" mt-10 w-[100px] items-center justify-center rounded-[7px] bg-[#F23030] p-3"
-          onPress={handleFinalization}
-        >
-          <Text className="text-[18px] font-bold uppercase text-white">
-            Salvar
-          </Text>
-        </Pressable> */}
         <MainButton
           innerText="SALVAR"
           onPress={handleSubmit(handleFinalization)}

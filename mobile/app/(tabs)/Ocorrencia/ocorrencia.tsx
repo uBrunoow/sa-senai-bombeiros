@@ -20,6 +20,8 @@ import registerAnamnesis from '@src/api/reports/anamnesis/registerAnamnesis'
 import { RootState } from '@src/redux/stores/stores'
 import {
   clearAnamnesisId,
+  clearFinalizationId,
+  clearGestacionalAnamnesisId,
   clearReportId,
   saveAnamnesisId,
   saveFinalizationId,
@@ -145,6 +147,8 @@ export default function Ocorrencia({ navigation }: any) {
       if (response.msg) {
         dispatch(clearReportId())
         dispatch(clearAnamnesisId())
+        dispatch(clearGestacionalAnamnesisId())
+        dispatch(clearFinalizationId())
         setShowModal(false)
         navigation.navigate('home')
       }

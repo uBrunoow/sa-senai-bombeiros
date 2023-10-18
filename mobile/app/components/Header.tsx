@@ -17,6 +17,8 @@ import deleteReport from '@src/api/reports/deleteReport'
 import { useNavigation } from '@react-navigation/core'
 import {
   clearAnamnesisId,
+  clearFinalizationId,
+  clearGestacionalAnamnesisId,
   clearReportId,
 } from '@src/redux/actions/reportActions'
 
@@ -45,6 +47,8 @@ export default function Header() {
       if (response.msg) {
         dispatch(clearReportId())
         dispatch(clearAnamnesisId())
+        dispatch(clearGestacionalAnamnesisId())
+        dispatch(clearFinalizationId())
         setExcluirOcorrenciaAbrir(false)
         navigation.navigate('home')
       }
