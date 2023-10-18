@@ -4,7 +4,7 @@ import { Button } from 'native-base'
 
 type MainButtonProps = {
   innerText: String
-  isLoading: boolean
+  isLoading?: boolean
   onPress: () => void
 }
 

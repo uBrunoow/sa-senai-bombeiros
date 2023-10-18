@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import InputLowPadding from '@app/components/InputLowPadding'
-import Options from '@app/components/optionsIntroducao'
+import Perfusaoinfo from './Perfusaoinfo'
 import { styles as s } from '@app/styles/boxShadow'
 
 export default function SinaisInfoPaciente() {

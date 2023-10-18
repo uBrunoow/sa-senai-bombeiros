@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
+import Title from '@app/components/Title'
 import Footer from '@app/components/Footer'
 import {
   FontAwesome5,
@@ -135,19 +136,13 @@ const Finalizacao = () => {
             </Text>
           </View>
         ) : (
-          <View className="">
+          <View>
             <Header />
-            <SafeAreaView className="">
-              <View className="mb-6 mt-8 flex-row items-center justify-center">
-                <FontAwesome5 name="flag-checkered" size={24} color="#F23030" />
-                <Text className="ml-3 text-xl font-medium leading-5">
-                  Finalização
-                </Text>
-              </View>
-
+            <SafeAreaView>
+              <Title iconName="flag" title="Finalização" />
               <View
                 style={s.boxShadow}
-                className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
+                className=" mx-auto mb-10 p-5 shadow-md"
               >
                 <View>
                   <Text className="font-medium">

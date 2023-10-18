@@ -35,7 +35,7 @@ const InputClock = (props: InputClockProps) => {
   }, [props.initialValue])
 
   return (
-    <View className="justfy-between m-auto my-2 w-5/6 flex-1 items-center ">
+    <View className="justfy-between m-auto my-2 w-full flex-1 items-center ">
       <Text className="text-lg">{props.title}</Text>
       {showPicker && (
         <>
