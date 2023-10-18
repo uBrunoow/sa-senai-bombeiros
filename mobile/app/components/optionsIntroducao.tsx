@@ -9,7 +9,7 @@ type OptionsProps = {
   Option2?: string // You need to define these props
 }
 
-export default function Options(props: OptionsProps) {
+export default function PickOne(props: OptionsProps) {
   return (
     <View
       style={{
