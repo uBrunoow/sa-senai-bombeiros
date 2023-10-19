@@ -77,6 +77,15 @@ import {
 } from './src/routes/reports/Finalization/findFinalization'
 import { finalizationDeleteRoutes } from './src/routes/reports/Finalization/deleteFinalization'
 
+// Problemas Suspeitos
+import { registerSuspectProblems } from './src/routes/reports/SuspectProblems/registerSuspectProblems'
+import { updateSuspectProblemsRoutes } from './src/routes/reports/SuspectProblems/updateSuspectProblems'
+import {
+  suspectProblemsFindRoutes,
+  suspectProblemsFindOneRoutes,
+} from './src/routes/reports/SuspectProblems/findSuspectProblems'
+import { suspectProblemsDeleteRoutes } from './src/routes/reports/SuspectProblems/deleteSuspectProblems'
+
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
 app.register(cors, {
@@ -146,6 +155,13 @@ app.register(updateFinalizationRoutes)
 app.register(finalizationFindRoutes)
 app.register(finalizationFindOneRoutes)
 app.register(finalizationDeleteRoutes)
+
+// SUSPECT PROBLEMS
+app.register(registerSuspectProblems)
+app.register(updateSuspectProblemsRoutes)
+app.register(suspectProblemsFindRoutes)
+app.register(suspectProblemsFindOneRoutes)
+app.register(suspectProblemsDeleteRoutes)
 
 app
   .listen({

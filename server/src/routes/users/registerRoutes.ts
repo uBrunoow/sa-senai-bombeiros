@@ -8,11 +8,9 @@ export async function userRegisterRoutes(
   done: fastifyDoneFunction,
 ) {
   app.post('/api/users/register', async (req, res) => {
-    // Pegar as informações vindo do front-end
     const { email, name, gender, isActive, password, confirmPassword } =
       registerSchema.parse(req.body)
 
-    // Validação de dados
     if (
       !email ||
       !name ||

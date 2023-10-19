@@ -11,9 +11,9 @@ model User {
   id        Int       @id @default(autoincrement())
   email     String    @unique
   name      String?
-  gender    String?
   password  String
   isActive  Boolean
+  gender    String?
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
   Reports   Report[]
@@ -35,41 +35,39 @@ model Report {
   bodyPulse                Int?
   breathing                Int?
   saturation               Int?
-  owner                    User                       @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId                  Int
-  PreHospitalMethods       PreHospitalMethod[]
-  Symptoms                 Symptoms[]
-  GestationalAnamnesis     GestationalAnamnesis[]
   Anamnesis                Anamnesis[]
-  SuspectProblems          SuspectProblems[]
+  Finalization             Finalization[]
+  GestationalAnamnesis     GestationalAnamnesis[]
   Glasglow                 Glasglow[]
+  PreHospitalMethods       PreHospitalMethod[]
+  owner                    User                       @relation(fields: [ownerId], references: [id])
   Report_PreHospitalMethod Report_PreHospitalMethod[]
   Report_Symptoms          Report_Symptoms[]
-  Finalization             Finalization[]
+  SuspectProblems          SuspectProblems[]
+  Symptoms                 Symptoms[]
 }
 
-//  Tabela N para N entre relatório e método pré-hospitalar
 model Report_PreHospitalMethod {
   id                       Int               @id @default(autoincrement())
-  preHospitalMethodOwner   PreHospitalMethod @relation(fields: [PreHospitalMethodOwnerId], references: [id])
-  reportOwner              Report            @relation(fields: [ReportOwnerId], references: [id])
   PreHospitalMethodOwnerId Int
   ReportOwnerId            Int
   createdAt                DateTime?         @default(now())
   updatedAt                DateTime?         @updatedAt
+  preHospitalMethodOwner   PreHospitalMethod @relation(fields: [PreHospitalMethodOwnerId], references: [id])
+  reportOwner              Report            @relation(fields: [ReportOwnerId], references: [id])
 
   @@unique([ReportOwnerId, PreHospitalMethodOwnerId])
 }
 
-//  Tabela N para N entre relatório e sintoma
 model Report_Symptoms {
   id              Int       @id @default(autoincrement())
-  symptomsOwner   Symptoms  @relation(fields: [SymptomsOwnerId], references: [id])
-  reportOwner     Report    @relation(fields: [ReportOwnerId], references: [id])
   SymptomsOwnerId Int
   ReportOwnerId   Int
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
+  reportOwner     Report    @relation(fields: [ReportOwnerId], references: [id])
+  symptomsOwner   Symptoms  @relation(fields: [SymptomsOwnerId], references: [id])
 
   @@unique([ReportOwnerId, SymptomsOwnerId])
 }
@@ -77,51 +75,45 @@ model Report_Symptoms {
 model PreHospitalMethod {
   id                       Int                        @id @default(autoincrement())
   description              String
-  reportOwner              Report                     @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId            Int
   createdAt                DateTime?                  @default(now())
   updatedAt                DateTime?                  @updatedAt
+  reportOwner              Report                     @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   Report_PreHospitalMethod Report_PreHospitalMethod[]
 }
 
 model Symptoms {
   id              Int               @id @default(autoincrement())
   description     String
-  reportOwner     Report            @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId   Int
   createdAt       DateTime?         @default(now())
   updatedAt       DateTime?         @updatedAt
   Report_Symptoms Report_Symptoms[]
+  reportOwner     Report            @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 model GestationalAnamnesis {
   id                  Int         @id @default(autoincrement())
-  gestationalPeriod   DateTime?
   PreNatal            Boolean?
   DoctorName          String?
-  Complications       Boolean?
   NumberSon           Int?
-  ContractionSchedule String?
-  Duration            String?
-  Interval            String?
   HiPressure          Boolean?
   BagRuptured         Boolean?
   VisualInspection    Boolean?
   Childbirth          Boolean?
-  BabyGender          BabyGender?
   BornHour            String?
   BabyName            String?
   FinalRemarks        String?
+  ReportOwnerId       Int
   createdAt           DateTime?   @default(now())
   updatedAt           DateTime?   @updatedAt
+  Complications       Boolean?
+  gestationalPeriod   DateTime?
+  ContractionSchedule String?
+  Duration            String?
+  Interval            String?
+  BabyGender          BabyGender?
   reportOwner         Report      @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
-  ReportOwnerId       Int
-}
-
-enum BabyGender {
-  Male
-  Female
-  Other
 }
 
 model Anamnesis {
@@ -139,41 +131,34 @@ model Anamnesis {
   IngestedFood       Boolean?
   WhatTimeFood       String?
   FinalRemarks       String?
+  ReportOwnerId      Int
   createdAt          DateTime? @default(now())
   updatedAt          DateTime? @updatedAt
   reportOwner        Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
-  ReportOwnerId      Int
 }
 
 model Glasglow {
   id                    Int       @id @default(autoincrement())
-  reportOwner           Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId         Int
   eyeOpeningOwnerId     Int
   verbalResponseOwnerId Int
   motorResponseOwnerId  Int
   createdAt             DateTime? @default(now())
   updatedAt             DateTime? @updatedAt
+  reportOwner           Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 model SuspectProblems {
-  id            Int        @id @default(autoincrement())
-  Problem       Problems[]
-  Another       String
-  Report        Report?    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
-  ReportOwnerId Int?
-  createdAt     DateTime?  @default(now())
-  updatedAt     DateTime?  @updatedAt
-}
-
-model Problems {
-  id                Int              @id @default(autoincrement())
-  Name              String
-  Description       String
-  SuspectProblems   SuspectProblems? @relation(fields: [suspectProblemsId], references: [id], onDelete: Cascade)
-  suspectProblemsId Int?
-  createdAt         DateTime?        @default(now())
-  updatedAt         DateTime?        @updatedAt
+  id                           Int       @id @default(autoincrement())
+  problemaSuspeitoTransporte   String[]
+  problemaSuspeitoDiabetes     String[]
+  problemaSuspeitoObstetrico   String[]
+  problemaSuspeitoRespiratorio String[]
+  Another                      String
+  createdAt                    DateTime? @default(now())
+  updatedAt                    DateTime? @updatedAt
+  ReportOwnerId                Int?
+  Report                       Report?   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 model CinematicAvaliation {
@@ -192,6 +177,37 @@ model Finalization {
   conduction     String[]
   transportation String?
   finalRemarks   String?
-  reportOwner    Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId  Int
+  reportOwner    Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+}
+
+enum BabyGender {
+  Male
+  Female
+  Other
+}
+
+enum problemaSuspeitoTransporte {
+  AEREO
+  CLINICO
+  EMERGENCIAL
+  POS_TRAUMA
+  SAMU
+  SEM_REMOCAO
+}
+
+enum problemaSuspeitoDiabetes {
+  HIPOGLICEMIA
+  HIPERGLICEMIA
+}
+
+enum problemaSuspeitoObstetrico {
+  PARTO_GESTACIONAL
+  GESTANTE
+  HEMORRAGIA_EXCESSIVA
+}
+
+enum problemaSuspeitoRespiratorio {
+  DPOC
+  INLACAO_FUMACA
 }

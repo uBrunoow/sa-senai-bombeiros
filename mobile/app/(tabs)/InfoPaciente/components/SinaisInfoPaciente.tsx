@@ -3,6 +3,7 @@ import React from 'react'
 import InputLowPadding from '@app/components/InputLowPadding'
 import Perfusaoinfo from './Perfusaoinfo'
 import { styles as s } from '@app/styles/boxShadow'
+import Options from '@app/components/optionsIntroducao'
 
 export default function SinaisInfoPaciente() {
   return (
