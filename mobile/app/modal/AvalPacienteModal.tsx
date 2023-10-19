@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-
+//
 type modalOption = {
   value: string
   description: string
@@ -21,7 +21,9 @@ export default function AvalPacienteModal({
   return (
     <View className="h-screen w-screen items-center justify-center bg-[#00000012]">
       <View className="flex-col  rounded-2xl bg-white px-10 py-7 shadow-2xl">
-        <Text className="p-b-15 mx-auto">Valor {modalTitle} - Selecione:</Text>
+        <Text className="p-b-15 mx-auto mb-5 text-xl font-bold">
+          {modalTitle} - Selecione:
+        </Text>
         <View className="flex-col gap-3">
           {options.map((modalOpction) => {
             const modalDescription = `${modalOpction.value} - ${modalOpction.description}`
