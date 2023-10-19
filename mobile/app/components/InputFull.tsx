@@ -37,7 +37,7 @@ export default function InputFull(props: InputProps) {
       style={{
         flexGrow: handleWidth(),
       }}
-      className="justfy-between m-auto my-2 w-full flex-1 items-center"
+      className="my-2 w-full flex-1 items-center"
     >
       <Text className="text-lg font-medium">{props.title}</Text>
       <View className="mb-4 mt-2 w-5/6 rounded-lg border">

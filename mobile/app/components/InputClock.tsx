@@ -5,7 +5,7 @@ import DateTimePickerAndroid from '@react-native-community/datetimepicker'
 
 type InputClockProps = {
   title?: string
-  initialValue: string
+  initialValue?: string
   onChange: (newValue: string) => void
 }
 
@@ -35,8 +35,8 @@ const InputClock = (props: InputClockProps) => {
   }, [props.initialValue])
 
   return (
-    <View className="justfy-between m-auto my-2 w-full flex-1 items-center ">
-      <Text className="text-lg">{props.title}</Text>
+    <View className=" my-2 items-center">
+      <Text className="text-lg font-medium">{props.title}</Text>
       {showPicker && (
         <>
           <DateTimePickerAndroid
@@ -47,10 +47,10 @@ const InputClock = (props: InputClockProps) => {
           />
         </>
       )}
-      <View className="mb-4  mt-2 w-5/6 rounded-lg">
-        <Pressable onPress={toggleDatePicker} className="relative ">
+      <View className="mt-2 w-full">
+        <Pressable onPress={toggleDatePicker}>
           <TextInput
-            className=" realtive rounded-lg border text-black"
+            className="mx-7 rounded-lg border"
             placeholder="00:00"
             editable={false}
             value={timeMedication}
