@@ -140,9 +140,9 @@ model Anamnesis {
 model Glasglow {
   id                    Int       @id @default(autoincrement())
   ReportOwnerId         Int
-  eyeOpeningOwnerId     Int
-  verbalResponseOwnerId Int
-  motorResponseOwnerId  Int
+  eyeOpeningOwnerId     Int?
+  verbalResponseOwnerId Int?
+  motorResponseOwnerId  Int?
   createdAt             DateTime? @default(now())
   updatedAt             DateTime? @updatedAt
   reportOwner           Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
@@ -150,15 +150,15 @@ model Glasglow {
 
 model SuspectProblems {
   id                           Int       @id @default(autoincrement())
-  problemaSuspeitoTransporte   String[]
-  problemaSuspeitoDiabetes     String[]
-  problemaSuspeitoObstetrico   String[]
-  problemaSuspeitoRespiratorio String[]
-  Another                      String
+  problemaSuspeitoTransporte   String[]  @default([""])
+  problemaSuspeitoDiabetes     String[]  @default([""])
+  problemaSuspeitoObstetrico   String[]  @default([""])
+  problemaSuspeitoRespiratorio String[]  @default([""])
+  Another                      String?
   createdAt                    DateTime? @default(now())
   updatedAt                    DateTime? @updatedAt
-  ReportOwnerId                Int?
-  Report                       Report?   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  ReportOwnerId                Int
+  Report                       Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 model CinematicAvaliation {
@@ -194,20 +194,24 @@ enum problemaSuspeitoTransporte {
   POS_TRAUMA
   SAMU
   SEM_REMOCAO
+  null
 }
 
 enum problemaSuspeitoDiabetes {
   HIPOGLICEMIA
   HIPERGLICEMIA
+  null
 }
 
 enum problemaSuspeitoObstetrico {
   PARTO_GESTACIONAL
   GESTANTE
   HEMORRAGIA_EXCESSIVA
+  null
 }
 
 enum problemaSuspeitoRespiratorio {
   DPOC
   INLACAO_FUMACA
+  null
 }

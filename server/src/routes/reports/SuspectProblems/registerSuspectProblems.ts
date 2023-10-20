@@ -15,10 +15,10 @@ export async function registerSuspectProblems(app: FastifyInstance) {
 
     const newSuspectProblems = await prisma.suspectProblems.create({
       data: {
-        problemaSuspeitoTransporte: problemaSuspeitoTransporte || [''],
-        problemaSuspeitoDiabetes: problemaSuspeitoDiabetes || [''],
-        problemaSuspeitoObstetrico: problemaSuspeitoObstetrico || [''],
-        problemaSuspeitoRespiratorio: problemaSuspeitoRespiratorio || [''],
+        problemaSuspeitoTransporte: problemaSuspeitoTransporte || [' '],
+        problemaSuspeitoDiabetes: problemaSuspeitoDiabetes || [' '],
+        problemaSuspeitoObstetrico: problemaSuspeitoObstetrico || [' '],
+        problemaSuspeitoRespiratorio: problemaSuspeitoRespiratorio || [' '],
         Another: Another || '',
         ReportOwnerId,
       },

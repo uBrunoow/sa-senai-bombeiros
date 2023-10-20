@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const suspectProblemsSchema = z.object({
-  problemaSuspeitoTransporte: z.array(z.string()).optional().nullable(),
+  problemaSuspeitoTransporte: z.array(z.string()).optional(),
   problemaSuspeitoDiabetes: z.array(z.string()).optional(),
   problemaSuspeitoObstetrico: z.array(z.string()).optional(),
   problemaSuspeitoRespiratorio: z.array(z.string()).optional(),
@@ -10,7 +10,7 @@ export const suspectProblemsSchema = z.object({
 })
 
 export const suspectProblemsUpdateSchema = z.object({
-  problemaSuspeitoTransporte: z.array(z.string()).optional().nullable(),
+  problemaSuspeitoTransporte: z.array(z.string()).optional(),
   problemaSuspeitoDiabetes: z.array(z.string()).optional(),
   problemaSuspeitoObstetrico: z.array(z.string()).optional(),
   problemaSuspeitoRespiratorio: z.array(z.string()).optional(),

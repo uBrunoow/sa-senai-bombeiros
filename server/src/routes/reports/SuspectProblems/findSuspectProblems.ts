@@ -3,7 +3,11 @@ import { prisma } from '../../../lib/prisma'
 
 export async function suspectProblemsFindRoutes(app: FastifyInstance) {
   app.get('/api/suspectProblems', async (req, res) => {
-    const suspectProblems = await prisma.suspectProblems.findMany({})
+    const suspectProblems = await prisma.suspectProblems.findMany({
+      include: {
+        Report: true,
+      },
+    })
     return res.send({
       msg: `🟢 Problemas suspeitos localizadas com sucesso.`,
       suspectProblems,
@@ -18,6 +22,9 @@ export async function suspectProblemsFindOneRoutes(app: FastifyInstance) {
     const suspectProblems = await prisma.suspectProblems.findUnique({
       where: {
         id: parseInt(id),
+      },
+      include: {
+        Report: true,
       },
     })
 

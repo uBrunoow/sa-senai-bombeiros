@@ -23,15 +23,18 @@ import {
   clearFinalizationId,
   clearGestacionalAnamnesisId,
   clearReportId,
+  clearSuspectProblemsId,
   saveAnamnesisId,
   saveFinalizationId,
   saveGestacionalAnamnesisId,
+  saveSuspectProblemsId,
 } from '@src/redux/actions/reportActions'
 import ExcluirOcorrenciaModal from '@app/modal/ExcluirOcorrenciaModal'
 import { styles as s } from '@app/styles/boxShadow'
 import deleteReport from '@src/api/reports/deleteReport'
 import registerGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/registerGestacionalAnamnesis'
 import registerFinalization from '@src/api/reports/finalization/registerFinalization'
+import registerSuspectProblems from '@src/api/reports/suspectProblems/registerSuspectProblems'
 
 export default function Ocorrencia({ navigation }: any) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
@@ -123,6 +126,32 @@ export default function Ocorrencia({ navigation }: any) {
     }
   }
 
+  const existingSuspectProblemsId = useSelector(
+    (state: RootState) => state.suspectProblems.suspectProblemsId,
+  )
+
+  const handleClickInfoPaciente = async () => {
+    if (existingSuspectProblemsId) {
+      navigation.navigate('info-paciente', {
+        screen: 'info-paciente',
+        params: { suspectProblemsId: existingSuspectProblemsId },
+      })
+    } else {
+      const response = await registerSuspectProblems(ReportOwnerId)
+      console.log(response)
+
+      if (response && response.suspectProblems) {
+        dispatch(saveSuspectProblemsId(response.suspectProblems.id))
+        console.log('Suspect Problems n°: ', response.suspectProblems.id)
+
+        navigation.navigate('info-paciente', {
+          screen: 'info-paciente',
+          params: { suspectProblemsId: response.suspectProblems.id },
+        })
+      }
+    }
+  }
+
   const [showModal, setShowModal] = useState(false)
   const reportId = useSelector((state: RootState) => state.report.reportId)
 
@@ -149,6 +178,7 @@ export default function Ocorrencia({ navigation }: any) {
         dispatch(clearAnamnesisId())
         dispatch(clearGestacionalAnamnesisId())
         dispatch(clearFinalizationId())
+        dispatch(clearSuspectProblemsId())
         setShowModal(false)
         navigation.navigate('home')
       }
@@ -193,10 +223,7 @@ export default function Ocorrencia({ navigation }: any) {
             isCompleted={0}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(`info-paciente`)}
-          activeOpacity={0.7}
-        >
+        <TouchableOpacity onPress={handleClickInfoPaciente} activeOpacity={0.7}>
           <Grouper
             title="Info. do paciente"
             desc="Aval. paciente, sinais vitais..."
