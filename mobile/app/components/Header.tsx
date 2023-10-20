@@ -20,6 +20,7 @@ import {
   clearFinalizationId,
   clearGestacionalAnamnesisId,
   clearReportId,
+  clearSuspectProblemsId,
 } from '@src/redux/actions/reportActions'
 
 export default function Header() {
@@ -49,6 +50,7 @@ export default function Header() {
         dispatch(clearAnamnesisId())
         dispatch(clearGestacionalAnamnesisId())
         dispatch(clearFinalizationId())
+        dispatch(clearSuspectProblemsId())
         setExcluirOcorrenciaAbrir(false)
         navigation.navigate('home')
       }

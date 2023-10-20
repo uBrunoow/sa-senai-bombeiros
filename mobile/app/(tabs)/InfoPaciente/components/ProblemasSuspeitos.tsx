@@ -1,13 +1,14 @@
-import { Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import SuspectProblemButton from './SuspectProblemButton'
 import InputFull from '@app/components/InputLowPadding'
 import { styles as s } from '@app/styles/boxShadow'
 import React, { useState } from 'react'
-import { CheckIcon, Select } from 'native-base'
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
+import updateSuspectProblems from '@src/api/reports/suspectProblems/updateSuspectProblems'
+import { RootState } from '@src/redux/stores/stores'
+import { useSelector } from 'react-redux'
 
 export default function AvalPacienteGroup() {
-  const [victimWas, setVictimWas] = useState('')
   const [transportButtonSelected, setTransportButtonSelected] = useState(false)
   const [diabetesButtonSelected, setDiabetesButtonSelected] = useState(false)
   const [obstericoButtonSelected, setObstericoButtonSelected] = useState(false)
@@ -21,10 +22,30 @@ export default function AvalPacienteGroup() {
   const [obstericoSuboptions, setObstericoSuboptions] = useState([])
   const [respiratorioSuboptions, setRespiratorioSuboptions] = useState([])
 
-  console.log(transportSuboptions)
-  console.log(diabetesSuboptions)
-  console.log(obstericoSuboptions)
-  console.log(respiratorioSuboptions)
+  console.log('transportSuboptions', transportSuboptions)
+  console.log('diabetesSuboptions', diabetesSuboptions)
+  console.log('obstericoSuboptions', obstericoSuboptions)
+  console.log('respiratorioSuboptions', respiratorioSuboptions)
+
+  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
+  const suspectProblemsId = useSelector(
+    (state: RootState) => state.suspectProblems.suspectProblemsId,
+  )
+
+  console.log(suspectProblemsId)
+
+  const handleSubmitSuspectProblems = async () => {
+    const response = await updateSuspectProblems(
+      ReportOwnerId,
+      suspectProblemsId,
+      transportSuboptions,
+      diabetesSuboptions,
+      obstericoSuboptions,
+      respiratorioSuboptions,
+    )
+
+    console.log(response)
+  }
 
   return (
     <View
@@ -185,6 +206,9 @@ export default function AvalPacienteGroup() {
             />
           </View>
         )}
+        <Pressable onPress={handleSubmitSuspectProblems}>
+          <Text>TESTE</Text>
+        </Pressable>
       </View>
     </View>
   )

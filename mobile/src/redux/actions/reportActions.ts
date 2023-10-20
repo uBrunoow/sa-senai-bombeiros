@@ -43,3 +43,14 @@ export const clearFinalizationId = () => {
     type: 'CLEAR_FINALIZATION_ID',
   }
 }
+
+export const saveSuspectProblemsId = (suspectProblemsId: number) => ({
+  type: 'SAVE_SUSPECT_PROBLEMS',
+  payload: { suspectProblemsId },
+})
+
+export const clearSuspectProblemsId = () => {
+  return {
+    type: 'CLEAR_SUSPECT_PROBLEMS_ID',
+  }
+}

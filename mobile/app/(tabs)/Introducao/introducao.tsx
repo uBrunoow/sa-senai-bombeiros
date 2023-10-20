@@ -1,6 +1,5 @@
 import { View, ScrollView, Text, ActivityIndicator } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { FontAwesome5 } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
 import Title from '@app/components/Title'
