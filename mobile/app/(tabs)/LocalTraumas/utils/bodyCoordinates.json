@@ -1,0 +1,28 @@
+{
+    "gluteos": {
+        "tl": { "x": 210, "y": 169 },
+        "br": { "x": 276, "y": 206 }
+    },
+
+    "antebracoleftfront":{
+        "tl": {"x":3,"y":2},
+        "br":{"x":2,"y":2}
+    },
+
+    "antebracoleftback":{
+        "tl": {"x":3,"y":2},
+        "br":{"x":2,"y":2}
+    },
+
+    "antebracorightfront":{
+        "tl": {"x":3,"y":2},
+        "br":{"x":2,"y":2}
+    },
+
+    "antebracorightback":{
+        "tl": {"x":3,"y":2},
+        "br":{"x":2,"y":2}
+    }
+
+    
+}
