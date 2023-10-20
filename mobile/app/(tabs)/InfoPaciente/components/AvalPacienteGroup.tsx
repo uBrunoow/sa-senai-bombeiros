@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import AvalPacienteModal from '@app/modal/AvalPacienteModal'
 import { styles as s } from '@app/styles/boxShadow'
+
+//
 export default function AvalPacienteGroup() {
   const [aberturaOcular, setAberturaOcular] = useState(0)
   const [respostaVerbal, setRespostaVerbal] = useState(0)

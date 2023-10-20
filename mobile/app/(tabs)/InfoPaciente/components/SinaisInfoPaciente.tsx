@@ -1,11 +1,19 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import InputLowPadding from '@app/components/InputLowPadding'
 import Perfusaoinfo from './Perfusaoinfo'
 import { styles as s } from '@app/styles/boxShadow'
 import Options from '@app/components/optionsIntroducao'
 
+type perfusaoInfoOption = '>2seg' | '<2seg' | ''
+
 export default function SinaisInfoPaciente() {
+  const [perfusaoOption, setPerfusaoOption] = useState<perfusaoInfoOption>('')
+
+  function handleSetPerfusaoInfo(option: perfusaoInfoOption) {
+    setPerfusaoOption(option)
+  }
+
   return (
     <View
       style={s.boxShadow}
@@ -60,7 +68,10 @@ export default function SinaisInfoPaciente() {
         <View className="center-between w-3/6 flex-1 items-center">
           <Text className="text-center text-base font-medium">Perfusão</Text>
           <View className="">
-            <Options Option1=">2 seg." Option2="<2 seg." />
+            <Perfusaoinfo
+              selectedOption={perfusaoOption}
+              onSelectOption={handleSetPerfusaoInfo}
+            />
           </View>
         </View>
       </View>

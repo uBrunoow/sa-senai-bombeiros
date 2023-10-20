@@ -83,7 +83,7 @@ export default function AvalPacienteGroup() {
           iconName="brain"
           content="Psiquiátrico"
         />
-        <View className="h-12 w-2/5 grow flex-row items-center justify-center">
+        <View className="m-1 h-12 w-2/5 grow flex-row items-center justify-center">
           <Text className="pt-4 text-center text-lg">Outro:</Text>
           <InputFull />
         </View>

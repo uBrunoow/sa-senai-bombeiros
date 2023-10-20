@@ -1,18 +1,18 @@
 import React from 'react'
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 
+type PerfusaoInfoOption = '>2seg' | '<2seg' | ''
+
 type PerfusaoInfoProps = {
-  Question: String
-  selectedOption: '>2seg' | '<2seg'
-  onSelectOption: (option: '>2seg' | '<2seg') => void
+  question?: String
+  selectedOption: PerfusaoInfoOption
+  onSelectOption: (option: PerfusaoInfoOption) => void
 }
 
 export default function Perfusaoinfo(props: PerfusaoInfoProps) {
   return (
-    <View className="m-auto mb-3 flex-row flex-wrap items-center justify-center">
-      <Text className="w-5/6 text-center text-lg font-medium">
-        {props.Question}
-      </Text>
+    <View className="flex-row items-center justify-center">
+      <Text className="text-center text-xs font-medium">{props.question}</Text>
       <TouchableOpacity
         style={[
           styles.button,
@@ -53,13 +53,14 @@ export default function Perfusaoinfo(props: PerfusaoInfoProps) {
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 7,
-    paddingHorizontal: 50,
+    alignItems: 'center',
+    paddingVertical: 15,
     borderRadius: 5,
     borderColor: 'rgba(0, 0, 0, 0.28)',
     borderWidth: 1,
     marginVertical: 5,
-    marginHorizontal: 15,
+    marginHorizontal: 5,
+    minWidth: '40%',
   },
   selected: {
     backgroundColor: '#A00E00',
