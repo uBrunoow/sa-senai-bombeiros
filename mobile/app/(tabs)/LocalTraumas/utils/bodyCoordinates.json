@@ -1,28 +1,65 @@
 {
-    "gluteos": {
+    "Glúteos": {
         "tl": { "x": 210, "y": 169 },
         "br": { "x": 276, "y": 206 }
     },
 
-    "antebracoleftfront":{
-        "tl": {"x":3,"y":2},
-        "br":{"x":2,"y":2}
+    "Antebraço direito frontal":{
+        "tl": {"x":20,"y":146},
+        "br":{"x":45,"y":190}
     },
 
-    "antebracoleftback":{
-        "tl": {"x":3,"y":2},
-        "br":{"x":2,"y":2}
+    "Antebraço direito traseiro":{
+        "tl": {"x":182,"y":149},
+        "br":{"x":205,"y":190}
     },
 
-    "antebracorightfront":{
-        "tl": {"x":3,"y":2},
-        "br":{"x":2,"y":2}
+    "Antebraço esquerdo frontal":{
+        "tl": {"x":117,"y":153},
+        "br":{"x":142,"y":190}
     },
 
-    "antebracorightback":{
-        "tl": {"x":3,"y":2},
-        "br":{"x":2,"y":2}
+    "Antebraço esquerdo Traseiro":{
+        "tl": {"x":278,"y":151},
+        "br":{"x":303,"y":190}
+    },
+
+    "Braço esquerdo frontal":{
+        "tl": {"x":114,"y":107},
+        "br":{"x":137,"y":140}
+    },
+
+    "Braço esquerdo traseiro":{
+        "tl": {"x":188,"y":107},
+        "br":{"x":209,"y":140}
+    },
+
+    "Braço direito frontal":{
+        "tl": {"x":30,"y":107},
+        "br":{"x":48,"y":140}
+    },
+
+    "Braço direito traseiro":{
+        "tl": {"x":27,"y":107},
+        "br":{"x":29,"y":140}
+    },
+
+    "Pecoço frontal":{
+        "tl":{"x":1,"y":1},
+        "br":{"x":1,"y":1}
+    },
+    "Pescoço tarseiro":{
+        "tl":{"x":55,"y":86},
+        "br":{"x":218,"y":86}
+    },
+
+    "Costas":{
+        "tl":{"x":212,"y":101},
+        "br":{"x":268,"y":157}
+    },
+
+    "Abdomên":{
+        "tl":{"x":53,"y":137},
+        "br":{"x":109,"y":164}
     }
-
-    
 }

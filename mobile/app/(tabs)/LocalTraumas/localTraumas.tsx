@@ -7,31 +7,26 @@ import Footer from '../../components/Footer'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import PickOne from '../../components/PickOne'
 import AvalPacienteModal from '@app/modal/AvalPacienteModal'
+import classNames from 'classnames'
 import Body from './components/Body'
-import MainButton from '@app/components/MainButton'
 
 export default function LocalTraumas() {
   const { bottom, top } = useSafeAreaInsets()
 
   const [side, setSide] = useState<string | null>(null)
   const [face, setFace] = useState<string | null>(null)
-
   const [tipoFerimento, setTipoFerimento] = useState('')
+  const [bodyPartSelected, setBodyPartSelected] = useState(false)
+  const [modalFerimentoVisible, setFerimentoModalVisible] = useState(false)
 
   function handleSetTipoFerimento(newTipoFerimento: string) {
     setTipoFerimento(newTipoFerimento)
   }
 
-  const [modalFerimentoVisible, setFerimentoModalVisible] = useState(false)
-  const [buttonLoading, setButtonLoading] = useState(false)
-
-  function handleSave() {
-    try {
-      setButtonLoading(true)
-    } catch {
-      setButtonLoading(false)
-    }
-  }
+  const tipoFerimentoClasses = classNames({
+    '': bodyPartSelected,
+    'hidden ': !bodyPartSelected,
+  })
 
   return (
     <ScrollView
@@ -40,37 +35,37 @@ export default function LocalTraumas() {
     >
       <View>
         <Header />
-        <View className="mt-[34px] flex-row items-center justify-center">
+        <View className=" mt-[34px] flex-row items-center justify-center">
           <MaterialIcons name="person" size={24} color="#A00e00" />
           <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
             Local Traumass
           </Text>
         </View>
-        <View
-          style={s.boxShadow}
-          className="mx-[10px] mt-[34px] w-[5/6] items-center justify-center"
-        >
-          <Body />
-          <View className="mb-[10px]">
-            <PickOne
-              selectedOptionValue={side}
-              onSelectOption={setSide}
-              leftOption={{ key: 'Esquerdo', value: 'left' }}
-              rightOption={{ key: 'Direito', value: 'right' }}
-              title="Lado"
-            />
-            <PickOne
-              selectedOptionValue={face}
-              onSelectOption={setFace}
-              leftOption={{ key: 'Frontal', value: 'front' }}
-              rightOption={{ key: 'Traseira', value: 'back' }}
-              title="Face"
-            />
-          </View>
-          <View className="mx-4 flex-col">
-            <Text className="text-md mb-2 ml-10 font-bold">
-              Tipo de Ferimento:
+        <View style={s.boxShadow} className="mx-auto">
+          <Body bodyPartChangeHandler={setBodyPartSelected} />
+          <View className="mt-[34px] w-[5/6] items-center justify-center">
+            <Text className="mb-[10px] ml-[10px] text-[20px] font-medium leading-[20px]">
+              Biceps (conceito)
             </Text>
+            <View className="mb-[10px]">
+              <PickOne
+                selectedOptionValue={side}
+                onSelectOption={setSide}
+                leftOption={{ key: 'Esquerdo', value: 'left' }}
+                rightOption={{ key: 'Direito', value: 'right' }}
+                title="Lado"
+              />
+              <PickOne
+                selectedOptionValue={face}
+                onSelectOption={setFace}
+                leftOption={{ key: 'Frontal', value: 'front' }}
+                rightOption={{ key: 'Traseira', value: 'back' }}
+                title="Face"
+              />
+            </View>
+          </View>
+          <View className={tipoFerimentoClasses}>
+            <Text>Tipo de Ferimento:</Text>
             <TouchableOpacity
               className="border-lg rounded"
               onPress={() => {
@@ -82,58 +77,26 @@ export default function LocalTraumas() {
                 <Text>{tipoFerimento || 'Nenhum'}</Text>
               </View>
             </TouchableOpacity>
-            <Modal visible={modalFerimentoVisible}>
-              <AvalPacienteModal
-                handleOptionSelection={handleSetTipoFerimento}
-                setModalVisible={setFerimentoModalVisible}
-                modalTitle="Tipo de Ferimento"
-                options={[
-                  {
-                    value: 'fratura',
-                    description: 'Fratura',
-                  },
-                  {
-                    value: 'diversos',
-                    description: 'Ferimentos diversos',
-                  },
-                  {
-                    value: 'hemorragias',
-                    description: 'Hemorragias',
-                  },
-                  {
-                    value: 'esvisceracao',
-                    description: 'Esvisceração',
-                  },
-                  {
-                    value: 'fav_faf',
-                    description: 'F.A.V. / F.A.F.',
-                  },
-                  {
-                    value: 'amputacao',
-                    description: 'Amputação',
-                  },
-                  {
-                    value: 'queimadura_1grau',
-                    description: 'Queimadura 1º Grau',
-                  },
-                  {
-                    value: 'queimadura_2grau',
-                    description: 'Queimadura 2º Grau',
-                  },
-                  {
-                    value: 'queimadura_3grau',
-                    description: 'Queimadura 3º Grau',
-                  },
-                ]}
-              />
-            </Modal>
           </View>
         </View>
-        <MainButton
-          innerText="SALVAR"
-          onPress={() => handleSave()}
-          isLoading={buttonLoading}
-        />
+        <Modal visible={modalFerimentoVisible}>
+          <AvalPacienteModal
+            handleOptionSelection={handleSetTipoFerimento}
+            setModalVisible={setFerimentoModalVisible}
+            modalTitle="Tipo de Ferimento"
+            options={[
+              { value: 'fratura', description: 'Fratura' },
+              { value: 'diversos', description: 'Ferimentos diversos' },
+              { value: 'hemorragias', description: 'Hemorragias' },
+              { value: 'esvisceracao', description: 'Esvisceração' },
+              { value: 'fav_faf', description: 'F.A.V. / F.A.F.' },
+              { value: 'amputacao', description: 'Amputação' },
+              { value: 'queimadura_1grau', description: 'Queimadura 1º Grau' },
+              { value: 'queimadura_2grau', description: 'Queimadura 2º Grau' },
+              { value: 'queimadura_3grau', description: 'Queimadura 3º Grau' },
+            ]}
+          />
+        </Modal>
         <Footer />
       </View>
     </ScrollView>
