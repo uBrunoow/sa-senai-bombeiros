@@ -8,8 +8,43 @@ import AvalPacienteGroup from '@app/(tabs)/InfoPaciente/components/AvalPacienteG
 import ProblemasSuspeitos from '@app/(tabs)/InfoPaciente/components/ProblemasSuspeitos'
 import MainButton from '../../components/MainButton'
 import Title from '@app/components/Title'
+import { RootState } from '@src/redux/stores/stores'
+import { useSelector } from 'react-redux'
+import updateSinaisVitaisReport from '@src/api/reports/sinaisVitais/updateSinaisVitais'
 
-export default function Ocorrencia() {
+export default function InfoPatient() {
+  const InfoPatient = useSelector(
+    (state: RootState) => state.infoPaciente.patientInfo,
+  )
+  const reportId = useSelector((state: RootState) => state.report.reportId)
+  const ownerId = useSelector((state: RootState) => state.auth.userId)
+
+  const diastolicBloodPressure = InfoPatient.patientInfo.diastolicBloodPressure
+  const systolicBloodPressure = InfoPatient.patientInfo.systolicBloodPressure
+  const bodyTemp = InfoPatient.patientInfo.bodyTemp
+  const bodyPulse = InfoPatient.patientInfo.bodyPulse
+  const breathing = InfoPatient.patientInfo.breathing
+  const saturation = InfoPatient.patientInfo.saturation
+
+  console.log(InfoPatient.patientInfo)
+
+  const handleSubmitInfoPaciente = async () => {
+    try {
+      const SinaisVitaisResponse = await updateSinaisVitaisReport(
+        ownerId,
+        reportId,
+        diastolicBloodPressure,
+        systolicBloodPressure,
+        bodyTemp,
+        bodyPulse,
+        breathing,
+        saturation,
+      )
+
+      console.log(SinaisVitaisResponse)
+    } catch (error) {}
+  }
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -22,7 +57,7 @@ export default function Ocorrencia() {
           <AvalPacienteGroup />
           <InfoPacienteTitle content="Problemas suspeitos encontrados" />
           <ProblemasSuspeitos />
-          <MainButton innerText="SALVAR" onPress={() => ({})} />
+          <MainButton innerText="SALVAR" onPress={handleSubmitInfoPaciente} />
           <Footer />
         </View>
       </ScrollView>

@@ -18,7 +18,8 @@ export async function reportsUpdateRoutes(
       cpf,
       phone,
       reportPlace,
-      bloodPressure,
+      systolicBloodPressure,
+      diastolicBloodPressure,
       bodyTemp,
       bodyPulse,
       breathing,
@@ -49,7 +50,8 @@ export async function reportsUpdateRoutes(
       cpf?: string | null
       phone?: string | null
       reportPlace?: string | null
-      bloodPressure?: number | null
+      systolicBloodPressure?: number | null
+      diastolicBloodPressure?: number | null
       parsedReportDate?: string | null
       bodyTemp?: number | null
       bodyPulse?: number | null
@@ -69,9 +71,14 @@ export async function reportsUpdateRoutes(
     if (reportPlace) updatedReportData.reportPlace = reportPlace
     if (!reportPlace && reportPlace !== undefined)
       updatedReportData.reportPlace = null
-    if (bloodPressure) updatedReportData.bloodPressure = bloodPressure
-    if (!bloodPressure && bloodPressure !== undefined)
-      updatedReportData.bloodPressure = null
+    if (systolicBloodPressure)
+      updatedReportData.systolicBloodPressure = systolicBloodPressure
+    if (!systolicBloodPressure && systolicBloodPressure !== undefined)
+      updatedReportData.systolicBloodPressure = null
+    if (diastolicBloodPressure)
+      updatedReportData.diastolicBloodPressure = diastolicBloodPressure
+    if (!diastolicBloodPressure && diastolicBloodPressure !== undefined)
+      updatedReportData.systolicBloodPressure = null
     if (reportDateValue !== undefined)
       updatedReportData.reportDate = reportDateValue
     if (bodyTemp) updatedReportData.bodyTemp = bodyTemp

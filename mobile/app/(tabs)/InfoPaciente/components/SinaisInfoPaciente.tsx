@@ -1,19 +1,54 @@
 import { View, Text } from 'react-native'
 import React, { useState } from 'react'
-import InputLowPadding from '@app/components/InputLowPadding'
 import Perfusaoinfo from './Perfusaoinfo'
 import { styles as s } from '@app/styles/boxShadow'
-import Options from '@app/components/optionsIntroducao'
+import InputNumeric from '@app/components/inputNumeric'
+import { useDispatch } from 'react-redux'
+import { setPatientInfoData } from '@src/redux/actions/dataActions'
 
 type perfusaoInfoOption = '>2seg' | '<2seg' | ''
 
+interface PatientInfo {
+  systolicBloodPressure: number
+  diastolicBloodPressure: number
+  bodyTemp: number
+  bodyPulse: number
+  breathing: number
+  saturation: number
+}
 export default function SinaisInfoPaciente() {
+  const dispatch = useDispatch()
   const [perfusaoOption, setPerfusaoOption] = useState<perfusaoInfoOption>('')
+  const [patientInfo, setPatientInfo] = useState<PatientInfo>({
+    systolicBloodPressure: 0,
+    diastolicBloodPressure: 0,
+    bodyTemp: 0,
+    bodyPulse: 0,
+    breathing: 0,
+    saturation: 0,
+  })
 
   function handleSetPerfusaoInfo(option: perfusaoInfoOption) {
     setPerfusaoOption(option)
   }
 
+  const handleInputChange = (field: keyof PatientInfo, value: number) => {
+    try {
+      dispatch(
+        setPatientInfoData({
+          ...patientInfo,
+          [field]: value,
+        }),
+      )
+      // Também, atualize o estado local para garantir que os valores sejam mantidos
+      setPatientInfo((prevPatientInfo) => ({
+        ...prevPatientInfo,
+        [field]: value,
+      }))
+    } catch (error) {
+      console.error(error)
+    }
+  }
   return (
     <View
       style={s.boxShadow}
@@ -26,16 +61,29 @@ export default function SinaisInfoPaciente() {
               Pressão arterial
             </Text>
             <View className="flex-row items-center justify-center">
-              <InputLowPadding />
+              <InputNumeric
+                value={patientInfo.systolicBloodPressure}
+                onChangeText={(e) =>
+                  handleInputChange('systolicBloodPressure', e)
+                }
+              />
               <Text className="uppercase">X</Text>
-              <InputLowPadding />
+              <InputNumeric
+                value={patientInfo.diastolicBloodPressure}
+                onChangeText={(e) =>
+                  handleInputChange('diastolicBloodPressure', e)
+                }
+              />
               <Text>mmHg</Text>
             </View>
           </View>
           <View className="center-between w-3/6 flex-1 items-center">
             <Text className="text-center text-base font-medium">Temper.</Text>
             <View className="w-[130px] flex-row items-center justify-center">
-              <InputLowPadding />
+              <InputNumeric
+                value={patientInfo.bodyTemp}
+                onChangeText={(e) => handleInputChange('bodyTemp', e)}
+              />
               <Text className="uppercase">°C</Text>
             </View>
           </View>
@@ -45,14 +93,20 @@ export default function SinaisInfoPaciente() {
         <View className="center-between w-3/6 flex-1 items-center">
           <Text className="text-center text-base font-medium">Pulso</Text>
           <View className="w-[130px] flex-row items-center justify-center">
-            <InputLowPadding />
+            <InputNumeric
+              value={patientInfo.bodyPulse}
+              onChangeText={(e) => handleInputChange('bodyPulse', e)}
+            />
             <Text className="uppercase">b.c.p.m</Text>
           </View>
         </View>
         <View className="center-between w-3/6 flex-1 items-center">
           <Text className="text-center text-base font-medium">Respiração</Text>
           <View className="w-[130px] flex-row items-center justify-center">
-            <InputLowPadding />
+            <InputNumeric
+              value={patientInfo.breathing}
+              onChangeText={(e) => handleInputChange('breathing', e)}
+            />
             <Text className="uppercase">m.r.m</Text>
           </View>
         </View>
@@ -61,7 +115,10 @@ export default function SinaisInfoPaciente() {
         <View className="center-between w-3/6 flex-1 items-center">
           <Text className="text-center text-base font-medium">Saturação</Text>
           <View className="w-[130px] flex-row items-center justify-center">
-            <InputLowPadding />
+            <InputNumeric
+              value={patientInfo.saturation}
+              onChangeText={(e) => handleInputChange('saturation', e)}
+            />
             <Text>%</Text>
           </View>
         </View>

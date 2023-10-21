@@ -11,11 +11,6 @@ const updateReport = async (
   cpf?: string | null,
   phone?: string | null,
   reportPlace?: string | null,
-  bloodPressure?: number | null,
-  bodyTemp?: number | null,
-  bodyPulse?: number | null,
-  breathing?: number | null,
-  saturation?: number | null,
 ) => {
   try {
     const response = await api.put(
@@ -28,11 +23,6 @@ const updateReport = async (
         cpf,
         phone,
         reportPlace,
-        bloodPressure,
-        bodyTemp,
-        bodyPulse,
-        breathing,
-        saturation,
         ownerId,
       },
       {

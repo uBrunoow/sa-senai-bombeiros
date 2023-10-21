@@ -22,17 +22,10 @@ export default function AvalPacienteGroup() {
   const [obstericoSuboptions, setObstericoSuboptions] = useState([])
   const [respiratorioSuboptions, setRespiratorioSuboptions] = useState([])
 
-  console.log('transportSuboptions', transportSuboptions)
-  console.log('diabetesSuboptions', diabetesSuboptions)
-  console.log('obstericoSuboptions', obstericoSuboptions)
-  console.log('respiratorioSuboptions', respiratorioSuboptions)
-
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
   const suspectProblemsId = useSelector(
     (state: RootState) => state.suspectProblems.suspectProblemsId,
   )
-
-  console.log(suspectProblemsId)
 
   const handleSubmitSuspectProblems = async () => {
     const response = await updateSuspectProblems(

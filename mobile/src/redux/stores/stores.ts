@@ -1,5 +1,5 @@
 // store.ts
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, Reducer, AnyAction } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk'
 import authReducer from '../reducers/authReducer'
 import reportReducer from '../reducers/reportReducer'
@@ -7,6 +7,9 @@ import anamnesisReducer from '../reducers/anamnesisReducer'
 import gestacionalReducer from '../reducers/gestacionalReducer'
 import suspectProblemsReducer from '../reducers/suspectProblemsReducer'
 import finalizationReducer from '../reducers/finalizationReducer'
+import infoPacienteReducer, {
+  InfoPacienteState,
+} from '../reducers/infoPacienteReducer'
 
 export interface RootState {
   auth: {
@@ -29,6 +32,8 @@ export interface RootState {
   suspectProblems: {
     suspectProblemsId: number
   }
+
+  infoPaciente: InfoPacienteState
 }
 const store = configureStore({
   reducer: {
@@ -38,6 +43,7 @@ const store = configureStore({
     gestacionalAnamnesis: gestacionalReducer,
     finalization: finalizationReducer,
     suspectProblems: suspectProblemsReducer,
+    infoPaciente: infoPacienteReducer as Reducer<InfoPacienteState, AnyAction>,
   },
   middleware: [thunk],
 })

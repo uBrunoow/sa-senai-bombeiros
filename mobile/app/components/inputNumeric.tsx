@@ -12,9 +12,8 @@ type InputProps = {
 }
 
 export default function InputNumeric(props: InputProps) {
-  const [inputValue, setInputValue] = useState(
-    props.value !== null ? props.value.toString() : '',
-  )
+  const initialValue = props.value !== undefined ? props.value.toString() : ''
+  const [inputValue, setInputValue] = useState(initialValue)
 
   useEffect(() => {
     setInputValue(props.value !== null ? props.value.toString() : '')
