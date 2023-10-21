@@ -1,10 +1,13 @@
 import { View, Text } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Perfusaoinfo from './Perfusaoinfo'
 import { styles as s } from '@app/styles/boxShadow'
 import InputNumeric from '@app/components/inputNumeric'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setPatientInfoData } from '@src/redux/actions/dataActions'
+import findReports from '@src/api/reports/findReport'
+import { RootState } from '@src/redux/stores/stores'
+import { Divider } from 'native-base'
 
 type perfusaoInfoOption = '>2seg' | '<2seg' | ''
 
@@ -32,6 +35,38 @@ export default function SinaisInfoPaciente() {
     setPerfusaoOption(option)
   }
 
+  const reportId = useSelector((state: RootState) => state.report.reportId)
+
+  useEffect(() => {
+    const findSinaisVitaisData = async () => {
+      try {
+        const response = await findReports(reportId)
+
+        const systolicBloodPressureResponse =
+          response.report.systolicBloodPressure
+        const diastolicBloodPressureResponse =
+          response.report.diastolicBloodPressure
+        const bodyTempResponse = response.report.bodyTemp
+        const bodyPulseResponse = response.report.bodyPulse
+        const breathingResponse = response.report.breathing
+        const saturationResponse = response.report.saturation
+
+        setPatientInfo({
+          systolicBloodPressure: systolicBloodPressureResponse,
+          diastolicBloodPressure: diastolicBloodPressureResponse,
+          bodyTemp: bodyTempResponse,
+          bodyPulse: bodyPulseResponse,
+          breathing: breathingResponse,
+          saturation: saturationResponse,
+        })
+      } catch (error) {
+        console.error(error)
+      } finally {
+      }
+    }
+    findSinaisVitaisData()
+  }, [reportId])
+
   const handleInputChange = (field: keyof PatientInfo, value: number) => {
     try {
       dispatch(
@@ -40,7 +75,6 @@ export default function SinaisInfoPaciente() {
           [field]: value,
         }),
       )
-      // Também, atualize o estado local para garantir que os valores sejam mantidos
       setPatientInfo((prevPatientInfo) => ({
         ...prevPatientInfo,
         [field]: value,
@@ -55,8 +89,8 @@ export default function SinaisInfoPaciente() {
       className=" mx-auto w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
     >
       <View className="w-full flex-row pb-3">
-        <View className="mt-3 w-full flex-row border-b-[1px] border-black pb-3">
-          <View className="center-between w-3/6 flex-1 items-center">
+        <View className="mt-3 w-full flex-row pb-3">
+          <View className="center-between flex-1 items-center">
             <Text className="text-center text-base font-medium">
               Pressão arterial
             </Text>
@@ -89,7 +123,16 @@ export default function SinaisInfoPaciente() {
           </View>
         </View>
       </View>
-      <View className="mt-3 w-full flex-row border-b-[1px] border-black pb-3">
+      <Divider
+        my="2"
+        _light={{
+          bg: 'muted.800',
+        }}
+        _dark={{
+          bg: 'muted.50',
+        }}
+      />
+      <View className="mt-3 w-full flex-row pb-3">
         <View className="center-between w-3/6 flex-1 items-center">
           <Text className="text-center text-base font-medium">Pulso</Text>
           <View className="w-[130px] flex-row items-center justify-center">
@@ -111,6 +154,15 @@ export default function SinaisInfoPaciente() {
           </View>
         </View>
       </View>
+      <Divider
+        my="2"
+        _light={{
+          bg: 'muted.800',
+        }}
+        _dark={{
+          bg: 'muted.50',
+        }}
+      />
       <View className="mt-3 w-full flex-row">
         <View className="center-between w-3/6 flex-1 items-center">
           <Text className="text-center text-base font-medium">Saturação</Text>

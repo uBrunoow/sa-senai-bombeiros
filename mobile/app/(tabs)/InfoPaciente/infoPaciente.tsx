@@ -19,14 +19,12 @@ export default function InfoPatient() {
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const ownerId = useSelector((state: RootState) => state.auth.userId)
 
-  const diastolicBloodPressure = InfoPatient.patientInfo.diastolicBloodPressure
-  const systolicBloodPressure = InfoPatient.patientInfo.systolicBloodPressure
-  const bodyTemp = InfoPatient.patientInfo.bodyTemp
-  const bodyPulse = InfoPatient.patientInfo.bodyPulse
-  const breathing = InfoPatient.patientInfo.breathing
-  const saturation = InfoPatient.patientInfo.saturation
-
-  console.log(InfoPatient.patientInfo)
+  const diastolicBloodPressure = InfoPatient.patientInfo?.diastolicBloodPressure
+  const systolicBloodPressure = InfoPatient.patientInfo?.systolicBloodPressure
+  const bodyTemp = InfoPatient.patientInfo?.bodyTemp
+  const bodyPulse = InfoPatient.patientInfo?.bodyPulse
+  const breathing = InfoPatient.patientInfo?.breathing
+  const saturation = InfoPatient.patientInfo?.saturation
 
   const handleSubmitInfoPaciente = async () => {
     try {
@@ -42,7 +40,9 @@ export default function InfoPatient() {
       )
 
       console.log(SinaisVitaisResponse)
-    } catch (error) {}
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (

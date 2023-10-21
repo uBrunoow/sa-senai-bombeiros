@@ -13,16 +13,16 @@ export async function registerGlasgowRoutes(app: FastifyInstance) {
 
     const newGlasgow = await prisma.glasglow.create({
       data: {
-        motorResponseOwnerId,
-        verbalResponseOwnerId,
-        eyeOpeningOwnerId,
+        motorResponseOwnerId: motorResponseOwnerId || 0,
+        verbalResponseOwnerId: verbalResponseOwnerId || 0,
+        eyeOpeningOwnerId: eyeOpeningOwnerId || 0,
         ReportOwnerId,
       },
     })
 
     return res.send({
       msg: '🟢 Glasgow criado com sucesso.',
-      symptoms: newGlasgow,
+      glasgow: newGlasgow,
     })
   })
 }

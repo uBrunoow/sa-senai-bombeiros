@@ -4,3 +4,10 @@ export const setPatientInfoData = (patientInfo: object) => ({
     patientInfo,
   },
 })
+
+export const setSuspectProblemsData = (suspectProblems: object) => ({
+  type: 'SET_SUSPECT_PROBLEMS',
+  payload: {
+    suspectProblems,
+  },
+})

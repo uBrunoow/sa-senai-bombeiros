@@ -10,6 +10,10 @@ import finalizationReducer from '../reducers/finalizationReducer'
 import infoPacienteReducer, {
   InfoPacienteState,
 } from '../reducers/infoPacienteReducer'
+import SuspectProblemsReducerData, {
+  SuspectProblemsState,
+} from '../reducers/suspectProblemsData'
+import glasgowReducer from '../reducers/glasgowReducer'
 
 export interface RootState {
   auth: {
@@ -32,8 +36,13 @@ export interface RootState {
   suspectProblems: {
     suspectProblemsId: number
   }
+  glasgow: {
+    glasgowId: number
+  }
 
   infoPaciente: InfoPacienteState
+
+  SuspectProblems: SuspectProblemsState
 }
 const store = configureStore({
   reducer: {
@@ -44,6 +53,11 @@ const store = configureStore({
     finalization: finalizationReducer,
     suspectProblems: suspectProblemsReducer,
     infoPaciente: infoPacienteReducer as Reducer<InfoPacienteState, AnyAction>,
+    suspectProlems: SuspectProblemsReducerData as Reducer<
+      SuspectProblemsState,
+      AnyAction
+    >,
+    glasgow: glasgowReducer,
   },
   middleware: [thunk],
 })

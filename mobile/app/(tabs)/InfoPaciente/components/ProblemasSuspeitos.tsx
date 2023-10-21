@@ -3,10 +3,10 @@ import SuspectProblemButton from './SuspectProblemButton'
 import InputFull from '@app/components/InputLowPadding'
 import { styles as s } from '@app/styles/boxShadow'
 import React, { useState } from 'react'
-import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import updateSuspectProblems from '@src/api/reports/suspectProblems/updateSuspectProblems'
 import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
+import { Checkbox } from 'native-base'
 
 export default function AvalPacienteGroup() {
   const [transportButtonSelected, setTransportButtonSelected] = useState(false)
@@ -22,23 +22,30 @@ export default function AvalPacienteGroup() {
   const [obstericoSuboptions, setObstericoSuboptions] = useState([])
   const [respiratorioSuboptions, setRespiratorioSuboptions] = useState([])
 
-  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
-  const suspectProblemsId = useSelector(
-    (state: RootState) => state.suspectProblems.suspectProblemsId,
-  )
-
-  const handleSubmitSuspectProblems = async () => {
-    const response = await updateSuspectProblems(
-      ReportOwnerId,
-      suspectProblemsId,
-      transportSuboptions,
-      diabetesSuboptions,
-      obstericoSuboptions,
-      respiratorioSuboptions,
-    )
-
-    console.log(response)
+  const suspectProblemsDataInfo = {
+    transportSuboptions,
+    diabetesSuboptions,
+    obstericoSuboptions,
+    respiratorioSuboptions,
   }
+
+  // const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
+  // const suspectProblemsId = useSelector(
+  //   (state: RootState) => state.suspectProblems.suspectProblemsId,
+  // )
+
+  // const handleSubmitSuspectProblems = async () => {
+  //   const response = await updateSuspectProblems(
+  //     ReportOwnerId,
+  //     suspectProblemsId,
+  //     transportSuboptions,
+  //     diabetesSuboptions,
+  //     obstericoSuboptions,
+  //     respiratorioSuboptions,
+  //   )
+
+  //   console.log(response)
+  // }
 
   return (
     <View
@@ -84,34 +91,52 @@ export default function AvalPacienteGroup() {
       <View className="mt-2">
         {transportButtonSelected && (
           <View>
-            <Text className="-mb-2 mt-5 text-sm font-extrabold text-slate-800">
+            <Text className="mt-5 text-sm font-extrabold text-slate-800">
               Problemas suspeitos de
             </Text>
             <Text className="mb-2 text-2xl font-extrabold text-red-700">
               TRANSPORTE
             </Text>
-            {/* <Text>{transportSuboptions.toString()}</Text> */}
-            <MultipleSelectList
-              setSelected={setTransportSuboptions}
-              data={[
-                { key: '1', value: 'Aéreo' },
-                { key: '2', value: 'Clínico' },
-                { key: '3', value: 'Emergencial' },
-                { key: '4', value: 'Pós-Trauma' },
-                { key: '5', value: 'Samu' },
-                { key: '6', value: 'Sem remoção' },
-              ]}
-              save="value"
-              label="Categorias"
-              boxStyles={{ padding: 10 }}
-              placeholder="Selecione"
-              badgeStyles={{
-                backgroundColor: '#A00E00',
-                paddingHorizontal: 10,
+            <Checkbox.Group
+              onChange={(values) => {
+                setTransportSuboptions(values || [])
               }}
-              searchPlaceholder="Busque por problemas suspeitos"
-              notFoundText="Nenhuma categoria encontrada"
-            />
+              defaultValue={transportSuboptions}
+            >
+              <Checkbox size="md" colorScheme="danger" value="AEREO" mb={2}>
+                <Text className="  text-lg  text-slate-800">Aéreo</Text>
+              </Checkbox>
+              <Checkbox size="md" colorScheme="danger" value="CLINICO" mb={2}>
+                <Text className=" text-lg  text-slate-800">Clínico</Text>
+              </Checkbox>
+              <Checkbox
+                size="md"
+                colorScheme="danger"
+                value="EMERGENCIAL"
+                mb={2}
+              >
+                <Text className="  text-lg  text-slate-800">Emergencial</Text>
+              </Checkbox>
+              <Checkbox
+                size="md"
+                colorScheme="danger"
+                value="POS_TRAUMA"
+                mb={2}
+              >
+                <Text className="  text-lg  text-slate-800">Pós-Trauma</Text>
+              </Checkbox>
+              <Checkbox size="md" colorScheme="danger" value="SAMU" mb={2}>
+                <Text className="  text-lg text-slate-800">SAMU</Text>
+              </Checkbox>
+              <Checkbox
+                size="md"
+                colorScheme="danger"
+                value="SEM_REMOCAO"
+                mb={2}
+              >
+                <Text className=" text-lg text-slate-800">Sem remoção</Text>
+              </Checkbox>
+            </Checkbox.Group>
           </View>
         )}
         {diabetesButtonSelected && (
@@ -122,24 +147,28 @@ export default function AvalPacienteGroup() {
             <Text className="mb-2 text-2xl font-extrabold text-red-700">
               DIABETES
             </Text>
-            {/* <Text>{diabetesSuboptions.toString()}</Text> */}
-            <MultipleSelectList
-              setSelected={setDiabetesSuboptions}
-              data={[
-                { key: '1', value: 'Hiperglicemia' },
-                { key: '2', value: 'Hipoglicemia' },
-              ]}
-              save="value"
-              label="Categorias"
-              boxStyles={{ padding: 10 }}
-              placeholder="Selecione"
-              badgeStyles={{
-                backgroundColor: '#A00E00',
-                paddingHorizontal: 10,
+            <Checkbox.Group
+              onChange={(values) => {
+                setDiabetesSuboptions(values || [])
               }}
-              searchPlaceholder="Busque por problemas suspeitos"
-              notFoundText="Nenhuma categoria encontrada"
-            />
+            >
+              <Checkbox
+                size="md"
+                colorScheme="danger"
+                value="HIPERGLICEMIA"
+                mb={2}
+              >
+                <Text className="text-lg text-slate-800">Hiperglicemia</Text>
+              </Checkbox>
+              <Checkbox
+                size="md"
+                colorScheme="danger"
+                value="HIPOGLICEMIA"
+                mb={2}
+              >
+                <Text className="text-lg text-slate-800">Hipoglicemia</Text>
+              </Checkbox>
+            </Checkbox.Group>
           </View>
         )}
         {obstericoButtonSelected && (
@@ -150,25 +179,35 @@ export default function AvalPacienteGroup() {
             <Text className="mb-2 text-2xl font-extrabold text-red-700">
               OBSTÉRICOS
             </Text>
-            {/* <Text>{obstericoSuboptions.toString()}</Text> */}
-            <MultipleSelectList
-              setSelected={setObstericoSuboptions}
-              data={[
-                { key: '1', value: 'Parto Emergêncial' },
-                { key: '2', value: 'Gestante' },
-                { key: '3', value: 'Hemorragia Excessiva' },
-              ]}
-              save="value"
-              label="Categorias"
-              boxStyles={{ padding: 10 }}
-              placeholder="Selecione"
-              badgeStyles={{
-                backgroundColor: '#A00E00',
-                paddingHorizontal: 10,
+            <Checkbox.Group
+              onChange={(values) => {
+                setObstericoSuboptions(values || [])
               }}
-              searchPlaceholder="Selecione problemas suspeitos"
-              notFoundText="Nenhuma categoria encontrada"
-            />
+            >
+              <Checkbox
+                size="md"
+                colorScheme="danger"
+                value="PARTO_EMERGENCIAL"
+                mb={2}
+              >
+                <Text className="text-lg text-slate-800">
+                  Parto Emergêncial
+                </Text>
+              </Checkbox>
+              <Checkbox size="md" colorScheme="danger" value="GESTANTE" mb={2}>
+                <Text className="text-lg text-slate-800">Gestante</Text>
+              </Checkbox>
+              <Checkbox
+                size="md"
+                colorScheme="danger"
+                value="HEMORRAGIA_EXCESSIVA"
+                mb={2}
+              >
+                <Text className="text-lg text-slate-800">
+                  Hemorragia Excessiva
+                </Text>
+              </Checkbox>
+            </Checkbox.Group>
           </View>
         )}
         {respiratorioButtonSelected && (
@@ -179,27 +218,26 @@ export default function AvalPacienteGroup() {
             <Text className="mb-2 text-2xl font-extrabold text-red-700">
               RESPIRATÓRIOS
             </Text>
-            {/* <Text>{respiratorioSuboptions.toString()}</Text> */}
-            <MultipleSelectList
-              setSelected={setRespiratorioSuboptions}
-              data={[
-                { key: '1', value: 'DPOC' },
-                { key: '2', value: 'Inalação Fumaça' },
-              ]}
-              save="value"
-              label="Categorias"
-              boxStyles={{ padding: 10 }}
-              placeholder="Selecione"
-              badgeStyles={{
-                backgroundColor: '#A00E00',
-                paddingHorizontal: 10,
+            <Checkbox.Group
+              onChange={(values) => {
+                setRespiratorioSuboptions(values || [])
               }}
-              searchPlaceholder="Busque por problemas suspeitos"
-              notFoundText="Nenhuma categoria encontrada"
-            />
+            >
+              <Checkbox size="md" colorScheme="danger" value="DPOC" mb={2}>
+                <Text className="text-lg text-slate-800">DPOC</Text>
+              </Checkbox>
+              <Checkbox
+                size="md"
+                colorScheme="danger"
+                value="INALACAO_FUMACA"
+                mb={2}
+              >
+                <Text className="text-lg text-slate-800">Inalação Fumaça</Text>
+              </Checkbox>
+            </Checkbox.Group>
           </View>
         )}
-        <Pressable onPress={handleSubmitSuspectProblems}>
+        <Pressable>
           <Text>TESTE</Text>
         </Pressable>
       </View>

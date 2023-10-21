@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import { View, Text, Modal, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native'
 import AvalPacienteModal from '@app/modal/AvalPacienteModal'
 import { styles as s } from '@app/styles/boxShadow'
+import { RootState } from '@src/redux/stores/stores'
+import { useSelector } from 'react-redux'
+import updateGlasgow from '@src/api/reports/glasgow/updateGlasgow'
 
 //
 export default function AvalPacienteGroup() {
@@ -25,20 +28,31 @@ export default function AvalPacienteGroup() {
     )
   }
 
-  console.log(
-    `${[aberturaOcular, respostaVerbal, respostaMotora]} = ${calcGlasgow()}`,
-  )
-
-  function handleAberturaOcular(valueAberturaOcular: number): void {
+  function handleAberturaOcular(valueAberturaOcular: number) {
     setAberturaOcular(valueAberturaOcular)
   }
 
-  function handleRespostaVerbal(valueRespostaVerbal: number): void {
+  function handleRespostaVerbal(valueRespostaVerbal: number) {
     setRespostaVerbal(valueRespostaVerbal)
   }
 
-  function handleRespostaMotora(valueRespostaMotora: number): void {
+  function handleRespostaMotora(valueRespostaMotora: number) {
     setRespostaMotora(valueRespostaMotora)
+  }
+
+  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
+  const glasgowId = useSelector((state: RootState) => state.glasgow.glasgowId)
+
+  const handleSubmitGlasgow = async () => {
+    const response = await updateGlasgow(
+      ReportOwnerId,
+      glasgowId,
+      Number(aberturaOcular),
+      Number(respostaVerbal),
+      Number(respostaMotora),
+    )
+
+    console.log(response)
   }
 
   return (
@@ -159,6 +173,9 @@ export default function AvalPacienteGroup() {
           </Text>
         </View>
       </View>
+      <Pressable onPress={handleSubmitGlasgow}>
+        <Text>TESTE</Text>
+      </Pressable>
     </View>
   )
 }
