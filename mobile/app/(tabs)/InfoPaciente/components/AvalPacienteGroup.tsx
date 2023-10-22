@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native'
 import AvalPacienteModal from '@app/modal/AvalPacienteModal'
 import { styles as s } from '@app/styles/boxShadow'
-import { RootState } from '@src/redux/stores/stores'
-import { useSelector } from 'react-redux'
-import updateGlasgow from '@src/api/reports/glasgow/updateGlasgow'
+import { useDispatch } from 'react-redux'
+import { setGlasgowData } from '@src/redux/actions/dataActions'
 
 //
 export default function AvalPacienteGroup() {
+  const dispatch = useDispatch()
   const [aberturaOcular, setAberturaOcular] = useState(0)
   const [respostaVerbal, setRespostaVerbal] = useState(0)
   const [respostaMotora, setRespostaMotora] = useState(0)
@@ -40,24 +40,21 @@ export default function AvalPacienteGroup() {
     setRespostaMotora(valueRespostaMotora)
   }
 
-  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
-  const glasgowId = useSelector((state: RootState) => state.glasgow.glasgowId)
+  useEffect(() => {
+    const onChangeGlasgowInfoData = () => {
+      const glasgowDataInfo = {
+        aberturaOcular,
+        respostaVerbal,
+        respostaMotora,
+      }
+      dispatch(setGlasgowData(glasgowDataInfo))
+    }
 
-  const handleSubmitGlasgow = async () => {
-    const response = await updateGlasgow(
-      ReportOwnerId,
-      glasgowId,
-      Number(aberturaOcular),
-      Number(respostaVerbal),
-      Number(respostaMotora),
-    )
-
-    console.log(response)
-  }
+    onChangeGlasgowInfoData()
+  }, [aberturaOcular, respostaVerbal, respostaMotora, dispatch])
 
   return (
     <View
-      // className="mx-auto mb-7 w-5/6 flex-col rounded-md bg-white py-5 shadow-lg "
       className=" mx-auto w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
       style={s.boxShadow}
     >
@@ -173,9 +170,6 @@ export default function AvalPacienteGroup() {
           </Text>
         </View>
       </View>
-      <Pressable onPress={handleSubmitGlasgow}>
-        <Text>TESTE</Text>
-      </Pressable>
     </View>
   )
 }

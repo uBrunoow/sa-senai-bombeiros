@@ -14,6 +14,7 @@ import SuspectProblemsReducerData, {
   SuspectProblemsState,
 } from '../reducers/suspectProblemsData'
 import glasgowReducer from '../reducers/glasgowReducer'
+import GlasgowReducerData, { GlasgowState } from '../reducers/glasgowData'
 
 export interface RootState {
   auth: {
@@ -42,7 +43,9 @@ export interface RootState {
 
   infoPaciente: InfoPacienteState
 
-  SuspectProblems: SuspectProblemsState
+  suspectProblemsData: SuspectProblemsState
+
+  glasgowData: GlasgowState
 }
 const store = configureStore({
   reducer: {
@@ -53,11 +56,12 @@ const store = configureStore({
     finalization: finalizationReducer,
     suspectProblems: suspectProblemsReducer,
     infoPaciente: infoPacienteReducer as Reducer<InfoPacienteState, AnyAction>,
-    suspectProlems: SuspectProblemsReducerData as Reducer<
+    suspectProblemsData: SuspectProblemsReducerData as Reducer<
       SuspectProblemsState,
       AnyAction
     >,
     glasgow: glasgowReducer,
+    glasgowData: GlasgowReducerData as Reducer<GlasgowState, AnyAction>,
   },
   middleware: [thunk],
 })

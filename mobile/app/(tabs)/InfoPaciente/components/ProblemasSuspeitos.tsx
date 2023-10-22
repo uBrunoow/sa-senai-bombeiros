@@ -1,14 +1,15 @@
-import { Pressable, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import SuspectProblemButton from './SuspectProblemButton'
 import InputFull from '@app/components/InputLowPadding'
 import { styles as s } from '@app/styles/boxShadow'
-import React, { useState } from 'react'
-import updateSuspectProblems from '@src/api/reports/suspectProblems/updateSuspectProblems'
+import React, { useEffect, useState } from 'react'
 import { RootState } from '@src/redux/stores/stores'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Checkbox } from 'native-base'
+import { setSuspectProblemsData } from '@src/redux/actions/dataActions'
 
 export default function AvalPacienteGroup() {
+  const dispatch = useDispatch()
   const [transportButtonSelected, setTransportButtonSelected] = useState(false)
   const [diabetesButtonSelected, setDiabetesButtonSelected] = useState(false)
   const [obstericoButtonSelected, setObstericoButtonSelected] = useState(false)
@@ -22,30 +23,26 @@ export default function AvalPacienteGroup() {
   const [obstericoSuboptions, setObstericoSuboptions] = useState([])
   const [respiratorioSuboptions, setRespiratorioSuboptions] = useState([])
 
-  const suspectProblemsDataInfo = {
-    transportSuboptions,
+  useEffect(() => {
+    const onChangeSuspectProblemsDataInfo = () => {
+      const suspectProblemsDataInfo = {
+        transportSuboptions,
+        diabetesSuboptions,
+        obstericoSuboptions,
+        respiratorioSuboptions,
+      }
+
+      dispatch(setSuspectProblemsData(suspectProblemsDataInfo))
+    }
+
+    onChangeSuspectProblemsDataInfo()
+  }, [
     diabetesSuboptions,
+    dispatch,
     obstericoSuboptions,
     respiratorioSuboptions,
-  }
-
-  // const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
-  // const suspectProblemsId = useSelector(
-  //   (state: RootState) => state.suspectProblems.suspectProblemsId,
-  // )
-
-  // const handleSubmitSuspectProblems = async () => {
-  //   const response = await updateSuspectProblems(
-  //     ReportOwnerId,
-  //     suspectProblemsId,
-  //     transportSuboptions,
-  //     diabetesSuboptions,
-  //     obstericoSuboptions,
-  //     respiratorioSuboptions,
-  //   )
-
-  //   console.log(response)
-  // }
+    transportSuboptions,
+  ])
 
   return (
     <View
@@ -237,9 +234,6 @@ export default function AvalPacienteGroup() {
             </Checkbox.Group>
           </View>
         )}
-        <Pressable>
-          <Text>TESTE</Text>
-        </Pressable>
       </View>
     </View>
   )

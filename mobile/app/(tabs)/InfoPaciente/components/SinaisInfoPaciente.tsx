@@ -30,7 +30,6 @@ export default function SinaisInfoPaciente() {
     breathing: 0,
     saturation: 0,
   })
-
   function handleSetPerfusaoInfo(option: perfusaoInfoOption) {
     setPerfusaoOption(option)
   }
@@ -61,7 +60,6 @@ export default function SinaisInfoPaciente() {
         })
       } catch (error) {
         console.error(error)
-      } finally {
       }
     }
     findSinaisVitaisData()

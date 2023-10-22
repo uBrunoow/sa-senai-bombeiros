@@ -11,3 +11,10 @@ export const setSuspectProblemsData = (suspectProblems: object) => ({
     suspectProblems,
   },
 })
+
+export const setGlasgowData = (glasgow: object) => ({
+  type: 'SET_GLASGOW',
+  payload: {
+    glasgow,
+  },
+})
