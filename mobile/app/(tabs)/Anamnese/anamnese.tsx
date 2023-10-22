@@ -77,6 +77,28 @@ export default function Anamnese({ navigation }: any) {
         setIngeriuAlimento(ingeriuAlimentoResponse || false)
         setHorasIngeriuAlimento(horasIngeriuAlimentoResponse || '')
         setObservacoesFinais(observacoesFinaisResponse || '')
+
+        // const {
+        //   id,
+        //   ReportOwnerId,
+        //   createdAt,
+        //   updatedAt,
+        //   ...anameseWithoutMeta
+        // } = response.anamese
+
+        // if (
+        //   Object.values(anameseWithoutMeta).every(
+        //     (value) => value !== undefined && value !== false,
+        //   )
+        // ) {
+        //   console.log('OK')
+
+        //   Object.entries(anameseWithoutMeta).forEach(([key, value]) => {
+        //     console.log(`${key}:`, value)
+        //   })
+        // } else {
+        //   console.log('Não tem info')
+        // }
       } catch (error) {
         console.error('Error fetching anamnesis data:', error)
       } finally {

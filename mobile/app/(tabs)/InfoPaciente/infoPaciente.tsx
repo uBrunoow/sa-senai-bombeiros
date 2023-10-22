@@ -13,8 +13,9 @@ import { useSelector } from 'react-redux'
 import updateSinaisVitaisReport from '@src/api/reports/sinaisVitais/updateSinaisVitais'
 import updateSuspectProblems from '@src/api/reports/suspectProblems/updateSuspectProblems'
 import updateGlasgow from '@src/api/reports/glasgow/updateGlasgow'
+import { useToast, Button } from 'native-base'
 
-export default function InfoPatient() {
+export default function InfoPatient({ navigation }: any) {
   const InfoPatient = useSelector(
     (state: RootState) => state.infoPaciente.patientInfo,
   )
@@ -52,9 +53,11 @@ export default function InfoPatient() {
     SuspectProblemsData?.suspectProblems?.respiratorioSuboptions
 
   // Infos paciente, glasgow data
-  const aberturaOcular = GlasgowData.glasgow.aberturaOcular
-  const respostaMotora = GlasgowData.glasgow.respostaMotora
-  const respostaVerbal = GlasgowData.glasgow.respostaVerbal
+  const aberturaOcular = GlasgowData?.glasgow?.aberturaOcular
+  const respostaMotora = GlasgowData?.glasgow?.respostaMotora
+  const respostaVerbal = GlasgowData?.glasgow?.respostaVerbal
+
+  const toast = useToast()
 
   const handleSubmitInfoPaciente = async () => {
     try {
@@ -89,8 +92,31 @@ export default function InfoPatient() {
       console.log(SinaisVitaisResponse)
       console.log(SuspectProblemsResponse)
       console.log(GlasgowResponse)
+
+      if (
+        SuspectProblemsResponse &&
+        SuspectProblemsResponse.updatedSuspectProblems &&
+        GlasgowResponse &&
+        GlasgowResponse.updatedGlasgow &&
+        SinaisVitaisResponse &&
+        SinaisVitaisResponse.updatedReport
+      ) {
+        navigation.navigate('ocorrencia')
+        toast.show({
+          description: 'Informações de Info Paciente salvas com sucesso.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#0AC800' },
+        })
+      }
     } catch (error) {
       console.error(error)
+      toast.show({
+        description: 'Erro ao salvar informações de Info Paciente.',
+        duration: 3000,
+        placement: 'bottom',
+        style: { backgroundColor: 'red' },
+      })
     }
   }
 
