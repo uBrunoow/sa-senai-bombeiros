@@ -86,6 +86,10 @@ import {
 } from './src/routes/reports/SuspectProblems/findSuspectProblems'
 import { suspectProblemsDeleteRoutes } from './src/routes/reports/SuspectProblems/deleteSuspectProblems'
 
+// Cinematic Avaliation
+import { registerCinematicAvaliationRoutes } from './src/routes/reports/CinematicAvaliation/registerCinematicAvaliation'
+import { updateCinematicAvaliationRoutes } from './src/routes/reports/CinematicAvaliation/updateCinematicAvaliation'
+
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
 app.register(cors, {
@@ -162,6 +166,10 @@ app.register(updateSuspectProblemsRoutes)
 app.register(suspectProblemsFindRoutes)
 app.register(suspectProblemsFindOneRoutes)
 app.register(suspectProblemsDeleteRoutes)
+
+// CINEMATIC AVALIATION
+app.register(registerCinematicAvaliationRoutes)
+app.register(updateCinematicAvaliationRoutes)
 
 app
   .listen({
