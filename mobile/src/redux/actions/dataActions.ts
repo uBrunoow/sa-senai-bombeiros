@@ -18,3 +18,10 @@ export const setGlasgowData = (glasgow: object) => ({
     glasgow,
   },
 })
+
+export const setCinematicData = (cinematic: object) => ({
+  type: 'SET_CINEMATIC_AVALIATION',
+  payload: {
+    cinematic,
+  },
+})

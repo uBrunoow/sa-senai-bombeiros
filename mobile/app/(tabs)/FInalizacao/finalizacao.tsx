@@ -32,6 +32,7 @@ import { styles as s } from '@app/styles/boxShadow'
 import InputLowPadding from '@app/components/InputLowPadding'
 import Cinematica from './components/Cinematica'
 import findFinalization from '@src/api/reports/finalization/findFinalization'
+import updateCinematic from '@src/api/reports/cinematicAvaliation/updateCinematicAvaliation'
 
 const Finalizacao = () => {
   const [selected, setSelected] = useState('')
@@ -118,6 +119,14 @@ const Finalizacao = () => {
 
   const handleResponsableChange = (newResponsable: string) => {
     setResponsable(newResponsable)
+  }
+
+  const handleSubmitFinalization = async () => {
+    try {
+      const cinematicDataResponse = await updateCinematic()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (

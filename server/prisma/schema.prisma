@@ -250,7 +250,7 @@ enum localTraumasBodyPart {
 enum tipoTrauma {
   FRATURA
   DIVERSOS
-  HEMORRAGIAS 
+  HEMORRAGIAS
   ESVICERACAO
   FAV_FAV
   AMPUTACAO

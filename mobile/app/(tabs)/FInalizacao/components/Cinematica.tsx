@@ -1,14 +1,17 @@
 import { View, Text } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styles as s } from '@app/styles/boxShadow'
 import YesOrNo from '@app/components/YesOrNo'
+import { setCinematicData } from '@src/redux/actions/dataActions'
+import { useDispatch } from 'react-redux'
 const Cinematica = () => {
+  const dispatch = useDispatch()
   const [comportamentalDisturb, setComportamentalDisturb] = useState(false)
   const [foundWithHelmet, setFoundWithHelmet] = useState(false)
   const [foundWithSeatbelt, setFoundWithSeatbelt] = useState(false)
   const [walkingInTheScene, setWalkingInTheScene] = useState(false)
   const [damagedWindshield, setDamagedWindshield] = useState(false)
-  const [brokenPanel, setBrokenPanel] = useState(false)
+  const [damagedPanel, setDamagedPanel] = useState(false)
 
   const handleComportamentalDisturb = (option: 'SIM' | 'NÃO') => {
     setComportamentalDisturb(option === 'SIM')
@@ -25,9 +28,36 @@ const Cinematica = () => {
   const handleDamagedWindshield = (option: 'SIM' | 'NÃO') => {
     setDamagedWindshield(option === 'SIM')
   }
-  const handleBrokenPanel = (option: 'SIM' | 'NÃO') => {
-    setBrokenPanel(option === 'SIM')
+  const handleDamagedPanel = (option: 'SIM' | 'NÃO') => {
+    setDamagedPanel(option === 'SIM')
   }
+
+  useEffect(() => {
+    const onChangeSuspectProblemsDataInfo = () => {
+      const cinematicaDataInfo = {
+        comportamentalDisturb,
+        foundWithHelmet,
+        foundWithSeatbelt,
+        walkingInTheScene,
+        damagedWindshield,
+        damagedPanel,
+      }
+
+      console.log(cinematicaDataInfo)
+
+      dispatch(setCinematicData(cinematicaDataInfo))
+    }
+
+    onChangeSuspectProblemsDataInfo()
+  }, [
+    comportamentalDisturb,
+    foundWithHelmet,
+    foundWithSeatbelt,
+    walkingInTheScene,
+    damagedWindshield,
+    damagedPanel,
+    dispatch,
+  ])
 
   return (
     <View
@@ -65,8 +95,8 @@ const Cinematica = () => {
         />
         <YesOrNo
           Question="Painel avariado"
-          selectedOption={brokenPanel ? 'SIM' : 'NÃO'}
-          onSelectOption={handleBrokenPanel}
+          selectedOption={damagedPanel ? 'SIM' : 'NÃO'}
+          onSelectOption={handleDamagedPanel}
         />
       </View>
     </View>

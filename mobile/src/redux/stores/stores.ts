@@ -15,6 +15,10 @@ import SuspectProblemsReducerData, {
 } from '../reducers/suspectProblemsData'
 import glasgowReducer from '../reducers/glasgowReducer'
 import GlasgowReducerData, { GlasgowState } from '../reducers/glasgowData'
+import cinematicAvaliationReducer from '../reducers/cinematicAvaliationReducer'
+import CinematicaReducerData, {
+  CinematicDataState,
+} from '../reducers/cinematicData'
 
 export interface RootState {
   auth: {
@@ -46,6 +50,12 @@ export interface RootState {
   suspectProblemsData: SuspectProblemsState
 
   glasgowData: GlasgowState
+
+  cinematicAvaliation: {
+    cinematicAvaliationId: number
+  }
+
+  cinematicData: GlasgowState
 }
 const store = configureStore({
   reducer: {
@@ -62,6 +72,11 @@ const store = configureStore({
     >,
     glasgow: glasgowReducer,
     glasgowData: GlasgowReducerData as Reducer<GlasgowState, AnyAction>,
+    cinematicAvaliation: cinematicAvaliationReducer,
+    cinematicData: CinematicaReducerData as Reducer<
+      CinematicDataState,
+      AnyAction
+    >,
   },
   middleware: [thunk],
 })

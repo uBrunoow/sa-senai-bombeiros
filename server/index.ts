@@ -89,6 +89,11 @@ import { suspectProblemsDeleteRoutes } from './src/routes/reports/SuspectProblem
 // Cinematic Avaliation
 import { registerCinematicAvaliationRoutes } from './src/routes/reports/CinematicAvaliation/registerCinematicAvaliation'
 import { updateCinematicAvaliationRoutes } from './src/routes/reports/CinematicAvaliation/updateCinematicAvaliation'
+import {
+  cinematicAvaliationFindOneRoutes,
+  cinematicAvaliationFindRoutes,
+} from './src/routes/reports/CinematicAvaliation/findCinematicAvaliation'
+import { cinematicAvaliationDeleteRoutes } from './src/routes/reports/CinematicAvaliation/deleteCinematicAvaliation'
 
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
@@ -170,6 +175,9 @@ app.register(suspectProblemsDeleteRoutes)
 // CINEMATIC AVALIATION
 app.register(registerCinematicAvaliationRoutes)
 app.register(updateCinematicAvaliationRoutes)
+app.register(cinematicAvaliationFindRoutes)
+app.register(cinematicAvaliationFindOneRoutes)
+app.register(cinematicAvaliationDeleteRoutes)
 
 app
   .listen({
