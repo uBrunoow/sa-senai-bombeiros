@@ -42,7 +42,11 @@ export default function LocalTraumas() {
           </Text>
         </View>
         <View style={s.boxShadow} className="mx-auto">
-          <Body bodyPartChangeHandler={setBodyPartSelected} />
+          <Body
+            bodyPartChangeHandler={setBodyPartSelected}
+            setSide={setSide}
+            setFace={setFace}
+          />
           <View className="mt-[34px] w-[5/6] items-center justify-center">
             <Text className="mb-[10px] ml-[10px] text-[20px] font-medium leading-[20px]">
               Biceps (conceito)
