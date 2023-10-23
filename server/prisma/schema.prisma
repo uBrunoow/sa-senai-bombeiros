@@ -48,6 +48,7 @@ model Report {
   Report_Symptoms          Report_Symptoms[]
   SuspectProblems          SuspectProblems[]
   Symptoms                 Symptoms[]
+  CinematicAvaliation      CinematicAvaliation[]
 }
 
 model Report_PreHospitalMethod {
@@ -165,12 +166,17 @@ model SuspectProblems {
 
 model CinematicAvaliation {
   id                    Int       @id @default(autoincrement())
-  comportamentalDisturb Boolean
-  foundWithHelmet       Boolean
-  foundWithSeatbelt     Boolean
-  walkingInTheScene     Boolean
+  comportamentalDisturb Boolean?
+  foundWithHelmet       Boolean?
+  foundWithSeatbelt     Boolean?
+  walkingInTheScene     Boolean?
+  damagedWindshield     Boolean?
+  damagedPanel          Boolean?
+  twistedSteering       Boolean?
   createdAt             DateTime? @default(now())
   updatedAt             DateTime? @updatedAt
+  ReportOwnerId         Int
+  reportOwner           Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 model Finalization {
