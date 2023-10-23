@@ -27,6 +27,7 @@ import {
   saveAnamnesisId,
   saveFinalizationId,
   saveGestacionalAnamnesisId,
+  saveGlasgowId,
   saveSuspectProblemsId,
 } from '@src/redux/actions/reportActions'
 import ExcluirOcorrenciaModal from '@app/modal/ExcluirOcorrenciaModal'
@@ -35,6 +36,7 @@ import deleteReport from '@src/api/reports/deleteReport'
 import registerGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/registerGestacionalAnamnesis'
 import registerFinalization from '@src/api/reports/finalization/registerFinalization'
 import registerSuspectProblems from '@src/api/reports/suspectProblems/registerSuspectProblems'
+import registerGlasgow from '@src/api/reports/glasgow/registerGlasgow'
 
 export default function Ocorrencia({ navigation }: any) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
@@ -137,16 +139,36 @@ export default function Ocorrencia({ navigation }: any) {
         params: { suspectProblemsId: existingSuspectProblemsId },
       })
     } else {
-      const response = await registerSuspectProblems(ReportOwnerId)
-      console.log(response)
+      const suspectProblemsResponse = await registerSuspectProblems(
+        ReportOwnerId,
+      )
+      console.log(suspectProblemsResponse)
 
-      if (response && response.suspectProblems) {
-        dispatch(saveSuspectProblemsId(response.suspectProblems.id))
-        console.log('Suspect Problems n°: ', response.suspectProblems.id)
+      const glasgowResponse = await registerGlasgow(ReportOwnerId)
+      console.log(glasgowResponse)
+
+      if (
+        suspectProblemsResponse &&
+        suspectProblemsResponse.suspectProblems &&
+        glasgowResponse &&
+        glasgowResponse.glasgow
+      ) {
+        dispatch(
+          saveSuspectProblemsId(suspectProblemsResponse.suspectProblems.id),
+        )
+        console.log(
+          'Suspect Problems n°: ',
+          suspectProblemsResponse.suspectProblems.id,
+        )
+        dispatch(saveGlasgowId(glasgowResponse.glasgow.id))
+        console.log('Glasgow n°: ', glasgowResponse.glasgow.id)
 
         navigation.navigate('info-paciente', {
           screen: 'info-paciente',
-          params: { suspectProblemsId: response.suspectProblems.id },
+          params: {
+            suspectProblemsId: suspectProblemsResponse.suspectProblems.id,
+            glasgowId: glasgowResponse.glasgow.id,
+          },
         })
       }
     }

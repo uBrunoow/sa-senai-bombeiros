@@ -30,11 +30,13 @@ model Report {
   cpf                      String?
   phone                    String?
   reportPlace              String?
-  bloodPressure            Int?
+  systolicBloodPressure    Int?
+  diastolicBloodPressure   Int?
   bodyTemp                 Int?
   bodyPulse                Int?
   breathing                Int?
   saturation               Int?
+  perfusion                perfusion
   ownerId                  Int
   Anamnesis                Anamnesis[]
   Finalization             Finalization[]
@@ -194,24 +196,25 @@ enum problemaSuspeitoTransporte {
   POS_TRAUMA
   SAMU
   SEM_REMOCAO
-  null
 }
 
 enum problemaSuspeitoDiabetes {
   HIPOGLICEMIA
   HIPERGLICEMIA
-  null
 }
 
 enum problemaSuspeitoObstetrico {
   PARTO_GESTACIONAL
   GESTANTE
   HEMORRAGIA_EXCESSIVA
-  null
 }
 
 enum problemaSuspeitoRespiratorio {
   DPOC
   INLACAO_FUMACA
-  null
+}
+
+enum perfusion {
+  MAIOR_DOIS_SEGUNDOS
+  MENOR_DOIS_SEGUNDOS
 }

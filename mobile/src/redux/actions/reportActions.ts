@@ -54,3 +54,14 @@ export const clearSuspectProblemsId = () => {
     type: 'CLEAR_SUSPECT_PROBLEMS_ID',
   }
 }
+
+export const saveGlasgowId = (glasgowId: number) => ({
+  type: 'SAVE_GLASGOW',
+  payload: { glasgowId },
+})
+
+export const clearGlasgowId = () => {
+  return {
+    type: 'CLEAR_GLASGOW_ID',
+  }
+}

@@ -1,5 +1,5 @@
 // store.ts
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, Reducer, AnyAction } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk'
 import authReducer from '../reducers/authReducer'
 import reportReducer from '../reducers/reportReducer'
@@ -7,6 +7,14 @@ import anamnesisReducer from '../reducers/anamnesisReducer'
 import gestacionalReducer from '../reducers/gestacionalReducer'
 import suspectProblemsReducer from '../reducers/suspectProblemsReducer'
 import finalizationReducer from '../reducers/finalizationReducer'
+import infoPacienteReducer, {
+  InfoPacienteState,
+} from '../reducers/infoPacienteReducer'
+import SuspectProblemsReducerData, {
+  SuspectProblemsState,
+} from '../reducers/suspectProblemsData'
+import glasgowReducer from '../reducers/glasgowReducer'
+import GlasgowReducerData, { GlasgowState } from '../reducers/glasgowData'
 
 export interface RootState {
   auth: {
@@ -29,6 +37,15 @@ export interface RootState {
   suspectProblems: {
     suspectProblemsId: number
   }
+  glasgow: {
+    glasgowId: number
+  }
+
+  infoPaciente: InfoPacienteState
+
+  suspectProblemsData: SuspectProblemsState
+
+  glasgowData: GlasgowState
 }
 const store = configureStore({
   reducer: {
@@ -38,6 +55,13 @@ const store = configureStore({
     gestacionalAnamnesis: gestacionalReducer,
     finalization: finalizationReducer,
     suspectProblems: suspectProblemsReducer,
+    infoPaciente: infoPacienteReducer as Reducer<InfoPacienteState, AnyAction>,
+    suspectProblemsData: SuspectProblemsReducerData as Reducer<
+      SuspectProblemsState,
+      AnyAction
+    >,
+    glasgow: glasgowReducer,
+    glasgowData: GlasgowReducerData as Reducer<GlasgowState, AnyAction>,
   },
   middleware: [thunk],
 })

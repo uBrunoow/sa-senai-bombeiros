@@ -7,7 +7,7 @@ const initialSuspectProblemsState: SuspectProblemsState = {
   suspectProblemsId: null,
 }
 
-type AnamnesisAction =
+type SuspectProblemsAction =
   | {
       type: 'SAVE_SUSPECT_PROBLEMS'
       payload: { suspectProblemsId: number }
@@ -16,7 +16,7 @@ type AnamnesisAction =
 
 const suspectProblemsReducer = (
   state = initialSuspectProblemsState,
-  action: AnamnesisAction,
+  action: SuspectProblemsAction,
 ): SuspectProblemsState => {
   switch (action.type) {
     case 'SAVE_SUSPECT_PROBLEMS':

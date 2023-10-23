@@ -96,8 +96,6 @@ export default function Introducao({ navigation }: any) {
     findPreHospitalarMethodByReportData()
   }, [reportId])
 
-  console.log(preHospitalar)
-
   const handleSubmitIntroduction = async () => {
     try {
       const reportDate = formatReportDate(reportDateTime)

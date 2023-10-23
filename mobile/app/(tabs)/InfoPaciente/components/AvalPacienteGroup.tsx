@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
-import { View, Text, Modal, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native'
 import AvalPacienteModal from '@app/modal/AvalPacienteModal'
 import { styles as s } from '@app/styles/boxShadow'
+import { useDispatch } from 'react-redux'
+import { setGlasgowData } from '@src/redux/actions/dataActions'
 
 //
 export default function AvalPacienteGroup() {
+  const dispatch = useDispatch()
   const [aberturaOcular, setAberturaOcular] = useState(0)
   const [respostaVerbal, setRespostaVerbal] = useState(0)
   const [respostaMotora, setRespostaMotora] = useState(0)
@@ -25,25 +28,33 @@ export default function AvalPacienteGroup() {
     )
   }
 
-  console.log(
-    `${[aberturaOcular, respostaVerbal, respostaMotora]} = ${calcGlasgow()}`,
-  )
-
-  function handleAberturaOcular(valueAberturaOcular: number): void {
+  function handleAberturaOcular(valueAberturaOcular: number) {
     setAberturaOcular(valueAberturaOcular)
   }
 
-  function handleRespostaVerbal(valueRespostaVerbal: number): void {
+  function handleRespostaVerbal(valueRespostaVerbal: number) {
     setRespostaVerbal(valueRespostaVerbal)
   }
 
-  function handleRespostaMotora(valueRespostaMotora: number): void {
+  function handleRespostaMotora(valueRespostaMotora: number) {
     setRespostaMotora(valueRespostaMotora)
   }
 
+  useEffect(() => {
+    const onChangeGlasgowInfoData = () => {
+      const glasgowDataInfo = {
+        aberturaOcular,
+        respostaVerbal,
+        respostaMotora,
+      }
+      dispatch(setGlasgowData(glasgowDataInfo))
+    }
+
+    onChangeGlasgowInfoData()
+  }, [aberturaOcular, respostaVerbal, respostaMotora, dispatch])
+
   return (
     <View
-      // className="mx-auto mb-7 w-5/6 flex-col rounded-md bg-white py-5 shadow-lg "
       className=" mx-auto w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
       style={s.boxShadow}
     >
