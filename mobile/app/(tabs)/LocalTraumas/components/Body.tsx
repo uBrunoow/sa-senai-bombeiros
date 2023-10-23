@@ -12,41 +12,61 @@ type BodyPartCoordinates = {
   br: Coordinate
 }
 
-type bodyPartsCoordinates = {
-  [key: string]: BodyPartCoordinates
+type BodyPart = {
+  coords: BodyPartCoordinates
+  side: 'Direito' | 'Esquerdo' | null
+  face: 'Frontal' | 'Traseiro'
 }
 
 type BodyProps = {
   bodyPartChangeHandler: Dispatch<SetStateAction<boolean>>
+  setFace: Dispatch<SetStateAction<string | null>>
+  setSide: Dispatch<SetStateAction<string | null>>
 }
 
-const castedBodyCoordinates = bodyCoordinates as bodyPartsCoordinates
+const castedBodyCoordinates = bodyCoordinates as Record<string, BodyPart>
 
-export default function Body({ bodyPartChangeHandler }: BodyProps) {
+export default function Body({
+  bodyPartChangeHandler,
+  setFace,
+  setSide,
+}: BodyProps) {
   const [clickedBodyPartText, setClickedBodyPartText] = useState(
     'Nenhuma selecionada',
   )
 
   function getClickBodyPlace(clickCoord: Coordinate) {
     for (const bodyPart in castedBodyCoordinates) {
-      const currPart = (
-        castedBodyCoordinates as Record<string, BodyPartCoordinates>
-      )[bodyPart]
+      const currPart = (castedBodyCoordinates as Record<string, BodyPart>)[
+        bodyPart
+      ]
+
+      const currPartCoords = currPart.coords
+      const currPartFace = currPart.face
+      const currPartSide = currPart.side
 
       if (
         ![
-          currPart.tl.x <= clickCoord.x,
-          clickCoord.x <= currPart.br.x,
-          currPart.br.y >= clickCoord.y,
-          clickCoord.y >= currPart.tl.y,
+          currPartCoords.tl.x <= clickCoord.x,
+          clickCoord.x <= currPartCoords.br.x,
+          currPartCoords.br.y >= clickCoord.y,
+          clickCoord.y >= currPartCoords.tl.y,
         ].includes(false)
       ) {
+        console.log(clickCoord)
+
+        setFace(currPartFace)
+        setSide(currPartSide)
+
         return {
           success: true,
           payload: bodyPart,
         }
       }
     }
+
+    setFace(null)
+    setSide(null)
 
     return {
       success: false,

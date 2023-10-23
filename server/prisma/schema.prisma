@@ -48,6 +48,7 @@ model Report {
   Report_Symptoms          Report_Symptoms[]
   SuspectProblems          SuspectProblems[]
   Symptoms                 Symptoms[]
+  LocalTraumas             trauma[]
 }
 
 model Report_PreHospitalMethod {
@@ -217,4 +218,47 @@ enum problemaSuspeitoRespiratorio {
 enum perfusion {
   MAIOR_DOIS_SEGUNDOS
   MENOR_DOIS_SEGUNDOS
+}
+
+enum localTraumaSide {
+  RIGHT
+  LEFT
+}
+
+enum localTraumaFace {
+  FRONT
+  BACK
+}
+
+enum localTraumasBodyPart {
+  COSTAS
+  PESCOCO
+  GLUTEOS
+  BRACO
+  ANTEBRACO
+  PESCOCOPERNA
+  COXA
+  CABECA
+}
+
+enum tipoTrauma {
+  FRATURA
+  DIVERSOS
+  HEMORRAGIAS 
+  ESVICERACAO
+  FAV_FAV
+  AMPUTACAO
+  QUEIMADURA_1GRAU
+  QUEIMADURA_2GRAU
+  QUEIMADURA_3GRAU
+}
+
+model trauma {
+  id            Int                  @id @default(autoincrement())
+  ReportOwnerId Int
+  reportOwner   Report               @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  tipo          tipoTrauma
+  bodyPart      localTraumasBodyPart
+  side          localTraumaSide
+  face          localTraumaFace
 }
