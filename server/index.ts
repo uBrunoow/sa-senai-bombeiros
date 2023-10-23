@@ -86,6 +86,9 @@ import {
 } from './src/routes/reports/SuspectProblems/findSuspectProblems'
 import { suspectProblemsDeleteRoutes } from './src/routes/reports/SuspectProblems/deleteSuspectProblems'
 
+// Local Traumas
+import { registerTraumasRoutes } from './src/routes/reports/LocalTraumas/register'
+
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
 app.register(cors, {
@@ -162,6 +165,9 @@ app.register(updateSuspectProblemsRoutes)
 app.register(suspectProblemsFindRoutes)
 app.register(suspectProblemsFindOneRoutes)
 app.register(suspectProblemsDeleteRoutes)
+
+// LOCAL TRAUMAS
+app.register(registerTraumasRoutes)
 
 app
   .listen({
