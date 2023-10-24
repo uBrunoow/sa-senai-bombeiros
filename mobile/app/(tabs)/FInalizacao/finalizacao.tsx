@@ -157,12 +157,12 @@ const Finalizacao = ({ navigation }: any) => {
     (state: RootState) => state.cinematicData.cinematic,
   )
 
-  const comportamentalDisturb = cinematicData.cinematic.comportamentalDisturb
-  const damagedPanel = cinematicData.cinematic.damagedPanel
-  const damagedWindshield = cinematicData.cinematic.damagedWindshield
-  const foundWithHelmet = cinematicData.cinematic.foundWithHelmet
-  const foundWithSeatbelt = cinematicData.cinematic.foundWithSeatbelt
-  const walkingInTheScene = cinematicData.cinematic.walkingInTheScene
+  const comportamentalDisturb = cinematicData?.cinematic?.comportamentalDisturb
+  const damagedPanel = cinematicData?.cinematic?.damagedPanel
+  const damagedWindshield = cinematicData?.cinematic?.damagedWindshield
+  const foundWithHelmet = cinematicData?.cinematic?.foundWithHelmet
+  const foundWithSeatbelt = cinematicData?.cinematic?.foundWithSeatbelt
+  const walkingInTheScene = cinematicData?.cinematic?.walkingInTheScene
 
   const conduction: any = []
 
