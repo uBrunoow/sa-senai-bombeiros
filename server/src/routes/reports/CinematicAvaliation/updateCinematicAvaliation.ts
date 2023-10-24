@@ -13,6 +13,7 @@ export async function updateCinematicAvaliationRoutes(app: FastifyInstance) {
       walkingInTheScene,
       damagedWindshield,
       damagedPanel,
+      twistedSteering,
       ReportOwnerId,
     } = updateCinematicAvaliation.parse(req.body)
 
@@ -23,6 +24,7 @@ export async function updateCinematicAvaliationRoutes(app: FastifyInstance) {
       !walkingInTheScene &&
       !damagedWindshield &&
       !damagedPanel &&
+      !twistedSteering &&
       !ReportOwnerId
     ) {
       return res
@@ -50,6 +52,7 @@ export async function updateCinematicAvaliationRoutes(app: FastifyInstance) {
       walkingInTheScene?: boolean
       damagedWindshield?: boolean
       damagedPanel?: boolean
+      twistedSteering?: boolean
       ReportOwnerId?: number
     } = {}
 
@@ -87,6 +90,14 @@ export async function updateCinematicAvaliationRoutes(app: FastifyInstance) {
     if (damagedPanel) {
       updateCinematicAvaliationData.damagedPanel = damagedPanel
     }
+    if (!damagedPanel && damagedPanel !== undefined)
+      updateCinematicAvaliationData.damagedPanel = false
+
+    if (twistedSteering) {
+      updateCinematicAvaliationData.twistedSteering = twistedSteering
+    }
+    if (!twistedSteering && twistedSteering !== undefined)
+      updateCinematicAvaliationData.twistedSteering = false
 
     if (ReportOwnerId) {
       updateCinematicAvaliationData.ReportOwnerId = ReportOwnerId

@@ -9,6 +9,7 @@ const updateCinematic = async (
   foundWithHelmet?: boolean,
   foundWithSeatbelt?: boolean,
   walkingInTheScene?: boolean,
+  twistedSteering?: boolean,
 ) => {
   try {
     const response = await api.put(
@@ -20,6 +21,7 @@ const updateCinematic = async (
         foundWithHelmet,
         foundWithSeatbelt,
         walkingInTheScene,
+        twistedSteering,
         ReportOwnerId,
       },
       {

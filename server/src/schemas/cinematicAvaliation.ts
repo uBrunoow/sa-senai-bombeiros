@@ -7,6 +7,7 @@ export const registerCinematicAvaliation = z.object({
   walkingInTheScene: z.boolean().optional(),
   damagedWindshield: z.boolean().optional(),
   damagedPanel: z.boolean().optional(),
+  twistedSteering: z.boolean().optional(),
   ReportOwnerId: z.number(),
 })
 
@@ -17,5 +18,6 @@ export const updateCinematicAvaliation = z.object({
   walkingInTheScene: z.boolean().optional(),
   damagedWindshield: z.boolean().optional(),
   damagedPanel: z.boolean().optional(),
+  twistedSteering: z.boolean().optional(),
   ReportOwnerId: z.number(),
 })

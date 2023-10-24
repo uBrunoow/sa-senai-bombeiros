@@ -11,6 +11,7 @@ export async function registerCinematicAvaliationRoutes(app: FastifyInstance) {
       walkingInTheScene,
       damagedWindshield,
       damagedPanel,
+      twistedSteering,
       ReportOwnerId,
     } = registerCinematicAvaliation.parse(req.body)
 
@@ -22,6 +23,7 @@ export async function registerCinematicAvaliationRoutes(app: FastifyInstance) {
         walkingInTheScene: walkingInTheScene || false,
         damagedWindshield: damagedWindshield || false,
         damagedPanel: damagedPanel || false,
+        twistedSteering: twistedSteering || false,
         ReportOwnerId,
       },
     })

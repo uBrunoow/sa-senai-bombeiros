@@ -14,6 +14,7 @@ const Cinematica = () => {
   const [walkingInTheScene, setWalkingInTheScene] = useState(false)
   const [damagedWindshield, setDamagedWindshield] = useState(false)
   const [damagedPanel, setDamagedPanel] = useState(false)
+  const [twistedSteering, setTwistedSteering] = useState(false)
 
   const cinematicId = useSelector(
     (state: RootState) => state.cinematicAvaliation.cinematicAvaliationId,
@@ -31,6 +32,7 @@ const Cinematica = () => {
         const walkingInTheSceneResponse = response.Cinematica.walkingInTheScene
         const damagedWindshieldResponse = response.Cinematica.damagedWindshield
         const damagedPanelResponse = response.Cinematica.damagedPanel
+        const twistedSteeringResponse = response.Cinematica.twistedSteering
 
         setComportamentalDisturb(comportamentalDisturbResponse || false)
         setFoundWithHelmet(foundWithHelmetResponse || false)
@@ -38,6 +40,7 @@ const Cinematica = () => {
         setWalkingInTheScene(walkingInTheSceneResponse || false)
         setDamagedWindshield(damagedWindshieldResponse || false)
         setDamagedPanel(damagedPanelResponse || false)
+        setTwistedSteering(twistedSteeringResponse || false)
       } catch (error) {
         console.error(error)
       }
@@ -63,6 +66,9 @@ const Cinematica = () => {
   const handleDamagedPanel = (option: 'SIM' | 'NÃO') => {
     setDamagedPanel(option === 'SIM')
   }
+  const handleTwistedSteering = (option: 'SIM' | 'NÃO') => {
+    setTwistedSteering(option === 'SIM')
+  }
 
   useEffect(() => {
     const onChangeSuspectProblemsDataInfo = () => {
@@ -73,9 +79,8 @@ const Cinematica = () => {
         walkingInTheScene,
         damagedWindshield,
         damagedPanel,
+        twistedSteering,
       }
-
-      console.log(cinematicaDataInfo)
 
       dispatch(setCinematicData(cinematicaDataInfo))
     }
@@ -89,6 +94,7 @@ const Cinematica = () => {
     damagedWindshield,
     damagedPanel,
     dispatch,
+    twistedSteering,
   ])
 
   return (
@@ -129,6 +135,11 @@ const Cinematica = () => {
           Question="Painel avariado"
           selectedOption={damagedPanel ? 'SIM' : 'NÃO'}
           onSelectOption={handleDamagedPanel}
+        />
+        <YesOrNo
+          Question="Volante torcido"
+          selectedOption={twistedSteering ? 'SIM' : 'NÃO'}
+          onSelectOption={handleTwistedSteering}
         />
       </View>
     </View>

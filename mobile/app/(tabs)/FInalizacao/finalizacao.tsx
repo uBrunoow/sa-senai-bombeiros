@@ -18,16 +18,11 @@ import {
   AntDesign,
 } from '@expo/vector-icons'
 
-import { MultipleSelectList } from 'react-native-dropdown-select-list'
-// import findAnamnesis from '../../../src/api/findAnamnesis'
-// import { calculateAnamnesisCompleteness } from '../../../src/utils/calculateAnamnesisCompleteness'
 import { useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
 import findUser from '@src/api/users/findUser'
 import FInalizacaoModal from '@app/modal/FInalizacaoModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-// import InputFull from '../../components/InputFull'
-
 import { styles as s } from '@app/styles/boxShadow'
 import InputLowPadding from '@app/components/InputLowPadding'
 import Cinematica from './components/Cinematica'
@@ -35,7 +30,7 @@ import findFinalization from '@src/api/reports/finalization/findFinalization'
 import updateCinematic from '@src/api/reports/cinematicAvaliation/updateCinematicAvaliation'
 import MainButton from '@app/components/MainButton'
 import updateFinalization from '@src/api/reports/finalization/updateFinalization'
-import { Checkbox } from 'native-base'
+import { Checkbox, FormControl, TextArea } from 'native-base'
 
 const Finalizacao = ({ navigation }: any) => {
   const [selected, setSelected] = useState('')
@@ -50,6 +45,10 @@ const Finalizacao = ({ navigation }: any) => {
   const [isCheckedDeitada, setIsCheckedDeitada] = useState(false)
   const [isCheckedSemiDeitada, setIsCheckedSemiDeitada] = useState(false)
   const [isCheckedSentada, setIsCheckedSentada] = useState(false)
+
+  // const handleObservacoesChange = (event) => {
+  //   setObservacoesFinais(event.target.value)
+  // }
 
   const handleOptionPress = (option) => {
     setSelectedOption(option)
@@ -163,6 +162,7 @@ const Finalizacao = ({ navigation }: any) => {
   const foundWithHelmet = cinematicData?.cinematic?.foundWithHelmet
   const foundWithSeatbelt = cinematicData?.cinematic?.foundWithSeatbelt
   const walkingInTheScene = cinematicData?.cinematic?.walkingInTheScene
+  const twistedSteering = cinematicData?.cinematic?.twistedSteering
 
   const conduction: any = []
 
@@ -193,6 +193,7 @@ const Finalizacao = ({ navigation }: any) => {
         foundWithHelmet,
         foundWithSeatbelt,
         walkingInTheScene,
+        twistedSteering,
       )
 
       const finalizationDataResponse = await updateFinalization(
@@ -398,13 +399,18 @@ const Finalizacao = ({ navigation }: any) => {
                 </View>
 
                 <View className="flex-1">
-                  <InputLowPadding
-                    title="Observações Finais"
-                    placeholder={observacoesFinais || ''}
-                    isBig={true}
-                    value={observacoesFinais}
-                    onChangeText={(e) => setObservacoesFinais(e)}
-                  />
+                  {/* <FormControl>
+                    <FormControl.Label mt={5}>
+                      Observações Finais
+                    </FormControl.Label>
+                    <TextArea
+                      autoCompleteType={''}
+                      h={20}
+                      w="100%"
+                      onChange={handleObservacoesChange}
+                      value={observacoesFinais}
+                    />
+                  </FormControl> */}
                 </View>
               </View>
               <View>
