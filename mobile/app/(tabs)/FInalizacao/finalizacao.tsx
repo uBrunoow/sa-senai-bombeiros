@@ -33,16 +33,23 @@ import InputLowPadding from '@app/components/InputLowPadding'
 import Cinematica from './components/Cinematica'
 import findFinalization from '@src/api/reports/finalization/findFinalization'
 import updateCinematic from '@src/api/reports/cinematicAvaliation/updateCinematicAvaliation'
+import MainButton from '@app/components/MainButton'
+import updateFinalization from '@src/api/reports/finalization/updateFinalization'
+import { Checkbox } from 'native-base'
 
-const Finalizacao = () => {
+const Finalizacao = ({ navigation }: any) => {
   const [selected, setSelected] = useState('')
   const [categories, setCategories] = useState([])
   const [isPressed, setIsPressed] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(null)
+  const [selectedOption, setSelectedOption] = useState(``)
   const [changeResponsable, setChangeResponsable] = useState(false)
   const [responsable, setResponsable] = useState('')
   const [observacoesFinais, setObservacoesFinais] = useState('')
   const [loading, setLoading] = useState(false)
+  const [buttonLoading, setButtonLoading] = useState(false)
+  const [isCheckedDeitada, setIsCheckedDeitada] = useState(false)
+  const [isCheckedSemiDeitada, setIsCheckedSemiDeitada] = useState(false)
+  const [isCheckedSentada, setIsCheckedSentada] = useState(false)
 
   const handleOptionPress = (option) => {
     setSelectedOption(option)
@@ -64,12 +71,6 @@ const Finalizacao = () => {
     }
   }
 
-  const data = [
-    { key: 'Deitada', value: 'Deitada' },
-    { key: 'Semi-deitada', value: 'Semi-deitada' },
-    { key: 'Sentada', value: 'Sentada' },
-  ]
-
   const handleChangeName = () => {
     setChangeResponsable(!changeResponsable)
   }
@@ -78,6 +79,35 @@ const Finalizacao = () => {
   const finalizationId = useSelector(
     (state: RootState) => state.finalization.finalizationId,
   )
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setLoading(true)
+
+        const finalizationResponse = await findFinalization(finalizationId)
+        const conductionResponse = finalizationResponse.finalization.conduction
+        const finalRemarksResponse =
+          finalizationResponse.finalization.finalRemarks
+        const transportationResponse =
+          finalizationResponse.finalization.transportation
+
+        setIsCheckedDeitada(conductionResponse?.includes('DEITADA') || false)
+        setIsCheckedSemiDeitada(
+          conductionResponse?.includes('SEMI-DEITADA') || false,
+        )
+        setIsCheckedSentada(conductionResponse?.includes('SENTADA') || false)
+        setObservacoesFinais(finalRemarksResponse)
+        setSelectedOption(transportationResponse)
+      } catch (error) {
+        console.error('Error fetching users:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchUserData()
+  }, [ownerId, finalizationId])
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -99,8 +129,6 @@ const Finalizacao = () => {
             finalizationResponse.finalization.responsable
           setResponsable(responsableResponse)
         }
-
-        console.log(finalizationId)
       } catch (error) {
         console.error('Error fetching users:', error)
       } finally {
@@ -121,11 +149,76 @@ const Finalizacao = () => {
     setResponsable(newResponsable)
   }
 
+  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
+  const cinematicId = useSelector(
+    (state: RootState) => state.cinematicAvaliation.cinematicAvaliationId,
+  )
+  const cinematicData = useSelector(
+    (state: RootState) => state.cinematicData.cinematic,
+  )
+
+  const comportamentalDisturb = cinematicData.cinematic.comportamentalDisturb
+  const damagedPanel = cinematicData.cinematic.damagedPanel
+  const damagedWindshield = cinematicData.cinematic.damagedWindshield
+  const foundWithHelmet = cinematicData.cinematic.foundWithHelmet
+  const foundWithSeatbelt = cinematicData.cinematic.foundWithSeatbelt
+  const walkingInTheScene = cinematicData.cinematic.walkingInTheScene
+
+  const conduction: any = []
+
+  if (isCheckedDeitada) {
+    conduction.push('DEITADA')
+  }
+
+  if (isCheckedSemiDeitada) {
+    conduction.push('SEMI-DEITADA')
+  }
+
+  if (isCheckedSentada) {
+    conduction.push('SENTADA')
+  }
+
+  const transportation = selectedOption
+  const finalRemarks = observacoesFinais
+
   const handleSubmitFinalization = async () => {
     try {
-      const cinematicDataResponse = await updateCinematic()
+      setButtonLoading(true)
+      const cinematicDataResponse = await updateCinematic(
+        ReportOwnerId,
+        cinematicId,
+        comportamentalDisturb,
+        damagedPanel,
+        damagedWindshield,
+        foundWithHelmet,
+        foundWithSeatbelt,
+        walkingInTheScene,
+      )
+
+      const finalizationDataResponse = await updateFinalization(
+        ReportOwnerId,
+        finalizationId,
+        responsable,
+        conduction,
+        transportation,
+        finalRemarks,
+      )
+
+      console.log(cinematicDataResponse)
+      console.log(finalizationDataResponse)
+
+      if (
+        cinematicDataResponse &&
+        cinematicDataResponse.updatedCinematicAvaliation &&
+        finalizationDataResponse &&
+        finalizationDataResponse.updatedFinalization
+      ) {
+        navigation.navigate('ocorrencia')
+      }
     } catch (error) {
       console.error(error)
+    } finally {
+      setButtonLoading(false)
     }
   }
 
@@ -168,20 +261,42 @@ const Finalizacao = () => {
                   <Text className="m-1 text-base font-medium">
                     Forma de condução
                   </Text>
-                  <MultipleSelectList
-                    setSelected={(val) => setCategories(val)}
-                    data={data}
-                    save="value"
-                    label="Categorias"
-                    boxStyles={{ padding: 10 }}
-                    placeholder="Selecione"
-                    badgeStyles={{
-                      backgroundColor: '#A00E00',
-                      paddingHorizontal: 10,
+                  <Checkbox
+                    size="md"
+                    colorScheme="danger"
+                    value="DEITADA"
+                    mb={2}
+                    isChecked={isCheckedDeitada}
+                    onChange={(e) => {
+                      setIsCheckedDeitada((prev) => !prev)
                     }}
-                    searchPlaceholder="Busque pela forma de condução"
-                    notFoundText="Nenhuma categoria encontrada"
-                  />
+                  >
+                    <Text className="text-lg text-slate-800">Deitada</Text>
+                  </Checkbox>
+                  <Checkbox
+                    size="md"
+                    colorScheme="danger"
+                    value="SEMI-DEITADA"
+                    mb={2}
+                    isChecked={isCheckedSemiDeitada}
+                    onChange={(e) => {
+                      setIsCheckedSemiDeitada((prev) => !prev)
+                    }}
+                  >
+                    <Text className="text-lg text-slate-800">Semi-deitada</Text>
+                  </Checkbox>
+                  <Checkbox
+                    size="md"
+                    colorScheme="danger"
+                    value="SENTADA"
+                    mb={2}
+                    isChecked={isCheckedSentada}
+                    onChange={(e) => {
+                      setIsCheckedSentada((prev) => !prev)
+                    }}
+                  >
+                    <Text className="text-lg text-slate-800">Sentada</Text>
+                  </Checkbox>
                 </View>
 
                 <View>
@@ -295,6 +410,11 @@ const Finalizacao = () => {
               <View>
                 <Cinematica />
               </View>
+              <MainButton
+                innerText="SALVAR"
+                isLoading={buttonLoading}
+                onPress={() => handleSubmitFinalization()}
+              />
               {changeResponsable && (
                 <Modal
                   transparent={true}

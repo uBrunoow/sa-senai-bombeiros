@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { styles as s } from '@app/styles/boxShadow'
 import YesOrNo from '@app/components/YesOrNo'
 import { setCinematicData } from '@src/redux/actions/dataActions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@src/redux/stores/stores'
+import findCinematicAvaliation from '@src/api/reports/cinematicAvaliation/findCinematicAvaliation'
 const Cinematica = () => {
   const dispatch = useDispatch()
   const [comportamentalDisturb, setComportamentalDisturb] = useState(false)
@@ -12,6 +14,36 @@ const Cinematica = () => {
   const [walkingInTheScene, setWalkingInTheScene] = useState(false)
   const [damagedWindshield, setDamagedWindshield] = useState(false)
   const [damagedPanel, setDamagedPanel] = useState(false)
+
+  const cinematicId = useSelector(
+    (state: RootState) => state.cinematicAvaliation.cinematicAvaliationId,
+  )
+
+  useEffect(() => {
+    const findCinematicAvaliationData = async () => {
+      try {
+        const response = await findCinematicAvaliation(cinematicId)
+
+        const comportamentalDisturbResponse =
+          response.Cinematica.comportamentalDisturb
+        const foundWithHelmetResponse = response.Cinematica.foundWithHelmet
+        const foundWithSeatbeltResponse = response.Cinematica.foundWithSeatbelt
+        const walkingInTheSceneResponse = response.Cinematica.walkingInTheScene
+        const damagedWindshieldResponse = response.Cinematica.damagedWindshield
+        const damagedPanelResponse = response.Cinematica.damagedPanel
+
+        setComportamentalDisturb(comportamentalDisturbResponse || false)
+        setFoundWithHelmet(foundWithHelmetResponse || false)
+        setFoundWithSeatbelt(foundWithSeatbeltResponse || false)
+        setWalkingInTheScene(walkingInTheSceneResponse || false)
+        setDamagedWindshield(damagedWindshieldResponse || false)
+        setDamagedPanel(damagedPanelResponse || false)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    findCinematicAvaliationData()
+  }, [cinematicId])
 
   const handleComportamentalDisturb = (option: 'SIM' | 'NÃO') => {
     setComportamentalDisturb(option === 'SIM')

@@ -7,6 +7,7 @@ const updateCinematic = async (
   damagedPanel?: boolean,
   damagedWindshield?: boolean,
   foundWithHelmet?: boolean,
+  foundWithSeatbelt?: boolean,
   walkingInTheScene?: boolean,
 ) => {
   try {
@@ -17,6 +18,7 @@ const updateCinematic = async (
         damagedPanel,
         damagedWindshield,
         foundWithHelmet,
+        foundWithSeatbelt,
         walkingInTheScene,
         ReportOwnerId,
       },

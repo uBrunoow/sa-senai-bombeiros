@@ -8,11 +8,7 @@ export async function cinematicAvaliationFindRoutes(
 ) {
   // Rota para pegar todos os usuários
   app.get('/api/cinematicAvaliation', async (req, res) => {
-    const Cinematicas = await prisma.cinematicAvaliation.findMany({
-      include: {
-        reportOwner: true,
-      },
-    })
+    const Cinematicas = await prisma.cinematicAvaliation.findMany({})
     return res.send({
       msg: `🟢 Cinematica localizadas com sucesso.`,
       Cinematicas,
@@ -35,9 +31,6 @@ export async function cinematicAvaliationFindOneRoutes(
     const Cinematica = await prisma.cinematicAvaliation.findUnique({
       where: {
         id: parseInt(id),
-      },
-      include: {
-        reportOwner: true,
       },
     })
 

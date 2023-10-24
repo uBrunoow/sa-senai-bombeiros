@@ -55,7 +55,7 @@ export interface RootState {
     cinematicAvaliationId: number
   }
 
-  cinematicData: GlasgowState
+  cinematicData: CinematicDataState
 }
 const store = configureStore({
   reducer: {
