@@ -32,6 +32,7 @@ import MainButton from '@app/components/MainButton'
 import updateFinalization from '@src/api/reports/finalization/updateFinalization'
 import { Checkbox, FormControl, Input, TextArea, useToast } from 'native-base'
 import { useForm, Controller } from 'react-hook-form'
+import { determineCompletness } from './utils/determineCompletness'
 
 type FormDataType = {
   CollectedObjects: string
@@ -198,9 +199,16 @@ const Finalizacao = ({ navigation }: any) => {
   const CollectedObjects = watch('CollectedObjects')
   const toast = useToast()
 
+  const removeMetaProperties = (obj) => {
+    const { id, createdAt, updatedAt, ...withoutMeta } = obj
+    return withoutMeta
+  }
+
   const handleSubmitFinalization = async () => {
     try {
       setButtonLoading(true)
+
+      // Atualização do Cinematic
       const cinematicDataResponse = await updateCinematic(
         ReportOwnerId,
         cinematicId,
@@ -213,6 +221,26 @@ const Finalizacao = ({ navigation }: any) => {
         twistedSteering,
       )
 
+      const cinematicWithoutMeta = removeMetaProperties(
+        cinematicDataResponse.updatedCinematicAvaliation,
+      )
+
+      let cinematicEmpty = 0
+
+      for (const key in cinematicWithoutMeta) {
+        if (
+          cinematicWithoutMeta[key] === '' ||
+          cinematicWithoutMeta[key] === 0 ||
+          cinematicWithoutMeta[key] === false ||
+          (Array.isArray(cinematicWithoutMeta[key]) &&
+            cinematicWithoutMeta[key].length === 0) ||
+          cinematicWithoutMeta[key] === null
+        ) {
+          cinematicEmpty++
+        }
+      }
+
+      // Atualização da Finalização
       const finalizationDataResponse = await updateFinalization(
         ReportOwnerId,
         finalizationId,
@@ -223,6 +251,31 @@ const Finalizacao = ({ navigation }: any) => {
         finalRemarks,
       )
 
+      const finalizationWithoutMeta = removeMetaProperties(
+        finalizationDataResponse.updatedFinalization,
+      )
+
+      let finalizationEmpty = 0
+
+      for (const key in finalizationWithoutMeta) {
+        if (
+          finalizationWithoutMeta[key] === '' ||
+          finalizationWithoutMeta[key] === 0 ||
+          finalizationWithoutMeta[key] === false ||
+          (Array.isArray(finalizationWithoutMeta[key]) &&
+            finalizationWithoutMeta[key].length === 0) ||
+          finalizationWithoutMeta[key] === null
+        ) {
+          finalizationEmpty++
+        }
+      }
+
+      const finalizationCompletness = determineCompletness(
+        finalizationEmpty,
+        cinematicEmpty,
+      )
+
+      console.log(finalizationCompletness)
       console.log(cinematicDataResponse)
       console.log(finalizationDataResponse)
 

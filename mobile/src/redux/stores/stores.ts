@@ -19,6 +19,7 @@ import cinematicAvaliationReducer from '../reducers/cinematicAvaliationReducer'
 import CinematicaReducerData, {
   CinematicDataState,
 } from '../reducers/cinematicData'
+import completnessReducer from '../reducers/completnessReducer'
 
 export interface RootState {
   auth: {
@@ -56,6 +57,10 @@ export interface RootState {
   }
 
   cinematicData: CinematicDataState
+
+  completness: {
+    anamnesisCompletness: number
+  }
 }
 const store = configureStore({
   reducer: {
@@ -77,6 +82,7 @@ const store = configureStore({
       CinematicDataState,
       AnyAction
     >,
+    completness: completnessReducer,
   },
   middleware: [thunk],
 })

@@ -39,14 +39,13 @@ import registerFinalization from '@src/api/reports/finalization/registerFinaliza
 import registerSuspectProblems from '@src/api/reports/suspectProblems/registerSuspectProblems'
 import registerGlasgow from '@src/api/reports/glasgow/registerGlasgow'
 import registerCinematicAvaliation from '@src/api/reports/cinematicAvaliation/registerCinematicAvaliation'
-import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
+import Loader from '@app/components/Loader'
 
 export default function Ocorrencia({ navigation }: any) {
-  const [anamnesisCompletness, setAnamnesisCompletness] = useState<
-    number | null
-  >(null)
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
-
+  const anamnesisCompletness = useSelector(
+    (state: RootState) => state.completness.anamnesisCompletness,
+  )
   const { bottom, top } = useSafeAreaInsets()
 
   const dispatch = useDispatch()
@@ -251,189 +250,155 @@ export default function Ocorrencia({ navigation }: any) {
     setShowModal(false)
   }
 
-  const anamnesisId = useSelector(
-    (state: RootState) => state.anamnesis.anamnesisId,
-  )
-
-  useEffect(() => {
-    const findAnamnesisCompletnessData = async () => {
-      try {
-        const response = await findAnamnesis(anamnesisId)
-
-        const {
-          id,
-          createdAt,
-          updatedAt,
-          reportOwnerId,
-          ...anameseWithoutMeta
-        } = response?.anamese
-
-        console.log(anameseWithoutMeta)
-
-        let emptyOrFalseCount = 0
-
-        for (const key in anameseWithoutMeta) {
-          if (
-            anameseWithoutMeta[key] === '' ||
-            anameseWithoutMeta[key] === false
-          ) {
-            emptyOrFalseCount++
-          }
-        }
-
-        if (emptyOrFalseCount === 0) {
-          setAnamnesisCompletness(4)
-        } else if (emptyOrFalseCount >= 1 && emptyOrFalseCount <= 4) {
-          setAnamnesisCompletness(3)
-        } else if (emptyOrFalseCount >= 4 && emptyOrFalseCount <= 8) {
-          setAnamnesisCompletness(2)
-        } else if (emptyOrFalseCount >= 8 && emptyOrFalseCount <= 12) {
-          setAnamnesisCompletness(1)
-        } else if (emptyOrFalseCount === 13) {
-          setAnamnesisCompletness(0)
-          console.log('13 valores')
-        }
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    findAnamnesisCompletnessData()
-  }, [anamnesisId])
-
   return (
     <ScrollView
       className="flex-1"
       contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
     >
-      <View>
-        <Header />
-        <View className="mb-[40px] mt-[34px] flex-row items-center justify-center">
-          <FontAwesome5 name="fire" size={24} color="#A00E00" />
-          <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
-            Ocorrência
-          </Text>
-        </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(`introducao`)}
-          activeOpacity={0.7}
-        >
-          <Grouper
-            title="Introdução"
-            desc="Dados da vítima, tipo ocorr..."
-            isCompleted={4}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleClickAnamnese} activeOpacity={0.7}>
-          <Grouper
-            title="Anamnese de Emergência"
-            desc="Sinais e sintomas, observações..."
-            isCompleted={anamnesisCompletness ?? 0}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleClickInfoPaciente} activeOpacity={0.7}>
-          <Grouper
-            title="Info. do paciente"
-            desc="Aval. paciente, sinais vitais..."
-            isCompleted={0}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(`local-traumas`)}
-          activeOpacity={0.7}
-        >
-          <Grouper
-            title="Localizações da Fratura"
-            desc="Local dos traumas, tipo trau..."
-            isCompleted={0}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(`info-transporte`)}
-          activeOpacity={0.7}
-        >
-          <Grouper
-            title="Info. de Transporte"
-            desc="Condução, condição transp..."
-            isCompleted={0}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(`info-hospitalares`)}
-          activeOpacity={0.7}
-        >
-          <Grouper
-            title="Info. Hospitalares"
-            desc="Procedimentos efetuados..."
-            isCompleted={0}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleClickGestacionalAnamnese}
-          activeOpacity={0.7}
-        >
-          <Grouper
-            title="Anamnese Gestacional"
-            desc="Período gestação, pré-natal..."
-            isCompleted={0}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleClickFinalization} activeOpacity={0.7}>
-          <Grouper
-            title="Finalização"
-            desc="Observações, objetos..."
-            isCompleted={0}
-          />
-        </TouchableOpacity>
-        <Pressable onPress={() => navigation.navigate(`home`)}>
-          <MainButton innerText="FINALIZAR" />
-        </Pressable>
-        <Button title="Logout" onPress={handleLogout} />
-        {showModal && (
-          <Modal
-            transparent={true}
-            animationType="fade"
-            visible={showModal}
-            onRequestClose={() => setShowModal(false)}
-          >
-            <View className="flex-1 items-center justify-center bg-[#0000007f]">
-              <View
-                style={s.modalContent}
-                className="rounded-[7px] bg-white p-4 "
-              >
-                <View className="relative flex-row items-center justify-center">
-                  {loading ? (
-                    <View className="mx-auto h-[120px] w-[320px] items-center justify-center">
-                      <ActivityIndicator size="large" color="#ff0000" />
-                      <Text className="mt-3 text-center text-lg font-bold uppercase">
-                        Carregando...
-                      </Text>
-                      <Text className=" mt-3 text-center text-[#979797b0]">
-                        (Esspere sua ocorrência ser excluída, enquanto isso
-                        pegue um café.)
-                      </Text>
-                    </View>
-                  ) : (
-                    <>
-                      <ExcluirOcorrenciaModal
-                        handleDeleteReport={handleDeleteReport}
-                        handleCancel={handleModalCancel}
-                      />
-                      <Pressable
-                        onPress={() => setShowModal(false)}
-                        className="absolute right-1 top-1 z-50"
-                      >
-                        <AntDesign name="closecircle" size={24} color="red" />
-                      </Pressable>
-                    </>
-                  )}
-                </View>
-              </View>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <View>
+            <Header />
+            <View className="mb-[40px] mt-[34px] flex-row items-center justify-center">
+              <FontAwesome5 name="fire" size={24} color="#A00E00" />
+              <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
+                Ocorrência
+              </Text>
             </View>
-          </Modal>
-        )}
-      </View>
-      <Footer />
+            <TouchableOpacity
+              onPress={() => navigation.navigate(`introducao`)}
+              activeOpacity={0.7}
+            >
+              <Grouper
+                title="Introdução"
+                desc="Dados da vítima, tipo ocorr..."
+                isCompleted={4}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleClickAnamnese} activeOpacity={0.7}>
+              <Grouper
+                title="Anamnese de Emergência"
+                desc="Sinais e sintomas, observações..."
+                isCompleted={anamnesisCompletness ?? 0}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleClickInfoPaciente}
+              activeOpacity={0.7}
+            >
+              <Grouper
+                title="Info. do paciente"
+                desc="Aval. paciente, sinais vitais..."
+                isCompleted={0}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate(`local-traumas`)}
+              activeOpacity={0.7}
+            >
+              <Grouper
+                title="Localizações da Fratura"
+                desc="Local dos traumas, tipo trau..."
+                isCompleted={0}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate(`info-transporte`)}
+              activeOpacity={0.7}
+            >
+              <Grouper
+                title="Info. de Transporte"
+                desc="Condução, condição transp..."
+                isCompleted={0}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate(`info-hospitalares`)}
+              activeOpacity={0.7}
+            >
+              <Grouper
+                title="Info. Hospitalares"
+                desc="Procedimentos efetuados..."
+                isCompleted={0}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleClickGestacionalAnamnese}
+              activeOpacity={0.7}
+            >
+              <Grouper
+                title="Anamnese Gestacional"
+                desc="Período gestação, pré-natal..."
+                isCompleted={0}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleClickFinalization}
+              activeOpacity={0.7}
+            >
+              <Grouper
+                title="Finalização"
+                desc="Observações, objetos..."
+                isCompleted={0}
+              />
+            </TouchableOpacity>
+            <Pressable onPress={() => navigation.navigate(`home`)}>
+              <MainButton innerText="FINALIZAR" />
+            </Pressable>
+            <Button title="Logout" onPress={handleLogout} />
+            {showModal && (
+              <Modal
+                transparent={true}
+                animationType="fade"
+                visible={showModal}
+                onRequestClose={() => setShowModal(false)}
+              >
+                <View className="flex-1 items-center justify-center bg-[#0000007f]">
+                  <View
+                    style={s.modalContent}
+                    className="rounded-[7px] bg-white p-4 "
+                  >
+                    <View className="relative flex-row items-center justify-center">
+                      {loading ? (
+                        <View className="mx-auto h-[120px] w-[320px] items-center justify-center">
+                          <ActivityIndicator size="large" color="#ff0000" />
+                          <Text className="mt-3 text-center text-lg font-bold uppercase">
+                            Carregando...
+                          </Text>
+                          <Text className=" mt-3 text-center text-[#979797b0]">
+                            (Esspere sua ocorrência ser excluída, enquanto isso
+                            pegue um café.)
+                          </Text>
+                        </View>
+                      ) : (
+                        <>
+                          <ExcluirOcorrenciaModal
+                            handleDeleteReport={handleDeleteReport}
+                            handleCancel={handleModalCancel}
+                          />
+                          <Pressable
+                            onPress={() => setShowModal(false)}
+                            className="absolute right-1 top-1 z-50"
+                          >
+                            <AntDesign
+                              name="closecircle"
+                              size={24}
+                              color="red"
+                            />
+                          </Pressable>
+                        </>
+                      )}
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            )}
+          </View>
+          <Footer />
+        </>
+      )}
     </ScrollView>
   )
 }

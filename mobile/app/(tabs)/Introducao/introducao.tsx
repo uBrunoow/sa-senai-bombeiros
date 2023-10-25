@@ -17,12 +17,11 @@ import InputNumeric from '@app/components/inputNumeric'
 import findReports from '@src/api/reports/findReport'
 import InputCpf from '@app/components/inputCpf'
 import InputTelefone from '@app/components/inputTelefone'
-import { Select, useToast } from 'native-base'
-import { MultipleSelectList } from 'react-native-dropdown-select-list'
+import { useToast } from 'native-base'
 import registerPreHospitalarMethods from '@src/api/reports/preHospitalarMethod/registerPreHospitalarMethod'
 import registerSignsAndSymptoms from '@src/api/reports/symptoms/registerSymptoms'
 import findPreHospitalarMethodByReport from '@src/api/reports/preHospitalarMethod/findPreHospitalarMethodByReport'
-import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
+import { determineCompletness } from './utils/determineCompletness'
 
 export default function Introducao({ navigation }: any) {
   const { bottom, top } = useSafeAreaInsets()
@@ -114,6 +113,38 @@ export default function Introducao({ navigation }: any) {
         phone,
         reportPlace,
       )
+
+      const {
+        id,
+        createdAt,
+        updatedAt,
+        // reportOwnerId,
+        // systolicBloodPressure,
+        // diastolicBloodPressure,
+        // bodyTemp,
+        // bodyPulse,
+        // breathing,
+        // saturation,
+        // perfusion,
+        ...reportWithoutMeta
+      } = response?.updatedReport
+
+      let reportEmpty = 0
+
+      for (const key in reportWithoutMeta) {
+        if (
+          reportWithoutMeta[key] === '' ||
+          reportWithoutMeta[key] === 0 ||
+          reportWithoutMeta[key] === false ||
+          reportWithoutMeta[key] === null
+        ) {
+          reportEmpty++
+        }
+      }
+
+      console.log(reportEmpty)
+
+      const reportCompletness = determineCompletness(reportEmpty)
 
       if (response && response.updatedReport) {
         navigation.navigate('ocorrencia')
