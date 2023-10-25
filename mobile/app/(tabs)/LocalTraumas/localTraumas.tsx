@@ -9,6 +9,7 @@ import PickOne from '../../components/PickOne'
 import AvalPacienteModal from '@app/modal/AvalPacienteModal'
 import classNames from 'classnames'
 import Body from './components/Body'
+import Title from '@app/components/Title'
 
 export default function LocalTraumas() {
   const { bottom, top } = useSafeAreaInsets()
@@ -35,12 +36,7 @@ export default function LocalTraumas() {
     >
       <View>
         <Header />
-        <View className=" mt-[34px] flex-row items-center justify-center">
-          <MaterialIcons name="person" size={24} color="#A00e00" />
-          <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
-            Local Traumass
-          </Text>
-        </View>
+        <Title iconName="user-alt" title="Localização do Traumas" />
         <View style={s.boxShadow} className="mx-auto">
           <Body
             bodyPartChangeHandler={setBodyPartSelected}

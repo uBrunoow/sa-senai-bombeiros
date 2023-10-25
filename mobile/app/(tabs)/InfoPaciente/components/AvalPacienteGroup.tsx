@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native'
 import AvalPacienteModal from '@app/modal/AvalPacienteModal'
 import { styles as s } from '@app/styles/boxShadow'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setGlasgowData } from '@src/redux/actions/dataActions'
+import findReports from '@src/api/reports/findReport'
+import { RootState } from '@src/redux/stores/stores'
 
 //
 export default function AvalPacienteGroup() {
@@ -53,11 +55,19 @@ export default function AvalPacienteGroup() {
     onChangeGlasgowInfoData()
   }, [aberturaOcular, respostaVerbal, respostaMotora, dispatch])
 
+  const reportId = useSelector((state: RootState) => state.report.reportId)
+
+  useEffect(() => {
+    const findReportData = async () => {
+      const ageResponse = await findReports(reportId)
+
+      console.log(ageResponse)
+    }
+    findReportData()
+  }, [reportId])
+
   return (
-    <View
-      className=" mx-auto w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
-      style={s.boxShadow}
-    >
+    <View className=" mx-auto" style={s.boxShadow}>
       <View className="flex-col px-5 py-3">
         <TouchableOpacity
           className="border-lg rounded"
