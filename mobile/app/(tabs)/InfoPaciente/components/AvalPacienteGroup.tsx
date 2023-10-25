@@ -19,6 +19,7 @@ export default function AvalPacienteGroup() {
     useState(false)
   const [modalRespostaMotoraVisible, setRespostaMotoraModalVisible] =
     useState(false)
+  const [isMaiorQueCincoAnos, setIsMaiorQueCincoAnos] = useState(false)
 
   function validateGlasgow(): Boolean {
     return ![aberturaOcular, respostaVerbal, respostaMotora].includes(0)
@@ -61,7 +62,11 @@ export default function AvalPacienteGroup() {
     const findReportData = async () => {
       const ageResponse = await findReports(reportId)
 
-      console.log(ageResponse)
+      if (Number(ageResponse.report.age) >= 5) {
+        setIsMaiorQueCincoAnos(true)
+      } else {
+        setIsMaiorQueCincoAnos(false)
+      }
     }
     findReportData()
   }, [reportId])
@@ -87,17 +92,31 @@ export default function AvalPacienteGroup() {
             setAberturaOcularModalVisible(false)
           }}
         >
-          <AvalPacienteModal
-            handleOptionSelection={handleAberturaOcular}
-            setModalVisible={setAberturaOcularModalVisible}
-            modalTitle="Abertura Ocular"
-            options={[
-              { value: '4', description: 'Espontânea' },
-              { value: '3', description: 'Comando verbal' },
-              { value: '2', description: 'Estímulo doloroso' },
-              { value: '1', description: 'Nenhuma' },
-            ]}
-          />
+          {isMaiorQueCincoAnos ? (
+            <AvalPacienteModal
+              handleOptionSelection={handleAberturaOcular}
+              setModalVisible={setAberturaOcularModalVisible}
+              modalTitle="Abertura Ocular"
+              options={[
+                { value: '4', description: 'Espontânea' },
+                { value: '3', description: 'Comando verbal' },
+                { value: '2', description: 'Estímulo doloroso' },
+                { value: '1', description: 'Nenhuma' },
+              ]}
+            />
+          ) : (
+            <AvalPacienteModal
+              handleOptionSelection={handleAberturaOcular}
+              setModalVisible={setAberturaOcularModalVisible}
+              modalTitle="Abertura Ocular"
+              options={[
+                { value: '4', description: 'Espontânea' },
+                { value: '3', description: 'Comando verbal' },
+                { value: '2', description: 'Estímulo doloroso' },
+                { value: '1', description: 'Nenhuma' },
+              ]}
+            />
+          )}
         </Modal>
       </View>
       <View className="flex-col px-5 py-3">
@@ -119,18 +138,33 @@ export default function AvalPacienteGroup() {
             setRespostaVerbalModalVisible(false)
           }}
         >
-          <AvalPacienteModal
-            handleOptionSelection={handleRespostaVerbal}
-            setModalVisible={setRespostaVerbalModalVisible}
-            modalTitle="Resposta Verbal"
-            options={[
-              { value: '5', description: 'Orientado' },
-              { value: '4', description: 'Confuso' },
-              { value: '3', description: 'Palavras inapropriadas' },
-              { value: '2', description: 'Palavras incompreensíveis' },
-              { value: '1', description: 'Nenhuma' },
-            ]}
-          />
+          {isMaiorQueCincoAnos ? (
+            <AvalPacienteModal
+              handleOptionSelection={handleRespostaVerbal}
+              setModalVisible={setRespostaVerbalModalVisible}
+              modalTitle="Resposta Verbal"
+              options={[
+                { value: '5', description: 'Orientado' },
+                { value: '4', description: 'Confuso' },
+                { value: '3', description: 'Palavras inapropriadas' },
+                { value: '2', description: 'Palavras incompreensíveis' },
+                { value: '1', description: 'Nenhuma' },
+              ]}
+            />
+          ) : (
+            <AvalPacienteModal
+              handleOptionSelection={handleRespostaVerbal}
+              setModalVisible={setRespostaVerbalModalVisible}
+              modalTitle="Resposta Verbal"
+              options={[
+                { value: '5', description: 'Palavras e frases apropriadas' },
+                { value: '4', description: 'Palavras inapropriadas' },
+                { value: '3', description: 'Choro persistente e/ou gritos' },
+                { value: '2', description: 'Sons incompreensiveis' },
+                { value: '1', description: 'Nenuma resposta verbal' },
+              ]}
+            />
+          )}
         </Modal>
       </View>
       <View className="flex-col px-5 py-3">
@@ -152,19 +186,38 @@ export default function AvalPacienteGroup() {
             setRespostaMotoraModalVisible(false)
           }}
         >
-          <AvalPacienteModal
-            handleOptionSelection={handleRespostaMotora}
-            setModalVisible={setRespostaMotoraModalVisible}
-            modalTitle="Resposta Motora"
-            options={[
-              { value: '6', description: 'Obedece comandos' },
-              { value: '5', description: 'Localiza dor' },
-              { value: '4', description: 'Movimento de retirada' },
-              { value: '3', description: 'Flexão anormal' },
-              { value: '2', description: 'Extensão anormal' },
-              { value: '1', description: 'Nenhuma' },
-            ]}
-          />
+          {isMaiorQueCincoAnos ? (
+            <AvalPacienteModal
+              handleOptionSelection={handleRespostaMotora}
+              setModalVisible={setRespostaMotoraModalVisible}
+              modalTitle="Resposta Motora"
+              options={[
+                { value: '6', description: 'Obedece comandos' },
+                { value: '5', description: 'Localiza dor' },
+                { value: '4', description: 'Movimento de retirada' },
+                { value: '3', description: 'Flexão anormal' },
+                { value: '2', description: 'Extensão anormal' },
+                { value: '1', description: 'Nenhuma' },
+              ]}
+            />
+          ) : (
+            <AvalPacienteModal
+              handleOptionSelection={handleRespostaMotora}
+              setModalVisible={setRespostaMotoraModalVisible}
+              modalTitle="Resposta Motora"
+              options={[
+                { value: '6', description: 'Obedece Prontamente' },
+                { value: '5', description: 'Localiza dor ou estímulo tatil' },
+                { value: '4', description: 'Retirada do segmento estimulado' },
+                { value: '3', description: 'Flexão anormal (Decorticação)' },
+                { value: '2', description: 'Extensão anormal (Descerebração)' },
+                {
+                  value: '1',
+                  description: 'Ausência (Paralisia flácida, Hipotônia)',
+                },
+              ]}
+            />
+          )}
         </Modal>
       </View>
       <View className=" w-full flex-row items-center justify-center gap-2 px-5 py-3">
