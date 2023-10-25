@@ -1,5 +1,5 @@
 import { View, ScrollView, SafeAreaView } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import InfoPacienteTitle from '@app/(tabs)/InfoPaciente/components/InfoPacienteTitle'
@@ -16,6 +16,8 @@ import updateGlasgow from '@src/api/reports/glasgow/updateGlasgow'
 import { useToast } from 'native-base'
 
 export default function InfoPatient({ navigation }: any) {
+  const [buttonLoading, setButtonLoading] = useState(false)
+
   const InfoPatient = useSelector(
     (state: RootState) => state.infoPaciente.patientInfo,
   )
@@ -78,6 +80,7 @@ export default function InfoPatient({ navigation }: any) {
 
   const handleSubmitInfoPaciente = async () => {
     try {
+      setButtonLoading(true)
       const SinaisVitaisResponse = await updateSinaisVitaisReport(
         ownerId,
         reportId,
@@ -134,6 +137,8 @@ export default function InfoPatient({ navigation }: any) {
         placement: 'bottom',
         style: { backgroundColor: 'red' },
       })
+    } finally {
+      setButtonLoading(false)
     }
   }
 
@@ -149,7 +154,11 @@ export default function InfoPatient({ navigation }: any) {
           <AvalPacienteGroup />
           <InfoPacienteTitle content="Problemas suspeitos encontrados" />
           <ProblemasSuspeitos />
-          <MainButton innerText="SALVAR" onPress={handleSubmitInfoPaciente} />
+          <MainButton
+            innerText="SALVAR"
+            isLoading={buttonLoading}
+            onPress={handleSubmitInfoPaciente}
+          />
           <Footer />
         </View>
       </ScrollView>
