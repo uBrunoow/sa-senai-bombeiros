@@ -39,8 +39,12 @@ import registerFinalization from '@src/api/reports/finalization/registerFinaliza
 import registerSuspectProblems from '@src/api/reports/suspectProblems/registerSuspectProblems'
 import registerGlasgow from '@src/api/reports/glasgow/registerGlasgow'
 import registerCinematicAvaliation from '@src/api/reports/cinematicAvaliation/registerCinematicAvaliation'
+import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
 
 export default function Ocorrencia({ navigation }: any) {
+  const [anamnesisCompletness, setAnamnesisCompletness] = useState<
+    number | null
+  >(null)
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
 
   const { bottom, top } = useSafeAreaInsets()
@@ -247,6 +251,56 @@ export default function Ocorrencia({ navigation }: any) {
     setShowModal(false)
   }
 
+  const anamnesisId = useSelector(
+    (state: RootState) => state.anamnesis.anamnesisId,
+  )
+
+  useEffect(() => {
+    const findAnamnesisCompletnessData = async () => {
+      try {
+        const response = await findAnamnesis(anamnesisId)
+
+        const {
+          id,
+          createdAt,
+          updatedAt,
+          reportOwnerId,
+          ...anameseWithoutMeta
+        } = response?.anamese
+
+        console.log(anameseWithoutMeta)
+
+        let emptyOrFalseCount = 0
+
+        for (const key in anameseWithoutMeta) {
+          if (
+            anameseWithoutMeta[key] === '' ||
+            anameseWithoutMeta[key] === false
+          ) {
+            emptyOrFalseCount++
+          }
+        }
+
+        if (emptyOrFalseCount === 0) {
+          setAnamnesisCompletness(4)
+        } else if (emptyOrFalseCount >= 1 && emptyOrFalseCount <= 4) {
+          setAnamnesisCompletness(3)
+        } else if (emptyOrFalseCount >= 4 && emptyOrFalseCount <= 8) {
+          setAnamnesisCompletness(2)
+        } else if (emptyOrFalseCount >= 8 && emptyOrFalseCount <= 12) {
+          setAnamnesisCompletness(1)
+        } else if (emptyOrFalseCount === 13) {
+          setAnamnesisCompletness(0)
+          console.log('13 valores')
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    findAnamnesisCompletnessData()
+  }, [anamnesisId])
+
   return (
     <ScrollView
       className="flex-1"
@@ -274,7 +328,7 @@ export default function Ocorrencia({ navigation }: any) {
           <Grouper
             title="Anamnese de Emergência"
             desc="Sinais e sintomas, observações..."
-            isCompleted={0}
+            isCompleted={anamnesisCompletness ?? 0}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleClickInfoPaciente} activeOpacity={0.7}>
