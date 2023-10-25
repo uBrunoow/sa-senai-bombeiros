@@ -181,13 +181,14 @@ model CinematicAvaliation {
 }
 
 model Finalization {
-  id             Int      @id @default(autoincrement())
-  responsable    String?
-  conduction     String[]
-  transportation String?
-  finalRemarks   String?
-  ReportOwnerId  Int
-  reportOwner    Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  id               Int      @id @default(autoincrement())
+  responsable      String?
+  conduction       String[]
+  transportation   String?
+  CollectedObjects String?
+  finalRemarks     String?
+  ReportOwnerId    Int
+  reportOwner      Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 enum BabyGender {
@@ -250,7 +251,7 @@ enum localTraumasBodyPart {
 enum tipoTrauma {
   FRATURA
   DIVERSOS
-  HEMORRAGIAS 
+  HEMORRAGIAS
   ESVICERACAO
   FAV_FAV
   AMPUTACAO

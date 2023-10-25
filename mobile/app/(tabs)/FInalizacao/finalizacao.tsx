@@ -18,30 +18,42 @@ import {
   AntDesign,
 } from '@expo/vector-icons'
 
-import { MultipleSelectList } from 'react-native-dropdown-select-list'
-// import findAnamnesis from '../../../src/api/findAnamnesis'
-// import { calculateAnamnesisCompleteness } from '../../../src/utils/calculateAnamnesisCompleteness'
 import { useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
 import findUser from '@src/api/users/findUser'
 import FInalizacaoModal from '@app/modal/FInalizacaoModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-// import InputFull from '../../components/InputFull'
-
 import { styles as s } from '@app/styles/boxShadow'
 import InputLowPadding from '@app/components/InputLowPadding'
 import Cinematica from './components/Cinematica'
 import findFinalization from '@src/api/reports/finalization/findFinalization'
+import updateCinematic from '@src/api/reports/cinematicAvaliation/updateCinematicAvaliation'
+import MainButton from '@app/components/MainButton'
+import updateFinalization from '@src/api/reports/finalization/updateFinalization'
+import { Checkbox, FormControl, Input, TextArea } from 'native-base'
+import { useForm, Controller } from 'react-hook-form'
 
-const Finalizacao = () => {
+type FormDataType = {
+  CollectedObjects: string
+}
+
+const Finalizacao = ({ navigation }: any) => {
   const [selected, setSelected] = useState('')
   const [categories, setCategories] = useState([])
   const [isPressed, setIsPressed] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(null)
+  const [selectedOption, setSelectedOption] = useState(``)
   const [changeResponsable, setChangeResponsable] = useState(false)
   const [responsable, setResponsable] = useState('')
   const [observacoesFinais, setObservacoesFinais] = useState('')
   const [loading, setLoading] = useState(false)
+  const [buttonLoading, setButtonLoading] = useState(false)
+  const [isCheckedDeitada, setIsCheckedDeitada] = useState(false)
+  const [isCheckedSemiDeitada, setIsCheckedSemiDeitada] = useState(false)
+  const [isCheckedSentada, setIsCheckedSentada] = useState(false)
+
+  const handleObservacoesChange = (newValue: string) => {
+    setObservacoesFinais(newValue)
+  }
 
   const handleOptionPress = (option) => {
     setSelectedOption(option)
@@ -63,20 +75,52 @@ const Finalizacao = () => {
     }
   }
 
-  const data = [
-    { key: 'Deitada', value: 'Deitada' },
-    { key: 'Semi-deitada', value: 'Semi-deitada' },
-    { key: 'Sentada', value: 'Sentada' },
-  ]
-
   const handleChangeName = () => {
     setChangeResponsable(!changeResponsable)
   }
+
+  const { control, setValue, watch } = useForm<FormDataType>({
+    defaultValues: {
+      CollectedObjects: '',
+    },
+  })
 
   const ownerId = useSelector((state: RootState) => state.auth.userId)
   const finalizationId = useSelector(
     (state: RootState) => state.finalization.finalizationId,
   )
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setLoading(true)
+
+        const finalizationResponse = await findFinalization(finalizationId)
+        const conductionResponse = finalizationResponse.finalization.conduction
+        const finalRemarksResponse =
+          finalizationResponse.finalization.finalRemarks
+        const transportationResponse =
+          finalizationResponse.finalization.transportation
+        const collectedObjectResponse =
+          finalizationResponse.finalization.CollectedObjects
+
+        setIsCheckedDeitada(conductionResponse?.includes('DEITADA') || false)
+        setIsCheckedSemiDeitada(
+          conductionResponse?.includes('SEMI-DEITADA') || false,
+        )
+        setIsCheckedSentada(conductionResponse?.includes('SENTADA') || false)
+        setObservacoesFinais(finalRemarksResponse)
+        setSelectedOption(transportationResponse)
+        setValue('CollectedObjects', collectedObjectResponse)
+      } catch (error) {
+        console.error('Error fetching users:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchUserData()
+  }, [ownerId, finalizationId, setValue])
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -98,8 +142,6 @@ const Finalizacao = () => {
             finalizationResponse.finalization.responsable
           setResponsable(responsableResponse)
         }
-
-        console.log(finalizationId)
       } catch (error) {
         console.error('Error fetching users:', error)
       } finally {
@@ -118,6 +160,84 @@ const Finalizacao = () => {
 
   const handleResponsableChange = (newResponsable: string) => {
     setResponsable(newResponsable)
+  }
+
+  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
+  const cinematicId = useSelector(
+    (state: RootState) => state.cinematicAvaliation.cinematicAvaliationId,
+  )
+  const cinematicData = useSelector(
+    (state: RootState) => state.cinematicData.cinematic,
+  )
+
+  const comportamentalDisturb = cinematicData?.cinematic?.comportamentalDisturb
+  const damagedPanel = cinematicData?.cinematic?.damagedPanel
+  const damagedWindshield = cinematicData?.cinematic?.damagedWindshield
+  const foundWithHelmet = cinematicData?.cinematic?.foundWithHelmet
+  const foundWithSeatbelt = cinematicData?.cinematic?.foundWithSeatbelt
+  const walkingInTheScene = cinematicData?.cinematic?.walkingInTheScene
+  const twistedSteering = cinematicData?.cinematic?.twistedSteering
+
+  const conduction: any = []
+
+  if (isCheckedDeitada) {
+    conduction.push('DEITADA')
+  }
+
+  if (isCheckedSemiDeitada) {
+    conduction.push('SEMI-DEITADA')
+  }
+
+  if (isCheckedSentada) {
+    conduction.push('SENTADA')
+  }
+
+  const transportation = selectedOption
+  const finalRemarks = observacoesFinais
+
+  const CollectedObjects = watch('CollectedObjects')
+
+  const handleSubmitFinalization = async () => {
+    try {
+      setButtonLoading(true)
+      const cinematicDataResponse = await updateCinematic(
+        ReportOwnerId,
+        cinematicId,
+        comportamentalDisturb,
+        damagedPanel,
+        damagedWindshield,
+        foundWithHelmet,
+        foundWithSeatbelt,
+        walkingInTheScene,
+        twistedSteering,
+      )
+
+      const finalizationDataResponse = await updateFinalization(
+        ReportOwnerId,
+        finalizationId,
+        responsable,
+        conduction,
+        transportation,
+        CollectedObjects,
+        finalRemarks,
+      )
+
+      console.log(cinematicDataResponse)
+      console.log(finalizationDataResponse)
+
+      if (
+        cinematicDataResponse &&
+        cinematicDataResponse.updatedCinematicAvaliation &&
+        finalizationDataResponse &&
+        finalizationDataResponse.updatedFinalization
+      ) {
+        navigation.navigate('ocorrencia')
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setButtonLoading(false)
+    }
   }
 
   return (
@@ -153,26 +273,63 @@ const Finalizacao = () => {
                     </Pressable>
                   </View>
                 </View>
-                <InputLowPadding title="Objetos recolhidos" />
-
+                <FormControl>
+                  <FormControl.Label color={'black'}>
+                    Objetos Recolhidos
+                  </FormControl.Label>
+                  <Controller
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        className="CollectedObjects"
+                        onBlur={field.onBlur}
+                        onChangeText={(val) => field.onChange(val)}
+                        value={field.value}
+                      />
+                    )}
+                    name="CollectedObjects"
+                  />
+                </FormControl>
                 <View>
                   <Text className="m-1 text-base font-medium">
                     Forma de condução
                   </Text>
-                  <MultipleSelectList
-                    setSelected={(val) => setCategories(val)}
-                    data={data}
-                    save="value"
-                    label="Categorias"
-                    boxStyles={{ padding: 10 }}
-                    placeholder="Selecione"
-                    badgeStyles={{
-                      backgroundColor: '#A00E00',
-                      paddingHorizontal: 10,
+                  <Checkbox
+                    size="md"
+                    colorScheme="danger"
+                    value="DEITADA"
+                    mb={2}
+                    isChecked={isCheckedDeitada}
+                    onChange={(e) => {
+                      setIsCheckedDeitada((prev) => !prev)
                     }}
-                    searchPlaceholder="Busque pela forma de condução"
-                    notFoundText="Nenhuma categoria encontrada"
-                  />
+                  >
+                    <Text className="text-lg text-slate-800">Deitada</Text>
+                  </Checkbox>
+                  <Checkbox
+                    size="md"
+                    colorScheme="danger"
+                    value="SEMI-DEITADA"
+                    mb={2}
+                    isChecked={isCheckedSemiDeitada}
+                    onChange={(e) => {
+                      setIsCheckedSemiDeitada((prev) => !prev)
+                    }}
+                  >
+                    <Text className="text-lg text-slate-800">Semi-deitada</Text>
+                  </Checkbox>
+                  <Checkbox
+                    size="md"
+                    colorScheme="danger"
+                    value="SENTADA"
+                    mb={2}
+                    isChecked={isCheckedSentada}
+                    onChange={(e) => {
+                      setIsCheckedSentada((prev) => !prev)
+                    }}
+                  >
+                    <Text className="text-lg text-slate-800">Sentada</Text>
+                  </Checkbox>
                 </View>
 
                 <View>
@@ -274,18 +431,30 @@ const Finalizacao = () => {
                 </View>
 
                 <View className="flex-1">
-                  <InputLowPadding
-                    title="Observações Finais"
-                    placeholder={observacoesFinais || ''}
-                    isBig={true}
-                    value={observacoesFinais}
-                    onChangeText={(e) => setObservacoesFinais(e)}
-                  />
+                  <FormControl>
+                    <FormControl.Label mt={5}>
+                      Observações Finais
+                    </FormControl.Label>
+                    <TextArea
+                      autoCompleteType={''}
+                      h={20}
+                      w="100%"
+                      onChange={(e) =>
+                        handleObservacoesChange(e.nativeEvent.text)
+                      }
+                      value={observacoesFinais}
+                    />
+                  </FormControl>
                 </View>
               </View>
               <View>
                 <Cinematica />
               </View>
+              <MainButton
+                innerText="SALVAR"
+                isLoading={buttonLoading}
+                onPress={() => handleSubmitFinalization()}
+              />
               {changeResponsable && (
                 <Modal
                   transparent={true}
