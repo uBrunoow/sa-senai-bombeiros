@@ -2,7 +2,6 @@ import { View, ScrollView, SafeAreaView } from 'react-native'
 import React from 'react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-import InfoPacienteTitle from '@app/(tabs)/InfoPaciente/components/InfoPacienteTitle'
 import SinaisInfoPaciente from '@app/(tabs)/InfoPaciente/components/SinaisInfoPaciente'
 import AvalPacienteGroup from '@app/(tabs)/InfoPaciente/components/AvalPacienteGroup'
 import ProblemasSuspeitos from '@app/(tabs)/InfoPaciente/components/ProblemasSuspeitos'
@@ -13,7 +12,8 @@ import { useSelector } from 'react-redux'
 import updateSinaisVitaisReport from '@src/api/reports/sinaisVitais/updateSinaisVitais'
 import updateSuspectProblems from '@src/api/reports/suspectProblems/updateSuspectProblems'
 import updateGlasgow from '@src/api/reports/glasgow/updateGlasgow'
-import { useToast, Button } from 'native-base'
+import { useToast } from 'native-base'
+import Subtitle from '@app/components/Subtitle'
 
 export default function InfoPatient({ navigation }: any) {
   const InfoPatient = useSelector(
@@ -139,11 +139,11 @@ export default function InfoPatient({ navigation }: any) {
         <View>
           <Header />
           <Title iconName="user-alt" title="Informações do Paciente" />
-          <InfoPacienteTitle content="Sinais Vitais" />
+          <Subtitle content="Sinais Vitais" />
           <SinaisInfoPaciente />
-          <InfoPacienteTitle content="Aval. do Paciênte (GLASGOW)" />
+          <Subtitle content="Aval. do Paciênte (GLASGOW)" />
           <AvalPacienteGroup />
-          <InfoPacienteTitle content="Problemas suspeitos encontrados" />
+          <Subtitle content="Problemas suspeitos encontrados" />
           <ProblemasSuspeitos />
           <MainButton innerText="SALVAR" onPress={handleSubmitInfoPaciente} />
           <Footer />
