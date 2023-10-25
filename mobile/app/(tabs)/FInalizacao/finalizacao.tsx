@@ -30,7 +30,7 @@ import findFinalization from '@src/api/reports/finalization/findFinalization'
 import updateCinematic from '@src/api/reports/cinematicAvaliation/updateCinematicAvaliation'
 import MainButton from '@app/components/MainButton'
 import updateFinalization from '@src/api/reports/finalization/updateFinalization'
-import { Checkbox, FormControl, Input, TextArea } from 'native-base'
+import { Checkbox, FormControl, Input, TextArea, useToast } from 'native-base'
 import { useForm, Controller } from 'react-hook-form'
 
 type FormDataType = {
@@ -196,6 +196,7 @@ const Finalizacao = ({ navigation }: any) => {
   const finalRemarks = observacoesFinais
 
   const CollectedObjects = watch('CollectedObjects')
+  const toast = useToast()
 
   const handleSubmitFinalization = async () => {
     try {
@@ -232,6 +233,12 @@ const Finalizacao = ({ navigation }: any) => {
         finalizationDataResponse.updatedFinalization
       ) {
         navigation.navigate('ocorrencia')
+        toast.show({
+          description: 'Informações de Finalização salvas com sucesso.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#0AC800' },
+        })
       }
     } catch (error) {
       console.error(error)
@@ -430,22 +437,20 @@ const Finalizacao = ({ navigation }: any) => {
                   </View>
                 </View>
 
-                <View className="flex-1">
-                  <FormControl>
-                    <FormControl.Label mt={5}>
-                      Observações Finais
-                    </FormControl.Label>
-                    <TextArea
-                      autoCompleteType={''}
-                      h={20}
-                      w="100%"
-                      onChange={(e) =>
-                        handleObservacoesChange(e.nativeEvent.text)
-                      }
-                      value={observacoesFinais}
-                    />
-                  </FormControl>
-                </View>
+                <FormControl>
+                  <FormControl.Label mt={5}>
+                    Observações Finais
+                  </FormControl.Label>
+                  <TextArea
+                    autoCompleteType={''}
+                    h={20}
+                    w="100%"
+                    onChange={(e) =>
+                      handleObservacoesChange(e.nativeEvent.text)
+                    }
+                    value={observacoesFinais}
+                  />
+                </FormControl>
               </View>
               <View>
                 <Cinematica />

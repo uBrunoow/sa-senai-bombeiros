@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native'
+import { View, ScrollView, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Header from '@app/components/Header'
@@ -12,13 +6,14 @@ import Title from '@app/components/Title'
 import Footer from '@app/components/Footer'
 import InputFull from '@app/components/InputFull'
 import YesOrNo from '@app/components/YesOrNo'
-import { AntDesign } from '@expo/vector-icons'
 import MainButton from '@app/components/MainButton'
 import InputClock from '@app/components/InputClock'
 import { useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
 import updateAnamnesis from '@src/api/reports/anamnesis/updateAnamnesis'
 import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
+import { useToast } from 'native-base'
+import Loader from '@app/components/Loader'
 
 export default function Anamnese({ navigation }: any) {
   const reportId = useSelector((state: RootState) => state.report.reportId)
@@ -149,6 +144,8 @@ export default function Anamnese({ navigation }: any) {
     }
   }
 
+  const toast = useToast()
+
   const handleSubmitAnamnesis = async () => {
     try {
       setButtonLoading(true)
@@ -174,6 +171,12 @@ export default function Anamnese({ navigation }: any) {
 
       if (response && response.updatedAnamnese) {
         navigation.navigate('ocorrencia', { reportId })
+        toast.show({
+          description: 'Informações de Anamnese salvas com sucesso.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#0AC800' },
+        })
       }
     } catch (error) {
       console.error(error)
@@ -188,12 +191,7 @@ export default function Anamnese({ navigation }: any) {
       contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
     >
       {loading ? (
-        <View className="mx-auto h-screen w-[320px] items-center justify-center">
-          <ActivityIndicator size="large" color="#ff0000" />
-          <Text className="mt-3 text-center text-lg font-bold uppercase">
-            Carregando...
-          </Text>
-        </View>
+        <Loader />
       ) : (
         <View>
           <Header />
@@ -210,13 +208,13 @@ export default function Anamnese({ navigation }: any) {
                   value={sinaisESintomas}
                   onChangeText={(e) => setSinaisESintomas(e)}
                 />
-                <View className="just-between aling-items flex-1">
-                  <YesOrNo
-                    Question="Aconteceu outras vezes?"
-                    selectedOption={outrasVezes ? 'SIM' : 'NÃO'}
-                    onSelectOption={handleOutrasVezesChange}
-                  />
-                </View>
+                {/* <View className="just-between aling-items flex-1"> */}
+                <YesOrNo
+                  Question="Aconteceu outras vezes?"
+                  selectedOption={outrasVezes ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleOutrasVezesChange}
+                />
+                {/* </View> */}
                 {outrasVezes && (
                   <InputFull
                     title="A quanto tempo isso aconteceu?"
@@ -225,13 +223,13 @@ export default function Anamnese({ navigation }: any) {
                     onChangeText={(e) => setTempoAconteceu(e)}
                   />
                 )}
-                <View className="just-between aling-items flex-1">
-                  <YesOrNo
-                    Question="Possui algum problema de saúde?"
-                    selectedOption={problemaSaude ? 'SIM' : 'NÃO'}
-                    onSelectOption={handleProblemaSaudeChange}
-                  />
-                </View>
+                {/* <View className="just-between aling-items flex-1"> */}
+                <YesOrNo
+                  Question="Possui algum problema de saúde?"
+                  selectedOption={problemaSaude ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleProblemaSaudeChange}
+                />
+                {/* </View> */}
                 {problemaSaude && (
                   <InputFull
                     title="Quais?"
@@ -240,13 +238,13 @@ export default function Anamnese({ navigation }: any) {
                     onChangeText={(e) => setQuaisProblemas(e)}
                   />
                 )}
-                <View className="just-between aling-items flex-1">
-                  <YesOrNo
-                    Question="Faz uso de medicação?"
-                    selectedOption={usoMedicacao ? 'SIM' : 'NÃO'}
-                    onSelectOption={handleUsoMedicacaoChange}
-                  />
-                </View>
+                {/* <View className="just-between aling-items flex-1"> */}
+                <YesOrNo
+                  Question="Faz uso de medicação?"
+                  selectedOption={usoMedicacao ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleUsoMedicacaoChange}
+                />
+                {/* </View> */}
                 {usoMedicacao && (
                   <>
                     <InputFull
@@ -255,22 +253,20 @@ export default function Anamnese({ navigation }: any) {
                       placeholder={quaisMedicacoes || ''}
                       onChangeText={(e) => setQuaisMedicacoes(e)}
                     />
-                    <View className="h-[100px]">
-                      <InputClock
-                        title="Horário Ultima Med."
-                        initialValue={horasMedicacao}
-                        onChange={(newValue) => setHorasMedicacao(newValue)}
-                      />
-                    </View>
+                    <InputClock
+                      title="Horário Ultima Med."
+                      initialValue={horasMedicacao}
+                      onChange={(newValue) => setHorasMedicacao(newValue)}
+                    />
                   </>
                 )}
-                <View className="just-between aling-items flex-1">
-                  <YesOrNo
-                    Question="Tem alguma alergia?"
-                    selectedOption={alergia ? 'SIM' : 'NÃO'}
-                    onSelectOption={handleAlergiaChange}
-                  />
-                </View>
+                {/* <View className="just-between aling-items flex-1"> */}
+                <YesOrNo
+                  Question="Tem alguma alergia?"
+                  selectedOption={alergia ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleAlergiaChange}
+                />
+                {/* </View> */}
                 {alergia && (
                   <InputFull
                     title="Quais?"
@@ -280,24 +276,17 @@ export default function Anamnese({ navigation }: any) {
                   />
                 )}
                 <View className="w-92 h-67 flex-1">
-                  <View className="flex-1">
-                    <YesOrNo
-                      Question="Ingeriu alimento/líquido nas últimas 6 horas?"
-                      selectedOption={ingeriuAlimento ? 'SIM' : 'NÃO'}
-                      onSelectOption={handleIngeriuAlimentoChange}
-                    />
-                  </View>
+                  <YesOrNo
+                    Question="Ingeriu alimento/líquido nas últimas 6 horas?"
+                    selectedOption={ingeriuAlimento ? 'SIM' : 'NÃO'}
+                    onSelectOption={handleIngeriuAlimentoChange}
+                  />
                   {ingeriuAlimento && (
-                    <View className=" flex-1">
-                      {/* <InputFull title="Que Horas" isCalendar={true} /> */}
-                      <InputClock
-                        title="Que horas?"
-                        initialValue={horasIngeriuAlimento}
-                        onChange={(newValue) =>
-                          setHorasIngeriuAlimento(newValue)
-                        }
-                      />
-                    </View>
+                    <InputClock
+                      title="Que horas?"
+                      initialValue={horasIngeriuAlimento}
+                      onChange={(newValue) => setHorasIngeriuAlimento(newValue)}
+                    />
                   )}
                 </View>
                 <InputFull
