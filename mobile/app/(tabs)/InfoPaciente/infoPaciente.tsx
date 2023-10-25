@@ -43,14 +43,27 @@ export default function InfoPatient({ navigation }: any) {
   const saturation = InfoPatient.patientInfo?.saturation
 
   // Infos paciente, problemas suspeitos data
-  const transportSuboptions =
+  const transportSuboptionsData =
     SuspectProblemsData?.suspectProblems?.transportSuboptions
-  const diabetesSuboptions =
+  const diabetesSuboptionsData =
     SuspectProblemsData?.suspectProblems?.diabetesSuboptions
-  const obstericoSuboptions =
+  const obstericoSuboptionsData =
     SuspectProblemsData?.suspectProblems?.obstericoSuboptions
-  const respiratorioSuboptions =
+  const respiratorioSuboptionsData =
     SuspectProblemsData?.suspectProblems?.respiratorioSuboptions
+
+  const transportSuboptions = Object.entries(transportSuboptionsData)
+    .filter(([key, value]) => value)
+    .map(([key, _]) => key)
+  const diabetesSuboptions = Object.entries(diabetesSuboptionsData)
+    .filter(([key, value]) => value)
+    .map(([key, _]) => key)
+  const obstericoSuboptions = Object.entries(obstericoSuboptionsData)
+    .filter(([key, value]) => value)
+    .map(([key, _]) => key)
+  const respiratorioSuboptions = Object.entries(respiratorioSuboptionsData)
+    .filter(([key, value]) => value)
+    .map(([key, _]) => key)
 
   // Infos paciente, glasgow data
   const aberturaOcular = GlasgowData?.glasgow?.aberturaOcular

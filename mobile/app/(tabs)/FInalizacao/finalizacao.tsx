@@ -120,7 +120,7 @@ const Finalizacao = ({ navigation }: any) => {
     }
 
     fetchUserData()
-  }, [ownerId, finalizationId])
+  }, [ownerId, finalizationId, setValue])
 
   useEffect(() => {
     const fetchUserData = async () => {
