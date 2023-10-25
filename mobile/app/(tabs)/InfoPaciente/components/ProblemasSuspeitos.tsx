@@ -116,6 +116,89 @@ export default function AvalPacienteGroup() {
     const findProblemasSuspeitos = async () => {
       try {
         const response = await findSuspectProblems(suspectProblemsId)
+        console.log(response)
+        const isAereoSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes('AEREO')
+        const isClinicoSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes(
+            'CLINICO',
+          )
+        const isEmergencialSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes(
+            'EMERGENCIAL',
+          )
+        const isPosTraumaSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes(
+            'POS_TRAUMA',
+          )
+        const isSamuSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes('SAMU')
+        const isSemRemocaoSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes(
+            'SEM_REMOCAO',
+          )
+
+        const isHipoglicemiaSelected =
+          response.suspectProblems.problemaSuspeitoDiabetes.includes(
+            'HIPOGLICEMIA',
+          )
+        const isHiperglicemiaSelected =
+          response.suspectProblems.problemaSuspeitoDiabetes.includes(
+            'HIPERGLICEMIA',
+          )
+
+        const isPartoEmergencialSelected =
+          response.suspectProblems.problemaSuspeitoObstetrico.includes(
+            'PARTO_EMERGENCIAL',
+          )
+        const isGestanteSelected =
+          response.suspectProblems.problemaSuspeitoObstetrico.includes(
+            'GESTANTE',
+          )
+        const isHemorragiaExcessivaSelected =
+          response.suspectProblems.problemaSuspeitoObstetrico.includes(
+            'HEMORRAGIA_EXCESSIVA',
+          )
+        const isDPOCSelected =
+          response.suspectProblems.problemaSuspeitoRespiratorio.includes('DPOC')
+        const isInalacaoFumacaSelected =
+          response.suspectProblems.problemaSuspeitoRespiratorio.includes(
+            'INALACAO_FUMACA',
+          )
+
+        setTransporteCheckboxState((prevState) => {
+          return {
+            ...prevState,
+            AEREO: isAereoSelected,
+            CLINICO: isClinicoSelected,
+            EMERGENCIAL: isEmergencialSelected,
+            POS_TRAUMA: isPosTraumaSelected,
+            SAMU: isSamuSelected,
+            SEM_REMOCAO: isSemRemocaoSelected,
+          }
+        })
+        setDiabetesCheckboxState((prevState) => {
+          return {
+            ...prevState,
+            HIPOGLICEMIA: isHipoglicemiaSelected,
+            HIPERGLICEMIA: isHiperglicemiaSelected,
+          }
+        })
+        setObstericoCheckboxState((prevState) => {
+          return {
+            ...prevState,
+            PARTO_EMERGENCIAL: isPartoEmergencialSelected,
+            GESTANTE: isGestanteSelected,
+            HEMORRAGIA_EXCESSIVA: isHemorragiaExcessivaSelected,
+          }
+        })
+        setRespiratorioCheckboxState((prevState) => {
+          return {
+            ...prevState,
+            DPOC: isDPOCSelected,
+            INALACAO_FUMACA: isInalacaoFumacaSelected,
+          }
+        })
 
         console.log(response)
       } catch (error) {

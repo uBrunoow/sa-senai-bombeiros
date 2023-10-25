@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux'
 import updateSinaisVitaisReport from '@src/api/reports/sinaisVitais/updateSinaisVitais'
 import updateSuspectProblems from '@src/api/reports/suspectProblems/updateSuspectProblems'
 import updateGlasgow from '@src/api/reports/glasgow/updateGlasgow'
-import { useToast, Button } from 'native-base'
+import { useToast } from 'native-base'
 
 export default function InfoPatient({ navigation }: any) {
   const InfoPatient = useSelector(
@@ -35,35 +35,39 @@ export default function InfoPatient({ navigation }: any) {
   const glasgowId = useSelector((state: RootState) => state.glasgow.glasgowId)
 
   // Infos paciente, sinais vitais data
-  const diastolicBloodPressure = InfoPatient.patientInfo?.diastolicBloodPressure
-  const systolicBloodPressure = InfoPatient.patientInfo?.systolicBloodPressure
-  const bodyTemp = InfoPatient.patientInfo?.bodyTemp
-  const bodyPulse = InfoPatient.patientInfo?.bodyPulse
-  const breathing = InfoPatient.patientInfo?.breathing
-  const saturation = InfoPatient.patientInfo?.saturation
+  const diastolicBloodPressure =
+    InfoPatient?.patientInfo?.diastolicBloodPressure
+  const systolicBloodPressure = InfoPatient?.patientInfo?.systolicBloodPressure
+  const bodyTemp = InfoPatient?.patientInfo?.bodyTemp
+  const bodyPulse = InfoPatient?.patientInfo?.bodyPulse
+  const breathing = InfoPatient?.patientInfo?.breathing
+  const saturation = InfoPatient?.patientInfo?.saturation
 
   // Infos paciente, problemas suspeitos data
   const transportSuboptionsData =
-    SuspectProblemsData?.suspectProblems?.transportSuboptions
+    SuspectProblemsData?.suspectProblems?.transportSuboptions || {}
   const diabetesSuboptionsData =
-    SuspectProblemsData?.suspectProblems?.diabetesSuboptions
+    SuspectProblemsData?.suspectProblems?.diabetesSuboptions || {}
   const obstericoSuboptionsData =
-    SuspectProblemsData?.suspectProblems?.obstericoSuboptions
+    SuspectProblemsData?.suspectProblems?.obstericoSuboptions || {}
   const respiratorioSuboptionsData =
-    SuspectProblemsData?.suspectProblems?.respiratorioSuboptions
+    SuspectProblemsData?.suspectProblems?.respiratorioSuboptions || {}
 
   const transportSuboptions = Object.entries(transportSuboptionsData)
     .filter(([key, value]) => value)
-    .map(([key, _]) => key)
+    .map(([key]) => key)
+
   const diabetesSuboptions = Object.entries(diabetesSuboptionsData)
     .filter(([key, value]) => value)
-    .map(([key, _]) => key)
+    .map(([key]) => key)
+
   const obstericoSuboptions = Object.entries(obstericoSuboptionsData)
     .filter(([key, value]) => value)
-    .map(([key, _]) => key)
+    .map(([key]) => key)
+
   const respiratorioSuboptions = Object.entries(respiratorioSuboptionsData)
     .filter(([key, value]) => value)
-    .map(([key, _]) => key)
+    .map(([key]) => key)
 
   // Infos paciente, glasgow data
   const aberturaOcular = GlasgowData?.glasgow?.aberturaOcular
