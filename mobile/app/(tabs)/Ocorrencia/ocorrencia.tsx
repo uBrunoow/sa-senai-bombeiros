@@ -25,6 +25,7 @@ import {
   clearReportId,
   clearSuspectProblemsId,
   saveAnamnesisId,
+  saveCinematicAvaliationId,
   saveFinalizationId,
   saveGestacionalAnamnesisId,
   saveGlasgowId,
@@ -37,6 +38,7 @@ import registerGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/register
 import registerFinalization from '@src/api/reports/finalization/registerFinalization'
 import registerSuspectProblems from '@src/api/reports/suspectProblems/registerSuspectProblems'
 import registerGlasgow from '@src/api/reports/glasgow/registerGlasgow'
+import registerCinematicAvaliation from '@src/api/reports/cinematicAvaliation/registerCinematicAvaliation'
 
 export default function Ocorrencia({ navigation }: any) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
@@ -106,23 +108,53 @@ export default function Ocorrencia({ navigation }: any) {
     (state: RootState) => state.finalization.finalizationId,
   )
 
+  const existingCinemaitcAvaliationId = useSelector(
+    (state: RootState) => state.cinematicAvaliation.cinematicAvaliationId,
+  )
+
   const handleClickFinalization = async () => {
-    if (existingFinalizationId) {
+    if (existingFinalizationId && existingCinemaitcAvaliationId) {
       navigation.navigate('finalizacao', {
         screen: 'finalizacao',
-        params: { finalizationId: existingFinalizationId },
+        params: {
+          finalizationId: existingFinalizationId,
+          cinematicAvaliation: existingCinemaitcAvaliationId,
+        },
       })
     } else {
       const response = await registerFinalization(ReportOwnerId)
+      const cinematicAvaliationResponse = await registerCinematicAvaliation(
+        ReportOwnerId,
+      )
       console.log(response)
+      console.log(cinematicAvaliationResponse)
 
-      if (response && response.finalization) {
+      if (
+        response &&
+        response.finalization &&
+        cinematicAvaliationResponse &&
+        cinematicAvaliationResponse.cinematicAvaliation
+      ) {
         dispatch(saveFinalizationId(response.finalization.id))
+        dispatch(
+          saveCinematicAvaliationId(
+            cinematicAvaliationResponse.cinematicAvaliation.id,
+          ),
+        )
+
         console.log('Finalization n°: ', response.finalization.id)
+        console.log(
+          'Cinematica n°: ',
+          cinematicAvaliationResponse.cinematicAvaliation.id,
+        )
 
         navigation.navigate('finalizacao', {
           screen: 'finalizacao',
-          params: { finalizationId: response.finalization.id },
+          params: {
+            finalizationId: response.finalization.id,
+            cinematicAvaliation:
+              cinematicAvaliationResponse.cinematicAvaliation.id,
+          },
         })
       }
     }

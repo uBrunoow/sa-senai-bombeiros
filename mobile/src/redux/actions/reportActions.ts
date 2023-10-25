@@ -65,3 +65,14 @@ export const clearGlasgowId = () => {
     type: 'CLEAR_GLASGOW_ID',
   }
 }
+
+export const saveCinematicAvaliationId = (cinematicAvaliationId: number) => ({
+  type: 'SAVE_CINEMATIC_AVALIATION',
+  payload: { cinematicAvaliationId },
+})
+
+export const clearCinematicAvaliationId = () => {
+  return {
+    type: 'CLEAR_CINEMATIC_AVALIATION_ID',
+  }
+}

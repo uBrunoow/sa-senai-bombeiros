@@ -11,6 +11,7 @@ export async function updateFinalizationRoutes(app: FastifyInstance) {
       conduction,
       transportation,
       finalRemarks,
+      CollectedObjects,
       ReportOwnerId,
     } = updateFinalization.parse(req.body)
 
@@ -19,6 +20,7 @@ export async function updateFinalizationRoutes(app: FastifyInstance) {
       !conduction &&
       !transportation &&
       !finalRemarks &&
+      !CollectedObjects &&
       !ReportOwnerId
     ) {
       return res
@@ -42,6 +44,7 @@ export async function updateFinalizationRoutes(app: FastifyInstance) {
       responsable?: string
       conduction?: string[]
       transportation?: string
+      CollectedObjects?: string
       finalRemarks?: string
       ReportOwnerId?: number
     } = {}
@@ -57,6 +60,9 @@ export async function updateFinalizationRoutes(app: FastifyInstance) {
     }
     if (finalRemarks) {
       updateFinalizationData.finalRemarks = finalRemarks
+    }
+    if (CollectedObjects) {
+      updateFinalizationData.CollectedObjects = CollectedObjects
     }
 
     const updatedFinalization = await prisma.finalization.update({

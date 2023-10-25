@@ -7,6 +7,23 @@ import { RootState } from '@src/redux/stores/stores'
 import { useDispatch, useSelector } from 'react-redux'
 import { Checkbox } from 'native-base'
 import { setSuspectProblemsData } from '@src/redux/actions/dataActions'
+import findSuspectProblems from '@src/api/reports/suspectProblems/findSuspectProblems'
+
+type CheckboxStates = {
+  AEREO?: boolean
+  CLINICO?: boolean
+  EMERGENCIAL?: boolean
+  POS_TRAUMA?: boolean
+  SAMU?: boolean
+  SEM_REMOCAO?: boolean
+  HIPERGLICEMIA?: boolean
+  HIPOGLICEMIA?: boolean
+  PARTO_EMERGENCIAL?: boolean
+  GESTANTE?: boolean
+  HEMORRAGIA_EXCESSIVA?: boolean
+  DPOC?: boolean
+  INALACAO_FUMACA?: boolean
+}
 
 export default function AvalPacienteGroup() {
   const dispatch = useDispatch()
@@ -18,13 +35,186 @@ export default function AvalPacienteGroup() {
   const [psiquiatricoButtonSelected, setPsiquiatricoButtonSelected] =
     useState(false)
 
-  const [transportSuboptions, setTransportSuboptions] = useState([])
-  const [diabetesSuboptions, setDiabetesSuboptions] = useState([])
-  const [obstericoSuboptions, setObstericoSuboptions] = useState([])
-  const [respiratorioSuboptions, setRespiratorioSuboptions] = useState([])
+  const [transporteCheckboxState, setTransporteCheckboxState] =
+    useState<CheckboxStates>({
+      AEREO: false,
+      CLINICO: false,
+      EMERGENCIAL: false,
+      POS_TRAUMA: false,
+      SAMU: false,
+      SEM_REMOCAO: false,
+    })
+
+  const handleTransporteCheckboxChange = (key: keyof CheckboxStates) => {
+    if (Object.prototype.hasOwnProperty.call(transporteCheckboxState, key)) {
+      setTransporteCheckboxState((prevState) => {
+        return {
+          ...prevState,
+          [key]: !prevState[key],
+        }
+      })
+    }
+  }
+
+  const [diabetesCheckboxState, setDiabetesCheckboxState] =
+    useState<CheckboxStates>({
+      HIPERGLICEMIA: false,
+      HIPOGLICEMIA: false,
+    })
+
+  const handleDiabetesCheckboxChange = (key: keyof CheckboxStates) => {
+    if (Object.prototype.hasOwnProperty.call(diabetesCheckboxState, key)) {
+      setDiabetesCheckboxState((prevState) => {
+        return {
+          ...prevState,
+          [key]: !prevState[key],
+        }
+      })
+    }
+  }
+
+  const [obstericoCheckboxState, setObstericoCheckboxState] =
+    useState<CheckboxStates>({
+      PARTO_EMERGENCIAL: false,
+      GESTANTE: false,
+      HEMORRAGIA_EXCESSIVA: false,
+    })
+
+  const handleObstericoCheckboxChange = (key: keyof CheckboxStates) => {
+    if (Object.prototype.hasOwnProperty.call(obstericoCheckboxState, key)) {
+      setObstericoCheckboxState((prevState) => {
+        return {
+          ...prevState,
+          [key]: !prevState[key],
+        }
+      })
+    }
+  }
+
+  const [respiratorioCheckboxState, setRespiratorioCheckboxState] =
+    useState<CheckboxStates>({
+      DPOC: false,
+      INALACAO_FUMACA: false,
+    })
+
+  const handleRespiratorioCheckboxChange = (key: keyof CheckboxStates) => {
+    if (Object.prototype.hasOwnProperty.call(respiratorioCheckboxState, key)) {
+      setRespiratorioCheckboxState((prevState) => {
+        return {
+          ...prevState,
+          [key]: !prevState[key],
+        }
+      })
+    }
+  }
+
+  const suspectProblemsId = useSelector(
+    (state: RootState) => state.suspectProblems.suspectProblemsId,
+  )
+
+  useEffect(() => {
+    const findProblemasSuspeitos = async () => {
+      try {
+        const response = await findSuspectProblems(suspectProblemsId)
+        console.log(response)
+        const isAereoSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes('AEREO')
+        const isClinicoSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes(
+            'CLINICO',
+          )
+        const isEmergencialSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes(
+            'EMERGENCIAL',
+          )
+        const isPosTraumaSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes(
+            'POS_TRAUMA',
+          )
+        const isSamuSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes('SAMU')
+        const isSemRemocaoSelected =
+          response.suspectProblems.problemaSuspeitoTransporte.includes(
+            'SEM_REMOCAO',
+          )
+
+        const isHipoglicemiaSelected =
+          response.suspectProblems.problemaSuspeitoDiabetes.includes(
+            'HIPOGLICEMIA',
+          )
+        const isHiperglicemiaSelected =
+          response.suspectProblems.problemaSuspeitoDiabetes.includes(
+            'HIPERGLICEMIA',
+          )
+
+        const isPartoEmergencialSelected =
+          response.suspectProblems.problemaSuspeitoObstetrico.includes(
+            'PARTO_EMERGENCIAL',
+          )
+        const isGestanteSelected =
+          response.suspectProblems.problemaSuspeitoObstetrico.includes(
+            'GESTANTE',
+          )
+        const isHemorragiaExcessivaSelected =
+          response.suspectProblems.problemaSuspeitoObstetrico.includes(
+            'HEMORRAGIA_EXCESSIVA',
+          )
+        const isDPOCSelected =
+          response.suspectProblems.problemaSuspeitoRespiratorio.includes('DPOC')
+        const isInalacaoFumacaSelected =
+          response.suspectProblems.problemaSuspeitoRespiratorio.includes(
+            'INALACAO_FUMACA',
+          )
+
+        setTransporteCheckboxState((prevState) => {
+          return {
+            ...prevState,
+            AEREO: isAereoSelected,
+            CLINICO: isClinicoSelected,
+            EMERGENCIAL: isEmergencialSelected,
+            POS_TRAUMA: isPosTraumaSelected,
+            SAMU: isSamuSelected,
+            SEM_REMOCAO: isSemRemocaoSelected,
+          }
+        })
+        setDiabetesCheckboxState((prevState) => {
+          return {
+            ...prevState,
+            HIPOGLICEMIA: isHipoglicemiaSelected,
+            HIPERGLICEMIA: isHiperglicemiaSelected,
+          }
+        })
+        setObstericoCheckboxState((prevState) => {
+          return {
+            ...prevState,
+            PARTO_EMERGENCIAL: isPartoEmergencialSelected,
+            GESTANTE: isGestanteSelected,
+            HEMORRAGIA_EXCESSIVA: isHemorragiaExcessivaSelected,
+          }
+        })
+        setRespiratorioCheckboxState((prevState) => {
+          return {
+            ...prevState,
+            DPOC: isDPOCSelected,
+            INALACAO_FUMACA: isInalacaoFumacaSelected,
+          }
+        })
+
+        console.log(response)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    findProblemasSuspeitos()
+  }, [suspectProblemsId])
 
   useEffect(() => {
     const onChangeSuspectProblemsDataInfo = () => {
+      const transportSuboptions = transporteCheckboxState
+      const diabetesSuboptions = diabetesCheckboxState
+      const obstericoSuboptions = obstericoCheckboxState
+      const respiratorioSuboptions = respiratorioCheckboxState
       const suspectProblemsDataInfo = {
         transportSuboptions,
         diabetesSuboptions,
@@ -37,11 +227,11 @@ export default function AvalPacienteGroup() {
 
     onChangeSuspectProblemsDataInfo()
   }, [
-    diabetesSuboptions,
     dispatch,
-    obstericoSuboptions,
-    respiratorioSuboptions,
-    transportSuboptions,
+    transporteCheckboxState,
+    diabetesCheckboxState,
+    obstericoCheckboxState,
+    respiratorioCheckboxState,
   ])
 
   return (
@@ -94,46 +284,18 @@ export default function AvalPacienteGroup() {
             <Text className="mb-2 text-2xl font-extrabold text-red-700">
               TRANSPORTE
             </Text>
-            <Checkbox.Group
-              onChange={(values) => {
-                setTransportSuboptions(values || [])
-              }}
-              defaultValue={transportSuboptions}
-            >
-              <Checkbox size="md" colorScheme="danger" value="AEREO" mb={2}>
-                <Text className="  text-lg  text-slate-800">Aéreo</Text>
-              </Checkbox>
-              <Checkbox size="md" colorScheme="danger" value="CLINICO" mb={2}>
-                <Text className=" text-lg  text-slate-800">Clínico</Text>
-              </Checkbox>
+            {Object.entries(transporteCheckboxState).map(([key, isChecked]) => (
               <Checkbox
+                key={key}
                 size="md"
                 colorScheme="danger"
-                value="EMERGENCIAL"
-                mb={2}
+                value={key}
+                isChecked={isChecked}
+                onChange={() => handleTransporteCheckboxChange(key)}
               >
-                <Text className="  text-lg  text-slate-800">Emergencial</Text>
+                <Text className="text-lg text-slate-800">{key}</Text>
               </Checkbox>
-              <Checkbox
-                size="md"
-                colorScheme="danger"
-                value="POS_TRAUMA"
-                mb={2}
-              >
-                <Text className="  text-lg  text-slate-800">Pós-Trauma</Text>
-              </Checkbox>
-              <Checkbox size="md" colorScheme="danger" value="SAMU" mb={2}>
-                <Text className="  text-lg text-slate-800">SAMU</Text>
-              </Checkbox>
-              <Checkbox
-                size="md"
-                colorScheme="danger"
-                value="SEM_REMOCAO"
-                mb={2}
-              >
-                <Text className=" text-lg text-slate-800">Sem remoção</Text>
-              </Checkbox>
-            </Checkbox.Group>
+            ))}
           </View>
         )}
         {diabetesButtonSelected && (
@@ -144,28 +306,18 @@ export default function AvalPacienteGroup() {
             <Text className="mb-2 text-2xl font-extrabold text-red-700">
               DIABETES
             </Text>
-            <Checkbox.Group
-              onChange={(values) => {
-                setDiabetesSuboptions(values || [])
-              }}
-            >
+            {Object.entries(diabetesCheckboxState).map(([key, isChecked]) => (
               <Checkbox
+                key={key}
                 size="md"
                 colorScheme="danger"
-                value="HIPERGLICEMIA"
-                mb={2}
+                value={key}
+                isChecked={isChecked}
+                onChange={() => handleDiabetesCheckboxChange(key)}
               >
-                <Text className="text-lg text-slate-800">Hiperglicemia</Text>
+                <Text className="text-lg text-slate-800">{key}</Text>
               </Checkbox>
-              <Checkbox
-                size="md"
-                colorScheme="danger"
-                value="HIPOGLICEMIA"
-                mb={2}
-              >
-                <Text className="text-lg text-slate-800">Hipoglicemia</Text>
-              </Checkbox>
-            </Checkbox.Group>
+            ))}
           </View>
         )}
         {obstericoButtonSelected && (
@@ -176,35 +328,18 @@ export default function AvalPacienteGroup() {
             <Text className="mb-2 text-2xl font-extrabold text-red-700">
               OBSTÉRICOS
             </Text>
-            <Checkbox.Group
-              onChange={(values) => {
-                setObstericoSuboptions(values || [])
-              }}
-            >
+            {Object.entries(obstericoCheckboxState).map(([key, isChecked]) => (
               <Checkbox
+                key={key}
                 size="md"
                 colorScheme="danger"
-                value="PARTO_EMERGENCIAL"
-                mb={2}
+                value={key}
+                isChecked={isChecked}
+                onChange={() => handleObstericoCheckboxChange(key)}
               >
-                <Text className="text-lg text-slate-800">
-                  Parto Emergêncial
-                </Text>
+                <Text className="text-lg text-slate-800">{key}</Text>
               </Checkbox>
-              <Checkbox size="md" colorScheme="danger" value="GESTANTE" mb={2}>
-                <Text className="text-lg text-slate-800">Gestante</Text>
-              </Checkbox>
-              <Checkbox
-                size="md"
-                colorScheme="danger"
-                value="HEMORRAGIA_EXCESSIVA"
-                mb={2}
-              >
-                <Text className="text-lg text-slate-800">
-                  Hemorragia Excessiva
-                </Text>
-              </Checkbox>
-            </Checkbox.Group>
+            ))}
           </View>
         )}
         {respiratorioButtonSelected && (
@@ -215,23 +350,20 @@ export default function AvalPacienteGroup() {
             <Text className="mb-2 text-2xl font-extrabold text-red-700">
               RESPIRATÓRIOS
             </Text>
-            <Checkbox.Group
-              onChange={(values) => {
-                setRespiratorioSuboptions(values || [])
-              }}
-            >
-              <Checkbox size="md" colorScheme="danger" value="DPOC" mb={2}>
-                <Text className="text-lg text-slate-800">DPOC</Text>
-              </Checkbox>
-              <Checkbox
-                size="md"
-                colorScheme="danger"
-                value="INALACAO_FUMACA"
-                mb={2}
-              >
-                <Text className="text-lg text-slate-800">Inalação Fumaça</Text>
-              </Checkbox>
-            </Checkbox.Group>
+            {Object.entries(respiratorioCheckboxState).map(
+              ([key, isChecked]) => (
+                <Checkbox
+                  key={key}
+                  size="md"
+                  colorScheme="danger"
+                  value={key}
+                  isChecked={isChecked}
+                  onChange={() => handleRespiratorioCheckboxChange(key)}
+                >
+                  <Text className="text-lg text-slate-800">{key}</Text>
+                </Checkbox>
+              ),
+            )}
           </View>
         )}
       </View>
