@@ -30,7 +30,12 @@ import findFinalization from '@src/api/reports/finalization/findFinalization'
 import updateCinematic from '@src/api/reports/cinematicAvaliation/updateCinematicAvaliation'
 import MainButton from '@app/components/MainButton'
 import updateFinalization from '@src/api/reports/finalization/updateFinalization'
-import { Checkbox, FormControl, TextArea } from 'native-base'
+import { Checkbox, FormControl, Input, TextArea } from 'native-base'
+import { useForm, Controller } from 'react-hook-form'
+
+type FormDataType = {
+  CollectedObjects: string
+}
 
 const Finalizacao = ({ navigation }: any) => {
   const [selected, setSelected] = useState('')
@@ -46,9 +51,9 @@ const Finalizacao = ({ navigation }: any) => {
   const [isCheckedSemiDeitada, setIsCheckedSemiDeitada] = useState(false)
   const [isCheckedSentada, setIsCheckedSentada] = useState(false)
 
-  // const handleObservacoesChange = (event) => {
-  //   setObservacoesFinais(event.target.value)
-  // }
+  const handleObservacoesChange = (newValue: string) => {
+    setObservacoesFinais(newValue)
+  }
 
   const handleOptionPress = (option) => {
     setSelectedOption(option)
@@ -74,6 +79,12 @@ const Finalizacao = ({ navigation }: any) => {
     setChangeResponsable(!changeResponsable)
   }
 
+  const { control, setValue, watch } = useForm<FormDataType>({
+    defaultValues: {
+      CollectedObjects: '',
+    },
+  })
+
   const ownerId = useSelector((state: RootState) => state.auth.userId)
   const finalizationId = useSelector(
     (state: RootState) => state.finalization.finalizationId,
@@ -90,6 +101,8 @@ const Finalizacao = ({ navigation }: any) => {
           finalizationResponse.finalization.finalRemarks
         const transportationResponse =
           finalizationResponse.finalization.transportation
+        const collectedObjectResponse =
+          finalizationResponse.finalization.CollectedObjects
 
         setIsCheckedDeitada(conductionResponse?.includes('DEITADA') || false)
         setIsCheckedSemiDeitada(
@@ -98,6 +111,7 @@ const Finalizacao = ({ navigation }: any) => {
         setIsCheckedSentada(conductionResponse?.includes('SENTADA') || false)
         setObservacoesFinais(finalRemarksResponse)
         setSelectedOption(transportationResponse)
+        setValue('CollectedObjects', collectedObjectResponse)
       } catch (error) {
         console.error('Error fetching users:', error)
       } finally {
@@ -181,6 +195,8 @@ const Finalizacao = ({ navigation }: any) => {
   const transportation = selectedOption
   const finalRemarks = observacoesFinais
 
+  const CollectedObjects = watch('CollectedObjects')
+
   const handleSubmitFinalization = async () => {
     try {
       setButtonLoading(true)
@@ -202,6 +218,7 @@ const Finalizacao = ({ navigation }: any) => {
         responsable,
         conduction,
         transportation,
+        CollectedObjects,
         finalRemarks,
       )
 
@@ -256,8 +273,23 @@ const Finalizacao = ({ navigation }: any) => {
                     </Pressable>
                   </View>
                 </View>
-                <InputLowPadding title="Objetos recolhidos" />
-
+                <FormControl>
+                  <FormControl.Label color={'black'}>
+                    Objetos Recolhidos
+                  </FormControl.Label>
+                  <Controller
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        className="CollectedObjects"
+                        onBlur={field.onBlur}
+                        onChangeText={(val) => field.onChange(val)}
+                        value={field.value}
+                      />
+                    )}
+                    name="CollectedObjects"
+                  />
+                </FormControl>
                 <View>
                   <Text className="m-1 text-base font-medium">
                     Forma de condução
@@ -399,7 +431,7 @@ const Finalizacao = ({ navigation }: any) => {
                 </View>
 
                 <View className="flex-1">
-                  {/* <FormControl>
+                  <FormControl>
                     <FormControl.Label mt={5}>
                       Observações Finais
                     </FormControl.Label>
@@ -407,10 +439,12 @@ const Finalizacao = ({ navigation }: any) => {
                       autoCompleteType={''}
                       h={20}
                       w="100%"
-                      onChange={handleObservacoesChange}
+                      onChange={(e) =>
+                        handleObservacoesChange(e.nativeEvent.text)
+                      }
                       value={observacoesFinais}
                     />
-                  </FormControl> */}
+                  </FormControl>
                 </View>
               </View>
               <View>

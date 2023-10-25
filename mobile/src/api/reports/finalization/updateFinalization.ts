@@ -6,6 +6,7 @@ const updateFinalization = async (
   responsable?: string,
   conduction?: string[],
   transportation?: string,
+  CollectedObjects?: string,
   finalRemarks?: string,
 ) => {
   try {
@@ -15,6 +16,7 @@ const updateFinalization = async (
         responsable,
         conduction,
         transportation,
+        CollectedObjects,
         finalRemarks,
         ReportOwnerId,
       },
