@@ -1,6 +1,9 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import bodyCoordinates from './../utils/bodyCoordinates.json'
+import findReports from '@src/api/reports/findReport'
+import { RootState } from '@src/redux/stores/stores'
+import { useSelector } from 'react-redux'
 
 type Coordinate = {
   x: number
@@ -87,15 +90,41 @@ export default function Body({
     }
   }
 
+  const [isMaiorQueCincoAnos, setIsMaiorQueCincoAnos] = useState(false)
+
+  const reportId = useSelector((state: RootState) => state.report.reportId)
+
+  useEffect(() => {
+    const findReportData = async () => {
+      const ageResponse = await findReports(reportId)
+
+      if (Number(ageResponse.report.age) >= 5) {
+        setIsMaiorQueCincoAnos(true)
+      } else {
+        setIsMaiorQueCincoAnos(false)
+      }
+    }
+    findReportData()
+  }, [reportId])
+
   return (
     <View className="mx-auto w-11/12">
       <TouchableOpacity onPress={handleClick} activeOpacity={0.7}>
-        <Image
-          style={styles.bodyImage}
-          source={require('./../../../../assets/anatomic-position.png')}
-          alt="Representação do corpo humano para a identificação anatômica dos ferimentos"
-          resizeMode="contain"
-        />
+        {isMaiorQueCincoAnos ? (
+          <Image
+            style={styles.bodyImage}
+            source={require('./../../../../assets/anatomic-position.png')}
+            alt="Representação do corpo humano para a identificação anatômica dos ferimentos"
+            resizeMode="contain"
+          />
+        ) : (
+          <Image
+            style={styles.bodyImage}
+            source={require('./../../../../assets/corpoCrianca.png')}
+            alt="Representação do corpo humano para a identificação anatômica dos ferimentos"
+            resizeMode="contain"
+          />
+        )}
       </TouchableOpacity>
       <Text className="text-md font-bold">Parte selecionada:</Text>
       <Text className="text-2xl font-bold">{clickedBodyPartText}</Text>
