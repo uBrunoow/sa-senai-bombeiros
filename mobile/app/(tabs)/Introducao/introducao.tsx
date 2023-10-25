@@ -17,7 +17,7 @@ import InputNumeric from '@app/components/inputNumeric'
 import findReports from '@src/api/reports/findReport'
 import InputCpf from '@app/components/inputCpf'
 import InputTelefone from '@app/components/inputTelefone'
-import { Select } from 'native-base'
+import { Select, useToast } from 'native-base'
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import registerPreHospitalarMethods from '@src/api/reports/preHospitalarMethod/registerPreHospitalarMethod'
 import registerSignsAndSymptoms from '@src/api/reports/symptoms/registerSymptoms'
@@ -96,6 +96,8 @@ export default function Introducao({ navigation }: any) {
     findPreHospitalarMethodByReportData()
   }, [reportId])
 
+  const toast = useToast()
+
   const handleSubmitIntroduction = async () => {
     try {
       const reportDate = formatReportDate(reportDateTime)
@@ -114,6 +116,12 @@ export default function Introducao({ navigation }: any) {
 
       if (response && response.updatedReport) {
         navigation.navigate('ocorrencia')
+        toast.show({
+          description: 'Informações de Introdução salvas com sucesso.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#0AC800' },
+        })
       }
     } catch (error) {
       console.error(error)

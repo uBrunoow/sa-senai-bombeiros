@@ -98,10 +98,7 @@ const Cinematica = () => {
   ])
 
   return (
-    <View
-      style={s.boxShadow}
-      className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
-    >
+    <View style={s.boxShadow} className=" mx-auto mb-10">
       <Text className="font-medium">AVALIAÇÃO DE</Text>
       <Text className="text-4xl font-bold">CINEMÁTICA</Text>
 

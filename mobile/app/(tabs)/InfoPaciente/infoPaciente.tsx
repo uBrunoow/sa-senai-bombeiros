@@ -1,5 +1,5 @@
 import { View, ScrollView, SafeAreaView } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import SinaisInfoPaciente from '@app/(tabs)/InfoPaciente/components/SinaisInfoPaciente'
@@ -16,6 +16,8 @@ import { useToast } from 'native-base'
 import Subtitle from '@app/components/Subtitle'
 
 export default function InfoPatient({ navigation }: any) {
+  const [buttonLoading, setButtonLoading] = useState(false)
+
   const InfoPatient = useSelector(
     (state: RootState) => state.infoPaciente.patientInfo,
   )
@@ -35,35 +37,39 @@ export default function InfoPatient({ navigation }: any) {
   const glasgowId = useSelector((state: RootState) => state.glasgow.glasgowId)
 
   // Infos paciente, sinais vitais data
-  const diastolicBloodPressure = InfoPatient.patientInfo?.diastolicBloodPressure
-  const systolicBloodPressure = InfoPatient.patientInfo?.systolicBloodPressure
-  const bodyTemp = InfoPatient.patientInfo?.bodyTemp
-  const bodyPulse = InfoPatient.patientInfo?.bodyPulse
-  const breathing = InfoPatient.patientInfo?.breathing
-  const saturation = InfoPatient.patientInfo?.saturation
+  const diastolicBloodPressure =
+    InfoPatient?.patientInfo?.diastolicBloodPressure
+  const systolicBloodPressure = InfoPatient?.patientInfo?.systolicBloodPressure
+  const bodyTemp = InfoPatient?.patientInfo?.bodyTemp
+  const bodyPulse = InfoPatient?.patientInfo?.bodyPulse
+  const breathing = InfoPatient?.patientInfo?.breathing
+  const saturation = InfoPatient?.patientInfo?.saturation
 
   // Infos paciente, problemas suspeitos data
   const transportSuboptionsData =
-    SuspectProblemsData?.suspectProblems?.transportSuboptions
+    SuspectProblemsData?.suspectProblems?.transportSuboptions || {}
   const diabetesSuboptionsData =
-    SuspectProblemsData?.suspectProblems?.diabetesSuboptions
+    SuspectProblemsData?.suspectProblems?.diabetesSuboptions || {}
   const obstericoSuboptionsData =
-    SuspectProblemsData?.suspectProblems?.obstericoSuboptions
+    SuspectProblemsData?.suspectProblems?.obstericoSuboptions || {}
   const respiratorioSuboptionsData =
-    SuspectProblemsData?.suspectProblems?.respiratorioSuboptions
+    SuspectProblemsData?.suspectProblems?.respiratorioSuboptions || {}
 
   const transportSuboptions = Object.entries(transportSuboptionsData)
     .filter(([key, value]) => value)
-    .map(([key, _]) => key)
+    .map(([key]) => key)
+
   const diabetesSuboptions = Object.entries(diabetesSuboptionsData)
     .filter(([key, value]) => value)
-    .map(([key, _]) => key)
+    .map(([key]) => key)
+
   const obstericoSuboptions = Object.entries(obstericoSuboptionsData)
     .filter(([key, value]) => value)
-    .map(([key, _]) => key)
+    .map(([key]) => key)
+
   const respiratorioSuboptions = Object.entries(respiratorioSuboptionsData)
     .filter(([key, value]) => value)
-    .map(([key, _]) => key)
+    .map(([key]) => key)
 
   // Infos paciente, glasgow data
   const aberturaOcular = GlasgowData?.glasgow?.aberturaOcular
@@ -74,6 +80,7 @@ export default function InfoPatient({ navigation }: any) {
 
   const handleSubmitInfoPaciente = async () => {
     try {
+      setButtonLoading(true)
       const SinaisVitaisResponse = await updateSinaisVitaisReport(
         ownerId,
         reportId,
@@ -130,6 +137,8 @@ export default function InfoPatient({ navigation }: any) {
         placement: 'bottom',
         style: { backgroundColor: 'red' },
       })
+    } finally {
+      setButtonLoading(false)
     }
   }
 
@@ -145,7 +154,11 @@ export default function InfoPatient({ navigation }: any) {
           <AvalPacienteGroup />
           <Subtitle content="Problemas suspeitos encontrados" />
           <ProblemasSuspeitos />
-          <MainButton innerText="SALVAR" onPress={handleSubmitInfoPaciente} />
+          <MainButton
+            innerText="SALVAR"
+            isLoading={buttonLoading}
+            onPress={handleSubmitInfoPaciente}
+          />
           <Footer />
         </View>
       </ScrollView>

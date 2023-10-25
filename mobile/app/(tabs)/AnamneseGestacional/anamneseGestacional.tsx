@@ -26,6 +26,7 @@ import {
   Input,
   WarningOutlineIcon,
   TextArea,
+  useToast,
 } from 'native-base'
 import Options from '@app/components/optionsIntroducao'
 import InputNumeric from '@app/components/inputNumeric'
@@ -105,7 +106,7 @@ export default function AnamneseGestacional({ navigation }: any) {
     setChildbirth(option === 'SIM')
   }
 
-  console.log(PreNatal)
+  const toast = useToast()
 
   const handleSubmitGesAnamnesis = async () => {
     try {
@@ -125,6 +126,13 @@ export default function AnamneseGestacional({ navigation }: any) {
 
       if (response && response.updatedGestacionalAnamnesis) {
         navigation.navigate('ocorrencia', { gestacionalAnamnesisId })
+        toast.show({
+          description:
+            'Informações de Anamnese Gestacional salvas com sucesso.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#0AC800' },
+        })
       }
     } catch (error) {
       console.error(error)
@@ -205,16 +213,14 @@ export default function AnamneseGestacional({ navigation }: any) {
                   <View className="w-[10px]" />
                   <InputClock title="Horário nasc." />
                 </View>
-                <InputFull title="Nome do bebê" />
               </View>
+              <InputFull title="Nome do bebê" />
             </View>
-            <Pressable onPress={() => navigation.navigate(`ocorrencia`)}>
-              <MainButton
-                isLoading={buttonLoading}
-                innerText="SALVAR"
-                onPress={handleSubmitGesAnamnesis}
-              ></MainButton>
-            </Pressable>
+            <MainButton
+              isLoading={buttonLoading}
+              innerText="SALVAR"
+              onPress={handleSubmitGesAnamnesis}
+            ></MainButton>
           </View>
           <Footer />
         </>
