@@ -1,10 +1,4 @@
-import {
-  View,
-  ScrollView,
-  Text,
-  Pressable,
-  ActivityIndicator,
-} from 'react-native'
+import { ScrollView, Text, ActivityIndicator, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
 import Title from '@app/components/Title'
@@ -12,29 +6,23 @@ import Footer from '@app/components/Footer'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import MainButton from '@app/components/MainButton'
 import YesOrNo from '@app/components/YesOrNo'
-import GestationPeriod, {
+import {
   GestationalPeriodEndPicker,
   GestationalPeriodStartPicker,
 } from '@app/(tabs)/AnamneseGestacional/components/GestationPeriod'
-import InputFull from '@app/components/InputFull'
 import { styles as s } from '@app/styles/boxShadow'
 import findGestacionalAnamnesis from '@src/api/reports/gestacionalAnamnesis/findGestacionalAnamnesis'
 import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
 import updateGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/updateGestacionalAnamnesis'
-import {
-  FormControl,
-  Stack,
-  Input,
-  WarningOutlineIcon,
-  TextArea,
-  useToast,
-} from 'native-base'
+import { useToast } from 'native-base'
 import Options from '@app/components/optionsIntroducao'
-import InputNumeric from '@app/components/inputNumeric'
 import InputClock from '@app/components/InputClock'
 import { formatReportDate } from '@src/utils/formatReportDate'
-
+import InputNumeric from '@app/components/inputNumeric'
+import InputFull from '@app/components/InputFull'
+import InputDuration from './components/InputDuration'
+import InputInterval from './components/InputInterval'
 export default function AnamneseGestacional({ navigation }: any) {
   const { bottom, top } = useSafeAreaInsets()
 
@@ -46,12 +34,40 @@ export default function AnamneseGestacional({ navigation }: any) {
   const [Childbirth, setChildbirth] = useState(false)
   const [gender, setGender] = useState(' ')
   const [NumberSon, setNumberSon] = useState(0)
-  const [loading, setLoading] = useState(false)
-  const [buttonLoading, setButtonLoading] = useState(false)
   const [gestationalPeriod, setGestationalPeriod] = useState({
     start: '',
     end: '',
   })
+  const [doctorName, setDoctorName] = useState('')
+  const [horasInicioContracao, setHorasInicioContracao] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [buttonLoading, setButtonLoading] = useState(false)
+  const [durationMinutes, setDurationMinutes] = useState(0)
+  const [durationSeconds, setDurationSeconds] = useState(0)
+  const [intervalMinutes, setIntervalMinutes] = useState(0)
+  const [intervalSeconds, setIntervalSeconds] = useState(0)
+  const [intervalHours, setIntervalHours] = useState(0)
+
+  const handleDurationChange = (minutes, seconds) => {
+    setDurationMinutes(minutes)
+    setDurationSeconds(seconds)
+  }
+
+  console.log(durationMinutes, 'MIN', durationSeconds, 'SEGS')
+
+  const handleIntervalChange = (hours, minutes, seconds) => {
+    setIntervalHours(hours)
+    setIntervalMinutes(minutes)
+    setIntervalSeconds(seconds)
+  }
+  console.log(
+    intervalHours,
+    'HR',
+    intervalMinutes,
+    'MIN',
+    intervalSeconds,
+    'SEGS',
+  )
 
   const handleGestationalPeriodChange = (start, end) => {
     setGestationalPeriod({ start, end })
@@ -80,6 +96,8 @@ export default function AnamneseGestacional({ navigation }: any) {
         const visualInspectionResponse =
           response.gestacionalAnamnesis.VisualInspection
         const childbirthResponse = response.gestacionalAnamnesis.Childbirth
+        const doctorNameResponse = response.gestacionalAnamnesis.DoctorName
+        const NumberSonResponse = response.gestacionalAnamnesis.NumberSon
 
         setPreNatal(preNatalResponse || false)
         setComplications(complicationsResponse || false)
@@ -87,6 +105,8 @@ export default function AnamneseGestacional({ navigation }: any) {
         setBagRuptured(bagRupturedResponse || false)
         setVisualInspection(visualInspectionResponse || false)
         setChildbirth(childbirthResponse || false)
+        setDoctorName(doctorNameResponse)
+        setNumberSon(NumberSonResponse)
 
         console.log(response)
       } catch (error) {
@@ -137,6 +157,8 @@ export default function AnamneseGestacional({ navigation }: any) {
         Childbirth,
         gestationalPeriodStart,
         gestationalPeriodEnd,
+        doctorName,
+        NumberSon,
       )
       console.log(response)
 
@@ -178,7 +200,6 @@ export default function AnamneseGestacional({ navigation }: any) {
               style={s.boxShadow}
               className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white py-[30px] shadow-md"
             >
-              {/* <GestationPeriod onChange={handleGestationalPeriodChange} /> */}
               <GestationalPeriodStartPicker
                 gestationalPeriod={gestationalPeriod.start}
                 setGestationalPeriod={(value) =>
@@ -205,17 +226,36 @@ export default function AnamneseGestacional({ navigation }: any) {
                 selectedOption={PreNatal ? 'SIM' : 'NÃO'}
                 onSelectOption={handlePreNatal}
               />
-              <InputFull title="Nome do médico" />
+              <InputFull
+                title="Nome do médico"
+                value={doctorName}
+                onChangeText={(e) => setDoctorName(e)}
+              />
               <YesOrNo
                 Question="Possibilidade de complicações?"
                 selectedOption={Complications ? 'SIM' : 'NÃO'}
                 onSelectOption={handleComplications}
               />
-              <InputFull title="Filho de número" />
-              <InputClock title="Horário de início das contrações"></InputClock>
+              <InputNumeric
+                title="Filho de número"
+                value={NumberSon}
+                onChangeText={(e) => setNumberSon(e)}
+              />
+              <InputClock
+                title="Início das contrações"
+                initialValue={horasInicioContracao}
+                onChange={(newValue) => setHorasInicioContracao(newValue)}
+              ></InputClock>
+
               <View className="flex-row justify-evenly">
-                <InputClock title="Duração" />
-                <InputClock title="Intervalo" />
+                <InputDuration
+                  title="Duração"
+                  onChangeDuration={handleDurationChange}
+                />
+                <InputInterval
+                  title="Intervalo"
+                  onChangeInterval={handleIntervalChange}
+                />
               </View>
               <YesOrNo
                 Question="Pressão no quadril/vontade de evacuar?"

@@ -9,6 +9,7 @@ type InputProps = {
   isBig?: boolean
   value?: string
   placeholder?: string
+  disabled?: boolean
   onChangeText?: (text: string) => void
 }
 
@@ -42,6 +43,7 @@ export default function InputFull(props: InputProps) {
       <Text className="text-lg font-medium">{props.title}</Text>
       <View className="mb-4 mt-2 w-5/6 rounded-lg border">
         <TextInput
+          editable={props.disabled}
           multiline={props.isBig}
           numberOfLines={props.isBig ? 100 : 1}
           style={{

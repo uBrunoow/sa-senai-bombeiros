@@ -12,6 +12,8 @@ const updateGesAnamnesis = async (
   Childbirth?: boolean,
   gestationalPeriodStart?: string | null,
   gestationalPeriodEnd?: string | null,
+  doctorName?: string,
+  NumberSon?: number,
 ) => {
   try {
     const response = await api.put(
@@ -26,6 +28,8 @@ const updateGesAnamnesis = async (
         ReportOwnerId,
         gestationalPeriodStart,
         gestationalPeriodEnd,
+        DoctorName: doctorName,
+        NumberSon,
       },
       {
         headers: {

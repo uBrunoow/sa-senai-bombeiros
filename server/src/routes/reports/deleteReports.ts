@@ -54,11 +54,11 @@ export async function reportsDeleteRoutes(
             ReportOwnerId: parseInt(id),
           },
         }),
-        // prisma.suspectProblems.deleteMany({
-        //   where: {
-        //     reportId: parseInt(id),
-        //   },
-        // }),
+        prisma.suspectProblems.deleteMany({
+          where: {
+            ReportOwnerId: parseInt(id),
+          },
+        }),
         prisma.glasglow.deleteMany({
           where: {
             ReportOwnerId: parseInt(id),
@@ -75,6 +75,11 @@ export async function reportsDeleteRoutes(
           },
         }),
         prisma.finalization.deleteMany({
+          where: {
+            ReportOwnerId: parseInt(id),
+          },
+        }),
+        prisma.cinematicAvaliation.deleteMany({
           where: {
             ReportOwnerId: parseInt(id),
           },
