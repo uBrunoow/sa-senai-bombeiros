@@ -97,27 +97,28 @@ model Symptoms {
 }
 
 model GestationalAnamnesis {
-  id                  Int         @id @default(autoincrement())
-  PreNatal            Boolean?
-  DoctorName          String?
-  NumberSon           Int?
-  HiPressure          Boolean?
-  BagRuptured         Boolean?
-  VisualInspection    Boolean?
-  Childbirth          Boolean?
-  BornHour            String?
-  BabyName            String?
-  FinalRemarks        String?
-  ReportOwnerId       Int
-  createdAt           DateTime?   @default(now())
-  updatedAt           DateTime?   @updatedAt
-  Complications       Boolean?
-  gestationalPeriod   DateTime?
-  ContractionSchedule String?
-  Duration            String?
-  Interval            String?
-  BabyGender          BabyGender?
-  reportOwner         Report      @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  id                     Int         @id @default(autoincrement())
+  PreNatal               Boolean?
+  DoctorName             String?
+  NumberSon              Int?
+  HiPressure             Boolean?
+  BagRuptured            Boolean?
+  VisualInspection       Boolean?
+  Childbirth             Boolean?
+  BornHour               String?
+  BabyName               String?
+  FinalRemarks           String?
+  ReportOwnerId          Int
+  createdAt              DateTime?   @default(now())
+  updatedAt              DateTime?   @updatedAt
+  Complications          Boolean?
+  gestationalPeriodStart DateTime?
+  gestationalPeriodEnd   DateTime?
+  ContractionSchedule    String?
+  Duration               String?
+  Interval               String?
+  BabyGender             BabyGender?
+  reportOwner            Report      @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 model Anamnesis {

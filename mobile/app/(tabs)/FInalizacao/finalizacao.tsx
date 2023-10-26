@@ -18,13 +18,12 @@ import {
   AntDesign,
 } from '@expo/vector-icons'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
 import findUser from '@src/api/users/findUser'
 import FInalizacaoModal from '@app/modal/FInalizacaoModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { styles as s } from '@app/styles/boxShadow'
-import InputLowPadding from '@app/components/InputLowPadding'
 import Cinematica from './components/Cinematica'
 import findFinalization from '@src/api/reports/finalization/findFinalization'
 import updateCinematic from '@src/api/reports/cinematicAvaliation/updateCinematicAvaliation'
@@ -33,14 +32,14 @@ import updateFinalization from '@src/api/reports/finalization/updateFinalization
 import { Checkbox, FormControl, Input, TextArea, useToast } from 'native-base'
 import { useForm, Controller } from 'react-hook-form'
 import { determineCompletness } from './utils/determineCompletness'
+import { saveFinalizationCompletness } from '@src/redux/reducers/completnessReducer'
 
 type FormDataType = {
   CollectedObjects: string
 }
 
 const Finalizacao = ({ navigation }: any) => {
-  const [selected, setSelected] = useState('')
-  const [categories, setCategories] = useState([])
+  const dispatch = useDispatch()
   const [isPressed, setIsPressed] = useState(false)
   const [selectedOption, setSelectedOption] = useState(``)
   const [changeResponsable, setChangeResponsable] = useState(false)
@@ -275,16 +274,13 @@ const Finalizacao = ({ navigation }: any) => {
         cinematicEmpty,
       )
 
-      console.log(finalizationCompletness)
-      console.log(cinematicDataResponse)
-      console.log(finalizationDataResponse)
-
       if (
         cinematicDataResponse &&
         cinematicDataResponse.updatedCinematicAvaliation &&
         finalizationDataResponse &&
         finalizationDataResponse.updatedFinalization
       ) {
+        dispatch(saveFinalizationCompletness(finalizationCompletness))
         navigation.navigate('ocorrencia')
         toast.show({
           description: 'Informações de Finalização salvas com sucesso.',

@@ -10,6 +10,8 @@ const updateGesAnamnesis = async (
   BagRuptured?: boolean,
   VisualInspection?: boolean,
   Childbirth?: boolean,
+  gestationalPeriodStart?: string | null,
+  gestationalPeriodEnd?: string | null,
 ) => {
   try {
     const response = await api.put(
@@ -22,6 +24,8 @@ const updateGesAnamnesis = async (
         VisualInspection,
         Childbirth,
         ReportOwnerId,
+        gestationalPeriodStart,
+        gestationalPeriodEnd,
       },
       {
         headers: {

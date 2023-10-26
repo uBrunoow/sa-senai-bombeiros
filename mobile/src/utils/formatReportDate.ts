@@ -5,7 +5,6 @@ export const formatReportDate = (date) => {
 
   const parsedDate = new Date(date)
 
-  // Check if the parsedDate is a valid date
   if (isNaN(parsedDate.getTime())) {
     throw new Error('Invalid date')
   }

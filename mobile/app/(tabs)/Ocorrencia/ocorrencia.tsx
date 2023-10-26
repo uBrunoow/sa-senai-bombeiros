@@ -46,6 +46,10 @@ export default function Ocorrencia({ navigation }: any) {
   const anamnesisCompletness = useSelector(
     (state: RootState) => state.completness.anamnesisCompletness,
   )
+  const finalizationCompletness = useSelector(
+    (state: RootState) => state.completness.finalizationCompletness,
+  )
+
   const { bottom, top } = useSafeAreaInsets()
 
   const dispatch = useDispatch()
@@ -341,7 +345,7 @@ export default function Ocorrencia({ navigation }: any) {
               <Grouper
                 title="Finalização"
                 desc="Observações, objetos..."
-                isCompleted={0}
+                isCompleted={finalizationCompletness ?? 0}
               />
             </TouchableOpacity>
             <Pressable onPress={() => navigation.navigate(`home`)}>

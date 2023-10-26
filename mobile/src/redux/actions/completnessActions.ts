@@ -6,3 +6,11 @@ export const saveAnamnesisCompletness = (
     payload: { anamnesisCompletness },
   }
 }
+export const saveFinalizationCompletness = (
+  finalizationCompletness: number | null,
+) => {
+  return {
+    type: 'SAVE_FINALIZATION_COMPLETNESS',
+    payload: { finalizationCompletness },
+  }
+}

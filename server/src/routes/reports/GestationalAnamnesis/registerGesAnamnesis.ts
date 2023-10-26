@@ -1,11 +1,11 @@
 import { FastifyInstance } from 'fastify'
 import { prisma } from '../../../lib/prisma'
 import { registerGestacionalAnamnese } from '../../../schemas/gestacionalAnamneseSchema'
-
 export async function registerGestacionalAnamnesisRoutes(app: FastifyInstance) {
   app.post('/api/gestacionalAnamnesis', async (req, res) => {
     const {
-      gestationalPeriod,
+      gestationalPeriodStart,
+      gestationalPeriodEnd,
       PreNatal,
       DoctorName,
       Complications,
@@ -24,9 +24,17 @@ export async function registerGestacionalAnamnesisRoutes(app: FastifyInstance) {
       ReportOwnerId,
     } = registerGestacionalAnamnese.parse(req.body)
 
+    const gestationalPeriodStartValue = gestationalPeriodStart
+      ? new Date(gestationalPeriodStart)
+      : null
+    const gestationalPeriodEndValue = gestationalPeriodEnd
+      ? new Date(gestationalPeriodEnd)
+      : null
+
     const newGesAnamneses = await prisma.gestationalAnamnesis.create({
       data: {
-        gestationalPeriod: gestationalPeriod || null,
+        gestationalPeriodStart: gestationalPeriodStartValue,
+        gestationalPeriodEnd: gestationalPeriodEndValue,
         PreNatal: PreNatal || false,
         DoctorName: DoctorName || '',
         Complications: Complications || false,

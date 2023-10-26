@@ -10,10 +10,12 @@ import Header from '@app/components/Header'
 import Title from '@app/components/Title'
 import Footer from '@app/components/Footer'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import TestInput from '@app/components/TestInput'
 import MainButton from '@app/components/MainButton'
 import YesOrNo from '@app/components/YesOrNo'
-import GestationPeriod from '@app/(tabs)/AnamneseGestacional/components/GestationPeriod'
+import GestationPeriod, {
+  GestationalPeriodEndPicker,
+  GestationalPeriodStartPicker,
+} from '@app/(tabs)/AnamneseGestacional/components/GestationPeriod'
 import InputFull from '@app/components/InputFull'
 import { styles as s } from '@app/styles/boxShadow'
 import findGestacionalAnamnesis from '@src/api/reports/gestacionalAnamnesis/findGestacionalAnamnesis'
@@ -31,6 +33,7 @@ import {
 import Options from '@app/components/optionsIntroducao'
 import InputNumeric from '@app/components/inputNumeric'
 import InputClock from '@app/components/InputClock'
+import { formatReportDate } from '@src/utils/formatReportDate'
 
 export default function AnamneseGestacional({ navigation }: any) {
   const { bottom, top } = useSafeAreaInsets()
@@ -45,6 +48,14 @@ export default function AnamneseGestacional({ navigation }: any) {
   const [NumberSon, setNumberSon] = useState(0)
   const [loading, setLoading] = useState(false)
   const [buttonLoading, setButtonLoading] = useState(false)
+  const [gestationalPeriod, setGestationalPeriod] = useState({
+    start: '',
+    end: '',
+  })
+
+  const handleGestationalPeriodChange = (start, end) => {
+    setGestationalPeriod({ start, end })
+  }
 
   const handleSelectGender = (selectedGender: 'MASC' | 'FEM') => {
     setGender(selectedGender)
@@ -108,6 +119,9 @@ export default function AnamneseGestacional({ navigation }: any) {
 
   const toast = useToast()
 
+  const gestationalPeriodStart = formatReportDate(gestationalPeriod.start)
+  const gestationalPeriodEnd = formatReportDate(gestationalPeriod.end)
+
   const handleSubmitGesAnamnesis = async () => {
     try {
       setButtonLoading(true)
@@ -121,6 +135,8 @@ export default function AnamneseGestacional({ navigation }: any) {
         BagRuptured,
         VisualInspection,
         Childbirth,
+        gestationalPeriodStart,
+        gestationalPeriodEnd,
       )
       console.log(response)
 
@@ -162,7 +178,28 @@ export default function AnamneseGestacional({ navigation }: any) {
               style={s.boxShadow}
               className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white py-[30px] shadow-md"
             >
-              <GestationPeriod />
+              {/* <GestationPeriod onChange={handleGestationalPeriodChange} /> */}
+              <GestationalPeriodStartPicker
+                gestationalPeriod={gestationalPeriod.start}
+                setGestationalPeriod={(value) =>
+                  setGestationalPeriod({
+                    ...gestationalPeriod,
+                    start: String(value),
+                  })
+                }
+                label="Começo do Período de Gestação"
+              />
+
+              <GestationalPeriodEndPicker
+                gestationalPeriod={gestationalPeriod.end}
+                setGestationalPeriod={(value) =>
+                  setGestationalPeriod({
+                    ...gestationalPeriod,
+                    end: String(value),
+                  })
+                }
+                label="Fim do Período de Gestação"
+              />
               <YesOrNo
                 Question="Fez pré-natal?"
                 selectedOption={PreNatal ? 'SIM' : 'NÃO'}
