@@ -48,14 +48,18 @@ export default function AnamneseGestacional({ navigation }: any) {
   const [intervalSeconds, setIntervalSeconds] = useState(0)
   const [intervalHours, setIntervalHours] = useState(0)
 
-  const handleDurationChange = (minutes, seconds) => {
+  const handleDurationChange = (minutes: number, seconds: number) => {
     setDurationMinutes(minutes)
     setDurationSeconds(seconds)
   }
 
   console.log(durationMinutes, 'MIN', durationSeconds, 'SEGS')
 
-  const handleIntervalChange = (hours, minutes, seconds) => {
+  const handleIntervalChange = (
+    hours: number,
+    minutes: number,
+    seconds: number,
+  ) => {
     setIntervalHours(hours)
     setIntervalMinutes(minutes)
     setIntervalSeconds(seconds)

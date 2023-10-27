@@ -36,20 +36,21 @@ model Report {
   bodyPulse                Int?
   breathing                Int?
   saturation               Int?
-  perfusion                perfusion
+  perfusion                String?
   ownerId                  Int
   Anamnesis                Anamnesis[]
   Finalization             Finalization[]
   GestationalAnamnesis     GestationalAnamnesis[]
   Glasglow                 Glasglow[]
   PreHospitalMethods       PreHospitalMethod[]
-  owner                    User                       @relation(fields: [ownerId], references: [id])
   Report_PreHospitalMethod Report_PreHospitalMethod[]
   Report_Symptoms          Report_Symptoms[]
   SuspectProblems          SuspectProblems[]
   Symptoms                 Symptoms[]
   LocalTraumas             trauma[]
   CinematicAvaliation      CinematicAvaliation[]
+  owner                    User?                      @relation(fields: [userId], references: [id])
+  userId                   Int?
 }
 
 model Report_PreHospitalMethod {
@@ -223,10 +224,10 @@ enum problemaSuspeitoRespiratorio {
   INLACAO_FUMACA
 }
 
-enum perfusion {
-  MAIOR_DOIS_SEGUNDOS
-  MENOR_DOIS_SEGUNDOS
-}
+// enum perfusion {
+//   MAIOR_DOIS_SEGUNDOS
+//   MENOR_DOIS_SEGUNDOS
+// }
 
 enum localTraumaSide {
   RIGHT

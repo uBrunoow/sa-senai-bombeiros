@@ -37,7 +37,7 @@ export async function registerReportRoutes(app: FastifyInstance) {
         bodyPulse: bodyPulse || 0,
         breathing: breathing || 0,
         saturation: saturation || 0,
-        perfusion: 'MAIOR_DOIS_SEGUNDOS',
+        perfusion: perfusion || '',
         ownerId,
       },
     })
