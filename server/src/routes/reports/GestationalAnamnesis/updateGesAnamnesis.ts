@@ -120,6 +120,8 @@ export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
     if (NumberSon) {
       updateGestacionalAnamnesisData.NumberSon = NumberSon
     }
+    if (!NumberSon && NumberSon !== undefined)
+      updateGestacionalAnamnesisData.NumberSon = 0
     if (ContractionSchedule) {
       updateGestacionalAnamnesisData.ContractionSchedule = ContractionSchedule
     }
@@ -162,6 +164,8 @@ export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
     if (FinalRemarks) {
       updateGestacionalAnamnesisData.FinalRemarks = FinalRemarks
     }
+    if (!FinalRemarks && FinalRemarks !== undefined)
+      updateGestacionalAnamnesisData.FinalRemarks = ''
     if (ReportOwnerId) {
       updateGestacionalAnamnesisData.ReportOwnerId = ReportOwnerId
     }
