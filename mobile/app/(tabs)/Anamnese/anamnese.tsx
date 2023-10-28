@@ -148,7 +148,7 @@ export default function Anamnese({ navigation }: any) {
         observacoesFinais,
       )
 
-      const { id, createdAt, updatedAt, reportOwnerId, ...anameseWithoutMeta } =
+      const { id, createdAt, updatedAt, ReportOwnerId, ...anameseWithoutMeta } =
         response?.updatedAnamnese
 
       let emptyOrFalseCount = 0
@@ -164,8 +164,6 @@ export default function Anamnese({ navigation }: any) {
 
       const anamnesisCompletness = determineCompletness(emptyOrFalseCount)
 
-      console.log('Campos Vazios: ', emptyOrFalseCount)
-      console.log(anamnesisCompletness)
       console.log(response)
 
       if (response && response.updatedAnamnese) {

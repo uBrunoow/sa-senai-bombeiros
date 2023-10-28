@@ -14,3 +14,12 @@ export const saveFinalizationCompletness = (
     payload: { finalizationCompletness },
   }
 }
+
+export const saveGesAnamnesisCompletness = (
+  gesAnamnesisCompletness: number | null,
+) => {
+  return {
+    type: 'SAVE_GES_ANAMNESIS_COMPLETNESS',
+    payload: { gesAnamnesisCompletness },
+  }
+}

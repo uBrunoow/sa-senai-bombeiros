@@ -49,6 +49,9 @@ export default function Ocorrencia({ navigation }: any) {
   const finalizationCompletness = useSelector(
     (state: RootState) => state.completness.finalizationCompletness,
   )
+  const gesAnamnesisCompletness = useSelector(
+    (state: RootState) => state.completness.gesAnamnesisCompletness,
+  )
 
   const { bottom, top } = useSafeAreaInsets()
 
@@ -335,7 +338,7 @@ export default function Ocorrencia({ navigation }: any) {
               <Grouper
                 title="Anamnese Gestacional"
                 desc="Período gestação, pré-natal..."
-                isCompleted={0}
+                isCompleted={gesAnamnesisCompletness ?? 0}
               />
             </TouchableOpacity>
             <TouchableOpacity

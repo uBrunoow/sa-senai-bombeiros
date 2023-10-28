@@ -61,6 +61,7 @@ export interface RootState {
   completness: {
     anamnesisCompletness: number
     finalizationCompletness: number
+    gesAnamnesisCompletness: number
   }
 }
 const store = configureStore({

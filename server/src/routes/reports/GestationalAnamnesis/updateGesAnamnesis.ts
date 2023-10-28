@@ -107,12 +107,16 @@ export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
     if (PreNatal) {
       updateGestacionalAnamnesisData.PreNatal = PreNatal
     }
+    if (!PreNatal && PreNatal !== undefined)
+      updateGestacionalAnamnesisData.PreNatal = false
     if (DoctorName) {
       updateGestacionalAnamnesisData.DoctorName = DoctorName
     }
     if (Complications) {
       updateGestacionalAnamnesisData.Complications = Complications
     }
+    if (!Complications && Complications !== undefined)
+      updateGestacionalAnamnesisData.Complications = false
     if (NumberSon) {
       updateGestacionalAnamnesisData.NumberSon = NumberSon
     }
@@ -128,15 +132,23 @@ export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
     if (HiPressure) {
       updateGestacionalAnamnesisData.HiPressure = HiPressure
     }
+    if (!HiPressure && HiPressure !== undefined)
+      updateGestacionalAnamnesisData.HiPressure = false
     if (BagRuptured) {
       updateGestacionalAnamnesisData.BagRuptured = BagRuptured
     }
+    if (!BagRuptured && BagRuptured !== undefined)
+      updateGestacionalAnamnesisData.BagRuptured = false
     if (VisualInspection) {
       updateGestacionalAnamnesisData.VisualInspection = VisualInspection
     }
+    if (!VisualInspection && VisualInspection !== undefined)
+      updateGestacionalAnamnesisData.VisualInspection = false
     if (Childbirth) {
       updateGestacionalAnamnesisData.Childbirth = Childbirth
     }
+    if (!Childbirth && Childbirth !== undefined)
+      updateGestacionalAnamnesisData.Childbirth = false
     if (BabyGender) {
       updateGestacionalAnamnesisData.BabyGender =
         BabyGender === 'Male' || BabyGender === 'Female' ? BabyGender : null

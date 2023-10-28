@@ -20,15 +20,15 @@ export default function InputInterval(props: InputIntervalProps) {
   const initialSeconds =
     props.seconds !== undefined ? props.seconds.toString() : ''
 
-  const [hours, setHours] = useState(initialHours)
   const [minutes, setMinutes] = useState(initialMinutes)
   const [seconds, setSeconds] = useState(initialSeconds)
+  const [hours, setHours] = useState(initialHours)
 
   useEffect(() => {
     setHours(props.hours !== undefined ? props.hours.toString() : '')
     setMinutes(props.minutes !== undefined ? props.minutes.toString() : '')
     setSeconds(props.seconds !== undefined ? props.seconds.toString() : '')
-  }, [props.hours, props.minutes, props.seconds])
+  }, [props.minutes, props.seconds, props.hours])
 
   const handleWidth = () => {
     if (props.size === 'small') {
@@ -59,14 +59,31 @@ export default function InputInterval(props: InputIntervalProps) {
     if (!isNaN(Number(numericValue))) {
       if (isHours) {
         setHours(numericValue)
+        if (props.onChangeInterval) {
+          props.onChangeInterval(
+            Number(numericValue),
+            Number(minutes),
+            Number(seconds),
+          )
+        }
       } else if (isMinutes) {
         setMinutes(numericValue)
+        if (props.onChangeInterval) {
+          props.onChangeInterval(
+            Number(hours),
+            Number(numericValue),
+            Number(seconds),
+          )
+        }
       } else {
         setSeconds(numericValue)
-      }
-
-      if (props.onChangeInterval) {
-        props.onChangeInterval(Number(hours), Number(minutes), Number(seconds))
+        if (props.onChangeInterval) {
+          props.onChangeInterval(
+            Number(hours),
+            Number(minutes),
+            Number(numericValue),
+          )
+        }
       }
     }
   }

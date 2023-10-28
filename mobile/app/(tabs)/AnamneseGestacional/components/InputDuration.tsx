@@ -14,16 +14,16 @@ type InputDurationProps = {
 
 export default function InputDuration(props: InputDurationProps) {
   const initialMinutes =
-    props.minutes !== undefined ? props.minutes.toString() : ''
+    props.minutes !== undefined ? String(props.minutes) : ''
   const initialSeconds =
-    props.seconds !== undefined ? props.seconds.toString() : ''
+    props.seconds !== undefined ? String(props.seconds) : ''
 
   const [minutes, setMinutes] = useState(initialMinutes)
   const [seconds, setSeconds] = useState(initialSeconds)
 
   useEffect(() => {
-    setMinutes(props.minutes !== undefined ? props.minutes.toString() : '')
-    setSeconds(props.seconds !== undefined ? props.seconds.toString() : '')
+    setMinutes(props.minutes !== undefined ? String(props.minutes) : '')
+    setSeconds(props.seconds !== undefined ? String(props.seconds) : '')
   }, [props.minutes, props.seconds])
 
   const handleWidth = () => {
