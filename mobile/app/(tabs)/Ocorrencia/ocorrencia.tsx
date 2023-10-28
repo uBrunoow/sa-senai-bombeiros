@@ -20,15 +20,21 @@ import registerAnamnesis from '@src/api/reports/anamnesis/registerAnamnesis'
 import { RootState } from '@src/redux/stores/stores'
 import {
   clearAnamnesisId,
+  clearCinematicAvaliationId,
   clearFinalizationId,
   clearGestacionalAnamnesisId,
+  clearGlasgowId,
+  clearPreHospitalarMethodId,
   clearReportId,
+  clearSignsAndSymptomsId,
   clearSuspectProblemsId,
   saveAnamnesisId,
   saveCinematicAvaliationId,
   saveFinalizationId,
   saveGestacionalAnamnesisId,
   saveGlasgowId,
+  savePreHospitalarMethodId,
+  saveSignsAndSymptomsId,
   saveSuspectProblemsId,
 } from '@src/redux/actions/reportActions'
 import ExcluirOcorrenciaModal from '@app/modal/ExcluirOcorrenciaModal'
@@ -40,6 +46,8 @@ import registerSuspectProblems from '@src/api/reports/suspectProblems/registerSu
 import registerGlasgow from '@src/api/reports/glasgow/registerGlasgow'
 import registerCinematicAvaliation from '@src/api/reports/cinematicAvaliation/registerCinematicAvaliation'
 import Loader from '@app/components/Loader'
+import registerPreHospitalarMethods from '@src/api/reports/preHospitalarMethod/registerPreHospitalarMethod'
+import registerSymptoms from '@src/api/reports/symptoms/registerSymptoms'
 
 export default function Ocorrencia({ navigation }: any) {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
@@ -216,6 +224,61 @@ export default function Ocorrencia({ navigation }: any) {
     }
   }
 
+  const existingPreHospitalarMethodId = useSelector(
+    (state: RootState) => state.preHospitalarMethod.preHospitalarMethodId,
+  )
+  const existingSignsAndSymptomsId = useSelector(
+    (state: RootState) => state.signsAndSymptoms.signsAndSymptomsId,
+  )
+
+  const handleClickIntroduction = async () => {
+    if (existingPreHospitalarMethodId && existingSignsAndSymptomsId) {
+      navigation.navigate('introducao', {
+        screen: 'introducao',
+        params: {
+          preHospitalarMethodId: existingPreHospitalarMethodId,
+          signsAndSymptomsId: existingSignsAndSymptomsId,
+        },
+      })
+    } else {
+      const preHospitalarMethodResponse = await registerPreHospitalarMethods(
+        ReportOwnerId,
+      )
+      console.log(preHospitalarMethodResponse)
+
+      const symptomsResponse = await registerSymptoms(ReportOwnerId)
+      console.log(symptomsResponse)
+
+      if (
+        preHospitalarMethodResponse &&
+        preHospitalarMethodResponse.preHospitalarMethod &&
+        symptomsResponse &&
+        symptomsResponse.symptoms
+      ) {
+        dispatch(
+          savePreHospitalarMethodId(
+            preHospitalarMethodResponse.preHospitalarMethod.id,
+          ),
+        )
+        console.log(
+          'Pre hospitalar methods n°: ',
+          preHospitalarMethodResponse.preHospitalarMethod.id,
+        )
+        dispatch(saveSignsAndSymptomsId(symptomsResponse.symptoms.id))
+        console.log('Sintomas n°: ', symptomsResponse.symptoms.id)
+
+        navigation.navigate('introducao', {
+          screen: 'introducao',
+          params: {
+            preHospitalarMethodId:
+              preHospitalarMethodResponse.preHospitalarMethod.id,
+            signsAndSymptomsId: symptomsResponse.symptoms.id,
+          },
+        })
+      }
+    }
+  }
+
   const [showModal, setShowModal] = useState(false)
   const reportId = useSelector((state: RootState) => state.report.reportId)
 
@@ -243,6 +306,10 @@ export default function Ocorrencia({ navigation }: any) {
         dispatch(clearGestacionalAnamnesisId())
         dispatch(clearFinalizationId())
         dispatch(clearSuspectProblemsId())
+        dispatch(clearGlasgowId())
+        dispatch(clearCinematicAvaliationId())
+        dispatch(clearPreHospitalarMethodId())
+        dispatch(clearSignsAndSymptomsId())
         setShowModal(false)
         navigation.navigate('home')
       }
@@ -275,7 +342,7 @@ export default function Ocorrencia({ navigation }: any) {
               </Text>
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate(`introducao`)}
+              onPress={handleClickIntroduction}
               activeOpacity={0.7}
             >
               <Grouper

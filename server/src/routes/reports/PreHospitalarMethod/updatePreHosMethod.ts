@@ -6,11 +6,10 @@ export async function updatePreHospitalarMethodsRoutes(app: FastifyInstance) {
   app.put('/api/preHospitalarMethods/update/:id', async (req, res) => {
     const { id } = req.params as { id: string }
 
-    const { description, ReportOwnerId } = updatePreHospitalarMethods.parse(
-      req.body,
-    )
+    const { preHospitalarMethodDescription, ReportOwnerId } =
+      updatePreHospitalarMethods.parse(req.body)
 
-    if (!description && !ReportOwnerId) {
+    if (!preHospitalarMethodDescription && !ReportOwnerId) {
       return res
         .status(400)
         .send({ message: '🔴 Nenhuma informação foi fornecida' })
@@ -30,12 +29,15 @@ export async function updatePreHospitalarMethodsRoutes(app: FastifyInstance) {
     }
 
     const updatePreHospitalarMethodsData: {
-      description?: string
+      preHospitalarMethodDescription?: string[]
       ReportOwnerId?: number
-    } = {}
+    } = {
+      preHospitalarMethodDescription: [],
+    }
 
-    if (description) {
-      updatePreHospitalarMethodsData.description = description
+    if (preHospitalarMethodDescription) {
+      updatePreHospitalarMethodsData.preHospitalarMethodDescription =
+        preHospitalarMethodDescription
     }
 
     if (ReportOwnerId) {

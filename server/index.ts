@@ -28,6 +28,7 @@ import { symptomsDeleteRoutes } from './src/routes/reports/Symptoms/deleteSympto
 import {
   symptomsFindRoutes,
   symptomsFindOneRoutes,
+  symptomsByReportRoutes,
 } from './src/routes/reports/Symptoms/findSymptoms'
 import { updateSymptomsRoutes } from './src/routes/reports/Symptoms/updateSymptoms'
 
@@ -131,6 +132,7 @@ app.register(symptomsDeleteRoutes)
 app.register(symptomsFindRoutes)
 app.register(symptomsFindOneRoutes)
 app.register(updateSymptomsRoutes)
+app.register(symptomsByReportRoutes)
 
 // ANAMNESIS
 app.register(registerAnamneseRoutes)

@@ -6,9 +6,11 @@ export async function updateSymptomsRoutes(app: FastifyInstance) {
   app.put('/api/symptoms/update/:id', async (req, res) => {
     const { id } = req.params as { id: string }
 
-    const { description, ReportOwnerId } = updateSymptoms.parse(req.body)
+    const { symptomsDescription, ReportOwnerId } = updateSymptoms.parse(
+      req.body,
+    )
 
-    if (!description && !ReportOwnerId) {
+    if (!symptomsDescription && !ReportOwnerId) {
       return res
         .status(400)
         .send({ message: '🔴 Nenhuma informação foi fornecida' })
@@ -27,12 +29,12 @@ export async function updateSymptomsRoutes(app: FastifyInstance) {
     }
 
     const updateSymptomsData: {
-      description?: string
+      symptomsDescription?: string[]
       ReportOwnerId?: number
     } = {}
 
-    if (description) {
-      updateSymptomsData.description = description
+    if (symptomsDescription) {
+      updateSymptomsData.symptomsDescription = symptomsDescription
     }
 
     if (ReportOwnerId) {

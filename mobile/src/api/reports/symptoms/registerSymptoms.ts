@@ -1,34 +1,25 @@
 import { api } from '@src/lib/api'
 
-const registerSignsAndSymptoms = async (
-  descriptions: string[],
-  reportId: number,
-) => {
+const registerSymptoms = async (ReportOwnerId: number) => {
   try {
-    const promises = descriptions.map(async (description) => {
-      const response = await api.post(
-        '/api/symptoms',
-        {
-          description,
-          ReportOwnerId: reportId,
+    const response = await api.post(
+      '/api/symptoms',
+      {
+        ReportOwnerId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      )
+      },
+    )
 
-      return response.data
-    })
-
-    const responseData = await Promise.all(promises)
-
-    return responseData
+    const data = response.data
+    return data
   } catch (error) {
     console.error('Erro ao enviar os sintomas:', error)
     return null
   }
 }
 
-export default registerSignsAndSymptoms
+export default registerSymptoms
