@@ -11,6 +11,8 @@ const updateReport = async (
   cpf?: string | null,
   phone?: string | null,
   reportPlace?: string | null,
+  followUpAge?: number | null,
+  followUp?: string | null,
 ) => {
   try {
     const response = await api.put(
@@ -24,6 +26,8 @@ const updateReport = async (
         phone,
         reportPlace,
         ownerId,
+        followUpAge,
+        followUp,
       },
       {
         headers: {

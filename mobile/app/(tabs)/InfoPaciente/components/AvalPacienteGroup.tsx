@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native'
 import AvalPacienteModal from '@app/modal/AvalPacienteModal'
 import { styles as s } from '@app/styles/boxShadow'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setGlasgowData } from '@src/redux/actions/dataActions'
+import findGlasgow from '@src/api/reports/glasgow/findGlasgow'
+import { RootState } from '@src/redux/stores/stores'
 
 //
 export default function AvalPacienteGroup() {
@@ -39,6 +41,23 @@ export default function AvalPacienteGroup() {
   function handleRespostaMotora(valueRespostaMotora: number) {
     setRespostaMotora(valueRespostaMotora)
   }
+
+  const glasgowId = useSelector((state: RootState) => state.glasgow.glasgowId)
+
+  useEffect(() => {
+    const findGlasgowData = async () => {
+      const response = await findGlasgow(glasgowId)
+
+      const eyeOpeningOwnerId = response.glasgow.eyeOpeningOwnerId
+      const verbalResponseOwnerId = response.glasgow.verbalResponseOwnerId
+      const motorResponseOwnerId = response.glasgow.motorResponseOwnerId
+
+      setAberturaOcular(eyeOpeningOwnerId)
+      setRespostaVerbal(verbalResponseOwnerId)
+      setRespostaMotora(motorResponseOwnerId)
+    }
+    findGlasgowData()
+  }, [glasgowId])
 
   useEffect(() => {
     const onChangeGlasgowInfoData = () => {

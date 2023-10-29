@@ -19,6 +19,8 @@ export async function registerReportRoutes(app: FastifyInstance) {
       breathing,
       saturation,
       perfusion,
+      followUp,
+      followUpAge,
       ownerId,
     } = reportSchema.parse(req.body)
     const reportDateValue = reportDate ? new Date(reportDate) : null
@@ -38,6 +40,8 @@ export async function registerReportRoutes(app: FastifyInstance) {
         breathing: breathing || 0,
         saturation: saturation || 0,
         perfusion: perfusion || '',
+        followUp: followUp || '',
+        followUpAge: followUpAge || 0,
         ownerId,
       },
     })

@@ -199,7 +199,7 @@ const Finalizacao = ({ navigation }: any) => {
   const toast = useToast()
 
   const removeMetaProperties = (obj) => {
-    const { id, createdAt, updatedAt, ...withoutMeta } = obj
+    const { id, createdAt, updatedAt, reportOwnerId, ...withoutMeta } = obj
     return withoutMeta
   }
 

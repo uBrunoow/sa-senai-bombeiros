@@ -9,17 +9,27 @@ export const saveFinalizationCompletness = createAction<number | null>(
 export const saveGesAnamnesisCompletness = createAction<number | null>(
   'SAVE_GES_ANAMNESIS_COMPLETNESS',
 )
+export const saveIntroductionCompletness = createAction<number | null>(
+  'SAVE_INTRODUCTION_COMPLETNESS',
+)
+export const saveInfoPacienteCompletness = createAction<number | null>(
+  'SAVE_INFO_PACIENTE_COMPLETNESS',
+)
 
 interface CompletnessState {
   anamnesisCompletness: number | null
   finalizationCompletness: number | null
   gesAnamnesisCompletness: number | null
+  introductionCompletness: number | null
+  infoPacienteCompletness: number | null
 }
 
 const initialCompletnessState: CompletnessState = {
   anamnesisCompletness: null,
   finalizationCompletness: null,
   gesAnamnesisCompletness: null,
+  introductionCompletness: null,
+  infoPacienteCompletness: null,
 }
 
 const completnessReducer = createReducer(initialCompletnessState, {
@@ -37,6 +47,18 @@ const completnessReducer = createReducer(initialCompletnessState, {
     action: PayloadAction<number>,
   ) => {
     state.gesAnamnesisCompletness = action.payload
+  },
+  [saveIntroductionCompletness.type]: (
+    state,
+    action: PayloadAction<number>,
+  ) => {
+    state.introductionCompletness = action.payload
+  },
+  [saveInfoPacienteCompletness.type]: (
+    state,
+    action: PayloadAction<number>,
+  ) => {
+    state.infoPacienteCompletness = action.payload
   },
 })
 

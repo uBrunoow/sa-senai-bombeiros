@@ -9,7 +9,7 @@ import InputLowPadding from '@app/components/InputLowPadding'
 import { styles as s } from '@app/styles/boxShadow'
 import InputDatePicker from '@app/components/InputDatePIcker'
 import { RootState } from '@src/redux/stores/stores'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import updateReport from '@src/api/reports/updateReport'
 import MainButton from '@app/components/MainButton'
 import { formatReportDate } from '@src/utils/formatReportDate'
@@ -22,6 +22,8 @@ import updatePreHospitalarMethod from '@src/api/reports/preHospitalarMethod/upda
 import findPreHospitalarMethodByReport from '@src/api/reports/preHospitalarMethod/findPreHospitalarMethodByReport'
 import updateSymptomsMethod from '@src/api/reports/symptoms/updateSymtoms'
 import findSymptomsByReport from '@src/api/reports/symptoms/findSymptoms'
+import { determineCompletness } from './utils/determineCompletness'
+import { saveIntroductionCompletness } from '@src/redux/reducers/completnessReducer'
 
 type CheckboxStates = {
   AFOGAMENTO?: boolean
@@ -104,6 +106,7 @@ type SymptomsCheckboxStates = {
 }
 
 export default function Introducao({ navigation }: any) {
+  const dispatch = useDispatch()
   const { bottom, top } = useSafeAreaInsets()
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
@@ -124,7 +127,8 @@ export default function Introducao({ navigation }: any) {
   const [reportPlace, setReportPlace] = useState(' ')
   const [loading, setLoading] = useState(false)
   const [buttonLoading, setButtonLoading] = useState(false)
-
+  const [followUpAge, setFollowUpAge] = useState(0)
+  const [followUp, setFollowUp] = useState('')
   const [
     preHospitalarMethodCheckboxState,
     setpreHospitalarMethodCheckboxState,
@@ -256,6 +260,8 @@ export default function Introducao({ navigation }: any) {
         const reportDateTimeResponse = response.report.reportDate
         const reportPlaceResponse = response.report.reportPlace
         const genderResponse = response.report.gender
+        const followUpResponse = response.report.followUp
+        const followUpAgeResponse = response.report.followUpAge
 
         setAge(ageResponse)
         setName(nameResponse)
@@ -264,6 +270,8 @@ export default function Introducao({ navigation }: any) {
         setReportDateTime(reportDateTimeResponse)
         setReportPlace(reportPlaceResponse)
         setGender(genderResponse)
+        setFollowUp(followUpResponse)
+        setFollowUpAge(followUpAgeResponse)
 
         const preHospitalarMethodResponse =
           await findPreHospitalarMethodByReport(reportId)
@@ -540,6 +548,25 @@ export default function Introducao({ navigation }: any) {
     .filter(([key, value]) => value)
     .map(([key]) => key)
 
+  const removeMetaProperties = (obj) => {
+    const {
+      id,
+      createdAt,
+      updatedAt,
+      ReportOwnerId,
+      ownerId,
+      systolicBloodPressure,
+      diastolicBloodPressure,
+      bodyTemp,
+      bodyPulse,
+      breathing,
+      saturation,
+      perfusion,
+      ...withoutMeta
+    } = obj
+    return withoutMeta
+  }
+
   const handleSubmitIntroduction = async () => {
     try {
       setButtonLoading(true)
@@ -555,7 +582,26 @@ export default function Introducao({ navigation }: any) {
         cpf,
         phone,
         reportPlace,
+        followUpAge,
+        followUp,
       )
+
+      const reportWithoutMeta = removeMetaProperties(response.updatedReport)
+
+      let reportEmpty = 0
+
+      for (const key in reportWithoutMeta) {
+        if (
+          reportWithoutMeta[key] === '' ||
+          reportWithoutMeta[key] === 0 ||
+          reportWithoutMeta[key] === false ||
+          (Array.isArray(reportWithoutMeta[key]) &&
+            reportWithoutMeta[key].length === 0) ||
+          reportWithoutMeta[key] === null
+        ) {
+          reportEmpty++
+        }
+      }
 
       const preHospitalarMethodResponse = await updatePreHospitalarMethod(
         ReportOwnerId,
@@ -563,18 +609,66 @@ export default function Introducao({ navigation }: any) {
         preHospitalarMethodDescription,
       )
 
+      const preHospitalarMethodWithoutMeta = removeMetaProperties(
+        preHospitalarMethodResponse.updatePreHospitalarMethod,
+      )
+
+      let preHospitalarMethodEmpty = 0
+
+      for (const key in preHospitalarMethodWithoutMeta) {
+        if (
+          preHospitalarMethodWithoutMeta[key] === '' ||
+          preHospitalarMethodWithoutMeta[key] === 0 ||
+          preHospitalarMethodWithoutMeta[key] === false ||
+          (Array.isArray(preHospitalarMethodWithoutMeta[key]) &&
+            preHospitalarMethodWithoutMeta[key].length === 0) ||
+          preHospitalarMethodWithoutMeta[key] === null
+        ) {
+          preHospitalarMethodEmpty++
+        }
+      }
+
       const symptomsResponse = await updateSymptomsMethod(
         ReportOwnerId,
         signsAndSymptomsId,
         symptomsDescription,
       )
 
-      console.log(preHospitalarMethodResponse)
+      const symptomsWithoutMeta = removeMetaProperties(
+        symptomsResponse.updatedSymptom,
+      )
 
-      console.log(symptomsResponse)
+      let symptomsEmpty = 0
 
-      if (response && response.updatedReport) {
+      for (const key in symptomsWithoutMeta) {
+        if (
+          symptomsWithoutMeta[key] === '' ||
+          symptomsWithoutMeta[key] === 0 ||
+          symptomsWithoutMeta[key] === false ||
+          (Array.isArray(symptomsWithoutMeta[key]) &&
+            symptomsWithoutMeta[key].length === 0) ||
+          symptomsWithoutMeta[key] === null
+        ) {
+          symptomsEmpty++
+        }
+      }
+
+      const introductionCompletness = determineCompletness(
+        reportEmpty,
+        preHospitalarMethodEmpty,
+        symptomsEmpty,
+      )
+
+      if (
+        response &&
+        response.updatedReport &&
+        preHospitalarMethodResponse &&
+        preHospitalarMethodResponse.updatePreHospitalarMethod &&
+        symptomsResponse &&
+        symptomsResponse.updatedSymptom
+      ) {
         navigation.navigate('ocorrencia')
+        dispatch(saveIntroductionCompletness(introductionCompletness))
         toast.show({
           description: 'Informações de Introdução salvas com sucesso.',
           duration: 3000,
@@ -666,8 +760,20 @@ export default function Introducao({ navigation }: any) {
               onChangeText={(e) => setReportPlace(e)}
             />
             <View className="mx-auto flex-1 flex-row">
-              <InputLowPadding title="Acompanhante" size="regular" />
-              <InputLowPadding title="Idade" size="small" />
+              <InputLowPadding
+                title="Acompanhante"
+                size="regular"
+                alignText="left"
+                value={followUp}
+                placeholder={followUp || ''}
+                onChangeText={(e) => setFollowUp(e)}
+              />
+              <InputNumeric
+                title="Idade"
+                size="small"
+                value={followUpAge}
+                onChangeText={(e) => setFollowUpAge(e)}
+              />
             </View>
 
             <View>

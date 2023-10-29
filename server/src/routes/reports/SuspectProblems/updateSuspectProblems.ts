@@ -11,6 +11,7 @@ export async function updateSuspectProblemsRoutes(app: FastifyInstance) {
       problemaSuspeitoDiabetes,
       problemaSuspeitoObstetrico,
       problemaSuspeitoRespiratorio,
+      problemaSuspeitoPsiquiatrico,
       Another,
       ReportOwnerId,
     } = suspectProblemsUpdateSchema.parse(req.body)
@@ -20,6 +21,7 @@ export async function updateSuspectProblemsRoutes(app: FastifyInstance) {
       !problemaSuspeitoDiabetes &&
       !problemaSuspeitoObstetrico &&
       !problemaSuspeitoRespiratorio &&
+      !problemaSuspeitoPsiquiatrico &&
       !Another &&
       !ReportOwnerId
     ) {
@@ -45,6 +47,7 @@ export async function updateSuspectProblemsRoutes(app: FastifyInstance) {
       problemaSuspeitoDiabetes: string[]
       problemaSuspeitoObstetrico: string[]
       problemaSuspeitoRespiratorio: string[]
+      problemaSuspeitoPsiquiatrico: boolean
       Another: string
       ReportOwnerId?: number
     } = {
@@ -74,6 +77,15 @@ export async function updateSuspectProblemsRoutes(app: FastifyInstance) {
       updateSuspectProblemsData.problemaSuspeitoRespiratorio =
         problemaSuspeitoRespiratorio
     }
+    if (problemaSuspeitoPsiquiatrico) {
+      updateSuspectProblemsData.problemaSuspeitoPsiquiatrico =
+        problemaSuspeitoPsiquiatrico
+    }
+    if (
+      !problemaSuspeitoPsiquiatrico &&
+      problemaSuspeitoPsiquiatrico !== undefined
+    )
+      updateSuspectProblemsData.problemaSuspeitoPsiquiatrico = false
 
     if (Another) {
       updateSuspectProblemsData.Another = Another

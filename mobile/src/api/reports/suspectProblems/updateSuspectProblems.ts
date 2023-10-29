@@ -7,6 +7,7 @@ const updateSuspectProblems = async (
   diabetesSuboptions?: string[],
   obstericoSuboptions?: string[],
   respiratorioSuboptions?: string[],
+  psiquiatricoSuboptionsData?: boolean,
   Another?: string,
 ) => {
   try {
@@ -17,6 +18,7 @@ const updateSuspectProblems = async (
         problemaSuspeitoDiabetes: diabetesSuboptions,
         problemaSuspeitoObstetrico: obstericoSuboptions,
         problemaSuspeitoRespiratorio: respiratorioSuboptions,
+        problemaSuspeitoPsiquiatrico: psiquiatricoSuboptionsData,
         Another,
         ReportOwnerId,
       },

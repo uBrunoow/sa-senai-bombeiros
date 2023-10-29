@@ -60,6 +60,12 @@ export default function Ocorrencia({ navigation }: any) {
   const gesAnamnesisCompletness = useSelector(
     (state: RootState) => state.completness.gesAnamnesisCompletness,
   )
+  const introductionCompletness = useSelector(
+    (state: RootState) => state.completness.introductionCompletness,
+  )
+  const infoPacienteCompletness = useSelector(
+    (state: RootState) => state.completness.infoPacienteCompletness,
+  )
 
   const { bottom, top } = useSafeAreaInsets()
 
@@ -108,7 +114,6 @@ export default function Ocorrencia({ navigation }: any) {
       })
     } else {
       const response = await registerGesAnamnesis(ReportOwnerId)
-      console.log(response)
 
       if (response && response.gesAnamnesis) {
         dispatch(saveGestacionalAnamnesisId(response.gesAnamnesis.id))
@@ -144,8 +149,6 @@ export default function Ocorrencia({ navigation }: any) {
       const cinematicAvaliationResponse = await registerCinematicAvaliation(
         ReportOwnerId,
       )
-      console.log(response)
-      console.log(cinematicAvaliationResponse)
 
       if (
         response &&
@@ -192,10 +195,8 @@ export default function Ocorrencia({ navigation }: any) {
       const suspectProblemsResponse = await registerSuspectProblems(
         ReportOwnerId,
       )
-      console.log(suspectProblemsResponse)
 
       const glasgowResponse = await registerGlasgow(ReportOwnerId)
-      console.log(glasgowResponse)
 
       if (
         suspectProblemsResponse &&
@@ -244,10 +245,8 @@ export default function Ocorrencia({ navigation }: any) {
       const preHospitalarMethodResponse = await registerPreHospitalarMethods(
         ReportOwnerId,
       )
-      console.log(preHospitalarMethodResponse)
 
       const symptomsResponse = await registerSymptoms(ReportOwnerId)
-      console.log(symptomsResponse)
 
       if (
         preHospitalarMethodResponse &&
@@ -348,7 +347,7 @@ export default function Ocorrencia({ navigation }: any) {
               <Grouper
                 title="Introdução"
                 desc="Dados da vítima, tipo ocorr..."
-                isCompleted={4}
+                isCompleted={introductionCompletness ?? 0}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={handleClickAnamnese} activeOpacity={0.7}>
@@ -365,7 +364,7 @@ export default function Ocorrencia({ navigation }: any) {
               <Grouper
                 title="Info. do paciente"
                 desc="Aval. paciente, sinais vitais..."
-                isCompleted={0}
+                isCompleted={infoPacienteCompletness ?? 0}
               />
             </TouchableOpacity>
             <TouchableOpacity

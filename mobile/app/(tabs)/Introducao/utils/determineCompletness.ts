@@ -1,29 +1,29 @@
 export const determineCompletness = (
   reportEmpty: number,
-  preHospitalarEmpty: number,
-  SignsEmpty: number,
+  preHospitalarMethodEmpty: number,
+  symptomsEmpty: number,
 ) => {
   const emptyOrFalseOrNullOrZeroCount: number =
-    reportEmpty + preHospitalarEmpty + SignsEmpty
+    reportEmpty + preHospitalarMethodEmpty + symptomsEmpty
 
   if (emptyOrFalseOrNullOrZeroCount === 0) {
     return 4
   } else if (
     emptyOrFalseOrNullOrZeroCount >= 1 &&
-    emptyOrFalseOrNullOrZeroCount <= 2
-  ) {
-    return 3
-  } else if (
-    emptyOrFalseOrNullOrZeroCount >= 2 &&
     emptyOrFalseOrNullOrZeroCount <= 4
   ) {
-    return 2
+    return 3
   } else if (
     emptyOrFalseOrNullOrZeroCount >= 4 &&
     emptyOrFalseOrNullOrZeroCount <= 7
   ) {
+    return 2
+  } else if (
+    emptyOrFalseOrNullOrZeroCount >= 7 &&
+    emptyOrFalseOrNullOrZeroCount <= 10
+  ) {
     return 1
-  } else if (emptyOrFalseOrNullOrZeroCount === 8) {
+  } else if (emptyOrFalseOrNullOrZeroCount === 11) {
     return 0
   }
   return null

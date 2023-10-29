@@ -18,10 +18,10 @@ interface PatientInfo {
   bodyPulse: number
   breathing: number
   saturation: number
+  perfusion: perfusaoInfoOption
 }
 export default function SinaisInfoPaciente() {
   const dispatch = useDispatch()
-  const [perfusaoOption, setPerfusaoOption] = useState<perfusaoInfoOption>('')
   const [patientInfo, setPatientInfo] = useState<PatientInfo>({
     systolicBloodPressure: 0,
     diastolicBloodPressure: 0,
@@ -29,11 +29,8 @@ export default function SinaisInfoPaciente() {
     bodyPulse: 0,
     breathing: 0,
     saturation: 0,
+    perfusion: '',
   })
-  function handleSetPerfusaoInfo(option: perfusaoInfoOption) {
-    setPerfusaoOption(option)
-  }
-
   const reportId = useSelector((state: RootState) => state.report.reportId)
 
   useEffect(() => {
@@ -49,6 +46,7 @@ export default function SinaisInfoPaciente() {
         const bodyPulseResponse = response.report.bodyPulse
         const breathingResponse = response.report.breathing
         const saturationResponse = response.report.saturation
+        const perfusionResponse = response.report.perfusion
 
         setPatientInfo({
           systolicBloodPressure: systolicBloodPressureResponse,
@@ -57,6 +55,7 @@ export default function SinaisInfoPaciente() {
           bodyPulse: bodyPulseResponse,
           breathing: breathingResponse,
           saturation: saturationResponse,
+          perfusion: perfusionResponse,
         })
       } catch (error) {
         console.error(error)
@@ -65,7 +64,10 @@ export default function SinaisInfoPaciente() {
     findSinaisVitaisData()
   }, [reportId])
 
-  const handleInputChange = (field: keyof PatientInfo, value: number) => {
+  const handleInputChange = (
+    field: keyof PatientInfo,
+    value: number | perfusaoInfoOption,
+  ) => {
     try {
       dispatch(
         setPatientInfoData({
@@ -176,8 +178,10 @@ export default function SinaisInfoPaciente() {
           <Text className="text-center text-base font-medium">Perfusão</Text>
           <View className="">
             <Perfusaoinfo
-              selectedOption={perfusaoOption}
-              onSelectOption={handleSetPerfusaoInfo}
+              selectedOption={patientInfo.perfusion}
+              onSelectOption={(option) =>
+                handleInputChange('perfusion', option)
+              }
             />
           </View>
         </View>

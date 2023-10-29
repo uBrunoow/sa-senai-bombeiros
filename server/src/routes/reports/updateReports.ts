@@ -24,6 +24,9 @@ export async function reportsUpdateRoutes(
       bodyPulse,
       breathing,
       saturation,
+      followUp,
+      followUpAge,
+      perfusion,
     } = reportsUpdateSchema.parse(req.body)
 
     const reportDateValue = reportDate ? new Date(reportDate) : null
@@ -57,10 +60,13 @@ export async function reportsUpdateRoutes(
       bodyPulse?: number | null
       breathing?: number | null
       saturation?: number | null
+      followUp?: string | null
+      followUpAge?: number | null
+      perfusion?: string | null
     } = {}
 
     if (age) updatedReportData.age = age
-    if (!age && age !== undefined) updatedReportData.age = null
+    if (!age && age !== undefined) updatedReportData.age = 0
     if (gender) updatedReportData.gender = gender
     if (name) updatedReportData.name = name
     if (!name && name !== undefined) updatedReportData.name = null
@@ -92,6 +98,13 @@ export async function reportsUpdateRoutes(
     if (saturation) updatedReportData.saturation = saturation
     if (!saturation && saturation !== undefined)
       updatedReportData.saturation = null
+    if (followUp) updatedReportData.followUp = followUp
+    if (!followUp && followUp !== undefined) updatedReportData.followUp = ''
+    if (followUpAge) updatedReportData.followUpAge = followUpAge
+    if (!followUpAge && followUpAge !== undefined)
+      updatedReportData.followUpAge = 0
+    if (perfusion) updatedReportData.perfusion = perfusion
+    if (!perfusion && perfusion !== undefined) updatedReportData.perfusion = ''
 
     // Atualizar o usuário buscando pelo ID
     const updatedReport = await prisma.report.update({

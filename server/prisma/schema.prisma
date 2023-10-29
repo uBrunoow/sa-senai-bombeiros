@@ -37,7 +37,8 @@ model Report {
   breathing                Int?
   saturation               Int?
   perfusion                String?
-  ownerId                  Int
+  followUp                 String?
+  followUpAge              Int?
   Anamnesis                Anamnesis[]
   Finalization             Finalization[]
   GestationalAnamnesis     GestationalAnamnesis[]
@@ -49,8 +50,8 @@ model Report {
   Symptoms                 Symptoms[]
   LocalTraumas             trauma[]
   CinematicAvaliation      CinematicAvaliation[]
-  owner                    User?                      @relation(fields: [userId], references: [id])
-  userId                   Int?
+  owner                    User                       @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  ownerId                  Int
 }
 
 model Report_PreHospitalMethod {
@@ -240,6 +241,7 @@ model SuspectProblems {
   problemaSuspeitoDiabetes     String[]  @default([""])
   problemaSuspeitoObstetrico   String[]  @default([""])
   problemaSuspeitoRespiratorio String[]  @default([""])
+  problemaSuspeitoPsiquiatrico Boolean?  @default(false)
   Another                      String?
   createdAt                    DateTime? @default(now())
   updatedAt                    DateTime? @updatedAt

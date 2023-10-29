@@ -3,11 +3,7 @@ import { prisma } from '../../../lib/prisma'
 
 export async function glasgowFindRoutes(app: FastifyInstance) {
   app.get('/api/glasgow', async (req, res) => {
-    const glasgow = await prisma.glasglow.findMany({
-      include: {
-        reportOwner: true,
-      },
-    })
+    const glasgow = await prisma.glasglow.findMany({})
     return res.send({
       msg: `🟢 Glasgow localizados com sucesso.`,
       glasgow,
@@ -22,9 +18,6 @@ export async function glasgowFindOneRoutes(app: FastifyInstance) {
     const glasgow = await prisma.glasglow.findUnique({
       where: {
         id: parseInt(id),
-      },
-      include: {
-        reportOwner: true,
       },
     })
 

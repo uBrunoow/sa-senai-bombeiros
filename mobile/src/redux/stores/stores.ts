@@ -64,6 +64,8 @@ export interface RootState {
     anamnesisCompletness: number
     finalizationCompletness: number
     gesAnamnesisCompletness: number
+    introductionCompletness: number
+    infoPacienteCompletness: number
   }
 
   preHospitalarMethod: {

@@ -9,6 +9,7 @@ export async function registerSuspectProblems(app: FastifyInstance) {
       problemaSuspeitoDiabetes = [''],
       problemaSuspeitoObstetrico = [''],
       problemaSuspeitoRespiratorio = [''],
+      problemaSuspeitoPsiquiatrico,
       Another,
       ReportOwnerId,
     } = suspectProblemsSchema.parse(req.body)
@@ -19,6 +20,7 @@ export async function registerSuspectProblems(app: FastifyInstance) {
         problemaSuspeitoDiabetes: problemaSuspeitoDiabetes || [''],
         problemaSuspeitoObstetrico: problemaSuspeitoObstetrico || [''],
         problemaSuspeitoRespiratorio: problemaSuspeitoRespiratorio || [''],
+        problemaSuspeitoPsiquiatrico: problemaSuspeitoPsiquiatrico || false,
         Another: Another || '',
         ReportOwnerId,
       },

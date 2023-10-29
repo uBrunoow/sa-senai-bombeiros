@@ -23,3 +23,12 @@ export const saveGesAnamnesisCompletness = (
     payload: { gesAnamnesisCompletness },
   }
 }
+
+// export const saveIntroductionCompletness = (
+//   introductionCompletness: number | null,
+// ) => {
+//   return {
+//     type: 'SAVE_INTRODUCTION_COMPLETNESS',
+//     payload: { introductionCompletness },
+//   }
+// }
