@@ -68,7 +68,7 @@ export default function InputNumeric(props: InputProps) {
           {props.title}
         </Text>
       )}
-      <View className="my-1 w-full rounded-lg border p-3">
+      <View className="my-1 w-full rounded-lg border py-3 pl-2">
         <TextInput
           keyboardType="numeric"
           style={{

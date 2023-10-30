@@ -6,6 +6,7 @@ import Anamnese from '../app/(tabs)/Anamnese/anamnese'
 import AnamneseGestacional from '../app/(tabs)/AnamneseGestacional/anamneseGestacional'
 import InfoPaciente from '../app/(tabs)/InfoPaciente/infoPaciente'
 import InfoTransporte from '../app/(tabs)/infoTransporte/infoTransporte'
+import InfoHospitalares from '../app/(tabs)/infoHospitalares/infoHospitalares'
 import Introducao from '../app/(tabs)/Introducao/introducao'
 import LocalTraumas from '../app/(tabs)/LocalTraumas/localTraumas'
 import Ocorrencia from '../app/(tabs)/Ocorrencia/ocorrencia'
@@ -50,6 +51,11 @@ export default function Routes() {
       <Stack.Screen
         name="info-transporte"
         component={InfoTransporte}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="info-hospitalares"
+        component={InfoHospitalares}
         options={{ headerShown: false }}
       />
       <Stack.Screen

@@ -84,13 +84,10 @@ export default function SinaisInfoPaciente() {
     }
   }
   return (
-    <View
-      style={s.boxShadow}
-      className=" mx-auto w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
-    >
-      <View className="w-full flex-row pb-3">
-        <View className="mt-3 w-full flex-row pb-3">
-          <View className="center-between flex-1 items-center">
+    <View style={s.boxShadow} className="mx-auto">
+      <View className="w-full flex-row">
+        <View className="w-full flex-row">
+          <View className="w-4/6">
             <Text className="text-center text-base font-medium">
               Pressão arterial
             </Text>
@@ -111,9 +108,9 @@ export default function SinaisInfoPaciente() {
               <Text>mmHg</Text>
             </View>
           </View>
-          <View className="center-between w-3/6 flex-1 items-center">
+          <View className="w-2/6 items-center">
             <Text className="text-center text-base font-medium">Temper.</Text>
-            <View className="w-[130px] flex-row items-center justify-center">
+            <View className="w-[80px] flex-row items-center justify-center">
               <InputNumeric
                 value={patientInfo.bodyTemp}
                 onChangeText={(e) => handleInputChange('bodyTemp', e)}
@@ -132,10 +129,10 @@ export default function SinaisInfoPaciente() {
           bg: 'muted.50',
         }}
       />
-      <View className="mt-3 w-full flex-row pb-3">
+      <View className="w-full flex-row">
         <View className="center-between w-3/6 flex-1 items-center">
           <Text className="text-center text-base font-medium">Pulso</Text>
-          <View className="w-[130px] flex-row items-center justify-center">
+          <View className="w-[130px] flex-row items-center">
             <InputNumeric
               value={patientInfo.bodyPulse}
               onChangeText={(e) => handleInputChange('bodyPulse', e)}
@@ -163,8 +160,8 @@ export default function SinaisInfoPaciente() {
           bg: 'muted.50',
         }}
       />
-      <View className="mt-3 w-full flex-row">
-        <View className="center-between w-3/6 flex-1 items-center">
+      <View className="w-full flex-row">
+        <View className="center-between w-3/6 items-center">
           <Text className="text-center text-base font-medium">Saturação</Text>
           <View className="w-[130px] flex-row items-center justify-center">
             <InputNumeric
@@ -174,7 +171,7 @@ export default function SinaisInfoPaciente() {
             <Text>%</Text>
           </View>
         </View>
-        <View className="center-between w-3/6 flex-1 items-center">
+        <View className="w-3/6 flex-1 items-center">
           <Text className="text-center text-base font-medium">Perfusão</Text>
           <View className="">
             <Perfusaoinfo
