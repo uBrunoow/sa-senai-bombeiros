@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { View, ScrollView, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../../components/Header'
@@ -15,9 +16,27 @@ import updateGlasgow from '@src/api/reports/glasgow/updateGlasgow'
 import { useToast } from 'native-base'
 import { determineCompletness } from './utils/determineCompletness'
 import { saveInfoPacienteCompletness } from '@src/redux/reducers/completnessReducer'
+import { useNavigation } from '@react-navigation/core'
 import Subtitle from '@app/components/Subtitle'
 
-export default function InfoPatient({ navigation }: any) {
+type RemoveMetaPropertiesType = {
+  id: number
+  createdAt: string
+  updatedAt: string
+  ReportOwnerId: string
+  ownerId: number
+  reportPlace: string
+  phone: string
+  cpf: string
+  gender: string
+  age: number
+  name: string
+  reportDate: string
+  followUp: string
+  followUpAge: number
+}
+export default function InfoPatient() {
+  const navigation = useNavigation()
   const dispatch = useDispatch()
   const [buttonLoading, setButtonLoading] = useState(false)
 
@@ -48,8 +67,6 @@ export default function InfoPatient({ navigation }: any) {
   const breathing = InfoPatient?.patientInfo?.breathing
   const saturation = InfoPatient?.patientInfo?.saturation
   const perfusion = InfoPatient?.patientInfo?.perfusion
-
-  console.log(perfusion)
 
   // Infos paciente, problemas suspeitos data
   const transportSuboptionsData =
@@ -87,7 +104,25 @@ export default function InfoPatient({ navigation }: any) {
 
   const toast = useToast()
 
-  const removeMetaProperties = (obj) => {
+  const removeMetaProperties = (
+    obj: RemoveMetaPropertiesType,
+  ): Omit<
+    RemoveMetaPropertiesType,
+    | 'id'
+    | 'createdAt'
+    | 'updatedAt'
+    | 'ReportOwnerId'
+    | 'ownerId'
+    | 'reportPlace'
+    | 'phone'
+    | 'cpf'
+    | 'gender'
+    | 'age'
+    | 'name'
+    | 'reportDate'
+    | 'followUp'
+    | 'followUpAge'
+  > => {
     const {
       id,
       createdAt,
@@ -103,6 +138,7 @@ export default function InfoPatient({ navigation }: any) {
       reportDate,
       followUp,
       followUpAge,
+
       ...withoutMeta
     } = obj
     return withoutMeta
@@ -125,7 +161,7 @@ export default function InfoPatient({ navigation }: any) {
 
       const sinaisVitaisWithoutMeta = removeMetaProperties(
         SinaisVitaisResponse.updatedReport,
-      )
+      ) as Record<string, any>
 
       let sinaisVitaisEmpty = 0
       const emptyFields = []
@@ -144,10 +180,6 @@ export default function InfoPatient({ navigation }: any) {
         }
       }
 
-      console.log('Campos vazios em Glasgow:', emptyFields)
-
-      console.log(SinaisVitaisResponse)
-
       const SuspectProblemsResponse = await updateSuspectProblems(
         ReportOwnerId,
         suspectProblemsId,
@@ -161,7 +193,7 @@ export default function InfoPatient({ navigation }: any) {
 
       const suspectProblemsWithoutMeta = removeMetaProperties(
         SuspectProblemsResponse.updatedSuspectProblems,
-      )
+      ) as Record<string, any>
 
       let suspectProblemsEmpty = 0
 
@@ -188,7 +220,7 @@ export default function InfoPatient({ navigation }: any) {
 
       const glasgowWithoutMeta = removeMetaProperties(
         GlasgowResponse.updatedGlasgow,
-      )
+      ) as Record<string, any>
 
       let glasgowEmpty = 0
 
@@ -219,7 +251,7 @@ export default function InfoPatient({ navigation }: any) {
         SinaisVitaisResponse &&
         SinaisVitaisResponse.updatedReport
       ) {
-        navigation.navigate('ocorrencia')
+        navigation.navigate('ocorrencia' as never)
         dispatch(saveInfoPacienteCompletness(infoPacienteCompletness))
         toast.show({
           description: 'Informações de Info Paciente salvas com sucesso.',

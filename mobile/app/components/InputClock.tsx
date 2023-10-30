@@ -1,24 +1,24 @@
 import { Platform, TextInput, Pressable, View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import DateTimePickerAndroid from '@react-native-community/datetimepicker'
-// import { Entypo } from '@expo/vector-icons'
 
 type InputClockProps = {
   title?: string
   initialValue?: string
+  // eslint-disable-next-line no-unused-vars
   onChange: (newValue: string) => void
 }
 
 const InputClock = (props: InputClockProps) => {
   const [date, setDate] = useState(new Date())
   const [showPicker, setShowPicker] = useState(false)
-  const [timeMedication, setTimeMedication] = useState('')
+  const [timeMedication, setTimeMedication] = useState<string | undefined>('')
 
   const toggleDatePicker = () => {
     setShowPicker(!showPicker)
   }
 
-  const onTimeChange = (event, selectedDate) => {
+  const onTimeChange = (event: any, selectedDate: Date | undefined) => {
     setShowPicker(Platform.OS === 'ios')
     if (selectedDate) {
       setDate(selectedDate)

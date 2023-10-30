@@ -8,6 +8,7 @@ type InputProps = {
   isBig?: boolean
   value?: string | null
   placeholder?: string
+  // eslint-disable-next-line no-unused-vars
   onChangeText?: (formattedValue: string) => void
 }
 

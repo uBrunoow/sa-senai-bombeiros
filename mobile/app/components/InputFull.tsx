@@ -10,6 +10,7 @@ type InputProps = {
   value?: string
   placeholder?: string
   disabled?: boolean
+  // eslint-disable-next-line no-unused-vars
   onChangeText?: (text: string) => void
 }
 
@@ -52,7 +53,7 @@ export default function InputFull(props: InputProps) {
             paddingVertical: 6,
             paddingHorizontal: 10,
           }}
-          value={props.value}
+          value={inputValue}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
         ></TextInput>

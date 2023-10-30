@@ -1,6 +1,5 @@
-import { ScrollView, View, Text, SafeAreaView } from 'react-native'
+import { ScrollView, View, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
-import { FontAwesome5 } from '@expo/vector-icons'
 import Options from '@app/components/optionsIntroducao'
 import { styles as s } from '../../styles/boxShadow'
 import InputLowPadding from '@app/components/InputLowPadding'
@@ -10,7 +9,7 @@ import Footer from '@app/components/Footer'
 
 export default function InfoTransporte() {
   const [IRPS, setIRPS] = useState(' ')
-  const handleIRPS = (selectedIRPS: 'MASC' | 'FEM') => {
+  const handleIRPS = (selectedIRPS: 'Male' | 'Female') => {
     setIRPS(selectedIRPS)
   }
   return (

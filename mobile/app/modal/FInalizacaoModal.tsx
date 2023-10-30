@@ -1,4 +1,4 @@
-import { View, Text, Pressable, TextInput } from 'react-native'
+import { View, Text } from 'react-native'
 import React, { useState } from 'react'
 import { FormControl, Stack, Input } from 'native-base'
 import { Controller, useForm } from 'react-hook-form'
@@ -13,6 +13,7 @@ type FormDataType = {
 
 interface FinalizacaoModalProps {
   onClose: () => void
+  // eslint-disable-next-line no-unused-vars
   onResponsableChange: (newResponsable: string) => void
 }
 
@@ -20,7 +21,7 @@ const FInalizacaoModal = ({
   onClose,
   onResponsableChange,
 }: FinalizacaoModalProps) => {
-  const { control, handleSubmit, setValue } = useForm<FormDataType>({
+  const { control, handleSubmit } = useForm<FormDataType>({
     defaultValues: {
       responsable: '',
     },
@@ -66,11 +67,6 @@ const FInalizacaoModal = ({
           com a conta logada.)
         </Text>
         <View>
-          {/* <Text className="mt-5">Nome:</Text>
-          <TextInput
-            className="mt-2 items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]"
-            placeholder="Digite um nome"
-          /> */}
           <FormControl>
             <Stack w="320px" my="20px">
               <FormControl.Label color={'black'}>

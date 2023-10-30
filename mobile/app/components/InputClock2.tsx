@@ -16,7 +16,7 @@ const InputClock2 = (props: InputClockProps) => {
     setShowPicker(!showPicker)
   }
 
-  const onTimeChange = (event, selectedDate) => {
+  const onTimeChange = (event: any, selectedDate: Date | undefined) => {
     setShowPicker(Platform.OS === 'ios')
     if (selectedDate) {
       setDate(selectedDate)

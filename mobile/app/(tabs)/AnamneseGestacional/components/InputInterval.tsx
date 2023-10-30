@@ -10,6 +10,7 @@ type InputIntervalProps = {
   minutes?: number
   seconds?: number
   placeholder?: string
+  // eslint-disable-next-line no-unused-vars
   onChangeInterval?: (hours: number, minutes: number, seconds: number) => void
 }
 

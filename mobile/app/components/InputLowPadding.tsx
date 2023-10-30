@@ -9,6 +9,7 @@ type InputProps = {
   isBig?: boolean
   value?: string | null
   placeholder?: string
+  // eslint-disable-next-line no-unused-vars
   onChangeText?: (text: string) => void
 }
 
@@ -69,7 +70,7 @@ export default function InputLowPadding(props: InputProps) {
             fontSize: 16,
             paddingLeft: 10,
           }}
-          value={props.value}
+          value={inputValue}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
           keyboardType={'default'}

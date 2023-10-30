@@ -33,14 +33,28 @@ import { Checkbox, FormControl, Input, TextArea, useToast } from 'native-base'
 import { useForm, Controller } from 'react-hook-form'
 import { determineCompletness } from './utils/determineCompletness'
 import { saveFinalizationCompletness } from '@src/redux/reducers/completnessReducer'
+import { useNavigation } from '@react-navigation/core'
 
 type FormDataType = {
   CollectedObjects: string
 }
 
-const Finalizacao = ({ navigation }: any) => {
+type RemoveMetaPropertiesType = {
+  id: number
+  createdAt: string
+  updatedAt: string
+  ReportOwnerId: string
+}
+
+type TransportOptions =
+  | 'critico'
+  | 'instavel'
+  | 'possivelmente estavel'
+  | 'estavel'
+const Finalizacao = () => {
+  const navigation = useNavigation()
   const dispatch = useDispatch()
-  const [isPressed, setIsPressed] = useState(false)
+  const [, setIsPressed] = useState(false)
   const [selectedOption, setSelectedOption] = useState(``)
   const [changeResponsable, setChangeResponsable] = useState(false)
   const [responsable, setResponsable] = useState('')
@@ -55,7 +69,7 @@ const Finalizacao = ({ navigation }: any) => {
     setObservacoesFinais(newValue)
   }
 
-  const handleOptionPress = (option) => {
+  const handleOptionPress = (option: TransportOptions) => {
     setSelectedOption(option)
   }
 
@@ -198,8 +212,14 @@ const Finalizacao = ({ navigation }: any) => {
   const CollectedObjects = watch('CollectedObjects')
   const toast = useToast()
 
-  const removeMetaProperties = (obj) => {
-    const { id, createdAt, updatedAt, reportOwnerId, ...withoutMeta } = obj
+  const removeMetaProperties = (
+    obj: RemoveMetaPropertiesType,
+  ): Omit<
+    RemoveMetaPropertiesType,
+    'id' | 'createdAt' | 'updatedAt' | 'ReportOwnerId'
+  > => {
+    // eslint-disable-next-line no-unused-vars
+    const { id, createdAt, updatedAt, ReportOwnerId, ...withoutMeta } = obj
     return withoutMeta
   }
 
@@ -222,7 +242,7 @@ const Finalizacao = ({ navigation }: any) => {
 
       const cinematicWithoutMeta = removeMetaProperties(
         cinematicDataResponse.updatedCinematicAvaliation,
-      )
+      ) as Record<string, any>
 
       let cinematicEmpty = 0
 
@@ -252,7 +272,7 @@ const Finalizacao = ({ navigation }: any) => {
 
       const finalizationWithoutMeta = removeMetaProperties(
         finalizationDataResponse.updatedFinalization,
-      )
+      ) as Record<string, any>
 
       let finalizationEmpty = 0
 
@@ -281,7 +301,7 @@ const Finalizacao = ({ navigation }: any) => {
         finalizationDataResponse.updatedFinalization
       ) {
         dispatch(saveFinalizationCompletness(finalizationCompletness))
-        navigation.navigate('ocorrencia')
+        navigation.navigate('ocorrencia' as never)
         toast.show({
           description: 'Informações de Finalização salvas com sucesso.',
           duration: 3000,
@@ -353,7 +373,7 @@ const Finalizacao = ({ navigation }: any) => {
                     value="DEITADA"
                     mb={2}
                     isChecked={isCheckedDeitada}
-                    onChange={(e) => {
+                    onChange={() => {
                       setIsCheckedDeitada((prev) => !prev)
                     }}
                   >
@@ -365,7 +385,7 @@ const Finalizacao = ({ navigation }: any) => {
                     value="SEMI-DEITADA"
                     mb={2}
                     isChecked={isCheckedSemiDeitada}
-                    onChange={(e) => {
+                    onChange={() => {
                       setIsCheckedSemiDeitada((prev) => !prev)
                     }}
                   >
@@ -377,7 +397,7 @@ const Finalizacao = ({ navigation }: any) => {
                     value="SENTADA"
                     mb={2}
                     isChecked={isCheckedSentada}
-                    onChange={(e) => {
+                    onChange={() => {
                       setIsCheckedSentada((prev) => !prev)
                     }}
                   >
@@ -392,7 +412,7 @@ const Finalizacao = ({ navigation }: any) => {
                   <View className="flex-row items-center justify-between">
                     <View>
                       <Pressable
-                        style={({ pressed }) => [
+                        style={() => [
                           s.TransporteButton,
                           s.TransporteButtonRed,
                           getButtonStyle('critico'),
@@ -414,7 +434,7 @@ const Finalizacao = ({ navigation }: any) => {
                     </View>
                     <View>
                       <Pressable
-                        style={({ pressed }) => [
+                        style={() => [
                           s.TransporteButton,
                           s.TransporteButtonOrange,
                           getButtonStyle('instavel'),
@@ -436,7 +456,7 @@ const Finalizacao = ({ navigation }: any) => {
                     </View>
                     <View>
                       <Pressable
-                        style={({ pressed }) => [
+                        style={() => [
                           s.TransporteButton,
                           s.TransporteButtonYellow,
                           getButtonStyle('possivelmente estavel'),
@@ -460,7 +480,7 @@ const Finalizacao = ({ navigation }: any) => {
                     </View>
                     <View>
                       <Pressable
-                        style={({ pressed }) => [
+                        style={() => [
                           s.TransporteButton,
                           s.TransporteButtonGreen,
                           getButtonStyle('estavel'),
