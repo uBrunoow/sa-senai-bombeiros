@@ -4,9 +4,10 @@ import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 type OptionsProps = {
   title?: string
   selectedOption: string
+  // eslint-disable-next-line no-unused-vars
   onSelectOption: (option: 'Male' | 'Female') => void
-  Option1?: string // You need to define these props
-  Option2?: string // You need to define these props
+  Option1?: string
+  Option2?: string
 }
 
 export default function PickOne(props: OptionsProps) {

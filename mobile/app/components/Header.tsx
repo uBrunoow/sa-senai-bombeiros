@@ -14,7 +14,8 @@ import ExcluirOcorrenciaModal from '@app/modal/ExcluirOcorrenciaModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
 import deleteReport from '@src/api/reports/deleteReport'
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import {
   clearAnamnesisId,
   clearFinalizationId,
@@ -23,8 +24,14 @@ import {
   clearSuspectProblemsId,
 } from '@src/redux/actions/reportActions'
 
+type RootStackParamList = {
+  home: undefined
+  // ... outras telas
+}
+
 export default function Header() {
-  const navigation = useNavigation()
+  const navigation =
+    useNavigation<StackNavigationProp<RootStackParamList, 'home'>>()
   const dispatch = useDispatch()
 
   const [excluirOcorrenciaAbrir, setExcluirOcorrenciaAbrir] = useState(false)

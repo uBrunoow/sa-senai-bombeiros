@@ -1,5 +1,5 @@
 import React from 'react'
-import { ActivityIndicator, Pressable, Text, View } from 'react-native'
+import { ActivityIndicator, Text } from 'react-native'
 import { Button } from 'native-base'
 
 type MainButtonProps = {

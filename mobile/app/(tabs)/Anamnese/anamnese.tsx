@@ -16,8 +16,9 @@ import { useToast } from 'native-base'
 import Loader from '@app/components/Loader'
 import { determineCompletness } from './utils/determineCompletness'
 import { saveAnamnesisCompletness } from '@src/redux/reducers/completnessReducer'
-
-export default function Anamnese({ navigation }: any) {
+import { useNavigation } from '@react-navigation/core'
+export default function Anamnese() {
+  const navigation = useNavigation()
   const dispatch = useDispatch()
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const anamnesisId = useSelector(
@@ -148,6 +149,7 @@ export default function Anamnese({ navigation }: any) {
         observacoesFinais,
       )
 
+      // eslint-disable-next-line no-unused-vars
       const { id, createdAt, updatedAt, ReportOwnerId, ...anameseWithoutMeta } =
         response?.updatedAnamnese
 
@@ -164,11 +166,9 @@ export default function Anamnese({ navigation }: any) {
 
       const anamnesisCompletness = determineCompletness(emptyOrFalseCount)
 
-      console.log(response)
-
       if (response && response.updatedAnamnese) {
         dispatch(saveAnamnesisCompletness(anamnesisCompletness))
-        navigation.navigate('ocorrencia', { reportId })
+        navigation.navigate('ocorrencia' as never)
         toast.show({
           description: 'Informações de Anamnese salvas com sucesso.',
           duration: 3000,

@@ -4,6 +4,7 @@ import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 type YesOrNoProps = {
   Question: String
   selectedOption: 'SIM' | 'NÃO'
+  // eslint-disable-next-line no-unused-vars
   onSelectOption: (option: 'SIM' | 'NÃO') => void
 }
 

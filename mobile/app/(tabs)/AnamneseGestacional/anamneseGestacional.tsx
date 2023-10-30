@@ -30,7 +30,16 @@ import {
 } from './utils/parseIntervalString'
 import { determineCompletness } from './utils/determineCompletness'
 import { saveGesAnamnesisCompletness } from '@src/redux/reducers/completnessReducer'
-export default function AnamneseGestacional({ navigation }: any) {
+import { useNavigation } from '@react-navigation/core'
+
+type RemoveMetaPropertiesType = {
+  id: number
+  createdAt: string
+  updatedAt: string
+  ReportOwnerId: string
+}
+export default function AnamneseGestacional() {
+  const navigation = useNavigation()
   const dispatch = useDispatch()
   const { bottom, top } = useSafeAreaInsets()
 
@@ -121,8 +130,6 @@ export default function AnamneseGestacional({ navigation }: any) {
         setHorarioNascimento(BornHour)
         setBabyName(BabyName)
         setObservacoesFinais(FinalRemarks)
-
-        console.log(response)
       } catch (error) {
         console.error('Error fetching ges anamnesis data:', error)
       } finally {
@@ -184,9 +191,13 @@ export default function AnamneseGestacional({ navigation }: any) {
   const Duration = `${durationMinutes} min ${durationSeconds}`
   const FinalRemarks = observacoesFinais
 
-  console.log(FinalRemarks)
-
-  const removeMetaProperties = (obj) => {
+  const removeMetaProperties = (
+    obj: RemoveMetaPropertiesType,
+  ): Omit<
+    RemoveMetaPropertiesType,
+    'id' | 'createdAt' | 'updatedAt' | 'ReportOwnerId'
+  > => {
+    // eslint-disable-next-line no-unused-vars
     const { id, createdAt, updatedAt, ReportOwnerId, ...withoutMeta } = obj
     return withoutMeta
   }
@@ -219,7 +230,7 @@ export default function AnamneseGestacional({ navigation }: any) {
 
       const gesAnamnesisWithoutMeta = removeMetaProperties(
         response.updatedGestacionalAnamnesis,
-      )
+      ) as Record<string, any>
 
       let gesAnamnesisEmpty = 0
 
@@ -233,20 +244,13 @@ export default function AnamneseGestacional({ navigation }: any) {
           gesAnamnesisWithoutMeta[key] === null
         ) {
           gesAnamnesisEmpty++
-
-          // Imprimir os valores que são null, false ou vazios
-          console.log(`Campo: ${key}, Valor: ${gesAnamnesisWithoutMeta[key]}`)
         }
       }
 
-      console.log(gesAnamnesisEmpty)
-
       const gesAnamnesisCompletness = determineCompletness(gesAnamnesisEmpty)
 
-      console.log(response)
-
       if (response && response.updatedGestacionalAnamnesis) {
-        navigation.navigate('ocorrencia', { gestacionalAnamnesisId })
+        navigation.navigate('ocorrencia' as never)
         dispatch(saveGesAnamnesisCompletness(gesAnamnesisCompletness))
         toast.show({
           description:

@@ -4,24 +4,25 @@ import Icon from '@expo/vector-icons/Feather'
 import loginUser from '@src/api/users/loginUser'
 import Header from '@app/components/Header'
 import Footer from '@app/components/Footer'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { saveToken } from '@src/redux/actions/authActions'
 import { styles as s } from '@app/styles/boxShadow'
-import { Stack, FormControl, Input, Text, Button } from 'native-base'
+import { Stack, FormControl, Input, Text } from 'native-base'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import MainButton from '@app/components/MainButton'
-import { useForm, Controller, FieldValues, FieldError } from 'react-hook-form'
-import { z, ZodError, ZodIssue } from 'zod'
-import loginSchema from './schemas/loginSchema'
+import { useForm, Controller } from 'react-hook-form'
+import { ZodError } from 'zod'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/core'
 
 type FormDataType = {
   email: string
   password: string
 }
 
-export default function Login({ navigation }: any) {
+export default function Login() {
   const dispatch = useDispatch()
+  const navigation = useNavigation()
 
   const [buttonLoading, setButtonLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -47,7 +48,7 @@ export default function Login({ navigation }: any) {
 
       if (response && response.user) {
         dispatch(saveToken(response.token, response.user.id))
-        navigation.navigate('ocorrencia')
+        navigation.navigate('ocorrencia' as never)
       } else {
         setLoginError('Invalid email or password')
       }

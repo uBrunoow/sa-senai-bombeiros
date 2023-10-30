@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native'
+import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import AvalPacienteModal from '@app/modal/AvalPacienteModal'
 import { styles as s } from '@app/styles/boxShadow'
 import { useDispatch, useSelector } from 'react-redux'

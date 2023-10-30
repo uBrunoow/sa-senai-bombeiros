@@ -16,9 +16,10 @@ import registerReport from '@src/api/reports/registerReport'
 import { Entypo } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { saveReportId } from '@src/redux/actions/reportActions'
-// import { saveReportId } from '../../src/actions/reportActions' // Importe a ação
+import { useNavigation } from '@react-navigation/core'
 
-function App({ navigation }: any) {
+function Home() {
+  const navigation = useNavigation()
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
   const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
@@ -32,9 +33,9 @@ function App({ navigation }: any) {
         const reportId = response.report.id
         console.log('Report de n°:', reportId)
         dispatch(saveReportId(reportId))
-        navigation.navigate('ocorrencia')
+        navigation.navigate('ocorrencia' as never)
       } else {
-        navigation.navigate('login')
+        navigation.navigate('login' as never)
       }
     } catch (error) {
       console.error(error)
@@ -115,4 +116,4 @@ function App({ navigation }: any) {
   )
 }
 
-export default App
+export default Home

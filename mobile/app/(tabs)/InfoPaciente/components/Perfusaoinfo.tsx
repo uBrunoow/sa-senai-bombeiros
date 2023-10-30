@@ -6,6 +6,7 @@ type PerfusaoInfoOption = '>2seg' | '<2seg' | ''
 type PerfusaoInfoProps = {
   question?: String
   selectedOption: PerfusaoInfoOption
+  // eslint-disable-next-line no-unused-vars
   onSelectOption: (option: PerfusaoInfoOption) => void
 }
 
