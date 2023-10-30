@@ -35,8 +35,8 @@ const InputClock = (props: InputClockProps) => {
   }, [props.initialValue])
 
   return (
-    <View className=" my-2 items-center">
-      <Text className="text-lg font-medium">{props.title}</Text>
+    <View className="my-1 items-center">
+      <Text className="my-1 text-base font-medium">{props.title}</Text>
       {showPicker && (
         <>
           <DateTimePickerAndroid
@@ -47,19 +47,18 @@ const InputClock = (props: InputClockProps) => {
           />
         </>
       )}
-      <View className="mt-2 w-full">
+      <View className="w-full">
         <Pressable onPress={toggleDatePicker}>
           <TextInput
-            className="mx-7 rounded-lg border"
+            className="w-[95%] rounded-lg border py-2 pl-2"
             placeholder="00:00"
             editable={false}
             value={timeMedication}
             style={{
               textAlignVertical: 'center',
-              paddingVertical: 6,
-              paddingHorizontal: 10,
+              fontSize: 16,
             }}
-          ></TextInput>
+          />
         </Pressable>
       </View>
     </View>

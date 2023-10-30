@@ -705,10 +705,7 @@ export default function Introducao({ navigation }: any) {
         <>
           <Header />
           <Title iconName="suitcase" title="Introdução" />
-          <View
-            style={s.boxShadow}
-            className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
-          >
+          <View style={s.boxShadow} className="mx-auto">
             <View className="w-full flex-1 flex-row items-center">
               <View className="w-3/6 p-2">
                 <InputDatePicker
@@ -742,18 +739,20 @@ export default function Introducao({ navigation }: any) {
                 onChangeText={(e) => setAge(e)}
               />
             </View>
-            <InputCpf
-              title="RG/CPF"
-              placeholder="___.___.___-__"
-              value={cpf}
-              onChangeText={(e) => setCpf(e)}
-            />
-            <InputTelefone
-              title="Fone"
-              placeholder="(__) _____-____"
-              value={phone}
-              onChangeText={(e) => setPhone(e)}
-            />
+            <View className="mx-auto flex-1 flex-row">
+              <InputCpf
+                title="RG/CPF"
+                placeholder="___.___.___-__"
+                value={cpf}
+                onChangeText={(e) => setCpf(e)}
+              />
+              <InputTelefone
+                title="Fone"
+                placeholder="(__) _____-____"
+                value={phone}
+                onChangeText={(e) => setPhone(e)}
+              />
+            </View>
             <InputLowPadding
               title="Local da Ocorrência"
               value={reportPlace}

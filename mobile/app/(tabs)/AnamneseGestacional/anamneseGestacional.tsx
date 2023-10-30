@@ -275,10 +275,7 @@ export default function AnamneseGestacional({ navigation }: any) {
           <View>
             <Header />
             <Title iconName="baby" title="Anamnese Gestacional" />
-            <View
-              style={s.boxShadow}
-              className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white py-[30px] shadow-md"
-            >
+            <View style={s.boxShadow} className="mx-auto">
               <GestationalPeriodStartPicker
                 gestationalPeriod={gestationalPeriod.start}
                 setGestationalPeriod={(value) =>
@@ -315,18 +312,20 @@ export default function AnamneseGestacional({ navigation }: any) {
                 selectedOption={Complications ? 'SIM' : 'NÃO'}
                 onSelectOption={handleComplications}
               />
-              <InputNumeric
-                title="Filho de número"
-                value={NumberSon}
-                onChangeText={(e) => setNumberSon(e)}
-              />
-              <InputClock
-                title="Início das contrações"
-                initialValue={horasInicioContracao}
-                onChange={(newValue) => setHorasInicioContracao(newValue)}
-              ></InputClock>
+              <View className="flex-row px-4">
+                <InputNumeric
+                  title="Filho de número"
+                  value={NumberSon}
+                  onChangeText={(e) => setNumberSon(e)}
+                />
+                <InputClock
+                  title="Início das contrações"
+                  initialValue={horasInicioContracao}
+                  onChange={(newValue) => setHorasInicioContracao(newValue)}
+                />
+              </View>
 
-              <View className="flex-row justify-evenly">
+              <View className="mx-auto w-[90%] flex-row justify-evenly">
                 <InputDuration
                   title="Duração"
                   onChangeDuration={(minutes, seconds) =>
