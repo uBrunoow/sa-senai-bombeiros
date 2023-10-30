@@ -46,8 +46,8 @@ const GestationalPeriodPicker: React.FC<GestationalPeriodPickerProps> = ({
   }
 
   return (
-    <View className=" m-auto w-full flex-row flex-wrap justify-around">
-      <Text className="mb-2 w-full text-left text-lg font-medium">{label}</Text>
+    <View className=" mx-auto w-[90%]">
+      <Text className="my-2 text-lg font-medium">{label}</Text>
       {showPicker && (
         <>
           <DateTimePickerAndroid
@@ -61,7 +61,7 @@ const GestationalPeriodPicker: React.FC<GestationalPeriodPickerProps> = ({
 
       <Pressable onPress={toggleDatePicker} className="w-full">
         <TextInput
-          className=" w-full rounded-lg border px-3 py-2 text-left text-black"
+          className="rounded-lg border px-3 py-2 text-black"
           placeholder="__/__/____"
           editable={false}
           value={selectedDate}

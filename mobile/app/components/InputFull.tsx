@@ -40,8 +40,8 @@ export default function InputFull(props: InputProps) {
       }}
       className="my-2 w-full flex-1 items-center"
     >
-      <Text className="text-lg font-medium">{props.title}</Text>
-      <View className="mb-4 mt-2 w-5/6 rounded-lg border">
+      <Text className="mb-2 text-lg font-medium">{props.title}</Text>
+      <View className="w-[90%] rounded-lg border">
         <TextInput
           editable={props.disabled}
           multiline={props.isBig}
