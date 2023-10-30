@@ -1,6 +1,5 @@
 import { View, ScrollView, Pressable } from 'react-native'
 import React, { useState } from 'react'
-import Icon from '@expo/vector-icons/Feather'
 import loginUser from '@src/api/users/loginUser'
 import Header from '@app/components/Header'
 import Footer from '@app/components/Footer'
@@ -14,6 +13,7 @@ import { useForm, Controller, FieldValues, FieldError } from 'react-hook-form'
 import { z, ZodError, ZodIssue } from 'zod'
 import loginSchema from './schemas/loginSchema'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import Title from '@app/components/Title'
 
 type FormDataType = {
   email: string
@@ -73,17 +73,14 @@ export default function Login({ navigation }: any) {
       className="flex-1"
       contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
     >
-      <View className=" h-screen items-center justify-between ">
+      <View className="h-screen items-center justify-between ">
         <Header />
-        <View className=" h-[370] justify-around ">
-          <View className=" flex-row justify-center ">
-            <Icon name="user" size={40} color="#A00e00" />
-            <Text className=" pl-2 text-3xl">Login</Text>
-          </View>
-          <View style={s.boxShadow} className="mt-10 p-6">
+        <View className="justify-center">
+          <Title title="Login" iconName="user" />
+          <View style={s.boxShadow} className="p-5">
             <FormControl isRequired isInvalid={'email' in errors}>
-              <Stack w="300px" mb="20px">
-                <FormControl.Label color={'black'}>E-mail</FormControl.Label>
+              <Stack w="300px" mb="15px">
+                <FormControl.Label color={'black'}>E-mail </FormControl.Label>
                 <Controller
                   control={control}
                   render={({ field }) => (
@@ -97,7 +94,7 @@ export default function Login({ navigation }: any) {
                   )}
                   name="email"
                   rules={{
-                    required: 'Field is required',
+                    required: 'Campo obrigatório',
                   }}
                 />
                 <FormControl.ErrorMessage>
@@ -111,7 +108,7 @@ export default function Login({ navigation }: any) {
               position={'relative'}
             >
               <Stack w="300px" mb="20px">
-                <FormControl.Label color={'black'}>Password</FormControl.Label>
+                <FormControl.Label color={'black'}>Senha </FormControl.Label>
                 <Controller
                   control={control}
                   render={({ field }) => (
@@ -119,14 +116,13 @@ export default function Login({ navigation }: any) {
                       <Input
                         onBlur={field.onBlur}
                         type={showPassword ? 'text' : 'password'}
-                        placeholder="*********"
                         onChangeText={(val) => field.onChange(val)}
                         value={field.value}
                         position={'relative'}
                       />
                       <Pressable
                         onPress={() => setShowPassword(!showPassword)}
-                        className="absolute bottom-2 right-2"
+                        className="relative bottom-[32px] left-[265px]"
                       >
                         <Text>
                           {showPassword ? (
@@ -148,9 +144,8 @@ export default function Login({ navigation }: any) {
                   )}
                   name="password"
                   rules={{
-                    required: 'Field is required',
+                    required: 'Campo obrigatório',
                   }}
-                  defaultValue=""
                 />
 
                 <FormControl.ErrorMessage>

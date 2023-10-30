@@ -2,7 +2,6 @@ import { View, ScrollView, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-import InfoPacienteTitle from '@app/(tabs)/InfoPaciente/components/InfoPacienteTitle'
 import SinaisInfoPaciente from '@app/(tabs)/InfoPaciente/components/SinaisInfoPaciente'
 import AvalPacienteGroup from '@app/(tabs)/InfoPaciente/components/AvalPacienteGroup'
 import ProblemasSuspeitos from '@app/(tabs)/InfoPaciente/components/ProblemasSuspeitos'
@@ -16,6 +15,7 @@ import updateGlasgow from '@src/api/reports/glasgow/updateGlasgow'
 import { useToast } from 'native-base'
 import { determineCompletness } from './utils/determineCompletness'
 import { saveInfoPacienteCompletness } from '@src/redux/reducers/completnessReducer'
+import Subtitle from '@app/components/Subtitle'
 
 export default function InfoPatient({ navigation }: any) {
   const dispatch = useDispatch()
@@ -247,11 +247,11 @@ export default function InfoPatient({ navigation }: any) {
         <View>
           <Header />
           <Title iconName="user-alt" title="Informações do Paciente" />
-          <InfoPacienteTitle content="Sinais Vitais" />
+          <Subtitle content="Sinais Vitais" />
           <SinaisInfoPaciente />
-          <InfoPacienteTitle content="Aval. do Paciênte (GLASGOW)" />
+          <Subtitle content="Aval. do Paciênte (GLASGOW)" />
           <AvalPacienteGroup />
-          <InfoPacienteTitle content="Problemas suspeitos encontrados" />
+          <Subtitle content="Problemas suspeitos encontrados" />
           <ProblemasSuspeitos />
           <MainButton
             innerText="SALVAR"
