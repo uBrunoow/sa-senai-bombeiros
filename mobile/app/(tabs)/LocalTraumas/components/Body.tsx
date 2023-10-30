@@ -1,6 +1,7 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import bodyCoordinates from './../utils/bodyCoordinates.json'
+
 
 type Coordinate = {
   x: number
