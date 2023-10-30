@@ -9,7 +9,7 @@ import InputLowPadding from '@app/components/InputLowPadding'
 import { styles as s } from '@app/styles/boxShadow'
 import InputDatePicker from '@app/components/InputDatePIcker'
 import { RootState } from '@src/redux/stores/stores'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import updateReport from '@src/api/reports/updateReport'
 import MainButton from '@app/components/MainButton'
 import { formatReportDate } from '@src/utils/formatReportDate'
@@ -17,16 +17,106 @@ import InputNumeric from '@app/components/inputNumeric'
 import findReports from '@src/api/reports/findReport'
 import InputCpf from '@app/components/inputCpf'
 import InputTelefone from '@app/components/inputTelefone'
-import { Select, useToast } from 'native-base'
-import { MultipleSelectList } from 'react-native-dropdown-select-list'
-import registerPreHospitalarMethods from '@src/api/reports/preHospitalarMethod/registerPreHospitalarMethod'
-import registerSignsAndSymptoms from '@src/api/reports/symptoms/registerSymptoms'
+import { Checkbox, useToast } from 'native-base'
+import updatePreHospitalarMethod from '@src/api/reports/preHospitalarMethod/updatePreHospitalarMethods'
 import findPreHospitalarMethodByReport from '@src/api/reports/preHospitalarMethod/findPreHospitalarMethodByReport'
+import updateSymptomsMethod from '@src/api/reports/symptoms/updateSymtoms'
+import findSymptomsByReport from '@src/api/reports/symptoms/findSymptoms'
+import { determineCompletness } from './utils/determineCompletness'
+import { saveIntroductionCompletness } from '@src/redux/reducers/completnessReducer'
+
+type CheckboxStates = {
+  AFOGAMENTO?: boolean
+  AGRESSAO?: boolean
+  ATROPELAMENTO?: boolean
+  CAUSADO_POR_ANIMAIS?: boolean
+  CHOQUE_ELETRICO?: boolean
+  COM_MEIO_DE_TRANSPORTE?: boolean
+  DESABAMENTO?: boolean
+  DESMORONAMENTO?: boolean
+  DOMESTICO?: boolean
+  EMERGENCIA_MEDICA?: boolean
+  ESPORTIVO?: boolean
+  INTOXICACAO?: boolean
+  QUEDA_BICICLETA?: boolean
+  QUEDA_MOTO?: boolean
+  QUEDA_MENOR_QUE_2M?: boolean
+  QUEDA_MAIOR_QUE_2M?: boolean
+  QUEDA_PROPRIA_ALTURA?: boolean
+  TENTATIVA_DE_SUICIDIO?: boolean
+  TRABALHO?: boolean
+  TRANSFERENCIA?: boolean
+}
+
+type SymptomsCheckboxStates = {
+  ABD_SENSIVEL_RIGIDO?: boolean
+  AFUNDAMENTO_DE_CRANIO?: boolean
+  AGITACAO?: boolean
+  AMNESIA?: boolean
+  ANGINA_DE_PEITO?: boolean
+  APINEIA?: boolean
+  BRADICARDIA?: boolean
+  BRADIPNEIA?: boolean
+  BRONCO_ASPIRANDO?: boolean
+  CEFALIA?: boolean
+  CIANOSE_LABIOS?: boolean
+  CIANOSE_EXTREMIDADES?: boolean
+  CONVULSAO?: boolean
+  DECORTICACAO?: boolean
+  DEFORMIDADE?: boolean
+  DESCEREBRACAO?: boolean
+  DESMAIO?: boolean
+  DESVIO_DE_TRAQUEIA?: boolean
+  DISPNEIA?: boolean
+  DOR_LOCAL?: boolean
+  EDEMA_GENERALIZADO?: boolean
+  EDEMA_LOCALIZADO?: boolean
+  ENFISEMA_SUBCUTANEO?: boolean
+  ESTASE_DA_JUGULAR?: boolean
+  FACE_PALIDA?: boolean
+  HEMORRAGIA_INTERNA?: boolean
+  HEMORRAGIA_EXTERNA?: boolean
+  HIPERTENSAO?: boolean
+  HIPOTENSAO?: boolean
+  NAUSEAS_VOMITOS?: boolean
+  NASORAGIA?: boolean
+  OBITO?: boolean
+  OTORREIA?: boolean
+  OTORRAGIA?: boolean
+  OVACE?: boolean
+  PARADA_CARDIACA?: boolean
+  PARADA_RESPIRATORIA?: boolean
+  PRIAPRISMO?: boolean
+  PRURIDO_NA_PELE?: boolean
+  ANISOCORIA_NAO_REAGENTE?: boolean
+  ANISOCORIA_REAGENTE?: boolean
+  ISOCORIA_NAO_REAGENTE?: boolean
+  ISOCORIA_REAGENTE?: boolean
+  MIDRIASE_NAO_REAGENTE?: boolean
+  MIDRIASE_REAGENTE?: boolean
+  MIOSE_NAO_REAGENTE?: boolean
+  MIOSE_REAGENTE?: boolean
+  SEDE?: boolean
+  SINAL_DE_BATTLE?: boolean
+  SINAL_DE_GUAXINIM?: boolean
+  SUDORESE?: boolean
+  TAQUIPNEIA?: boolean
+  TAQUICARDIA?: boolean
+  TONTURA?: boolean
+}
 
 export default function Introducao({ navigation }: any) {
+  const dispatch = useDispatch()
   const { bottom, top } = useSafeAreaInsets()
   const reportId = useSelector((state: RootState) => state.report.reportId)
+  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
   const ownerId = useSelector((state: RootState) => state.auth.userId)
+  const preHospitalarMethodId = useSelector(
+    (state: RootState) => state.preHospitalarMethod.preHospitalarMethodId,
+  )
+  const signsAndSymptomsId = useSelector(
+    (state: RootState) => state.signsAndSymptoms.signsAndSymptomsId,
+  )
 
   const [reportDateTime, setReportDateTime] = useState('')
   const [name, setName] = useState(' ')
@@ -37,9 +127,124 @@ export default function Introducao({ navigation }: any) {
   const [reportPlace, setReportPlace] = useState(' ')
   const [loading, setLoading] = useState(false)
   const [buttonLoading, setButtonLoading] = useState(false)
-  const [preHospitalar, setPreHospitalar] = useState([])
-  const [sinaisESintomas, setSinaisESintomas] = useState([])
-  const [service, setService] = useState('')
+  const [followUpAge, setFollowUpAge] = useState(0)
+  const [followUp, setFollowUp] = useState('')
+  const [
+    preHospitalarMethodCheckboxState,
+    setpreHospitalarMethodCheckboxState,
+  ] = useState<CheckboxStates>({
+    AFOGAMENTO: false,
+    AGRESSAO: false,
+    ATROPELAMENTO: false,
+    CAUSADO_POR_ANIMAIS: false,
+    CHOQUE_ELETRICO: false,
+    COM_MEIO_DE_TRANSPORTE: false,
+    DESABAMENTO: false,
+    DESMORONAMENTO: false,
+    DOMESTICO: false,
+    EMERGENCIA_MEDICA: false,
+    ESPORTIVO: false,
+    INTOXICACAO: false,
+    QUEDA_BICICLETA: false,
+    QUEDA_MOTO: false,
+    QUEDA_MENOR_QUE_2M: false,
+    QUEDA_MAIOR_QUE_2M: false,
+    QUEDA_PROPRIA_ALTURA: false,
+    TENTATIVA_DE_SUICIDIO: false,
+    TRABALHO: false,
+    TRANSFERENCIA: false,
+  })
+
+  const [signsAndSymptomsCheckboxState, setSignsAndSymptomsCheckboxState] =
+    useState<SymptomsCheckboxStates>({
+      ABD_SENSIVEL_RIGIDO: false,
+      AFUNDAMENTO_DE_CRANIO: false,
+      AGITACAO: false,
+      AMNESIA: false,
+      ANGINA_DE_PEITO: false,
+      APINEIA: false,
+      BRADICARDIA: false,
+      BRADIPNEIA: false,
+      BRONCO_ASPIRANDO: false,
+      CEFALIA: false,
+      CIANOSE_LABIOS: false,
+      CIANOSE_EXTREMIDADES: false,
+      CONVULSAO: false,
+      DECORTICACAO: false,
+      DEFORMIDADE: false,
+      DESCEREBRACAO: false,
+      DESMAIO: false,
+      DESVIO_DE_TRAQUEIA: false,
+      DISPNEIA: false,
+      DOR_LOCAL: false,
+      EDEMA_GENERALIZADO: false,
+      EDEMA_LOCALIZADO: false,
+      ENFISEMA_SUBCUTANEO: false,
+      ESTASE_DA_JUGULAR: false,
+      FACE_PALIDA: false,
+      HEMORRAGIA_INTERNA: false,
+      HEMORRAGIA_EXTERNA: false,
+      HIPERTENSAO: false,
+      HIPOTENSAO: false,
+      NAUSEAS_VOMITOS: false,
+      NASORAGIA: false,
+      OBITO: false,
+      OTORREIA: false,
+      OTORRAGIA: false,
+      OVACE: false,
+      PARADA_CARDIACA: false,
+      PARADA_RESPIRATORIA: false,
+      PRIAPRISMO: false,
+      PRURIDO_NA_PELE: false,
+      ANISOCORIA_NAO_REAGENTE: false,
+      ANISOCORIA_REAGENTE: false,
+      ISOCORIA_NAO_REAGENTE: false,
+      ISOCORIA_REAGENTE: false,
+      MIDRIASE_NAO_REAGENTE: false,
+      MIDRIASE_REAGENTE: false,
+      MIOSE_NAO_REAGENTE: false,
+      MIOSE_REAGENTE: false,
+      SEDE: false,
+      SINAL_DE_BATTLE: false,
+      SINAL_DE_GUAXINIM: false,
+      SUDORESE: false,
+      TAQUIPNEIA: false,
+      TAQUICARDIA: false,
+      TONTURA: false,
+    })
+
+  const handlePreHospitalarMethodCheckboxChange = (
+    key: keyof CheckboxStates,
+  ) => {
+    if (
+      Object.prototype.hasOwnProperty.call(
+        preHospitalarMethodCheckboxState,
+        key,
+      )
+    ) {
+      setpreHospitalarMethodCheckboxState((prevState) => {
+        return {
+          ...prevState,
+          [key]: !prevState[key],
+        }
+      })
+    }
+  }
+
+  const handleSignsAndSymptomsCheckboxChange = (
+    key: keyof SymptomsCheckboxStates,
+  ) => {
+    if (
+      Object.prototype.hasOwnProperty.call(signsAndSymptomsCheckboxState, key)
+    ) {
+      setSignsAndSymptomsCheckboxState((prevState) => {
+        return {
+          ...prevState,
+          [key]: !prevState[key],
+        }
+      })
+    }
+  }
 
   useEffect(() => {
     const findReportsData = async () => {
@@ -55,6 +260,8 @@ export default function Introducao({ navigation }: any) {
         const reportDateTimeResponse = response.report.reportDate
         const reportPlaceResponse = response.report.reportPlace
         const genderResponse = response.report.gender
+        const followUpResponse = response.report.followUp
+        const followUpAgeResponse = response.report.followUpAge
 
         setAge(ageResponse)
         setName(nameResponse)
@@ -63,28 +270,260 @@ export default function Introducao({ navigation }: any) {
         setReportDateTime(reportDateTimeResponse)
         setReportPlace(reportPlaceResponse)
         setGender(genderResponse)
+        setFollowUp(followUpResponse)
+        setFollowUpAge(followUpAgeResponse)
 
-        console.log(response)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setLoading(false)
-      }
-    }
+        const preHospitalarMethodResponse =
+          await findPreHospitalarMethodByReport(reportId)
 
-    const findPreHospitalarMethodByReportData = async () => {
-      try {
-        setLoading(true)
+        if (
+          preHospitalarMethodResponse &&
+          Array.isArray(preHospitalarMethodResponse.preHospitalarMethods) &&
+          preHospitalarMethodResponse.preHospitalarMethods.length > 0
+        ) {
+          const preHospitalarMethodDescription =
+            preHospitalarMethodResponse.preHospitalarMethods[0]
+              .preHospitalarMethodDescription || []
 
-        const response = await findPreHospitalarMethodByReport(reportId)
+          const isAFOGAMENTOSelected =
+            preHospitalarMethodDescription.includes('AFOGAMENTO')
+          const isAGRESSAOSelected =
+            preHospitalarMethodDescription.includes('AGRESSAO')
+          const isATROPELAMENTOSelected =
+            preHospitalarMethodDescription.includes('ATROPELAMENTO')
+          const isCAUSADO_POR_ANIMAISSelected =
+            preHospitalarMethodDescription.includes('CAUSADO_POR_ANIMAIS')
+          const isCHOQUE_ELETRICOSelected =
+            preHospitalarMethodDescription.includes('CHOQUE_ELETRICO')
+          const isCOM_MEIO_DE_TRANSPORTESelected =
+            preHospitalarMethodDescription.includes('COM_MEIO_DE_TRANSPORTE')
+          const isDESABAMENTOSelected =
+            preHospitalarMethodDescription.includes('DESABAMENTO')
+          const isDESMORONAMENTOSelected =
+            preHospitalarMethodDescription.includes('DESMORONAMENTO')
+          const isDOMESTICOSelected =
+            preHospitalarMethodDescription.includes('DOMESTICO')
+          const isEMERGENCIA_MEDICASelected =
+            preHospitalarMethodDescription.includes('EMERGENCIA_MEDICA')
+          const isESPORTIVOSelected =
+            preHospitalarMethodDescription.includes('ESPORTIVO')
+          const isINTOXICACAOSelected =
+            preHospitalarMethodDescription.includes('INTOXICACAO')
+          const isQUEDA_BICICLETASelected =
+            preHospitalarMethodDescription.includes('QUEDA_BICICLETA')
+          const isQUEDA_MOTOSelected =
+            preHospitalarMethodDescription.includes('QUEDA_MOTO')
+          const isQUEDA_MENOR_QUE_2MSelected =
+            preHospitalarMethodDescription.includes('QUEDA_MENOR_QUE_2M')
+          const isQUEDA_MAIOR_QUE_2MSelected =
+            preHospitalarMethodDescription.includes('QUEDA_MAIOR_QUE_2M')
+          const isQUEDA_PROPRIA_ALTURASelected =
+            preHospitalarMethodDescription.includes('QUEDA_PROPRIA_ALTURA')
+          const isTENTATIVA_DE_SUICIDIOSelected =
+            preHospitalarMethodDescription.includes('TENTATIVA_DE_SUICIDIO')
+          const isTRABALHOSelected =
+            preHospitalarMethodDescription.includes('TRABALHO')
+          const isTRANSFERENCIASelected =
+            preHospitalarMethodDescription.includes('TRANSFERENCIA')
 
-        const descriptions = response.preHospitalarMethods.map(
-          (method) => method.description,
-        )
+          setpreHospitalarMethodCheckboxState((prevState) => {
+            return {
+              ...prevState,
+              AFOGAMENTO: isAFOGAMENTOSelected,
+              AGRESSAO: isAGRESSAOSelected,
+              ATROPELAMENTO: isATROPELAMENTOSelected,
+              CAUSADO_POR_ANIMAIS: isCAUSADO_POR_ANIMAISSelected,
+              CHOQUE_ELETRICO: isCHOQUE_ELETRICOSelected,
+              COM_MEIO_DE_TRANSPORTE: isCOM_MEIO_DE_TRANSPORTESelected,
+              DESABAMENTO: isDESABAMENTOSelected,
+              DESMORONAMENTO: isDESMORONAMENTOSelected,
+              DOMESTICO: isDOMESTICOSelected,
+              EMERGENCIA_MEDICA: isEMERGENCIA_MEDICASelected,
+              ESPORTIVO: isESPORTIVOSelected,
+              INTOXICACAO: isINTOXICACAOSelected,
+              QUEDA_BICICLETA: isQUEDA_BICICLETASelected,
+              QUEDA_MOTO: isQUEDA_MOTOSelected,
+              QUEDA_MENOR_QUE_2M: isQUEDA_MENOR_QUE_2MSelected,
+              QUEDA_MAIOR_QUE_2M: isQUEDA_MAIOR_QUE_2MSelected,
+              QUEDA_PROPRIA_ALTURA: isQUEDA_PROPRIA_ALTURASelected,
+              TENTATIVA_DE_SUICIDIO: isTENTATIVA_DE_SUICIDIOSelected,
+              TRABALHO: isTRABALHOSelected,
+              TRANSFERENCIA: isTRANSFERENCIASelected,
+            }
+          })
+        }
 
-        setPreHospitalar(descriptions)
+        const symptomsResponse = await findSymptomsByReport(reportId)
 
-        console.log(response)
+        if (
+          symptomsResponse &&
+          Array.isArray(symptomsResponse.symptoms) &&
+          symptomsResponse.symptoms.length > 0
+        ) {
+          const symptomsDescription =
+            symptomsResponse.symptoms[0].symptomsDescription || []
+
+          const isABD_SENSIVEL_RIGIDOSelected = symptomsDescription.includes(
+            'ABD_SENSIVEL_RIGIDO',
+          )
+          const isAFUNDAMENTO_DE_CRANIOSelected = symptomsDescription.includes(
+            'AFUNDAMENTO_DE_CRANIO',
+          )
+          const isAGITACAOSelected = symptomsDescription.includes('AGITACAO')
+          const isAMNESIASelected = symptomsDescription.includes('AMNESIA')
+          const isANGINA_DE_PEITOSelected =
+            symptomsDescription.includes('ANGINA_DE_PEITO')
+          const isAPINEIASelected = symptomsDescription.includes('APINEIA')
+          const isBRADICARDIASelected =
+            symptomsDescription.includes('BRADICARDIA')
+          const isBRADIPNEIASelected =
+            symptomsDescription.includes('BRADIPNEIA')
+          const isBRONCO_ASPIRANDOSelected =
+            symptomsDescription.includes('BRONCO_ASPIRANDO')
+          const isCEFALIASelected = symptomsDescription.includes('CEFALIA')
+          const isCIANOSE_LABIOSSelected =
+            symptomsDescription.includes('CIANOSE_LABIOS')
+          const isCIANOSE_EXTREMIDADESSelected = symptomsDescription.includes(
+            'CIANOSE_EXTREMIDADES',
+          )
+          const isCONVULSAOSelected = symptomsDescription.includes('CONVULSAO')
+          const isDECORTICACAOSelected =
+            symptomsDescription.includes('DECORTICACAO')
+          const isDEFORMIDADESelected =
+            symptomsDescription.includes('DEFORMIDADE')
+          const isDESCEREBRACAOSelected =
+            symptomsDescription.includes('DESCEREBRACAO')
+          const isDESMaIOSelected = symptomsDescription.includes('DESMaIO')
+          const isDESVIO_DE_TRAQUEIASelected =
+            symptomsDescription.includes('DESVIO_DE_TRAQUEIA')
+          const isDISPNEIASelected = symptomsDescription.includes('DISPNEIA')
+          const isDOR_LOCALSelected = symptomsDescription.includes('DOR_LOCAL')
+          const isEDEMA_GENERALIZADOSelected =
+            symptomsDescription.includes('EDEMA_GENERALIZADO')
+          const isEDEMA_LOCALIZADOSelected =
+            symptomsDescription.includes('EDEMA_LOCALIZADO')
+          const isENFISEMA_SUBCUTANEOSelected = symptomsDescription.includes(
+            'ENFISEMA_SUBCUTANEO',
+          )
+          const isESTASE_DA_JUGULARSelected =
+            symptomsDescription.includes('ESTASE_DA_JUGULAR')
+          const isFACE_PALIDASelected =
+            symptomsDescription.includes('FACE_PALIDA')
+          const isHEMORRAGIA_INTERNASelected =
+            symptomsDescription.includes('HEMORRAGIA_INTERNA')
+          const isHEMORRAGIA_EXTERNASelected =
+            symptomsDescription.includes('HEMORRAGIA_EXTERNA')
+          const isHIPERTENSAOSelected =
+            symptomsDescription.includes('HIPERTENSAO')
+          const isHIPOTENSAOSelected =
+            symptomsDescription.includes('HIPOTENSAO')
+          const isNAUSEAS_VOMITOSSelected =
+            symptomsDescription.includes('NAUSEAS_VOMITOS')
+          const isNASORAGIASelected = symptomsDescription.includes('NASORAGIA')
+          const isOBITOSelected = symptomsDescription.includes('OBITO')
+          const isOTORREIASelected = symptomsDescription.includes('OTORREIA')
+          const isOTORRAGIASelected = symptomsDescription.includes('OTORRAGIA')
+          const isOVACESelected = symptomsDescription.includes('OVACE')
+          const isPARADA_CARDIACASelected =
+            symptomsDescription.includes('PARADA_CARDIACA')
+          const isPARADA_RESPIRATORIASelected = symptomsDescription.includes(
+            'PARADA_RESPIRATORIA',
+          )
+          const isPRIAPRISMOSelected =
+            symptomsDescription.includes('PRIAPRISMO')
+          const isPRURIDO_NA_PELESelected =
+            symptomsDescription.includes('PRURIDO_NA_PELE')
+          const isANISOCORIA_NAO_REAGENTESelected =
+            symptomsDescription.includes('ANISOCORIA_NAO_REAGENTE')
+          const isANISOCORIA_REAGENTESelected = symptomsDescription.includes(
+            'ANISOCORIA_REAGENTE',
+          )
+          const isISOCORIA_NAO_REAGENTESelected = symptomsDescription.includes(
+            'ISOCORIA_NAO_REAGENTE',
+          )
+          const isISOCORIA_REAGENTESelected =
+            symptomsDescription.includes('ISOCORIA_REAGENTE')
+          const isMIDRIASE_NAO_REAGENTESelected = symptomsDescription.includes(
+            'MIDRIASE_NAO_REAGENTE',
+          )
+          const isMIDRIASE_REAGENTESelected =
+            symptomsDescription.includes('MIDRIASE_REAGENTE')
+          const isMIOSE_NAO_REAGENTESelected =
+            symptomsDescription.includes('MIOSE_NAO_REAGENTE')
+          const isMIOSE_REAGENTESelected =
+            symptomsDescription.includes('MIOSE_REAGENTE')
+          const isSEDESelected = symptomsDescription.includes('SEDE')
+          const isSINAL_DE_BATTLESelected =
+            symptomsDescription.includes('SINAL_DE_BATTLE')
+          const isSINAL_DE_GUAXINIMSelected =
+            symptomsDescription.includes('SINAL_DE_GUAXINIM')
+          const isSUDORESESelected = symptomsDescription.includes('SUDORESE')
+          const isTAQUIPNEIASelected =
+            symptomsDescription.includes('TAQUIPNEIA')
+          const isTAQUICARDIASelected =
+            symptomsDescription.includes('TAQUICARDIA')
+          const isTONTURASelected = symptomsDescription.includes('TONTURA')
+
+          setSignsAndSymptomsCheckboxState((prevState) => {
+            return {
+              ...prevState,
+              ABD_SENSIVEL_RIGIDO: isABD_SENSIVEL_RIGIDOSelected,
+              AFUNDAMENTO_DE_CRANIO: isAFUNDAMENTO_DE_CRANIOSelected,
+              AGITACAO: isAGITACAOSelected,
+              AMNESIA: isAMNESIASelected,
+              ANGINA_DE_PEITO: isANGINA_DE_PEITOSelected,
+              APINEIA: isAPINEIASelected,
+              BRADICARDIA: isBRADICARDIASelected,
+              BRADIPNEIA: isBRADIPNEIASelected,
+              BRONCO_ASPIRANDO: isBRONCO_ASPIRANDOSelected,
+              CEFALIA: isCEFALIASelected,
+              CIANOSE_LABIOS: isCIANOSE_LABIOSSelected,
+              CIANOSE_EXTREMIDADES: isCIANOSE_EXTREMIDADESSelected,
+              CONVULSAO: isCONVULSAOSelected,
+              DECORTICACAO: isDECORTICACAOSelected,
+              DEFORMIDADE: isDEFORMIDADESelected,
+              DESCEREBRACAO: isDESCEREBRACAOSelected,
+              DESMAIO: isDESMaIOSelected,
+              DESVIO_DE_TRAQUEIA: isDESVIO_DE_TRAQUEIASelected,
+              DISPNEIA: isDISPNEIASelected,
+              DOR_LOCAL: isDOR_LOCALSelected,
+              EDEMA_GENERALIZADO: isEDEMA_GENERALIZADOSelected,
+              EDEMA_LOCALIZADO: isEDEMA_LOCALIZADOSelected,
+              ENFISEMA_SUBCUTANEO: isENFISEMA_SUBCUTANEOSelected,
+              ESTASE_DA_JUGULAR: isESTASE_DA_JUGULARSelected,
+              FACE_PALIDA: isFACE_PALIDASelected,
+              HEMORRAGIA_INTERNA: isHEMORRAGIA_INTERNASelected,
+              HEMORRAGIA_EXTERNA: isHEMORRAGIA_EXTERNASelected,
+              HIPERTENSAO: isHIPERTENSAOSelected,
+              HIPOTENSAO: isHIPOTENSAOSelected,
+              NAUSEAS_VOMITOS: isNAUSEAS_VOMITOSSelected,
+              NASORAGIA: isNASORAGIASelected,
+              OBITO: isOBITOSelected,
+              OTORREIA: isOTORREIASelected,
+              OTORRAGIA: isOTORRAGIASelected,
+              OVACE: isOVACESelected,
+              PARADA_CARDIACA: isPARADA_CARDIACASelected,
+              PARADA_RESPIRATORIA: isPARADA_RESPIRATORIASelected,
+              PRIAPRISMO: isPRIAPRISMOSelected,
+              PRURIDO_NA_PELE: isPRURIDO_NA_PELESelected,
+              ANISOCORIA_NAO_REAGENTE: isANISOCORIA_NAO_REAGENTESelected,
+              ANISOCORIA_REAGENTE: isANISOCORIA_REAGENTESelected,
+              ISOCORIA_NAO_REAGENTE: isISOCORIA_NAO_REAGENTESelected,
+              ISOCORIA_REAGENTE: isISOCORIA_REAGENTESelected,
+              MIDRIASE_NAO_REAGENTE: isMIDRIASE_NAO_REAGENTESelected,
+              MIDRIASE_REAGENTE: isMIDRIASE_REAGENTESelected,
+              MIOSE_NAO_REAGENTE: isMIOSE_NAO_REAGENTESelected,
+              MIOSE_REAGENTE: isMIOSE_REAGENTESelected,
+              SEDE: isSEDESelected,
+              SINAL_DE_BATTLE: isSINAL_DE_BATTLESelected,
+              SINAL_DE_GUAXINIM: isSINAL_DE_GUAXINIMSelected,
+              SUDORESE: isSUDORESESelected,
+              TAQUIPNEIA: isTAQUIPNEIASelected,
+              TAQUICARDIA: isTAQUICARDIASelected,
+              TONTURA: isTONTURASelected,
+            }
+          })
+        }
       } catch (error) {
         console.error(error)
       } finally {
@@ -93,13 +532,44 @@ export default function Introducao({ navigation }: any) {
     }
 
     findReportsData()
-    findPreHospitalarMethodByReportData()
   }, [reportId])
 
   const toast = useToast()
 
+  const preHospitalarMethodDescription = Object.entries(
+    preHospitalarMethodCheckboxState || {},
+  )
+    .filter(([key, value]) => value)
+    .map(([key]) => key)
+
+  const symptomsDescription = Object.entries(
+    signsAndSymptomsCheckboxState || {},
+  )
+    .filter(([key, value]) => value)
+    .map(([key]) => key)
+
+  const removeMetaProperties = (obj) => {
+    const {
+      id,
+      createdAt,
+      updatedAt,
+      ReportOwnerId,
+      ownerId,
+      systolicBloodPressure,
+      diastolicBloodPressure,
+      bodyTemp,
+      bodyPulse,
+      breathing,
+      saturation,
+      perfusion,
+      ...withoutMeta
+    } = obj
+    return withoutMeta
+  }
+
   const handleSubmitIntroduction = async () => {
     try {
+      setButtonLoading(true)
       const reportDate = formatReportDate(reportDateTime)
 
       const response = await updateReport(
@@ -112,10 +582,93 @@ export default function Introducao({ navigation }: any) {
         cpf,
         phone,
         reportPlace,
+        followUpAge,
+        followUp,
       )
 
-      if (response && response.updatedReport) {
+      const reportWithoutMeta = removeMetaProperties(response.updatedReport)
+
+      let reportEmpty = 0
+
+      for (const key in reportWithoutMeta) {
+        if (
+          reportWithoutMeta[key] === '' ||
+          reportWithoutMeta[key] === 0 ||
+          reportWithoutMeta[key] === false ||
+          (Array.isArray(reportWithoutMeta[key]) &&
+            reportWithoutMeta[key].length === 0) ||
+          reportWithoutMeta[key] === null
+        ) {
+          reportEmpty++
+        }
+      }
+
+      const preHospitalarMethodResponse = await updatePreHospitalarMethod(
+        ReportOwnerId,
+        preHospitalarMethodId,
+        preHospitalarMethodDescription,
+      )
+
+      const preHospitalarMethodWithoutMeta = removeMetaProperties(
+        preHospitalarMethodResponse.updatePreHospitalarMethod,
+      )
+
+      let preHospitalarMethodEmpty = 0
+
+      for (const key in preHospitalarMethodWithoutMeta) {
+        if (
+          preHospitalarMethodWithoutMeta[key] === '' ||
+          preHospitalarMethodWithoutMeta[key] === 0 ||
+          preHospitalarMethodWithoutMeta[key] === false ||
+          (Array.isArray(preHospitalarMethodWithoutMeta[key]) &&
+            preHospitalarMethodWithoutMeta[key].length === 0) ||
+          preHospitalarMethodWithoutMeta[key] === null
+        ) {
+          preHospitalarMethodEmpty++
+        }
+      }
+
+      const symptomsResponse = await updateSymptomsMethod(
+        ReportOwnerId,
+        signsAndSymptomsId,
+        symptomsDescription,
+      )
+
+      const symptomsWithoutMeta = removeMetaProperties(
+        symptomsResponse.updatedSymptom,
+      )
+
+      let symptomsEmpty = 0
+
+      for (const key in symptomsWithoutMeta) {
+        if (
+          symptomsWithoutMeta[key] === '' ||
+          symptomsWithoutMeta[key] === 0 ||
+          symptomsWithoutMeta[key] === false ||
+          (Array.isArray(symptomsWithoutMeta[key]) &&
+            symptomsWithoutMeta[key].length === 0) ||
+          symptomsWithoutMeta[key] === null
+        ) {
+          symptomsEmpty++
+        }
+      }
+
+      const introductionCompletness = determineCompletness(
+        reportEmpty,
+        preHospitalarMethodEmpty,
+        symptomsEmpty,
+      )
+
+      if (
+        response &&
+        response.updatedReport &&
+        preHospitalarMethodResponse &&
+        preHospitalarMethodResponse.updatePreHospitalarMethod &&
+        symptomsResponse &&
+        symptomsResponse.updatedSymptom
+      ) {
         navigation.navigate('ocorrencia')
+        dispatch(saveIntroductionCompletness(introductionCompletness))
         toast.show({
           description: 'Informações de Introdução salvas com sucesso.',
           duration: 3000,
@@ -125,133 +678,17 @@ export default function Introducao({ navigation }: any) {
       }
     } catch (error) {
       console.error(error)
-    }
-  }
-
-  const handleSubmitPreHospitalarMethod = async () => {
-    try {
-      const response = await registerPreHospitalarMethods(
-        preHospitalar,
-        reportId,
-      )
-
-      if (response) {
-        navigation.navigate('ocorrencia')
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const handleSubmitSignsAndSymptoms = async () => {
-    try {
-      const response = await registerSignsAndSymptoms(sinaisESintomas, reportId)
-
-      if (response) {
-        navigation.navigate('ocorrencia')
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const handleSave = async () => {
-    try {
-      setButtonLoading(true)
-
-      await handleSubmitIntroduction()
-      await handleSubmitPreHospitalarMethod()
-      await handleSubmitSignsAndSymptoms()
-    } catch (error) {
-      console.error(error)
     } finally {
       setButtonLoading(false)
     }
   }
 
-  const handleSelectGender = (selectedGender: 'MASC' | 'FEM') => {
-    setGender(selectedGender)
+  const handleSelectGender = (selectedGender: 'Male' | 'Female' | null) => {
+    if (selectedGender !== null) {
+      setGender(selectedGender)
+    }
   }
 
-  const preHospitalarData = [
-    { value: 'Afogamento' },
-    { value: 'Agressão' },
-    { value: 'Atropelamento' },
-    { value: 'Causado por animais' },
-    { value: 'Choque elétrico' },
-    { value: 'Com meio de transporte' },
-    { value: 'Desabamento' },
-    { value: 'Desmoronamento' },
-    { value: 'Doméstico' },
-    { value: 'Emergência médica' },
-    { value: 'Esportivo' },
-    { value: 'Intoxicação' },
-    { value: 'Queda bicicleta' },
-    { value: 'Queda moto' },
-    { value: 'Queda menor que 2m' },
-    { value: 'Queda maior que 2m' },
-    { value: 'Queda própria altura' },
-    { value: 'Tentativa de suicídio' },
-    { value: 'Trabalho' },
-    { value: 'Transferência' },
-  ]
-
-  const sinaisESintomasData = [
-    { value: 'Abd. Sensível/Rígido' },
-    { value: 'Afundamento de crânio' },
-    { value: 'Agitação' },
-    { value: 'Amnésia' },
-    { value: 'Angina de Peito' },
-    { value: 'Apinéia' },
-    { value: 'Bradicardia' },
-    { value: 'Bradipnéia' },
-    { value: 'Bronco-Aspirando' },
-    { value: 'Cefaléia' },
-    { value: 'Cianose lábios' },
-    { value: 'Cianose extremidades' },
-    { value: 'Convulsão' },
-    { value: 'Decorticação' },
-    { value: 'Deformidade' },
-    { value: 'Descerebração' },
-    { value: 'Desmaio' },
-    { value: 'Desvio de traquéia' },
-    { value: 'Dispnéia' },
-    { value: 'Dor local' },
-    { value: 'Edema generalizado' },
-    { value: 'Edema localizado' },
-    { value: 'Enfisema subcutâneo' },
-    { value: 'Êstase da jugular' },
-    { value: 'Face pálida' },
-    { value: 'Hemorragia interna' },
-    { value: 'Hemorragia externa' },
-    { value: 'Hipertensão' },
-    { value: 'Hipotensão' },
-    { value: 'Náuseas/vômitos' },
-    { value: 'Nasoragia' },
-    { value: 'Óbito' },
-    { value: 'Otorréia' },
-    { value: 'Otorragia' },
-    { value: 'O.V.A.C.E' },
-    { value: 'Parada cardíaca' },
-    { value: 'Parada respiratória' },
-    { value: 'Priaprismo' },
-    { value: 'Prurido na pele' },
-    { value: 'Anisocoria NÃO reagente' },
-    { value: 'Anisocoria reagente' },
-    { value: 'Isocoria NÃO reagente' },
-    { value: 'Isocoria reagente' },
-    { value: 'Midríase NÃO reagente' },
-    { value: 'Midríase reagente' },
-    { value: 'Miose NÃO reagente' },
-    { value: 'Miose reagente' },
-    { value: 'Sede' },
-    { value: 'Sinal de battle' },
-    { value: 'Sinal de guaxinim' },
-    { value: 'Sudorese' },
-    { value: 'Taquipinéia' },
-    { value: 'Taquicardia' },
-    { value: 'Tontura' },
-  ]
   return (
     <ScrollView
       className="flex-1"
@@ -323,83 +760,63 @@ export default function Introducao({ navigation }: any) {
               onChangeText={(e) => setReportPlace(e)}
             />
             <View className="mx-auto flex-1 flex-row">
-              <InputLowPadding title="Acompanhante" size="regular" />
-              <InputLowPadding title="Idade" size="small" />
-            </View>
-            <View className="mx-auto flex-1 flex-col">
-              {/* <View className="mb-[40px] mt-[34px] flex-row items-center justify-center">
-                <FontAwesome5 name="suitcase" size={24} color="#A00E00" />
-                <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
-                  Introdução
-                </Text>
-              </View> */}
-              <MultipleSelectList
-                setSelected={(val) => setPreHospitalar(val)}
-                data={preHospitalarData}
-                save="value"
-                label="Pré-Hospitalar"
-                boxStyles={{
-                  flexGrow: 1,
-                  width: 305,
-                  flex: 1,
-                  borderColor: 'black',
-                  borderRadius: 8,
-                }}
-                badgeStyles={{
-                  backgroundColor: '#A00E00',
-                  paddingHorizontal: 10,
-                }}
-                placeholder="PRÉ-HOSPITALAR"
-                searchPlaceholder="Escolha quantos forem necessários"
-                notFoundText="Nenhuma categoria encontrada"
-                maxHeight={450}
+              <InputLowPadding
+                title="Acompanhante"
+                size="regular"
+                alignText="left"
+                value={followUp}
+                placeholder={followUp || ''}
+                onChangeText={(e) => setFollowUp(e)}
+              />
+              <InputNumeric
+                title="Idade"
+                size="small"
+                value={followUpAge}
+                onChangeText={(e) => setFollowUpAge(e)}
               />
             </View>
-            <View className="mx-auto flex-1 flex-row">
-              <MultipleSelectList
-                setSelected={(val) => setSinaisESintomas(val)}
-                data={sinaisESintomasData}
-                save="value"
-                label="Sinais e Sintomas"
-                boxStyles={{
-                  flexGrow: 1,
-                  width: 305,
-                  flex: 1,
-                  borderColor: 'black',
-                  borderRadius: 8,
-                }}
-                badgeStyles={{
-                  backgroundColor: '#A00E00',
-                  paddingHorizontal: 10,
-                }}
-                placeholder="SINAIS E SINTOMAS"
-                searchPlaceholder="Escolha quantos for necessário"
-                notFoundText="Nenhuma categoria encontrada"
-                maxHeight={750}
-              />
+
+            <View>
+              <Title iconName="hospital-user" title="Pré-Hospitalar" />
+              {Object.entries(preHospitalarMethodCheckboxState).map(
+                ([key, isChecked]) => (
+                  <Checkbox
+                    key={key}
+                    size="md"
+                    colorScheme="danger"
+                    value={key}
+                    isChecked={isChecked}
+                    onChange={() =>
+                      handlePreHospitalarMethodCheckboxChange(key)
+                    }
+                  >
+                    <Text className="text-lg text-slate-800">{key}</Text>
+                  </Checkbox>
+                ),
+              )}
             </View>
-            <Select
-              selectedValue={service}
-              minWidth="200"
-              accessibilityLabel="Choose Service"
-              placeholder="Choose Service"
-              _selectedItem={{
-                bg: 'teal.600',
-              }}
-              mt={1}
-              onValueChange={(itemValue) => setService(itemValue)}
-            >
-              <Select.Item label="UX Research" value="ux" />
-              <Select.Item label="Web Development" value="web" />
-              <Select.Item label="Cross Platform Development" value="cross" />
-              <Select.Item label="UI Designing" value="ui" />
-              <Select.Item label="Backend Development" value="backend" />
-            </Select>
+            <View>
+              <Title iconName="info-circle" title="Sinais e sintomas" />
+              {Object.entries(signsAndSymptomsCheckboxState).map(
+                ([key, isChecked]) => (
+                  <Checkbox
+                    key={key}
+                    size="md"
+                    colorScheme="danger"
+                    value={key}
+                    isChecked={isChecked}
+                    onChange={() => handleSignsAndSymptomsCheckboxChange(key)}
+                  >
+                    <Text className="text-lg text-slate-800">{key}</Text>
+                  </Checkbox>
+                ),
+              )}
+            </View>
           </View>
 
           <MainButton
             innerText="SALVAR"
-            onPress={() => handleSave()}
+            onPress={() => handleSubmitIntroduction()}
             isLoading={buttonLoading}
           />
           <Footer />

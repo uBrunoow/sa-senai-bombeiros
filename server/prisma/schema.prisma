@@ -36,20 +36,22 @@ model Report {
   bodyPulse                Int?
   breathing                Int?
   saturation               Int?
-  perfusion                perfusion
-  ownerId                  Int
+  perfusion                String?
+  followUp                 String?
+  followUpAge              Int?
   Anamnesis                Anamnesis[]
   Finalization             Finalization[]
   GestationalAnamnesis     GestationalAnamnesis[]
   Glasglow                 Glasglow[]
   PreHospitalMethods       PreHospitalMethod[]
-  owner                    User                       @relation(fields: [ownerId], references: [id])
   Report_PreHospitalMethod Report_PreHospitalMethod[]
   Report_Symptoms          Report_Symptoms[]
   SuspectProblems          SuspectProblems[]
   Symptoms                 Symptoms[]
   LocalTraumas             trauma[]
   CinematicAvaliation      CinematicAvaliation[]
+  owner                    User                       @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  ownerId                  Int
 }
 
 model Report_PreHospitalMethod {
@@ -77,47 +79,128 @@ model Report_Symptoms {
 }
 
 model PreHospitalMethod {
-  id                       Int                        @id @default(autoincrement())
-  description              String
-  ReportOwnerId            Int
-  createdAt                DateTime?                  @default(now())
-  updatedAt                DateTime?                  @updatedAt
-  reportOwner              Report                     @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
-  Report_PreHospitalMethod Report_PreHospitalMethod[]
+  id                             Int                        @id @default(autoincrement())
+  preHospitalarMethodDescription String[]                   @default([""])
+  ReportOwnerId                  Int
+  createdAt                      DateTime?                  @default(now())
+  updatedAt                      DateTime?                  @updatedAt
+  reportOwner                    Report                     @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  Report_PreHospitalMethod       Report_PreHospitalMethod[]
+}
+
+enum preHospitalarMethodDescription {
+  AFOGAMENTO
+  AGRESSAO
+  ATROPELAMENTO
+  CAUSADO_POR_ANIMAIS
+  CHOQUE_ELETRICO
+  COM_MEIO_DE_TRANSPORTE
+  DESABAMENTO
+  DESMORONAMENTO
+  DOMESTICO
+  EMERGENCIA_MEDICA
+  ESPORTIVO
+  INTOXICACAO
+  QUEDA_BICICLETA
+  QUEDA_MOTO
+  QUEDA_MENOR_QUE_2M
+  QUEDA_MAIOR_QUE_2M
+  QUEDA_PROPRIA_ALTURA
+  TENTATIVA_DE_SUICIDIO
+  TRABALHO
+  TRANSFERENCIA
 }
 
 model Symptoms {
-  id              Int               @id @default(autoincrement())
-  description     String
-  ReportOwnerId   Int
-  createdAt       DateTime?         @default(now())
-  updatedAt       DateTime?         @updatedAt
-  Report_Symptoms Report_Symptoms[]
-  reportOwner     Report            @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  id                  Int               @id @default(autoincrement())
+  symptomsDescription String[]          @default([""])
+  ReportOwnerId       Int
+  createdAt           DateTime?         @default(now())
+  updatedAt           DateTime?         @updatedAt
+  Report_Symptoms     Report_Symptoms[]
+  reportOwner         Report            @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+}
+
+enum symptomsDescription {
+  ABD_SENSIVEL_RIGIDO
+  AFUNDAMENTO_DE_CRANIO
+  AGITACAO
+  AMNESIA
+  ANGINA_DE_PEITO
+  APINEIA
+  BRADICARDIA
+  BRADIPNEIA
+  BRONCO_ASPIRANDO
+  CEFALIA
+  CIANOSE_LABIOS
+  CIANOSE_EXTREMIDADES
+  CONVULSAO
+  DECORTICACAO
+  DEFORMIDADE
+  DESCEREBRACAO
+  DESMAIO
+  DESVIO_DE_TRAQUEIA
+  DISPNEIA
+  DOR_LOCAL
+  EDEMA_GENERALIZADO
+  EDEMA_LOCALIZADO
+  ENFISEMA_SUBCUTANEO
+  ESTASE_DA_JUGULAR
+  FACE_PALIDA
+  HEMORRAGIA_INTERNA
+  HEMORRAGIA_EXTERNA
+  HIPERTENSAO
+  HIPOTENSAO
+  NAUSEAS_VOMITOS
+  NASORAGIA
+  OBITO
+  OTORREIA
+  OTORRAGIA
+  OVACE
+  PARADA_CARDIACA
+  PARADA_RESPIRATORIA
+  PRIAPRISMO
+  PRURIDO_NA_PELE
+  ANISOCORIA_NAO_REAGENTE
+  ANISOCORIA_REAGENTE
+  ISOCORIA_NAO_REAGENTE
+  ISOCORIA_REAGENTE
+  MIDRIASE_NAO_REAGENTE
+  MIDRIASE_REAGENTE
+  MIOSE_NAO_REAGENTE
+  MIOSE_REAGENTE
+  SEDE
+  SINAL_DE_BATTLE
+  SINAL_DE_GUAXINIM
+  SUDORESE
+  TAQUIPNEIA
+  TAQUICARDIA
+  TONTURA
 }
 
 model GestationalAnamnesis {
-  id                  Int         @id @default(autoincrement())
-  PreNatal            Boolean?
-  DoctorName          String?
-  NumberSon           Int?
-  HiPressure          Boolean?
-  BagRuptured         Boolean?
-  VisualInspection    Boolean?
-  Childbirth          Boolean?
-  BornHour            String?
-  BabyName            String?
-  FinalRemarks        String?
-  ReportOwnerId       Int
-  createdAt           DateTime?   @default(now())
-  updatedAt           DateTime?   @updatedAt
-  Complications       Boolean?
-  gestationalPeriod   DateTime?
-  ContractionSchedule String?
-  Duration            String?
-  Interval            String?
-  BabyGender          BabyGender?
-  reportOwner         Report      @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  id                     Int         @id @default(autoincrement())
+  PreNatal               Boolean?
+  DoctorName             String?
+  NumberSon              Int?
+  HiPressure             Boolean?
+  BagRuptured            Boolean?
+  VisualInspection       Boolean?
+  Childbirth             Boolean?
+  BornHour               String?
+  BabyName               String?
+  FinalRemarks           String?
+  ReportOwnerId          Int
+  createdAt              DateTime?   @default(now())
+  updatedAt              DateTime?   @updatedAt
+  Complications          Boolean?
+  gestationalPeriodStart DateTime?
+  gestationalPeriodEnd   DateTime?
+  ContractionSchedule    String?
+  Duration               String?
+  Interval               String?
+  BabyGender             BabyGender?
+  reportOwner            Report      @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 model Anamnesis {
@@ -158,6 +241,7 @@ model SuspectProblems {
   problemaSuspeitoDiabetes     String[]  @default([""])
   problemaSuspeitoObstetrico   String[]  @default([""])
   problemaSuspeitoRespiratorio String[]  @default([""])
+  problemaSuspeitoPsiquiatrico Boolean?  @default(false)
   Another                      String?
   createdAt                    DateTime? @default(now())
   updatedAt                    DateTime? @updatedAt
@@ -222,10 +306,10 @@ enum problemaSuspeitoRespiratorio {
   INLACAO_FUMACA
 }
 
-enum perfusion {
-  MAIOR_DOIS_SEGUNDOS
-  MENOR_DOIS_SEGUNDOS
-}
+// enum perfusion {
+//   MAIOR_DOIS_SEGUNDOS
+//   MENOR_DOIS_SEGUNDOS
+// }
 
 enum localTraumaSide {
   RIGHT

@@ -6,6 +6,7 @@ type Grouperprops = {
   title: string
   desc: string
   isCompleted?: number
+  howManyItems?: number
 }
 
 export default function Grouper(props: Grouperprops) {
@@ -41,7 +42,9 @@ export default function Grouper(props: Grouperprops) {
         >
           {icon}
         </View>
-        <Text className="text-center text-lg">{props.isCompleted}/4</Text>
+        <Text className="text-center text-lg">
+          {props.isCompleted}/{props.howManyItems || 4}
+        </Text>
       </View>
     </View>
   )

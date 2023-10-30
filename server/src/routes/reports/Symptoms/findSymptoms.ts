@@ -44,3 +44,29 @@ export async function symptomsFindOneRoutes(app: FastifyInstance) {
     })
   })
 }
+
+export async function symptomsByReportRoutes(app: FastifyInstance) {
+  app.get('/api/reports/:reportId/symptoms', async (req, res) => {
+    const { reportId } = req.params as { reportId: string }
+
+    try {
+      const symptoms = await prisma.symptoms.findMany({
+        where: {
+          reportOwner: {
+            id: parseInt(reportId),
+          },
+        },
+      })
+
+      return res.send({
+        msg: `🟢 Métodos pré-hospitalares localizados com sucesso.`,
+        symptoms,
+      })
+    } catch (error) {
+      console.error('Erro ao buscar sintomas:', error)
+      return res.status(500).send({
+        message: 'Erro interno do servidor ao buscar sintomas.',
+      })
+    }
+  })
+}

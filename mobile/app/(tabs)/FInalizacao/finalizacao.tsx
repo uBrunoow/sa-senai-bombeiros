@@ -18,13 +18,12 @@ import {
   AntDesign,
 } from '@expo/vector-icons'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
 import findUser from '@src/api/users/findUser'
 import FInalizacaoModal from '@app/modal/FInalizacaoModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { styles as s } from '@app/styles/boxShadow'
-import InputLowPadding from '@app/components/InputLowPadding'
 import Cinematica from './components/Cinematica'
 import findFinalization from '@src/api/reports/finalization/findFinalization'
 import updateCinematic from '@src/api/reports/cinematicAvaliation/updateCinematicAvaliation'
@@ -32,14 +31,15 @@ import MainButton from '@app/components/MainButton'
 import updateFinalization from '@src/api/reports/finalization/updateFinalization'
 import { Checkbox, FormControl, Input, TextArea, useToast } from 'native-base'
 import { useForm, Controller } from 'react-hook-form'
+import { determineCompletness } from './utils/determineCompletness'
+import { saveFinalizationCompletness } from '@src/redux/reducers/completnessReducer'
 
 type FormDataType = {
   CollectedObjects: string
 }
 
 const Finalizacao = ({ navigation }: any) => {
-  const [selected, setSelected] = useState('')
-  const [categories, setCategories] = useState([])
+  const dispatch = useDispatch()
   const [isPressed, setIsPressed] = useState(false)
   const [selectedOption, setSelectedOption] = useState(``)
   const [changeResponsable, setChangeResponsable] = useState(false)
@@ -198,9 +198,16 @@ const Finalizacao = ({ navigation }: any) => {
   const CollectedObjects = watch('CollectedObjects')
   const toast = useToast()
 
+  const removeMetaProperties = (obj) => {
+    const { id, createdAt, updatedAt, reportOwnerId, ...withoutMeta } = obj
+    return withoutMeta
+  }
+
   const handleSubmitFinalization = async () => {
     try {
       setButtonLoading(true)
+
+      // Atualização do Cinematic
       const cinematicDataResponse = await updateCinematic(
         ReportOwnerId,
         cinematicId,
@@ -213,6 +220,26 @@ const Finalizacao = ({ navigation }: any) => {
         twistedSteering,
       )
 
+      const cinematicWithoutMeta = removeMetaProperties(
+        cinematicDataResponse.updatedCinematicAvaliation,
+      )
+
+      let cinematicEmpty = 0
+
+      for (const key in cinematicWithoutMeta) {
+        if (
+          cinematicWithoutMeta[key] === '' ||
+          cinematicWithoutMeta[key] === 0 ||
+          cinematicWithoutMeta[key] === false ||
+          (Array.isArray(cinematicWithoutMeta[key]) &&
+            cinematicWithoutMeta[key].length === 0) ||
+          cinematicWithoutMeta[key] === null
+        ) {
+          cinematicEmpty++
+        }
+      }
+
+      // Atualização da Finalização
       const finalizationDataResponse = await updateFinalization(
         ReportOwnerId,
         finalizationId,
@@ -223,8 +250,29 @@ const Finalizacao = ({ navigation }: any) => {
         finalRemarks,
       )
 
-      console.log(cinematicDataResponse)
-      console.log(finalizationDataResponse)
+      const finalizationWithoutMeta = removeMetaProperties(
+        finalizationDataResponse.updatedFinalization,
+      )
+
+      let finalizationEmpty = 0
+
+      for (const key in finalizationWithoutMeta) {
+        if (
+          finalizationWithoutMeta[key] === '' ||
+          finalizationWithoutMeta[key] === 0 ||
+          finalizationWithoutMeta[key] === false ||
+          (Array.isArray(finalizationWithoutMeta[key]) &&
+            finalizationWithoutMeta[key].length === 0) ||
+          finalizationWithoutMeta[key] === null
+        ) {
+          finalizationEmpty++
+        }
+      }
+
+      const finalizationCompletness = determineCompletness(
+        finalizationEmpty,
+        cinematicEmpty,
+      )
 
       if (
         cinematicDataResponse &&
@@ -232,6 +280,7 @@ const Finalizacao = ({ navigation }: any) => {
         finalizationDataResponse &&
         finalizationDataResponse.updatedFinalization
       ) {
+        dispatch(saveFinalizationCompletness(finalizationCompletness))
         navigation.navigate('ocorrencia')
         toast.show({
           description: 'Informações de Finalização salvas com sucesso.',

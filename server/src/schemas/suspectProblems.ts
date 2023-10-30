@@ -5,6 +5,7 @@ export const suspectProblemsSchema = z.object({
   problemaSuspeitoDiabetes: z.array(z.string()).optional(),
   problemaSuspeitoObstetrico: z.array(z.string()).optional(),
   problemaSuspeitoRespiratorio: z.array(z.string()).optional(),
+  problemaSuspeitoPsiquiatrico: z.boolean().optional(),
   Another: z.string().optional(),
   ReportOwnerId: z.number(),
 })
@@ -14,6 +15,7 @@ export const suspectProblemsUpdateSchema = z.object({
   problemaSuspeitoDiabetes: z.array(z.string()).optional(),
   problemaSuspeitoObstetrico: z.array(z.string()).optional(),
   problemaSuspeitoRespiratorio: z.array(z.string()).optional(),
+  problemaSuspeitoPsiquiatrico: z.boolean().optional(),
   Another: z.string().optional(),
   ReportOwnerId: z.number(),
 })

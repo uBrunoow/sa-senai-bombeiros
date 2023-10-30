@@ -4,7 +4,7 @@ import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 type OptionsProps = {
   title?: string
   selectedOption: string
-  onSelectOption: (option: 'MASC' | 'FEM') => void
+  onSelectOption: (option: 'Male' | 'Female') => void
   Option1?: string // You need to define these props
   Option2?: string // You need to define these props
 }
@@ -28,14 +28,14 @@ export default function PickOne(props: OptionsProps) {
           className="w-[70px] items-center justify-center py-2"
           style={[
             styles.button,
-            props.selectedOption === 'MASC' ? styles.selected : null,
+            props.selectedOption === 'Male' ? styles.selected : null,
           ]}
-          onPress={() => props.onSelectOption('MASC')}
+          onPress={() => props.onSelectOption('Male')}
         >
           <Text
             className="text-center"
             style={
-              props.selectedOption === 'MASC'
+              props.selectedOption === 'Male'
                 ? styles.whiteText
                 : styles.blackText
             }
@@ -47,14 +47,14 @@ export default function PickOne(props: OptionsProps) {
           className="ml-1 w-[70px] items-center justify-center py-3"
           style={[
             styles.button,
-            props.selectedOption === 'FEM' ? styles.selected : null,
+            props.selectedOption === 'Female' ? styles.selected : null,
           ]}
-          onPress={() => props.onSelectOption('FEM')}
+          onPress={() => props.onSelectOption('Female')}
         >
           <Text
             className="text-center"
             style={
-              props.selectedOption === 'FEM'
+              props.selectedOption === 'Female'
                 ? styles.whiteText
                 : styles.blackText
             }

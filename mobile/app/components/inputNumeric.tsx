@@ -6,7 +6,7 @@ type InputProps = {
   size?: 'small' | 'regular' | 'big'
   alignText?: 'center' | 'left' | 'right'
   isBig?: boolean
-  value?: number | null
+  value?: number
   placeholder?: string
   onChangeText?: (text: number) => void
 }
@@ -16,7 +16,7 @@ export default function InputNumeric(props: InputProps) {
   const [inputValue, setInputValue] = useState(initialValue)
 
   useEffect(() => {
-    setInputValue(props.value !== null ? props.value.toString() : '')
+    setInputValue(props.value !== undefined ? props.value.toString() : '')
   }, [props.value])
 
   const handleWidth = () => {

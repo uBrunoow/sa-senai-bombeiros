@@ -1,38 +1,37 @@
-import {
-  View,
-  ScrollView,
-  Text,
-  Pressable,
-  ActivityIndicator,
-} from 'react-native'
+import { ScrollView, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
 import Title from '@app/components/Title'
 import Footer from '@app/components/Footer'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import TestInput from '@app/components/TestInput'
 import MainButton from '@app/components/MainButton'
 import YesOrNo from '@app/components/YesOrNo'
-import GestationPeriod from '@app/(tabs)/AnamneseGestacional/components/GestationPeriod'
-import InputFull from '@app/components/InputFull'
+import {
+  GestationalPeriodEndPicker,
+  GestationalPeriodStartPicker,
+} from '@app/(tabs)/AnamneseGestacional/components/GestationPeriod'
 import { styles as s } from '@app/styles/boxShadow'
 import findGestacionalAnamnesis from '@src/api/reports/gestacionalAnamnesis/findGestacionalAnamnesis'
 import { RootState } from '@src/redux/stores/stores'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import updateGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/updateGestacionalAnamnesis'
-import {
-  FormControl,
-  Stack,
-  Input,
-  WarningOutlineIcon,
-  TextArea,
-  useToast,
-} from 'native-base'
+import { FormControl, TextArea, useToast } from 'native-base'
 import Options from '@app/components/optionsIntroducao'
-import InputNumeric from '@app/components/inputNumeric'
 import InputClock from '@app/components/InputClock'
-
+import { formatReportDate } from '@src/utils/formatReportDate'
+import InputNumeric from '@app/components/inputNumeric'
+import InputFull from '@app/components/InputFull'
+import InputDuration from './components/InputDuration'
+import InputInterval from './components/InputInterval'
+import Loader from '@app/components/Loader'
+import {
+  parseDurationString,
+  parseIntervalString,
+} from './utils/parseIntervalString'
+import { determineCompletness } from './utils/determineCompletness'
+import { saveGesAnamnesisCompletness } from '@src/redux/reducers/completnessReducer'
 export default function AnamneseGestacional({ navigation }: any) {
+  const dispatch = useDispatch()
   const { bottom, top } = useSafeAreaInsets()
 
   const [PreNatal, setPreNatal] = useState(false)
@@ -41,14 +40,24 @@ export default function AnamneseGestacional({ navigation }: any) {
   const [BagRuptured, setBagRuptured] = useState(false)
   const [VisualInspection, setVisualInspection] = useState(false)
   const [Childbirth, setChildbirth] = useState(false)
-  const [gender, setGender] = useState(' ')
+  const [gender, setGender] = useState('')
   const [NumberSon, setNumberSon] = useState(0)
+  const [gestationalPeriod, setGestationalPeriod] = useState({
+    start: '',
+    end: '',
+  })
+  const [doctorName, setDoctorName] = useState('')
+  const [horasInicioContracao, setHorasInicioContracao] = useState('')
   const [loading, setLoading] = useState(false)
   const [buttonLoading, setButtonLoading] = useState(false)
-
-  const handleSelectGender = (selectedGender: 'MASC' | 'FEM') => {
-    setGender(selectedGender)
-  }
+  const [durationMinutes, setDurationMinutes] = useState(0)
+  const [durationSeconds, setDurationSeconds] = useState(0)
+  const [intervalMinutes, setIntervalMinutes] = useState(0)
+  const [intervalSeconds, setIntervalSeconds] = useState(0)
+  const [intervalHours, setIntervalHours] = useState(0)
+  const [horarioNascimento, setHorarioNascimento] = useState('')
+  const [BabyName, setBabyName] = useState('')
+  const [observacoesFinais, setObservacoesFinais] = useState('')
 
   const gestacionalAnamnesisId = useSelector(
     (state: RootState) => state.gestacionalAnamnesis.gestacionalAnamnesisId,
@@ -69,6 +78,24 @@ export default function AnamneseGestacional({ navigation }: any) {
         const visualInspectionResponse =
           response.gestacionalAnamnesis.VisualInspection
         const childbirthResponse = response.gestacionalAnamnesis.Childbirth
+        const doctorNameResponse = response.gestacionalAnamnesis.DoctorName
+        const NumberSonResponse = response.gestacionalAnamnesis.NumberSon
+        const gestationalPeriodStartResponse =
+          response.gestacionalAnamnesis.gestationalPeriodStart
+        const gestationalPeriodEndResponse =
+          response.gestacionalAnamnesis.gestationalPeriodEnd
+        const ContractionSchedule =
+          response.gestacionalAnamnesis.ContractionSchedule
+        const intervalString = response.gestacionalAnamnesis.Interval
+        const durationString = response.gestacionalAnamnesis.Duration
+        const { intervalHours, intervalMinutes, intervalSeconds } =
+          parseIntervalString(intervalString)
+        const { durationMinutes, durationSeconds } =
+          parseDurationString(durationString)
+        const BabyGenderResponse = response.gestacionalAnamnesis.BabyGender
+        const BornHour = response.gestacionalAnamnesis.BornHour
+        const BabyName = response.gestacionalAnamnesis.BabyName
+        const FinalRemarks = response.gestacionalAnamnesis.FinalRemarks
 
         setPreNatal(preNatalResponse || false)
         setComplications(complicationsResponse || false)
@@ -76,6 +103,24 @@ export default function AnamneseGestacional({ navigation }: any) {
         setBagRuptured(bagRupturedResponse || false)
         setVisualInspection(visualInspectionResponse || false)
         setChildbirth(childbirthResponse || false)
+        setDoctorName(doctorNameResponse)
+        setNumberSon(NumberSonResponse)
+        setGestationalPeriod(
+          {
+            start: gestationalPeriodStartResponse,
+            end: gestationalPeriodEndResponse,
+          } || null,
+        )
+        setHorasInicioContracao(ContractionSchedule)
+        setIntervalHours(intervalHours)
+        setIntervalMinutes(intervalMinutes)
+        setIntervalSeconds(intervalSeconds)
+        setDurationMinutes(durationMinutes)
+        setDurationSeconds(durationSeconds)
+        setGender(BabyGenderResponse)
+        setHorarioNascimento(BornHour)
+        setBabyName(BabyName)
+        setObservacoesFinais(FinalRemarks)
 
         console.log(response)
       } catch (error) {
@@ -86,6 +131,31 @@ export default function AnamneseGestacional({ navigation }: any) {
     }
     findGesAnamnesisData()
   }, [gestacionalAnamnesisId])
+
+  const handleDurationChange = (minutes: number, seconds: number) => {
+    setDurationMinutes(minutes)
+    setDurationSeconds(seconds)
+  }
+
+  const handleIntervalChange = (
+    hours: number,
+    minutes: number,
+    seconds: number,
+  ) => {
+    setIntervalHours(hours)
+    setIntervalMinutes(minutes)
+    setIntervalSeconds(seconds)
+  }
+
+  const handleSelectGender = (selectedGender: 'Male' | 'Female' | null) => {
+    if (selectedGender !== null) {
+      setGender(selectedGender)
+    }
+  }
+
+  const handleObservacoesChange = (newValue: string) => {
+    setObservacoesFinais(newValue)
+  }
 
   const handlePreNatal = (option: 'SIM' | 'NÃO') => {
     setPreNatal(option === 'SIM')
@@ -108,6 +178,19 @@ export default function AnamneseGestacional({ navigation }: any) {
 
   const toast = useToast()
 
+  const gestationalPeriodStart = formatReportDate(gestationalPeriod.start)
+  const gestationalPeriodEnd = formatReportDate(gestationalPeriod.end)
+  const Interval = `${intervalHours} hr ${intervalMinutes} min ${intervalSeconds} segs`
+  const Duration = `${durationMinutes} min ${durationSeconds}`
+  const FinalRemarks = observacoesFinais
+
+  console.log(FinalRemarks)
+
+  const removeMetaProperties = (obj) => {
+    const { id, createdAt, updatedAt, ReportOwnerId, ...withoutMeta } = obj
+    return withoutMeta
+  }
+
   const handleSubmitGesAnamnesis = async () => {
     try {
       setButtonLoading(true)
@@ -121,11 +204,50 @@ export default function AnamneseGestacional({ navigation }: any) {
         BagRuptured,
         VisualInspection,
         Childbirth,
+        gestationalPeriodStart,
+        gestationalPeriodEnd,
+        doctorName,
+        NumberSon,
+        horasInicioContracao,
+        Interval,
+        Duration,
+        gender,
+        horarioNascimento,
+        BabyName,
+        FinalRemarks,
       )
+
+      const gesAnamnesisWithoutMeta = removeMetaProperties(
+        response.updatedGestacionalAnamnesis,
+      )
+
+      let gesAnamnesisEmpty = 0
+
+      for (const key in gesAnamnesisWithoutMeta) {
+        if (
+          gesAnamnesisWithoutMeta[key] === '' ||
+          gesAnamnesisWithoutMeta[key] === 0 ||
+          gesAnamnesisWithoutMeta[key] === '0 min 0' ||
+          gesAnamnesisWithoutMeta[key] === '0 hr 0 min 0 segs' ||
+          gesAnamnesisWithoutMeta[key] === false ||
+          gesAnamnesisWithoutMeta[key] === null
+        ) {
+          gesAnamnesisEmpty++
+
+          // Imprimir os valores que são null, false ou vazios
+          console.log(`Campo: ${key}, Valor: ${gesAnamnesisWithoutMeta[key]}`)
+        }
+      }
+
+      console.log(gesAnamnesisEmpty)
+
+      const gesAnamnesisCompletness = determineCompletness(gesAnamnesisEmpty)
+
       console.log(response)
 
       if (response && response.updatedGestacionalAnamnesis) {
         navigation.navigate('ocorrencia', { gestacionalAnamnesisId })
+        dispatch(saveGesAnamnesisCompletness(gesAnamnesisCompletness))
         toast.show({
           description:
             'Informações de Anamnese Gestacional salvas com sucesso.',
@@ -147,12 +269,7 @@ export default function AnamneseGestacional({ navigation }: any) {
       contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
     >
       {loading ? (
-        <View className="mx-auto h-screen w-[320px] items-center justify-center">
-          <ActivityIndicator size="large" color="#ff0000" />
-          <Text className="mt-3 text-center text-lg font-bold uppercase">
-            Carregando...
-          </Text>
-        </View>
+        <Loader />
       ) : (
         <>
           <View>
@@ -162,23 +279,71 @@ export default function AnamneseGestacional({ navigation }: any) {
               style={s.boxShadow}
               className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white py-[30px] shadow-md"
             >
-              <GestationPeriod />
+              <GestationalPeriodStartPicker
+                gestationalPeriod={gestationalPeriod.start}
+                setGestationalPeriod={(value) =>
+                  setGestationalPeriod({
+                    ...gestationalPeriod,
+                    start: String(value),
+                  })
+                }
+                label="Começo do Período de Gestação"
+              />
+
+              <GestationalPeriodEndPicker
+                gestationalPeriod={gestationalPeriod.end}
+                setGestationalPeriod={(value) =>
+                  setGestationalPeriod({
+                    ...gestationalPeriod,
+                    end: String(value),
+                  })
+                }
+                label="Fim do Período de Gestação"
+              />
               <YesOrNo
                 Question="Fez pré-natal?"
                 selectedOption={PreNatal ? 'SIM' : 'NÃO'}
                 onSelectOption={handlePreNatal}
               />
-              <InputFull title="Nome do médico" />
+              <InputFull
+                title="Nome do médico"
+                value={doctorName}
+                onChangeText={(e) => setDoctorName(e)}
+              />
               <YesOrNo
                 Question="Possibilidade de complicações?"
                 selectedOption={Complications ? 'SIM' : 'NÃO'}
                 onSelectOption={handleComplications}
               />
-              <InputFull title="Filho de número" />
-              <InputClock title="Horário de início das contrações"></InputClock>
+              <InputNumeric
+                title="Filho de número"
+                value={NumberSon}
+                onChangeText={(e) => setNumberSon(e)}
+              />
+              <InputClock
+                title="Início das contrações"
+                initialValue={horasInicioContracao}
+                onChange={(newValue) => setHorasInicioContracao(newValue)}
+              ></InputClock>
+
               <View className="flex-row justify-evenly">
-                <InputClock title="Duração" />
-                <InputClock title="Intervalo" />
+                <InputDuration
+                  title="Duração"
+                  onChangeDuration={(minutes, seconds) =>
+                    handleDurationChange(minutes, seconds)
+                  }
+                  minutes={durationMinutes}
+                  seconds={durationSeconds}
+                />
+                <InputInterval
+                  title="Intervalo"
+                  onChangeInterval={(hours, minutes, seconds) =>
+                    handleIntervalChange(hours, minutes, seconds)
+                  }
+                  hours={intervalHours}
+                  minutes={intervalMinutes}
+                  seconds={intervalSeconds}
+                />
               </View>
               <YesOrNo
                 Question="Pressão no quadril/vontade de evacuar?"
@@ -200,7 +365,6 @@ export default function AnamneseGestacional({ navigation }: any) {
                 selectedOption={Childbirth ? 'SIM' : 'NÃO'}
                 onSelectOption={handleChildbirth}
               />
-              {/* View que guarda os três inputs caso o parto seja realizado */}
               <View>
                 <View className="mx-6 flex-row justify-around">
                   <Options
@@ -211,10 +375,28 @@ export default function AnamneseGestacional({ navigation }: any) {
                     onSelectOption={handleSelectGender}
                   />
                   <View className="w-[10px]" />
-                  <InputClock title="Horário nasc." />
+                  <InputClock
+                    title="Horário nasc."
+                    initialValue={horarioNascimento}
+                    onChange={(newValue) => setHorarioNascimento(newValue)}
+                  />
                 </View>
               </View>
-              <InputFull title="Nome do bebê" />
+              <InputFull
+                title="Nome do bebê"
+                value={BabyName}
+                onChangeText={(e) => setBabyName(e)}
+              />
+              <FormControl>
+                <FormControl.Label mt={5}>Observações Finais</FormControl.Label>
+                <TextArea
+                  autoCompleteType={''}
+                  h={20}
+                  w="100%"
+                  onChange={(e) => handleObservacoesChange(e.nativeEvent.text)}
+                  value={observacoesFinais}
+                />
+              </FormControl>
             </View>
             <MainButton
               isLoading={buttonLoading}

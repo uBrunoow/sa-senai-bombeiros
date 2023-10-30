@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 export const registerGestacionalAnamnese = z.object({
-  gestationalPeriod: z.string().optional().nullable(),
+  gestationalPeriodStart: z.string().optional().nullable(),
+  gestationalPeriodEnd: z.string().optional().nullable(),
   PreNatal: z.boolean().optional(),
   DoctorName: z.string().optional(),
   Complications: z.boolean().optional(),
@@ -13,7 +14,7 @@ export const registerGestacionalAnamnese = z.object({
   BagRuptured: z.boolean().optional(),
   VisualInspection: z.boolean().optional(),
   Childbirth: z.boolean().optional(),
-  BabyGender: z.string().optional(),
+  BabyGender: z.enum(['Male', 'Female', 'Other']).optional().nullable(),
   BornHour: z.string().optional(),
   BabyName: z.string().optional(),
   FinalRemarks: z.string().optional(),
@@ -21,21 +22,22 @@ export const registerGestacionalAnamnese = z.object({
 })
 
 export const updateGestacionalAnamnese = z.object({
-  gestationalPeriod: z.string().optional(),
+  gestationalPeriodStart: z.string().optional().nullable(),
+  gestationalPeriodEnd: z.string().optional().nullable(),
   PreNatal: z.boolean().optional(),
   DoctorName: z.string().optional(),
   Complications: z.boolean().optional(),
   NumberSon: z.number().optional(),
-  ContractionSchedule: z.string().optional(),
-  Duration: z.string().optional(),
-  Interval: z.string().optional(),
-  HiPressure: z.boolean().optional(),
+  ContractionSchedule: z.string().optional().nullable(),
+  Duration: z.string().optional().nullable(),
+  Interval: z.string().optional().nullable(),
+  HiPressure: z.boolean().optional().nullable(),
   BagRuptured: z.boolean().optional(),
   VisualInspection: z.boolean().optional(),
   Childbirth: z.boolean().optional(),
-  BabyGender: z.string().optional(),
+  BabyGender: z.enum(['Male', 'Female', 'Other']).optional().nullable(),
   BornHour: z.string().optional(),
   BabyName: z.string().optional(),
   FinalRemarks: z.string().optional(),
-  ReportOwnerId: z.number().optional(),
+  ReportOwnerId: z.number(),
 })

@@ -1,34 +1,25 @@
 import { api } from '@src/lib/api'
 
-const registerPreHospitalarMethods = async (
-  descriptions: string[],
-  reportId: number,
-) => {
+const registerPreHospitalarMethod = async (ReportOwnerId: number) => {
   try {
-    const promises = descriptions.map(async (description) => {
-      const response = await api.post(
-        '/api/preHospitalarMethods',
-        {
-          description,
-          ReportOwnerId: reportId,
+    const response = await api.post(
+      '/api/preHospitalarMethods',
+      {
+        ReportOwnerId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      )
+      },
+    )
 
-      return response.data
-    })
-
-    const responseData = await Promise.all(promises)
-
-    return responseData
+    const data = response.data
+    return data
   } catch (error) {
-    console.error('Erro ao enviar os métodos pré-hospitalares:', error)
+    console.error('Erro ao enviar os pre hospitalares methods:', error)
     return null
   }
 }
 
-export default registerPreHospitalarMethods
+export default registerPreHospitalarMethod

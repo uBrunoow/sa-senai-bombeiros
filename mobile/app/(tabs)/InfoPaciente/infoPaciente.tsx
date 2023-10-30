@@ -8,14 +8,17 @@ import ProblemasSuspeitos from '@app/(tabs)/InfoPaciente/components/ProblemasSus
 import MainButton from '../../components/MainButton'
 import Title from '@app/components/Title'
 import { RootState } from '@src/redux/stores/stores'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import updateSinaisVitaisReport from '@src/api/reports/sinaisVitais/updateSinaisVitais'
 import updateSuspectProblems from '@src/api/reports/suspectProblems/updateSuspectProblems'
 import updateGlasgow from '@src/api/reports/glasgow/updateGlasgow'
 import { useToast } from 'native-base'
+import { determineCompletness } from './utils/determineCompletness'
+import { saveInfoPacienteCompletness } from '@src/redux/reducers/completnessReducer'
 import Subtitle from '@app/components/Subtitle'
 
 export default function InfoPatient({ navigation }: any) {
+  const dispatch = useDispatch()
   const [buttonLoading, setButtonLoading] = useState(false)
 
   const InfoPatient = useSelector(
@@ -44,6 +47,9 @@ export default function InfoPatient({ navigation }: any) {
   const bodyPulse = InfoPatient?.patientInfo?.bodyPulse
   const breathing = InfoPatient?.patientInfo?.breathing
   const saturation = InfoPatient?.patientInfo?.saturation
+  const perfusion = InfoPatient?.patientInfo?.perfusion
+
+  console.log(perfusion)
 
   // Infos paciente, problemas suspeitos data
   const transportSuboptionsData =
@@ -54,6 +60,9 @@ export default function InfoPatient({ navigation }: any) {
     SuspectProblemsData?.suspectProblems?.obstericoSuboptions || {}
   const respiratorioSuboptionsData =
     SuspectProblemsData?.suspectProblems?.respiratorioSuboptions || {}
+  const psiquiatricoSuboptionsData =
+    SuspectProblemsData?.suspectProblems?.psiquiatricoSuboptions || false
+  const Another = SuspectProblemsData?.suspectProblems?.AnotherData || ''
 
   const transportSuboptions = Object.entries(transportSuboptionsData)
     .filter(([key, value]) => value)
@@ -78,6 +87,27 @@ export default function InfoPatient({ navigation }: any) {
 
   const toast = useToast()
 
+  const removeMetaProperties = (obj) => {
+    const {
+      id,
+      createdAt,
+      updatedAt,
+      ReportOwnerId,
+      ownerId,
+      reportPlace,
+      phone,
+      cpf,
+      gender,
+      age,
+      name,
+      reportDate,
+      followUp,
+      followUpAge,
+      ...withoutMeta
+    } = obj
+    return withoutMeta
+  }
+
   const handleSubmitInfoPaciente = async () => {
     try {
       setButtonLoading(true)
@@ -90,7 +120,33 @@ export default function InfoPatient({ navigation }: any) {
         bodyPulse,
         breathing,
         saturation,
+        perfusion,
       )
+
+      const sinaisVitaisWithoutMeta = removeMetaProperties(
+        SinaisVitaisResponse.updatedReport,
+      )
+
+      let sinaisVitaisEmpty = 0
+      const emptyFields = []
+
+      for (const key in sinaisVitaisWithoutMeta) {
+        if (
+          sinaisVitaisWithoutMeta[key] === '' ||
+          sinaisVitaisWithoutMeta[key] === 0 ||
+          sinaisVitaisWithoutMeta[key] === false ||
+          (Array.isArray(sinaisVitaisWithoutMeta[key]) &&
+            sinaisVitaisWithoutMeta[key].length === 0) ||
+          sinaisVitaisWithoutMeta[key] === null
+        ) {
+          sinaisVitaisEmpty++
+          emptyFields.push(key)
+        }
+      }
+
+      console.log('Campos vazios em Glasgow:', emptyFields)
+
+      console.log(SinaisVitaisResponse)
 
       const SuspectProblemsResponse = await updateSuspectProblems(
         ReportOwnerId,
@@ -99,7 +155,28 @@ export default function InfoPatient({ navigation }: any) {
         diabetesSuboptions,
         obstericoSuboptions,
         respiratorioSuboptions,
+        psiquiatricoSuboptionsData,
+        Another,
       )
+
+      const suspectProblemsWithoutMeta = removeMetaProperties(
+        SuspectProblemsResponse.updatedSuspectProblems,
+      )
+
+      let suspectProblemsEmpty = 0
+
+      for (const key in suspectProblemsWithoutMeta) {
+        if (
+          suspectProblemsWithoutMeta[key] === '' ||
+          suspectProblemsWithoutMeta[key] === 0 ||
+          suspectProblemsWithoutMeta[key] === false ||
+          (Array.isArray(suspectProblemsWithoutMeta[key]) &&
+            suspectProblemsWithoutMeta[key].length === 0) ||
+          suspectProblemsWithoutMeta[key] === null
+        ) {
+          suspectProblemsEmpty++
+        }
+      }
 
       const GlasgowResponse = await updateGlasgow(
         ReportOwnerId,
@@ -109,9 +186,30 @@ export default function InfoPatient({ navigation }: any) {
         Number(respostaMotora),
       )
 
-      console.log(SinaisVitaisResponse)
-      console.log(SuspectProblemsResponse)
-      console.log(GlasgowResponse)
+      const glasgowWithoutMeta = removeMetaProperties(
+        GlasgowResponse.updatedGlasgow,
+      )
+
+      let glasgowEmpty = 0
+
+      for (const key in glasgowWithoutMeta) {
+        if (
+          glasgowWithoutMeta[key] === '' ||
+          glasgowWithoutMeta[key] === 0 ||
+          glasgowWithoutMeta[key] === false ||
+          (Array.isArray(glasgowWithoutMeta[key]) &&
+            glasgowWithoutMeta[key].length === 0) ||
+          glasgowWithoutMeta[key] === null
+        ) {
+          glasgowEmpty++
+        }
+      }
+
+      const infoPacienteCompletness = determineCompletness(
+        sinaisVitaisEmpty,
+        suspectProblemsEmpty,
+        glasgowEmpty,
+      )
 
       if (
         SuspectProblemsResponse &&
@@ -122,6 +220,7 @@ export default function InfoPatient({ navigation }: any) {
         SinaisVitaisResponse.updatedReport
       ) {
         navigation.navigate('ocorrencia')
+        dispatch(saveInfoPacienteCompletness(infoPacienteCompletness))
         toast.show({
           description: 'Informações de Info Paciente salvas com sucesso.',
           duration: 3000,

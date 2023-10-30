@@ -34,6 +34,7 @@ export default function AvalPacienteGroup() {
     useState(false)
   const [psiquiatricoButtonSelected, setPsiquiatricoButtonSelected] =
     useState(false)
+  const [Another, setAnother] = useState('')
 
   const [transporteCheckboxState, setTransporteCheckboxState] =
     useState<CheckboxStates>({
@@ -112,11 +113,11 @@ export default function AvalPacienteGroup() {
     (state: RootState) => state.suspectProblems.suspectProblemsId,
   )
 
-  useEffect(() => {
-    const findProblemasSuspeitos = async () => {
-      try {
-        const response = await findSuspectProblems(suspectProblemsId)
-        console.log(response)
+  const findProblemasSuspeitos = async () => {
+    try {
+      const response = await findSuspectProblems(suspectProblemsId)
+
+      if (response && response.suspectProblems) {
         const isAereoSelected =
           response.suspectProblems.problemaSuspeitoTransporte.includes('AEREO')
         const isClinicoSelected =
@@ -137,7 +138,6 @@ export default function AvalPacienteGroup() {
           response.suspectProblems.problemaSuspeitoTransporte.includes(
             'SEM_REMOCAO',
           )
-
         const isHipoglicemiaSelected =
           response.suspectProblems.problemaSuspeitoDiabetes.includes(
             'HIPOGLICEMIA',
@@ -146,7 +146,6 @@ export default function AvalPacienteGroup() {
           response.suspectProblems.problemaSuspeitoDiabetes.includes(
             'HIPERGLICEMIA',
           )
-
         const isPartoEmergencialSelected =
           response.suspectProblems.problemaSuspeitoObstetrico.includes(
             'PARTO_EMERGENCIAL',
@@ -165,7 +164,6 @@ export default function AvalPacienteGroup() {
           response.suspectProblems.problemaSuspeitoRespiratorio.includes(
             'INALACAO_FUMACA',
           )
-
         setTransporteCheckboxState((prevState) => {
           return {
             ...prevState,
@@ -199,15 +197,49 @@ export default function AvalPacienteGroup() {
             INALACAO_FUMACA: isInalacaoFumacaSelected,
           }
         })
+        const problemaSuspeitoPsiquiatrico =
+          response.suspectProblems.problemaSuspeitoPsiquiatrico
+        setPsiquiatricoButtonSelected(problemaSuspeitoPsiquiatrico)
 
-        console.log(response)
-      } catch (error) {
-        console.error(error)
+        const anotherResponse = response.suspectProblems.Another
+        setAnother(anotherResponse)
       }
+      console.log(response)
+    } catch (error) {
+      console.error(error)
     }
+  }
 
-    findProblemasSuspeitos()
-  }, [suspectProblemsId])
+  useEffect(() => {
+    const findSuspectProblems = async () => {
+      await findProblemasSuspeitos()
+    }
+    findSuspectProblems()
+  }, [])
+
+  useEffect(() => {
+    setTransportButtonSelected(
+      Object.values(transporteCheckboxState).some((value) => value === true),
+    )
+  }, [transporteCheckboxState])
+
+  useEffect(() => {
+    setDiabetesButtonSelected(
+      Object.values(diabetesCheckboxState).some((value) => value === true),
+    )
+  }, [diabetesCheckboxState])
+
+  useEffect(() => {
+    setObstericoButtonSelected(
+      Object.values(obstericoCheckboxState).some((value) => value === true),
+    )
+  }, [obstericoCheckboxState])
+
+  useEffect(() => {
+    setRespiratorioButtonSelected(
+      Object.values(respiratorioCheckboxState).some((value) => value === true),
+    )
+  }, [respiratorioCheckboxState])
 
   useEffect(() => {
     const onChangeSuspectProblemsDataInfo = () => {
@@ -215,11 +247,15 @@ export default function AvalPacienteGroup() {
       const diabetesSuboptions = diabetesCheckboxState
       const obstericoSuboptions = obstericoCheckboxState
       const respiratorioSuboptions = respiratorioCheckboxState
+      const psiquiatricoSuboptions = psiquiatricoButtonSelected
+      const AnotherData = Another
       const suspectProblemsDataInfo = {
         transportSuboptions,
         diabetesSuboptions,
         obstericoSuboptions,
         respiratorioSuboptions,
+        psiquiatricoSuboptions,
+        AnotherData,
       }
 
       dispatch(setSuspectProblemsData(suspectProblemsDataInfo))
@@ -232,6 +268,8 @@ export default function AvalPacienteGroup() {
     diabetesCheckboxState,
     obstericoCheckboxState,
     respiratorioCheckboxState,
+    psiquiatricoButtonSelected,
+    Another,
   ])
 
   return (
@@ -272,7 +310,7 @@ export default function AvalPacienteGroup() {
         />
         <View className="m-1 h-12 w-2/5 grow flex-row items-center justify-center">
           <Text className="pt-4 text-center text-lg">Outro:</Text>
-          <InputFull />
+          <InputFull value={Another} onChangeText={(e) => setAnother(e)} />
         </View>
       </View>
       <View className="mt-2">

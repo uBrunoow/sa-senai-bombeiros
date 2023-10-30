@@ -76,3 +76,25 @@ export const clearCinematicAvaliationId = () => {
     type: 'CLEAR_CINEMATIC_AVALIATION_ID',
   }
 }
+
+export const savePreHospitalarMethodId = (preHospitalarMethodId: number) => ({
+  type: 'SAVE_PRE_HOSPITALAR_METHOD',
+  payload: { preHospitalarMethodId },
+})
+
+export const clearPreHospitalarMethodId = () => {
+  return {
+    type: 'CLEAR_PRE_HOSPITALAR_METHOD_ID',
+  }
+}
+
+export const saveSignsAndSymptomsId = (signsAndSymptomsId: number) => ({
+  type: 'SAVE_SIGNS_AND_SYMPTOMS',
+  payload: { signsAndSymptomsId },
+})
+
+export const clearSignsAndSymptomsId = () => {
+  return {
+    type: 'CLEAR_SIGNS_AND_SYMPTOMS_ID',
+  }
+}

@@ -9,6 +9,7 @@ const updateSinaisVitaisReport = async (
   bodyPulse?: number | null,
   breathing?: number | null,
   saturation?: number | null,
+  perfusion?: string | null,
 ) => {
   try {
     const response = await api.put(
@@ -21,6 +22,7 @@ const updateSinaisVitaisReport = async (
         breathing,
         saturation,
         ownerId,
+        perfusion,
       },
       {
         headers: {

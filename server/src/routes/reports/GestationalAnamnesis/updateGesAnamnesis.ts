@@ -1,13 +1,17 @@
 import { FastifyInstance } from 'fastify'
 import { prisma } from '../../../lib/prisma'
 import { updateGestacionalAnamnese } from '../../../schemas/gestacionalAnamneseSchema'
+import { BabyGender } from '@prisma/client'
+import { id } from 'date-fns/locale'
+import { string, number } from 'zod'
 
 export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
   app.put('/api/gestacionalAnamnesis/update/:id', async (req, res) => {
     const { id } = req.params as { id: string }
 
     const {
-      gestationalPeriod,
+      gestationalPeriodStart,
+      gestationalPeriodEnd,
       PreNatal,
       DoctorName,
       Complications,
@@ -26,8 +30,16 @@ export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
       ReportOwnerId,
     } = updateGestacionalAnamnese.parse(req.body)
 
+    const gestationalPeriodStartValue = gestationalPeriodStart
+      ? new Date(gestationalPeriodStart)
+      : null
+    const gestationalPeriodEndValue = gestationalPeriodEnd
+      ? new Date(gestationalPeriodEnd)
+      : null
+
     if (
-      !gestationalPeriod &&
+      !gestationalPeriodStart &&
+      !gestationalPeriodEnd &&
       !PreNatal &&
       !DoctorName &&
       !Complications &&
@@ -64,7 +76,8 @@ export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
     }
 
     const updateGestacionalAnamnesisData: {
-      gestationalPeriod?: string
+      gestationalPeriodStart?: Date | null
+      gestationalPeriodEnd?: Date | null
       PreNatal?: boolean
       DoctorName?: string
       Complications?: boolean
@@ -76,28 +89,39 @@ export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
       BagRuptured?: boolean
       VisualInspection?: boolean
       Childbirth?: boolean
-      BabyGender?: string
+      BabyGender?: 'Male' | 'Female' | null
       BornHour?: string
       BabyName?: string
       FinalRemarks?: string
       ReportOwnerId?: number
     } = {}
 
-    if (gestationalPeriod) {
-      updateGestacionalAnamnesisData.gestationalPeriod = gestationalPeriod
-    }
+    if (gestationalPeriodStartValue !== undefined)
+      updateGestacionalAnamnesisData.gestationalPeriodStart =
+        gestationalPeriodStartValue
+
+    if (gestationalPeriodEndValue !== undefined)
+      updateGestacionalAnamnesisData.gestationalPeriodEnd =
+        gestationalPeriodEndValue
+
     if (PreNatal) {
       updateGestacionalAnamnesisData.PreNatal = PreNatal
     }
+    if (!PreNatal && PreNatal !== undefined)
+      updateGestacionalAnamnesisData.PreNatal = false
     if (DoctorName) {
       updateGestacionalAnamnesisData.DoctorName = DoctorName
     }
     if (Complications) {
       updateGestacionalAnamnesisData.Complications = Complications
     }
+    if (!Complications && Complications !== undefined)
+      updateGestacionalAnamnesisData.Complications = false
     if (NumberSon) {
       updateGestacionalAnamnesisData.NumberSon = NumberSon
     }
+    if (!NumberSon && NumberSon !== undefined)
+      updateGestacionalAnamnesisData.NumberSon = 0
     if (ContractionSchedule) {
       updateGestacionalAnamnesisData.ContractionSchedule = ContractionSchedule
     }
@@ -110,17 +134,26 @@ export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
     if (HiPressure) {
       updateGestacionalAnamnesisData.HiPressure = HiPressure
     }
+    if (!HiPressure && HiPressure !== undefined)
+      updateGestacionalAnamnesisData.HiPressure = false
     if (BagRuptured) {
       updateGestacionalAnamnesisData.BagRuptured = BagRuptured
     }
+    if (!BagRuptured && BagRuptured !== undefined)
+      updateGestacionalAnamnesisData.BagRuptured = false
     if (VisualInspection) {
       updateGestacionalAnamnesisData.VisualInspection = VisualInspection
     }
+    if (!VisualInspection && VisualInspection !== undefined)
+      updateGestacionalAnamnesisData.VisualInspection = false
     if (Childbirth) {
       updateGestacionalAnamnesisData.Childbirth = Childbirth
     }
+    if (!Childbirth && Childbirth !== undefined)
+      updateGestacionalAnamnesisData.Childbirth = false
     if (BabyGender) {
-      updateGestacionalAnamnesisData.BabyGender = BabyGender
+      updateGestacionalAnamnesisData.BabyGender =
+        BabyGender === 'Male' || BabyGender === 'Female' ? BabyGender : null
     }
     if (BornHour) {
       updateGestacionalAnamnesisData.BornHour = BornHour
@@ -131,6 +164,8 @@ export async function updateGestacionalAnamnesisRoutes(app: FastifyInstance) {
     if (FinalRemarks) {
       updateGestacionalAnamnesisData.FinalRemarks = FinalRemarks
     }
+    if (!FinalRemarks && FinalRemarks !== undefined)
+      updateGestacionalAnamnesisData.FinalRemarks = ''
     if (ReportOwnerId) {
       updateGestacionalAnamnesisData.ReportOwnerId = ReportOwnerId
     }

@@ -8,14 +8,17 @@ import InputFull from '@app/components/InputFull'
 import YesOrNo from '@app/components/YesOrNo'
 import MainButton from '@app/components/MainButton'
 import InputClock from '@app/components/InputClock'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
 import updateAnamnesis from '@src/api/reports/anamnesis/updateAnamnesis'
 import findAnamnesis from '@src/api/reports/anamnesis/findAnamnesis'
 import { useToast } from 'native-base'
 import Loader from '@app/components/Loader'
+import { determineCompletness } from './utils/determineCompletness'
+import { saveAnamnesisCompletness } from '@src/redux/reducers/completnessReducer'
 
 export default function Anamnese({ navigation }: any) {
+  const dispatch = useDispatch()
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const anamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,
@@ -72,28 +75,6 @@ export default function Anamnese({ navigation }: any) {
         setIngeriuAlimento(ingeriuAlimentoResponse || false)
         setHorasIngeriuAlimento(horasIngeriuAlimentoResponse || '')
         setObservacoesFinais(observacoesFinaisResponse || '')
-
-        // const {
-        //   id,
-        //   ReportOwnerId,
-        //   createdAt,
-        //   updatedAt,
-        //   ...anameseWithoutMeta
-        // } = response.anamese
-
-        // if (
-        //   Object.values(anameseWithoutMeta).every(
-        //     (value) => value !== undefined && value !== false,
-        //   )
-        // ) {
-        //   console.log('OK')
-
-        //   Object.entries(anameseWithoutMeta).forEach(([key, value]) => {
-        //     console.log(`${key}:`, value)
-        //   })
-        // } else {
-        //   console.log('Não tem info')
-        // }
       } catch (error) {
         console.error('Error fetching anamnesis data:', error)
       } finally {
@@ -167,9 +148,26 @@ export default function Anamnese({ navigation }: any) {
         observacoesFinais,
       )
 
+      const { id, createdAt, updatedAt, ReportOwnerId, ...anameseWithoutMeta } =
+        response?.updatedAnamnese
+
+      let emptyOrFalseCount = 0
+
+      for (const key in anameseWithoutMeta) {
+        if (
+          anameseWithoutMeta[key] === '' ||
+          anameseWithoutMeta[key] === false
+        ) {
+          emptyOrFalseCount++
+        }
+      }
+
+      const anamnesisCompletness = determineCompletness(emptyOrFalseCount)
+
       console.log(response)
 
       if (response && response.updatedAnamnese) {
+        dispatch(saveAnamnesisCompletness(anamnesisCompletness))
         navigation.navigate('ocorrencia', { reportId })
         toast.show({
           description: 'Informações de Anamnese salvas com sucesso.',

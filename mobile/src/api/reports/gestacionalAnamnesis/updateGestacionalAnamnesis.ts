@@ -10,6 +10,17 @@ const updateGesAnamnesis = async (
   BagRuptured?: boolean,
   VisualInspection?: boolean,
   Childbirth?: boolean,
+  gestationalPeriodStart?: string | null,
+  gestationalPeriodEnd?: string | null,
+  doctorName?: string,
+  NumberSon?: number,
+  horasInicioContracao?: string,
+  Interval?: string,
+  Duration?: string,
+  gender?: string,
+  horarioNascimento?: string,
+  BabyName?: string,
+  FinalRemarks?: string,
 ) => {
   try {
     const response = await api.put(
@@ -22,6 +33,17 @@ const updateGesAnamnesis = async (
         VisualInspection,
         Childbirth,
         ReportOwnerId,
+        gestationalPeriodStart,
+        gestationalPeriodEnd,
+        DoctorName: doctorName,
+        NumberSon,
+        ContractionSchedule: horasInicioContracao,
+        Interval,
+        Duration,
+        BabyGender: gender,
+        BornHour: horarioNascimento,
+        BabyName,
+        FinalRemarks,
       },
       {
         headers: {
