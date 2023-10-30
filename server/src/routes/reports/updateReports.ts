@@ -27,6 +27,7 @@ export async function reportsUpdateRoutes(
       followUp,
       followUpAge,
       perfusion,
+      isDraft,
     } = reportsUpdateSchema.parse(req.body)
 
     const reportDateValue = reportDate ? new Date(reportDate) : null
@@ -63,6 +64,7 @@ export async function reportsUpdateRoutes(
       followUp?: string | null
       followUpAge?: number | null
       perfusion?: string | null
+      isDraft?: boolean
     } = {}
 
     if (age) updatedReportData.age = age
@@ -105,6 +107,8 @@ export async function reportsUpdateRoutes(
       updatedReportData.followUpAge = 0
     if (perfusion) updatedReportData.perfusion = perfusion
     if (!perfusion && perfusion !== undefined) updatedReportData.perfusion = ''
+    if (isDraft) updatedReportData.isDraft = isDraft
+    if (!isDraft && isDraft !== undefined) updatedReportData.isDraft = false
 
     // Atualizar o usuário buscando pelo ID
     const updatedReport = await prisma.report.update({

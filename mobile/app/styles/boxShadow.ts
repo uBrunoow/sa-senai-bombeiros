@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     width: '90%',
-    marginBottom: 50,
+    marginBottom: 40,
   },
 
   TransporteButton: {

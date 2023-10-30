@@ -18,6 +18,7 @@ import { registerReportRoutes } from './src/routes/reports/registerReports'
 import { reportsUpdateRoutes } from './src/routes/reports/updateReports'
 import { reportsDeleteRoutes } from './src/routes/reports/deleteReports'
 import {
+  reportFindDraftsRoutes,
   reportFindOneRoutes,
   reportsFindRoutes,
 } from './src/routes/reports/findReports'
@@ -127,6 +128,7 @@ app.register(reportFindOneRoutes)
 app.register(registerReportRoutes)
 app.register(reportsUpdateRoutes)
 app.register(reportsDeleteRoutes)
+app.register(reportFindDraftsRoutes)
 
 // SYMPTOMS
 app.register(registerSymptomsRoutes)

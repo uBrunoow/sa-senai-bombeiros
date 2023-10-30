@@ -417,6 +417,16 @@ export default function Ocorrencia({ navigation }: any) {
                 isCompleted={finalizationCompletness ?? 0}
               />
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('rascunhos')}
+              activeOpacity={0.7}
+            >
+              <Grouper
+                title="Rascunhos"
+                desc="Visualizar seus rasunhos..."
+                isCompleted={0}
+              />
+            </TouchableOpacity>
             <Pressable onPress={() => navigation.navigate(`home`)}>
               <MainButton innerText="FINALIZAR" />
             </Pressable>

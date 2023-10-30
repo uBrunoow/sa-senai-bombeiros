@@ -11,6 +11,7 @@ import Introducao from '../app/(tabs)/Introducao/introducao'
 import LocalTraumas from '../app/(tabs)/LocalTraumas/localTraumas'
 import Ocorrencia from '../app/(tabs)/Ocorrencia/ocorrencia'
 import Finalizacao from '../app/(tabs)/FInalizacao/finalizacao'
+import Rascunhos from '@app/(tabs)/Rascunhos/rascunhos'
 
 const Stack = createNativeStackNavigator()
 
@@ -70,6 +71,11 @@ export default function Routes() {
       <Stack.Screen
         name="finalizacao"
         component={Finalizacao}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="rascunhos"
+        component={Rascunhos}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

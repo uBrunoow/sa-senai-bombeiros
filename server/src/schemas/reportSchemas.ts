@@ -37,5 +37,6 @@ export const reportsUpdateSchema = z.object({
   followUpAge: z.number().optional().nullable(),
   followUp: z.string().optional().nullable(),
   perfusion: z.string().optional().nullable(),
+  isDraft: z.boolean().optional().nullable(),
   ownerId: z.number(),
 })

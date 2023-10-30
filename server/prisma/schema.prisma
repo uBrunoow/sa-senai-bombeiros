@@ -39,6 +39,7 @@ model Report {
   perfusion                String?
   followUp                 String?
   followUpAge              Int?
+  isDraft                  Boolean                    @default(true)
   Anamnesis                Anamnesis[]
   Finalization             Finalization[]
   GestationalAnamnesis     GestationalAnamnesis[]
@@ -305,11 +306,6 @@ enum problemaSuspeitoRespiratorio {
   DPOC
   INLACAO_FUMACA
 }
-
-// enum perfusion {
-//   MAIOR_DOIS_SEGUNDOS
-//   MENOR_DOIS_SEGUNDOS
-// }
 
 enum localTraumaSide {
   RIGHT

@@ -69,3 +69,37 @@ export async function reportFindOneRoutes(
 
   done()
 }
+
+export async function reportFindDraftsRoutes(app: FastifyInstance) {
+  app.get('/api/reports/notdrafts', async (req, res) => {
+    try {
+      const notDraftReports = await prisma.report.findMany({
+        where: {
+          isDraft: true,
+        },
+        include: {
+          Symptoms: true,
+          PreHospitalMethods: true,
+          Anamnesis: true,
+          GestationalAnamnesis: true,
+          Report_PreHospitalMethod: true,
+          Report_Symptoms: true,
+          Glasglow: true,
+          CinematicAvaliation: true,
+          Finalization: true,
+          SuspectProblems: true,
+        },
+      })
+
+      return res.send({
+        msg: '🟢 Reports que são rascunhos localizados com sucesso.',
+        reports: notDraftReports,
+      })
+    } catch (error) {
+      console.error('Erro ao obter os relatórios:', error)
+      res.status(500).send({
+        error: 'Erro ao buscar relatórios que são rascunhos.',
+      })
+    }
+  })
+}
