@@ -4,7 +4,7 @@ import bodyCoordinates from './../utils/bodyCoordinates.json'
 import findReports from '@src/api/reports/findReport'
 import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
-
+import findManyLocalTraumas from '@src/api/reports/localTraumas/findManyLocalTraumas'
 
 type Coordinate = {
   x: number
@@ -20,24 +20,29 @@ type BodyPart = {
   coords: BodyPartCoordinates
   side: 'Direito' | 'Esquerdo' | null
   face: 'Frontal' | 'Traseiro'
+  local: string
 }
 
 type BodyProps = {
+  bodyPartValueHandler: Dispatch<SetStateAction<string | null>>
   bodyPartChangeHandler: Dispatch<SetStateAction<boolean>>
   setFace: Dispatch<SetStateAction<string | null>>
   setSide: Dispatch<SetStateAction<string | null>>
+  clickedBodyPartText: string
+  setClickedBodyPartText: Dispatch<SetStateAction<string>>
 }
 
 const castedBodyCoordinates = bodyCoordinates as Record<string, BodyPart>
 
 export default function Body({
+  bodyPartValueHandler,
   bodyPartChangeHandler,
   setFace,
   setSide,
+  clickedBodyPartText,
+  setClickedBodyPartText,
 }: BodyProps) {
-  const [clickedBodyPartText, setClickedBodyPartText] = useState(
-    'Nenhuma selecionada',
-  )
+  const [localTraumas, setLocalTraumas] = useState([])
 
   function getClickBodyPlace(clickCoord: Coordinate) {
     for (const bodyPart in castedBodyCoordinates) {
@@ -48,6 +53,7 @@ export default function Body({
       const currPartCoords = currPart.coords
       const currPartFace = currPart.face
       const currPartSide = currPart.side
+      const currPartValue = currPart.local
 
       if (
         ![
@@ -61,6 +67,7 @@ export default function Body({
 
         setFace(currPartFace)
         setSide(currPartSide)
+        bodyPartValueHandler(currPartValue)
 
         return {
           success: true,
@@ -71,6 +78,7 @@ export default function Body({
 
     setFace(null)
     setSide(null)
+    bodyPartValueHandler(null)
 
     return {
       success: false,
@@ -89,6 +97,8 @@ export default function Body({
     } else {
       setClickedBodyPartText(clickResult.payload)
     }
+
+    console.log(clickCoordinates)
   }
 
   const [isMaiorQueCincoAnos, setIsMaiorQueCincoAnos] = useState(false)
@@ -104,6 +114,12 @@ export default function Body({
       } else {
         setIsMaiorQueCincoAnos(false)
       }
+
+      const localTraumasData = await findManyLocalTraumas(reportId)
+
+      setLocalTraumas(localTraumasData.localTraumas)
+
+      console.log(localTraumasData)
     }
     findReportData()
   }, [reportId])
@@ -129,6 +145,12 @@ export default function Body({
       </TouchableOpacity>
       <Text className="text-md font-bold">Parte selecionada:</Text>
       <Text className="text-2xl font-bold">{clickedBodyPartText}</Text>
+      <View>
+        <Text>{JSON.stringify(localTraumas)}</Text>
+        {localTraumas?.map((trauma, i) => (
+          <Text key={i}>{JSON.stringify(trauma)}</Text>
+        ))}
+      </View>
     </View>
   )
 }

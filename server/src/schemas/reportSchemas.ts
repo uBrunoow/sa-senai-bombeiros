@@ -14,7 +14,7 @@ export const reportSchema = z.object({
   bodyPulse: z.number().optional(),
   breathing: z.number().optional(),
   saturation: z.number().optional(),
-  perfusion: z.string().optional(),
+  perfusion: z.string().optional().nullable(),
   followUpAge: z.number().optional(),
   followUp: z.string().optional(),
   ownerId: z.number(),

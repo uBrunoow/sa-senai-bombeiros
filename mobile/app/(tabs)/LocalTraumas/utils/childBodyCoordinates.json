@@ -1,0 +1,21 @@
+{
+    "Glúteos": {
+        "coords": {
+            "tl": { "x":195, "y":233 },
+            "br": { "x": 260, "y": 271 }
+        },
+        "side": null,
+        "face": "TRASEIRO",
+        "local": "GLUTEOS"
+    },
+
+    "Antebraco .;": {
+        "coords": {
+            "tl": { "x":195, "y":233 },
+            "br": { "x": 260, "y": 271 }
+        },
+        "side": null,
+        "face": "TRASEIRO",
+        "local": "GLUTEOS"
+    },
+}
