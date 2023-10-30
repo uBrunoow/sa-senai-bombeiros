@@ -314,10 +314,7 @@ const Finalizacao = ({ navigation }: any) => {
             <Header />
             <SafeAreaView>
               <Title iconName="flag" title="Finalização" />
-              <View
-                style={s.boxShadow}
-                className=" mx-auto mb-10 p-5 shadow-md"
-              >
+              <View style={s.boxShadow} className=" mx-auto p-5">
                 <View>
                   <Text className="font-medium">
                     Responsável pelo preenchimento:

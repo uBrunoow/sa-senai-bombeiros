@@ -58,7 +58,7 @@ const InputClock = (props: InputClockProps) => {
               textAlignVertical: 'center',
               fontSize: 16,
             }}
-          ></TextInput>
+          />
         </Pressable>
       </View>
     </View>

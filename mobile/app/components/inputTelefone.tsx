@@ -75,7 +75,7 @@ export default function InputTelefone(props: InputProps) {
           {props.title}
         </Text>
       )}
-      <View className="my-1 w-full rounded-lg border p-4">
+      <View className="my-1 w-full rounded-lg border p-3">
         <TextInput
           multiline={true}
           numberOfLines={100}
