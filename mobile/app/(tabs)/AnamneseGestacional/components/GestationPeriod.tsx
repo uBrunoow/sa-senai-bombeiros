@@ -30,7 +30,7 @@ const GestationalPeriodPicker: React.FC<GestationalPeriodPickerProps> = ({
     setShowPicker(!showPicker)
   }
 
-  const onDateChange = (event, selectedDate) => {
+  const onDateChange = (event: any, selectedDate: Date | undefined) => {
     setShowPicker(Platform.OS === 'ios')
     if (event.type === 'set' && selectedDate) {
       setDate(selectedDate)

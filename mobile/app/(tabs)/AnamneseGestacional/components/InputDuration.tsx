@@ -9,6 +9,7 @@ type InputDurationProps = {
   minutes?: number
   seconds?: number
   placeholder?: string
+  // eslint-disable-next-line no-unused-vars
   onChangeDuration?: (minutes: number, seconds: number) => void
 }
 
