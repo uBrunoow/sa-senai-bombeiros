@@ -3,6 +3,7 @@ import React from 'react'
 import { Feather, MaterialIcons } from '@expo/vector-icons'
 import { HStack } from 'native-base'
 import { styles as s } from '@app/styles/boxShadow'
+import { formatReportDate } from '@src/utils/formatReportDate'
 
 type DrafsProps = {
   isComplete?: 'COMPLETE' | 'INCOMPLETE' | 'IN PROGRESS'
@@ -10,6 +11,7 @@ type DrafsProps = {
   reportPlace?: string
   gender?: string | null
   date?: string | null
+  id?: number
 }
 const DraftsGrouper = (props: DrafsProps) => {
   return (
@@ -47,13 +49,20 @@ const DraftsGrouper = (props: DrafsProps) => {
         </View>
         <View className="flex-row">
           <Text>Date: </Text>
-          <Text className="font-semibold">{props.date || 'Não inserido'}</Text>
+          <Text className="font-semibold">
+            {formatReportDate(props.date) || 'Não inserido'}
+          </Text>
+        </View>
+        <View className="flex-row">
+          <Text>Report de n° {props.id}</Text>
         </View>
       </View>
       <HStack alignItems={'center'} justifyContent={'flex-end'} space={3}>
-        <View className="rounded-md bg-gray-400 p-2">
-          <MaterialIcons name="edit" size={24} color="white" />
-        </View>
+        {props.isComplete !== 'COMPLETE' && (
+          <View className="rounded-md bg-gray-400 p-2">
+            <MaterialIcons name="edit" size={24} color="white" />
+          </View>
+        )}
         <View className="rounded-md bg-red-500 p-2">
           <MaterialIcons name="delete" size={24} color="white" />
         </View>

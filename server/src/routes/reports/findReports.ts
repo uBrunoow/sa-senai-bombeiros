@@ -77,6 +77,9 @@ export async function reportFindDraftsRoutes(app: FastifyInstance) {
         where: {
           isDraft: true,
         },
+        orderBy: {
+          id: 'asc',
+        },
         include: {
           Symptoms: true,
           PreHospitalMethods: true,

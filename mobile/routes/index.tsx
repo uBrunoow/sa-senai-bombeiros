@@ -34,6 +34,11 @@ export default function Routes() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="edit-ocorrencia"
+        component={Ocorrencia}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="anamnese"
         component={Anamnese}
         options={{ headerShown: false }}
