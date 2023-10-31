@@ -8,7 +8,7 @@ import { findManyReports } from '@src/api/reports/findReport'
 import Loader from '@app/components/Loader'
 import { RootState } from '@src/redux/stores/stores'
 import { useDispatch, useSelector } from 'react-redux'
-import { saveReportId } from '@src/redux/actions/reportActions'
+import { clearAnamnesisId, clearCinematicAvaliationId, clearFinalizationId, clearGestacionalAnamnesisId, clearGlasgowId, clearPreHospitalarMethodId, clearSignsAndSymptomsId, clearSuspectProblemsId, saveReportId } from '@src/redux/actions/reportActions'
 
 type Report = {
   id: number
@@ -51,8 +51,16 @@ const Rascunhos = ({ navigation, ...props }: any) => {
   }, [])
 
   const handleDraftClick = (reportId) => {
-    navigation.navigate('edit-ocorrencia', { ocorrenciaId: reportId })
+    navigation.navigate('ocorrencia', { ocorrenciaId: reportId })
     dispatch(saveReportId(reportId))
+    dispatch(clearAnamnesisId())
+    dispatch(clearGestacionalAnamnesisId())
+    dispatch(clearFinalizationId())
+    dispatch(clearSuspectProblemsId())
+    dispatch(clearGlasgowId())
+    dispatch(clearCinematicAvaliationId())
+    dispatch(clearPreHospitalarMethodId())
+    dispatch(clearSignsAndSymptomsId())
   }
 
   return (

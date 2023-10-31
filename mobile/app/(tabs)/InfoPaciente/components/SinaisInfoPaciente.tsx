@@ -5,7 +5,7 @@ import { styles as s } from '@app/styles/boxShadow'
 import InputNumeric from '@app/components/inputNumeric'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPatientInfoData } from '@src/redux/actions/dataActions'
-import findReports from '@src/api/reports/findReport'
+import { findReports } from '@src/api/reports/findReport'
 import { RootState } from '@src/redux/stores/stores'
 import { Divider } from 'native-base'
 

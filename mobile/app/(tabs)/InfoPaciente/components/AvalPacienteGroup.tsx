@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native'
+import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import AvalPacienteModal from '@app/modal/AvalPacienteModal'
 import { styles as s } from '@app/styles/boxShadow'
 import { useDispatch, useSelector } from 'react-redux'
 import { setGlasgowData } from '@src/redux/actions/dataActions'
 import findGlasgow from '@src/api/reports/glasgow/findGlasgow'
-import findReports from '@src/api/reports/findReport'
+import { findReports } from '@src/api/reports/findReport'
 import { RootState } from '@src/redux/stores/stores'
 
 export default function AvalPacienteGroup() {

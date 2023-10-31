@@ -337,7 +337,7 @@ export default function Ocorrencia({ navigation }: any) {
             <View className="mb-[40px] mt-[34px] flex-row items-center justify-center">
               <FontAwesome5 name="fire" size={24} color="#A00E00" />
               <Text className="ml-[10px] text-[20px] font-medium leading-[20px]">
-                Ocorrência
+                Ocorrência n° {reportId}
               </Text>
             </View>
             <TouchableOpacity
