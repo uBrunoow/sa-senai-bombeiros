@@ -1,5 +1,5 @@
 import { View, Text, Modal, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import { styles as s } from '@app/styles/boxShadow'
 import Footer from '../../components/Footer'
@@ -12,10 +12,15 @@ import Title from '@app/components/Title'
 import registerLocalTrauma from '@src/api/reports/localTraumas/registerLocalTraumas'
 import { useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
+import { ILocalTraumas } from '@src/interfaces/IReport'
+import findManyLocalTraumas from '@src/api/reports/localTraumas/findManyLocalTraumas'
+import MainButton from '@app/components/MainButton'
+import CreatedTraumas from './components/CreatedTraumas'
 
 export default function LocalTraumas() {
   const { bottom, top } = useSafeAreaInsets()
 
+  const [localTraumas, setLocalTraumas] = useState<ILocalTraumas[]>([])
   const [side, setSide] = useState<string | null>(null)
   const [face, setFace] = useState<string | null>(null)
   const [bodyPart, setBodyPart] = useState<string | null>(null)
@@ -30,7 +35,7 @@ export default function LocalTraumas() {
     setTipoFerimento(newTipoFerimento)
   }
 
-  function saveTrauma() {
+  async function saveTrauma() {
     if (!bodyPart || !side || !face) return
 
     setFace(null)
@@ -40,15 +45,41 @@ export default function LocalTraumas() {
     setBodyPartSelected(false)
     setClickedBodyPartText('Nenhuma selecionada')
 
-    registerLocalTrauma(reportId, bodyPart, tipoFerimento, side, face)
+    const response = await registerLocalTrauma(
+      reportId,
+      bodyPart,
+      tipoFerimento,
+      side,
+      face,
+    )
+
+    if (response.localTraumas) {
+      setLocalTraumas([...localTraumas, response.localTraumas])
+    }
   }
 
   const tipoFerimentoClasses = classNames({
+    'w-11/12 mx-auto mb-8': true,
     '': bodyPartSelected,
     'hidden ': !bodyPartSelected,
   })
 
   const reportId = useSelector((state: RootState) => state.report.reportId)
+
+  useEffect(() => {
+    const findReportData = async () => {
+      const localTraumasData = await findManyLocalTraumas(reportId)
+
+      if (!localTraumasData.localTraumas) {
+        console.log('Nenhum dado coletado de Local Traumas')
+      } else {
+        setLocalTraumas(localTraumasData.localTraumas)
+      }
+
+      console.log(localTraumasData)
+    }
+    findReportData()
+  }, [reportId])
 
   return (
     <ScrollView
@@ -89,21 +120,23 @@ export default function LocalTraumas() {
             </View>
           </View>
           <View className={tipoFerimentoClasses}>
-            <Text>Tipo de Ferimento:</Text>
+            <Text className="pb-1 pl-2 text-lg font-bold">
+              Tipo de Ferimento:
+            </Text>
             <TouchableOpacity
               className="border-lg rounded"
               onPress={() => {
                 setFerimentoModalVisible(true)
               }}
             >
-              <View className="border-lg mx-auto flex h-[42px] w-5/6 flex-row justify-between rounded-[7px] border-width1 border-black p-[10px]">
+              <View className="border-lg mx-auto flex h-[42px] w-full flex-row justify-between rounded-[7px] border-width1 border-black p-[10px]">
                 <Text>Selecione</Text>
                 <Text>{tipoFerimento || 'Nenhum'}</Text>
               </View>
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            className="w-5/6 rounded-md border p-3"
+            className="mx-auto mb-3 w-11/12 rounded-md border p-3"
             disabled={!bodyPart || !side || !face}
             onPress={saveTrauma}
           >
@@ -128,6 +161,8 @@ export default function LocalTraumas() {
             ]}
           />
         </Modal>
+        <MainButton innerText="SALVAR" isLoading={false} onPress={() => {}} />
+        <CreatedTraumas localTraumas={localTraumas} />
         <Footer />
       </View>
     </ScrollView>

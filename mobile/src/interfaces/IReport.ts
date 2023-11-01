@@ -98,3 +98,10 @@ export interface IReport extends IBase {
   SuspectProblems?: ISuspectProblems[]
   Glasglow?: IGlasglow[]
 }
+
+export interface ILocalTraumas extends IBase {
+  bodyPart: string
+  tipo: string
+  side: string
+  face: string
+}
