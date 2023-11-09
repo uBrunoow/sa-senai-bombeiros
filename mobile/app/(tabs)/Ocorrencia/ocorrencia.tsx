@@ -190,48 +190,52 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
   )
 
   const handleClickFinalization = async () => {
-    if (existingFinalizationId && existingCinemaitcAvaliationId) {
-      navigation.navigate('finalizacao', {
-        screen: 'finalizacao',
-        params: {
-          finalizationId: existingFinalizationId,
-          cinematicAvaliation: existingCinemaitcAvaliationId,
-        },
-      })
-    } else {
-      const response = await registerFinalization(ReportOwnerId)
-      const cinematicAvaliationResponse = await registerCinematicAvaliation(
-        ReportOwnerId,
-      )
-
-      if (
-        response &&
-        response.finalization &&
-        cinematicAvaliationResponse &&
-        cinematicAvaliationResponse.cinematicAvaliation
-      ) {
-        dispatch(saveFinalizationId(response.finalization.id))
-        dispatch(
-          saveCinematicAvaliationId(
-            cinematicAvaliationResponse.cinematicAvaliation.id,
-          ),
-        )
-
-        console.log('Finalization n°: ', response.finalization.id)
-        console.log(
-          'Cinematica n°: ',
-          cinematicAvaliationResponse.cinematicAvaliation.id,
-        )
-
+    try {
+      if (existingFinalizationId && existingCinemaitcAvaliationId) {
         navigation.navigate('finalizacao', {
           screen: 'finalizacao',
           params: {
-            finalizationId: response.finalization.id,
-            cinematicAvaliation:
-              cinematicAvaliationResponse.cinematicAvaliation.id,
+            finalizationId: existingFinalizationId,
+            cinematicAvaliation: existingCinemaitcAvaliationId,
           },
         })
+      } else {
+        const response = await registerFinalization(ReportOwnerId)
+        const cinematicAvaliationResponse = await registerCinematicAvaliation(
+          ReportOwnerId,
+        )
+
+        if (
+          response &&
+          response.finalization &&
+          cinematicAvaliationResponse &&
+          cinematicAvaliationResponse.cinematicAvaliation
+        ) {
+          dispatch(saveFinalizationId(response.finalization.id))
+          dispatch(
+            saveCinematicAvaliationId(
+              cinematicAvaliationResponse.cinematicAvaliation.id,
+            ),
+          )
+
+          console.log('Finalization n°: ', response.finalization.id)
+          console.log(
+            'Cinematica n°: ',
+            cinematicAvaliationResponse.cinematicAvaliation.id,
+          )
+
+          navigation.navigate('finalizacao', {
+            screen: 'finalizacao',
+            params: {
+              finalizationId: response.finalization.id,
+              cinematicAvaliation:
+                cinematicAvaliationResponse.cinematicAvaliation.id,
+            },
+          })
+        }
       }
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -477,6 +481,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
                 isCompleted={finalizationCompletness ?? 0}
               />
             </TouchableOpacity>
+
             <Pressable onPress={() => navigation.navigate(`home`)}>
               <MainButton innerText="FINALIZAR" onPress={() => ''} />
             </Pressable>

@@ -6,7 +6,9 @@ import Footer from '../../components/Footer'
 import { styles as s } from '../../styles/boxShadow'
 import Subtitle from '@app/components/Subtitle'
 import InputLowPadding from '@app/components/InputLowPadding'
-
+import ProcedEfetuados from './components/procedEfetuados'
+import MateriaisUtilizados from './components/materiaisUtilizados'
+import MateriaisUtilizadosDeixados from './components/materiaisDeixados'
 export default function Ocorrencia() {
   return (
     <SafeAreaView>
@@ -24,9 +26,11 @@ export default function Ocorrencia() {
             <InputLowPadding alignText="left" title="Equipe" />
           </View>
           <Subtitle content="Procedimentos efetuados" />
-          <View style={s.boxShadow} className="mx-auto"></View>
+          <ProcedEfetuados />
           <Subtitle content="Materiais utilizados" />
-          <View style={s.boxShadow} className="mx-auto"></View>
+          <MateriaisUtilizados />
+          <Subtitle content="Materiais utilizados (deixados no hospital)" />
+          <MateriaisUtilizadosDeixados />
           <Footer />
         </View>
       </ScrollView>
