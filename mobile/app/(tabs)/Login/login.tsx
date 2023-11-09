@@ -1,4 +1,4 @@
-import { View, ScrollView, Pressable } from 'react-native'
+import { View, ScrollView, TouchableOpacity, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import loginUser from '@src/api/users/loginUser'
 import Header from '@app/components/Header'
@@ -8,7 +8,6 @@ import { saveToken } from '@src/redux/actions/authActions'
 import { styles as s } from '@app/styles/boxShadow'
 import { Stack, FormControl, Input, Text } from 'native-base'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import MainButton from '@app/components/MainButton'
 import { useForm, Controller } from 'react-hook-form'
 import { ZodError } from 'zod'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -155,11 +154,14 @@ export default function Login() {
               </Stack>
             </FormControl>
 
-            <MainButton
-              innerText="SALVAR"
-              onPress={handleSubmit(handleLoginUser)}
-              isLoading={buttonLoading}
-            />
+            <TouchableOpacity className="rounded-lg bg-red-700 p-3">
+              <Text
+                className="text-center text-xl font-bold text-white"
+                onPress={handleSubmit(handleLoginUser)}
+              >
+                SALVAR
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
         <Footer />

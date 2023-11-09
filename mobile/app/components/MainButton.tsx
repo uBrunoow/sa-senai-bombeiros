@@ -13,7 +13,6 @@ export default function MainButton(props: MainButtonProps) {
     <Button
       className="mx-auto rounded-md bg-red-700"
       onPress={props.onPress}
-      colorScheme={'red'}
       mb={8}
       w={'75%'}
     >
