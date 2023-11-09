@@ -4,8 +4,6 @@ import bodyCoordinates from './../utils/bodyCoordinates.json'
 import findReports from '@src/api/reports/findReport'
 import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
-// import findManyLocalTraumas from '@src/api/reports/localTraumas/findManyLocalTraumas'
-// import ILocalTraumas from '@src/interfaces/LocalTraumas'
 
 type Coordinate = {
   x: number

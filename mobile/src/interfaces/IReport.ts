@@ -100,6 +100,7 @@ export interface IReport extends IBase {
 }
 
 export interface ILocalTraumas extends IBase {
+  id: number
   bodyPart: string
   tipo: string
   side: string

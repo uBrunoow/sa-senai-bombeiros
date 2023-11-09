@@ -24,6 +24,7 @@ import updateSymptomsMethod from '@src/api/reports/symptoms/updateSymtoms'
 import findSymptomsByReport from '@src/api/reports/symptoms/findSymptoms'
 import { determineCompletness } from './utils/determineCompletness'
 import { saveIntroductionCompletness } from '@src/redux/reducers/completnessReducer'
+// import ManyCheckboxes from '@app/components/ManyCheckboxes'
 
 type CheckboxStates = {
   AFOGAMENTO?: boolean
@@ -117,6 +118,8 @@ export default function Introducao({ navigation }: any) {
   const signsAndSymptomsId = useSelector(
     (state: RootState) => state.signsAndSymptoms.signsAndSymptomsId,
   )
+
+  // const [checkboxTest, setCheckboxTest] = useState(false)
 
   const [reportDateTime, setReportDateTime] = useState('')
   const [name, setName] = useState(' ')
@@ -819,6 +822,49 @@ export default function Introducao({ navigation }: any) {
             onPress={() => handleSubmitIntroduction()}
             isLoading={buttonLoading}
           />
+
+          {/* <ManyCheckboxes
+            title="Teste"
+            options={[
+              {
+                key: 'test1',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+              {
+                key: 'test2',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+              {
+                key: 'test3',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+              {
+                key: 'test4',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+              {
+                key: 'test5',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+              {
+                key: 'test6',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+            ]}
+            maxOptions={5}
+          /> */}
           <Footer />
         </>
       )}
