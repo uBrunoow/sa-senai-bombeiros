@@ -1,12 +1,11 @@
 import React from 'react'
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 
-type PerfusaoInfoOption = '>2seg' | '<2seg' | ''
-
 type PerfusaoInfoProps = {
   question?: String
-  selectedOption: PerfusaoInfoOption
-  onSelectOption: (option: PerfusaoInfoOption) => void
+  selectedOption: '>2seg' | '<2seg' | null
+  // eslint-disable-next-line no-unused-vars
+  onSelectOption: (option: '>2seg' | '<2seg' | null) => void
 }
 
 export default function Perfusaoinfo(props: PerfusaoInfoProps) {

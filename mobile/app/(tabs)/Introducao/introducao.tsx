@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { View, ScrollView, Text, ActivityIndicator } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import React, { useEffect, useState } from 'react'
@@ -24,6 +25,8 @@ import updateSymptomsMethod from '@src/api/reports/symptoms/updateSymtoms'
 import findSymptomsByReport from '@src/api/reports/symptoms/findSymptoms'
 import { determineCompletness } from './utils/determineCompletness'
 import { saveIntroductionCompletness } from '@src/redux/reducers/completnessReducer'
+import { RouteProp, useNavigation } from '@react-navigation/core'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 type CheckboxStates = {
   AFOGAMENTO?: boolean
@@ -105,7 +108,23 @@ type SymptomsCheckboxStates = {
   TONTURA?: boolean
 }
 
-export default function Introducao({ navigation }: any) {
+type RemoveMetaPropertiesType = {
+  id: number
+  createdAt: string
+  updatedAt: string
+  ReportOwnerId: string
+  ownerId: number
+  systolicBloodPressure: number
+  diastolicBloodPressure: number
+  bodyTemp: number
+  bodyPulse: number
+  breathing: number
+  saturation: number
+  perfusion: string
+}
+
+export default function Introducao() {
+  const navigation = useNavigation()
   const dispatch = useDispatch()
   const { bottom, top } = useSafeAreaInsets()
   const reportId = useSelector((state: RootState) => state.report.reportId)
@@ -548,12 +567,30 @@ export default function Introducao({ navigation }: any) {
     .filter(([key, value]) => value)
     .map(([key]) => key)
 
-  const removeMetaProperties = (obj) => {
+  const removeMetaProperties = (
+    obj: RemoveMetaPropertiesType,
+  ): Omit<
+    RemoveMetaPropertiesType,
+    | 'id'
+    | 'createdAt'
+    | 'updatedAt'
+    | 'ReportOwnerId'
+    | 'ownerId'
+    | 'systolicBloodPressure'
+    | 'diastolicBloodPressure'
+    | 'bodyTemp'
+    | 'bodyPulse'
+    | 'breathing'
+    | 'saturation'
+    | 'perfusion'
+  > => {
+    // eslint-disable-next-line no-unused-vars
     const {
       id,
       createdAt,
       updatedAt,
       ReportOwnerId,
+
       ownerId,
       systolicBloodPressure,
       diastolicBloodPressure,
@@ -562,6 +599,7 @@ export default function Introducao({ navigation }: any) {
       breathing,
       saturation,
       perfusion,
+
       ...withoutMeta
     } = obj
     return withoutMeta
@@ -586,7 +624,9 @@ export default function Introducao({ navigation }: any) {
         followUp,
       )
 
-      const reportWithoutMeta = removeMetaProperties(response.updatedReport)
+      const reportWithoutMeta = removeMetaProperties(
+        response.updatedReport,
+      ) as Record<string, any>
 
       let reportEmpty = 0
 
@@ -611,7 +651,7 @@ export default function Introducao({ navigation }: any) {
 
       const preHospitalarMethodWithoutMeta = removeMetaProperties(
         preHospitalarMethodResponse.updatePreHospitalarMethod,
-      )
+      ) as Record<string, any>
 
       let preHospitalarMethodEmpty = 0
 
@@ -636,7 +676,7 @@ export default function Introducao({ navigation }: any) {
 
       const symptomsWithoutMeta = removeMetaProperties(
         symptomsResponse.updatedSymptom,
-      )
+      ) as Record<string, any>
 
       let symptomsEmpty = 0
 
@@ -667,7 +707,7 @@ export default function Introducao({ navigation }: any) {
         symptomsResponse &&
         symptomsResponse.updatedSymptom
       ) {
-        navigation.navigate('ocorrencia')
+        navigation.navigate('ocorrencia' as never)
         dispatch(saveIntroductionCompletness(introductionCompletness))
         toast.show({
           description: 'Informações de Introdução salvas com sucesso.',
@@ -705,10 +745,7 @@ export default function Introducao({ navigation }: any) {
         <>
           <Header />
           <Title iconName="suitcase" title="Introdução" />
-          <View
-            style={s.boxShadow}
-            className=" mx-auto mb-12 w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
-          >
+          <View style={s.boxShadow} className="mx-auto">
             <View className="w-full flex-1 flex-row items-center">
               <View className="w-3/6 p-2">
                 <InputDatePicker
@@ -742,18 +779,20 @@ export default function Introducao({ navigation }: any) {
                 onChangeText={(e) => setAge(e)}
               />
             </View>
-            <InputCpf
-              title="RG/CPF"
-              placeholder="___.___.___-__"
-              value={cpf}
-              onChangeText={(e) => setCpf(e)}
-            />
-            <InputTelefone
-              title="Fone"
-              placeholder="(__) _____-____"
-              value={phone}
-              onChangeText={(e) => setPhone(e)}
-            />
+            <View className="mx-auto flex-1 flex-row">
+              <InputCpf
+                title="RG/CPF"
+                placeholder="___.___.___-__"
+                value={cpf}
+                onChangeText={(e) => setCpf(e)}
+              />
+              <InputTelefone
+                title="Fone"
+                placeholder="(__) _____-____"
+                value={phone}
+                onChangeText={(e) => setPhone(e)}
+              />
+            </View>
             <InputLowPadding
               title="Local da Ocorrência"
               value={reportPlace}
@@ -787,7 +826,9 @@ export default function Introducao({ navigation }: any) {
                     value={key}
                     isChecked={isChecked}
                     onChange={() =>
-                      handlePreHospitalarMethodCheckboxChange(key)
+                      handlePreHospitalarMethodCheckboxChange(
+                        key as keyof CheckboxStates,
+                      )
                     }
                   >
                     <Text className="text-lg text-slate-800">{key}</Text>
@@ -805,7 +846,11 @@ export default function Introducao({ navigation }: any) {
                     colorScheme="danger"
                     value={key}
                     isChecked={isChecked}
-                    onChange={() => handleSignsAndSymptomsCheckboxChange(key)}
+                    onChange={() =>
+                      handleSignsAndSymptomsCheckboxChange(
+                        key as keyof SymptomsCheckboxStates,
+                      )
+                    }
                   >
                     <Text className="text-lg text-slate-800">{key}</Text>
                   </Checkbox>

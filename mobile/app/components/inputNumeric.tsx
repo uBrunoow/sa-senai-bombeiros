@@ -8,6 +8,7 @@ type InputProps = {
   isBig?: boolean
   value?: number
   placeholder?: string
+  // eslint-disable-next-line no-unused-vars
   onChangeText?: (text: number) => void
 }
 
@@ -55,7 +56,7 @@ export default function InputNumeric(props: InputProps) {
       style={{
         flexGrow: handleWidth(),
       }}
-      className="h-full w-full flex-1 p-2"
+      className="mx-auto p-2"
     >
       {props.title && (
         <Text
@@ -67,7 +68,7 @@ export default function InputNumeric(props: InputProps) {
           {props.title}
         </Text>
       )}
-      <View className="my-1 w-full rounded-lg border py-3 pl-2">
+      <View className="my-1 w-[95%] rounded-lg border py-3 pl-2">
         <TextInput
           keyboardType="numeric"
           style={{

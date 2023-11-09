@@ -48,8 +48,62 @@ import registerCinematicAvaliation from '@src/api/reports/cinematicAvaliation/re
 import Loader from '@app/components/Loader'
 import registerPreHospitalarMethods from '@src/api/reports/preHospitalarMethod/registerPreHospitalarMethod'
 import registerSymptoms from '@src/api/reports/symptoms/registerSymptoms'
+import { RouteProp } from '@react-navigation/core'
+import { StackNavigationProp } from '@react-navigation/stack'
 
-export default function Ocorrencia({ navigation }: any) {
+type RootStackParamList = {
+  ocorrencia: undefined
+  home: undefined
+  anamnese: {
+    screen: string
+    params: {
+      anamnesisId: number
+    }
+  }
+  'anamnese-gestacional': {
+    screen: string
+    params: {
+      gestacionalAnamnesisId: number
+    }
+  }
+  finalizacao: {
+    screen: string
+    params: {
+      finalizationId: number
+      cinematicAvaliation: number
+    }
+  }
+  'info-paciente': {
+    screen: string
+    params: {
+      suspectProblemsId: number
+      glasgowId: number
+    }
+  }
+  introducao: {
+    screen: string
+    params: {
+      preHospitalarMethodId: number
+      signsAndSymptomsId: number
+    }
+  }
+  'local-traumas': undefined
+  'info-transporte': undefined
+  'info-hospitalares': undefined
+}
+
+type OcorrenciaScreenRouteProp = RouteProp<RootStackParamList, 'ocorrencia'>
+type OcorrenciaScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'ocorrencia'
+>
+
+type OcorrenciaProps = {
+  route: OcorrenciaScreenRouteProp
+  navigation: OcorrenciaScreenNavigationProp
+}
+
+const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
   const anamnesisCompletness = useSelector(
     (state: RootState) => state.completness.anamnesisCompletness,
@@ -184,12 +238,18 @@ export default function Ocorrencia({ navigation }: any) {
   const existingSuspectProblemsId = useSelector(
     (state: RootState) => state.suspectProblems.suspectProblemsId,
   )
+  const existingGlasgowId = useSelector(
+    (state: RootState) => state.glasgow.glasgowId,
+  )
 
   const handleClickInfoPaciente = async () => {
     if (existingSuspectProblemsId) {
       navigation.navigate('info-paciente', {
         screen: 'info-paciente',
-        params: { suspectProblemsId: existingSuspectProblemsId },
+        params: {
+          suspectProblemsId: existingSuspectProblemsId,
+          glasgowId: existingGlasgowId,
+        },
       })
     } else {
       const suspectProblemsResponse = await registerSuspectProblems(
@@ -418,7 +478,7 @@ export default function Ocorrencia({ navigation }: any) {
               />
             </TouchableOpacity>
             <Pressable onPress={() => navigation.navigate(`home`)}>
-              <MainButton innerText="FINALIZAR" />
+              <MainButton innerText="FINALIZAR" onPress={() => ''} />
             </Pressable>
             <Button title="Logout" onPress={handleLogout} />
             {showModal && (
@@ -475,3 +535,5 @@ export default function Ocorrencia({ navigation }: any) {
     </ScrollView>
   )
 }
+
+export default Ocorrencia

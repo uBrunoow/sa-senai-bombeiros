@@ -8,6 +8,7 @@ type InputProps = {
   isBig?: boolean
   value?: string | null
   placeholder?: string
+  // eslint-disable-next-line no-unused-vars
   onChangeText?: (text: string) => void
 }
 
@@ -84,7 +85,7 @@ export default function InputCpf(props: InputProps) {
           {props.title}
         </Text>
       )}
-      <View className="my-1 w-full rounded-lg border p-4">
+      <View className="my-1 w-full rounded-lg border p-3">
         <TextInput
           multiline={true}
           numberOfLines={100}
@@ -95,7 +96,7 @@ export default function InputCpf(props: InputProps) {
             paddingHorizontal: 2,
             fontSize: 16,
           }}
-          value={props.value}
+          value={inputValue}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
           keyboardType={'numeric'}
