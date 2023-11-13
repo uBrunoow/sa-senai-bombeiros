@@ -215,6 +215,7 @@ export default function AvalPacienteGroup() {
       await findProblemasSuspeitos()
     }
     findSuspectProblems()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -329,7 +330,9 @@ export default function AvalPacienteGroup() {
                 colorScheme="danger"
                 value={key}
                 isChecked={isChecked}
-                onChange={() => handleTransporteCheckboxChange(key)}
+                onChange={() =>
+                  handleTransporteCheckboxChange(key as keyof CheckboxStates)
+                }
               >
                 <Text className="text-lg text-slate-800">{key}</Text>
               </Checkbox>
@@ -351,7 +354,9 @@ export default function AvalPacienteGroup() {
                 colorScheme="danger"
                 value={key}
                 isChecked={isChecked}
-                onChange={() => handleDiabetesCheckboxChange(key)}
+                onChange={() =>
+                  handleDiabetesCheckboxChange(key as keyof CheckboxStates)
+                }
               >
                 <Text className="text-lg text-slate-800">{key}</Text>
               </Checkbox>
@@ -373,7 +378,9 @@ export default function AvalPacienteGroup() {
                 colorScheme="danger"
                 value={key}
                 isChecked={isChecked}
-                onChange={() => handleObstericoCheckboxChange(key)}
+                onChange={() =>
+                  handleObstericoCheckboxChange(key as keyof CheckboxStates)
+                }
               >
                 <Text className="text-lg text-slate-800">{key}</Text>
               </Checkbox>
@@ -396,7 +403,11 @@ export default function AvalPacienteGroup() {
                   colorScheme="danger"
                   value={key}
                   isChecked={isChecked}
-                  onChange={() => handleRespiratorioCheckboxChange(key)}
+                  onChange={() =>
+                    handleRespiratorioCheckboxChange(
+                      key as keyof CheckboxStates,
+                    )
+                  }
                 >
                   <Text className="text-lg text-slate-800">{key}</Text>
                 </Checkbox>

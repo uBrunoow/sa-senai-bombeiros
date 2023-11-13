@@ -1,4 +1,4 @@
-import { NavigationContainer, useNavigation } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import React, { useEffect } from 'react'
 import Routes from './routes/index'
 import { Provider, useDispatch } from 'react-redux'
@@ -22,17 +22,23 @@ export default function App() {
 
 function AuthChecker({ children }: any) {
   const dispatch = useDispatch()
-  const navigation = useNavigation()
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const token = await AsyncStorage.getItem('authToken')
         const userId = await AsyncStorage.getItem('userId')
+        const daysUntilTokenExpiration = await AsyncStorage.getItem(
+          'daysUntilTokenExpiration',
+        )
 
         if (token !== null && userId !== null) {
           console.log('Token found:', token)
           console.log('User id found:', userId)
+          console.log(
+            'Dias até a expiração do token: ',
+            daysUntilTokenExpiration,
+          )
           dispatch({
             type: 'SAVE_TOKEN',
             payload: { token, userId: Number(userId) },

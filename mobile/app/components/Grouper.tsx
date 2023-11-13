@@ -10,19 +10,24 @@ type Grouperprops = {
 }
 
 export default function Grouper(props: Grouperprops) {
-  let color = '#0AC800' // Default green color
-  let icon = <Feather name="check" size={30} color="white" /> // Default icon
+  let color = '#0AC800'
+  let icon = <Feather name="check" size={30} color="white" />
 
   if (props.isCompleted === 0) {
-    color = 'white' // White color for 0
-    icon = <Feather name="check" size={30} color="white" /> // Default icon
-  } else if (props.isCompleted >= 1 && props.isCompleted <= 3) {
-    color = 'orange' // Orange color for 1 to 3
+    color = 'white'
+    icon = <Feather name="check" size={30} color="white" />
+  } else if (
+    props.isCompleted &&
+    props.isCompleted >= 1 &&
+    props.isCompleted <= 3
+  ) {
+    color = 'orange'
     icon = <AntDesign name="minus" size={40} color="white" />
   } else if (props.isCompleted === 4) {
-    icon = <Feather name="check" size={30} color="white" /> // Change icon for 4
+    icon = <Feather name="check" size={30} color="white" />
   }
 
+  const completedCount = props.isCompleted ?? 0
   return (
     <View
       style={styles.boxShadow}
@@ -43,7 +48,7 @@ export default function Grouper(props: Grouperprops) {
           {icon}
         </View>
         <Text className="text-center text-lg">
-          {props.isCompleted}/{props.howManyItems || 4}
+          {completedCount}/{props.howManyItems || 4}
         </Text>
       </View>
     </View>

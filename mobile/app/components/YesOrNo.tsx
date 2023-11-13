@@ -4,13 +4,14 @@ import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 type YesOrNoProps = {
   Question: String
   selectedOption: 'SIM' | 'NÃO'
+  // eslint-disable-next-line no-unused-vars
   onSelectOption: (option: 'SIM' | 'NÃO') => void
 }
 
 export default function YesOrNo(props: YesOrNoProps) {
   return (
-    <View className="m-auto my-2 flex-row flex-wrap items-center justify-center">
-      <Text className="w-5/6 text-center text-lg font-medium">
+    <View className="my-2 flex-row flex-wrap items-center justify-center">
+      <Text className="mb-2 w-[90%] text-center text-lg font-medium">
         {props.Question}
       </Text>
       <TouchableOpacity
@@ -54,7 +55,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: 'rgba(0, 0, 0, 0.28)',
     borderWidth: 1,
-    marginVertical: 5,
     marginHorizontal: 15,
   },
   selected: {

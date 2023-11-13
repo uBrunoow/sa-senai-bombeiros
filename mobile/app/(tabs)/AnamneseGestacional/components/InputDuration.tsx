@@ -9,6 +9,7 @@ type InputDurationProps = {
   minutes?: number
   seconds?: number
   placeholder?: string
+  // eslint-disable-next-line no-unused-vars
   onChangeDuration?: (minutes: number, seconds: number) => void
 }
 
@@ -91,7 +92,7 @@ export default function InputDuration(props: InputDurationProps) {
           placeholder="MM"
           onChangeText={(text) => handleTextChange(text, true)}
         />
-        <Text style={{ fontSize: 16, marginHorizontal: 5 }}>:</Text>
+        <Text style={{ fontSize: 16, marginRight: 5 }}>:</Text>
         <TextInput
           keyboardType="numeric"
           style={{

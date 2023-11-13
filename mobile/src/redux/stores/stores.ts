@@ -27,6 +27,7 @@ export interface RootState {
   auth: {
     token: string
     userId: number
+    daysUntilTokenExpiration: number
   }
   report: {
     reportId: number
