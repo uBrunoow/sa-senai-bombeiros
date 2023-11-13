@@ -22,6 +22,9 @@ import CinematicaReducerData, {
 import completnessReducer from '../reducers/completnessReducer'
 import preHospitalarMethodReducer from '../reducers/preHospitalarMethodReducer'
 import signsAndSymptomsReducer from '../reducers/signsAndSymptomsReducer'
+import IntroductionReducerData, {
+  IntroductionDataState,
+} from '../reducers/introductionData'
 
 export interface RootState {
   auth: {
@@ -76,6 +79,8 @@ export interface RootState {
   signsAndSymptoms: {
     signsAndSymptomsId: number
   }
+
+  introductionData: IntroductionDataState
 }
 const store = configureStore({
   reducer: {
@@ -100,6 +105,10 @@ const store = configureStore({
     completness: completnessReducer,
     preHospitalarMethod: preHospitalarMethodReducer,
     signsAndSymptoms: signsAndSymptomsReducer,
+    introductionData: IntroductionReducerData as Reducer<
+      IntroductionDataState,
+      AnyAction
+    >,
   },
   middleware: [thunk],
 })

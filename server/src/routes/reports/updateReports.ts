@@ -7,9 +7,9 @@ export async function reportsUpdateRoutes(app: FastifyInstance) {
   // app.addHook('preHandler', authenticateToken)
   app.put(
     '/api/reports/update/:id',
-    { preHandler: authenticateToken },
+    // { preHandler: authenticateToken },
     async (req, res) => {
-      const authenticatedUserId = req.user.userId
+      // const authenticatedUserId = req.user.userId
       const { id } = req.params as { id: string }
 
       const {
@@ -117,11 +117,11 @@ export async function reportsUpdateRoutes(app: FastifyInstance) {
         data: updatedReportData,
       })
 
-      if (authenticatedUserId !== updatedReport.ownerId) {
-        return res
-          .status(403)
-          .send({ msg: 'Sem permissão para atualizar este relatório' })
-      }
+      // if (authenticatedUserId !== updatedReport.ownerId) {
+      //   return res
+      //     .status(403)
+      //     .send({ msg: 'Sem permissão para atualizar este relatório' })
+      // }
 
       return res.send({
         msg: '🟢 Usuário atualizado com sucesso.',

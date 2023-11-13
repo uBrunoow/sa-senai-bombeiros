@@ -25,3 +25,9 @@ export const setCinematicData = (cinematic: object) => ({
     cinematic,
   },
 })
+export const setIntroductionData = (introduction: object) => ({
+  type: 'SET_INTRODUCTION',
+  payload: {
+    introduction,
+  },
+})

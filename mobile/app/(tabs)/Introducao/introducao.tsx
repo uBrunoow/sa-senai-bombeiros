@@ -27,6 +27,7 @@ import { determineCompletness } from './utils/determineCompletness'
 import { saveIntroductionCompletness } from '@src/redux/reducers/completnessReducer'
 import { RouteProp, useNavigation } from '@react-navigation/core'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { setIntroductionData } from '@src/redux/actions/dataActions'
 
 type CheckboxStates = {
   AFOGAMENTO?: boolean
@@ -701,6 +702,12 @@ export default function Introducao() {
         symptomsEmpty,
       )
 
+      const introduction = {
+        response,
+        preHospitalarMethodResponse,
+        symptomsResponse,
+      }
+
       if (
         response &&
         response.updatedReport &&
@@ -710,6 +717,7 @@ export default function Introducao() {
         symptomsResponse.updatedSymptom
       ) {
         navigation.navigate('ocorrencia' as never)
+        dispatch(setIntroductionData(introduction))
         dispatch(saveIntroductionCompletness(introductionCompletness))
         toast.show({
           description: 'Informações de Introdução salvas com sucesso.',
