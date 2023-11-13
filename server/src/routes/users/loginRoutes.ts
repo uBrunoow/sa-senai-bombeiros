@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { prisma } from '../../lib/prisma'
 import { loginSchema } from '../../schemas/userSchemas'
+import { LocalStorage } from 'node-localstorage'
 
 export async function userLoginRoutes(
   app: FastifyInstance,
@@ -10,6 +11,8 @@ export async function userLoginRoutes(
   app.post('/api/users/login', async (req, res) => {
     // Faz uma requisição do body para pegar o email e a senha
     const { email, password } = loginSchema.parse(req.body)
+
+    const localStorage = new LocalStorage('./scratch')
 
     // Validações de email e senha
     if (!email || !password) {
@@ -34,20 +37,35 @@ export async function userLoginRoutes(
       return res.status(401).send({ msg: '🔴 Credenciais inválidas' })
     }
 
+    const currentDate = Date.now()
+    const expirationDate = currentDate + 2 * 60 * 1000
+
     // Realizar o JWT Token
     const token = app.jwt.sign(
       {
         userId: user.id,
         name: user.name,
         email: user.email,
+        expiresIn: '2m',
       },
       {
-        expiresIn: '120 days',
+        expiresIn: '2m',
       },
     )
 
+    const refreshToken = app.jwt.sign({
+      userId: user.id,
+      name: user.name,
+      email: user.email,
+    })
+
+    localStorage.setItem('token', token)
+    localStorage.setItem('refreshToken', refreshToken)
+
     return res.send({
       token,
+      refreshToken,
+      expirationDate,
       user: { id: user.id, email: user.email },
       login: { msg: '🟢 Usuário logado com sucesso.' },
     })

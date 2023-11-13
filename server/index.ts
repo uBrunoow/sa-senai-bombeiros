@@ -101,6 +101,8 @@ import {
   cinematicAvaliationFindRoutes,
 } from './src/routes/reports/CinematicAvaliation/findCinematicAvaliation'
 import { cinematicAvaliationDeleteRoutes } from './src/routes/reports/CinematicAvaliation/deleteCinematicAvaliation'
+import { checkTokenExpiration } from './src/utils/checkTokenExpiration'
+import { refreshRoutes } from './src/routes/users/refreashToken'
 
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
@@ -192,6 +194,10 @@ app.register(updateCinematicAvaliationRoutes)
 app.register(cinematicAvaliationFindRoutes)
 app.register(cinematicAvaliationFindOneRoutes)
 app.register(cinematicAvaliationDeleteRoutes)
+
+// UTILS
+app.register(refreshRoutes)
+app.register(checkTokenExpiration)
 
 app
   .listen({

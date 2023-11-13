@@ -3,62 +3,52 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 interface AuthState {
   token: string
   userId: number | null
-  tokenExpirationDate: Date | null
-  daysUntilTokenExpiration: number | null
+  expirationDate: number | null
 }
 
 const initialState: AuthState = {
   token: '',
   userId: null,
-  tokenExpirationDate: null,
-  daysUntilTokenExpiration: null,
+  expirationDate: null,
 }
 
 type AuthAction =
-  | { type: 'SAVE_TOKEN'; payload: { token: string; userId: number } }
+  | {
+      type: 'SAVE_TOKEN'
+      payload: { token: string; userId: number; expirationDate?: number }
+    }
   | { type: 'LOGOUT' }
 
 const authReducer = (state = initialState, action: AuthAction): AuthState => {
-  let expirationDate: Date | null
-  let daysUntilTokenExpiration: number | null
-
   switch (action.type) {
     case 'SAVE_TOKEN':
-      expirationDate = new Date()
-      expirationDate.setDate(expirationDate.getDate() + 1)
-      daysUntilTokenExpiration = Math.ceil(
-        (expirationDate.getTime() - new Date().getTime()) /
-          (1000 * 60 * 60 * 24),
-      )
-
       AsyncStorage.setItem('authToken', action.payload.token)
       AsyncStorage.setItem('userId', action.payload.userId.toString())
-      AsyncStorage.setItem('tokenExpirationDate', expirationDate.toISOString())
-      AsyncStorage.setItem(
-        'daysUntilTokenExpiration',
-        daysUntilTokenExpiration.toString(),
-      )
+
+      if (action.payload.expirationDate !== undefined) {
+        AsyncStorage.setItem(
+          'expirationDate',
+          action.payload.expirationDate.toString(),
+        )
+      }
 
       return {
         ...state,
         token: action.payload.token,
         userId: action.payload.userId,
-        tokenExpirationDate: expirationDate,
-        daysUntilTokenExpiration,
+        expirationDate: action.payload.expirationDate || null,
       }
 
     case 'LOGOUT':
       AsyncStorage.removeItem('authToken')
       AsyncStorage.removeItem('userId')
-      AsyncStorage.removeItem('tokenExpirationDate')
-      AsyncStorage.removeItem('daysUntilTokenExpiration')
+      AsyncStorage.removeItem('expirationDate')
 
       return {
         ...state,
         token: '',
         userId: null,
-        tokenExpirationDate: null,
-        daysUntilTokenExpiration: null,
+        expirationDate: null,
       }
 
     default:

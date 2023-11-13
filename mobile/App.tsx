@@ -28,17 +28,12 @@ function AuthChecker({ children }: any) {
       try {
         const token = await AsyncStorage.getItem('authToken')
         const userId = await AsyncStorage.getItem('userId')
-        const daysUntilTokenExpiration = await AsyncStorage.getItem(
-          'daysUntilTokenExpiration',
-        )
+        const expirationDate = await AsyncStorage.getItem('expirationDate')
 
         if (token !== null && userId !== null) {
           console.log('Token found:', token)
           console.log('User id found:', userId)
-          console.log(
-            'Dias até a expiração do token: ',
-            daysUntilTokenExpiration,
-          )
+          console.log('Expiration Date:', expirationDate)
           dispatch({
             type: 'SAVE_TOKEN',
             payload: { token, userId: Number(userId) },
