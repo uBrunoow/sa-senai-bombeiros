@@ -91,6 +91,7 @@ import { suspectProblemsDeleteRoutes } from './src/routes/reports/SuspectProblem
 import { findManyTraumasRoutes } from './src/routes/reports/LocalTraumas/findMany'
 import { registerTraumasRoutes } from './src/routes/reports/LocalTraumas/register'
 import { updateTraumasRoutes } from './src/routes/reports/LocalTraumas/update'
+import { deleteTraumasRoutes } from './src/routes/reports/LocalTraumas/delete'
 
 // Cinematic Avaliation
 import { registerCinematicAvaliationRoutes } from './src/routes/reports/CinematicAvaliation/registerCinematicAvaliation'
@@ -183,6 +184,7 @@ app.register(suspectProblemsDeleteRoutes)
 app.register(findManyTraumasRoutes)
 app.register(registerTraumasRoutes)
 app.register(updateTraumasRoutes)
+app.register(deleteTraumasRoutes)
 
 // CINEMATIC AVALIATION
 app.register(registerCinematicAvaliationRoutes)

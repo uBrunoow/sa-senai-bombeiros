@@ -1,8 +1,8 @@
 {
     "Glúteos": {
         "coords": {
-            "tl": { "x": 210, "y": 169 },
-            "br": { "x": 276, "y": 206 }
+            "tl": { "x": 201, "y": 180 },
+            "br": { "x": 260, "y": 205 }
         },
         "side": null,
         "face": "BACK",
@@ -10,19 +10,19 @@
     },
     "Antebraço direito frontal": {
         "coords": {
-            "tl": {"x":20,"y":146},
-            "br": {"x":45,"y":190}
+            "tl": {"x":24,"y":149},
+            "br": {"x":40,"y":186}
         },
         "side": "RIGHT",
         "face": "FRONT",
         "local": "ANTEBRACO"
     },
-    "Antebraço direito traseiro": {
+    "Antebraço esquerdo traseiro": {
         "coords": {
             "tl": {"x":182,"y":149},
             "br": {"x":205,"y":190}
         },
-        "side": "RIGHT",
+        "side": "LEFT",
         "face": "BACK",
         "local": "ANTEBRACO"
     },
@@ -35,19 +35,19 @@
         "face": "FRONT",
         "local": "ANTEBRACO"
     },
-    "Antebraço esquerdo Traseiro": {
+    "Antebraço direito Traseiro": {
         "coords": {
-            "tl": {"x":278,"y":151},
-            "br": {"x":303,"y":190}
+            "tl": {"x":265,"y":159},
+            "br": {"x":287,"y":185}
         },
-        "side": "LEFT",
+        "side": "RIGTH",
         "face": "BACK",
         "local": "ANTEBRACO"
     },
     "Braço esquerdo frontal": {
         "coords": {
-            "tl": {"x":114,"y":107},
-            "br": {"x":137,"y":140}
+            "tl": {"x":109,"y":122},
+            "br": {"x":130,"y":146}
         },
         "side": "LEFT",
         "face": "FRONT",
@@ -64,8 +64,8 @@
     },
     "Braço direito frontal": {
         "coords": {
-            "tl": {"x":30,"y":107},
-            "br": {"x":48,"y":140}
+            "tl": {"x":29,"y":113},
+            "br": {"x":45,"y":144}
         },
         "side": "RIGHT",
         "face": "FRONT",
@@ -73,8 +73,8 @@
     },
     "Braço direito traseiro": {
         "coords": {
-            "tl": {"x":27,"y":107},
-            "br": {"x":29,"y":140}
+            "tl": {"x":260,"y":107},
+            "br": {"x":280,"y":140}
         },
         "side": "RIGHT",
         "face": "BACK",
@@ -91,8 +91,8 @@
     },
     "Pescoço traseiro": {
         "coords": {
-            "tl": {"x":55,"y":86},
-            "br": {"x":218,"y":86}
+            "tl": {"x":211,"y":78},
+            "br": {"x":249,"y":87}
         },
         "side": null,
         "face": "BACK",
@@ -115,5 +115,88 @@
         "side": null,
         "face": "FRONT",
         "local": "ABDOMEN"
+    },
+    "Peito": {
+        "coords": {
+            "tl": {"x":50,"y":103},
+            "br": {"x":105,"y":125}
+        },
+        "side": null,
+        "face": "FRONT",
+        "local": "PEITO"
+    },
+    "Ombro Direito Frontal": {
+        "coords": {
+            "tl": {"x":29,"y":92},
+            "br": {"x":46,"y":119}
+        },
+        "side": "RIGHT",
+        "face": "FRONT",
+        "local": "OMBRO"
+    },
+    "Ombro Esquerdo Frontal": {
+        "coords": {
+            "tl": {"x":107,"y":89},
+            "br": {"x":129,"y":121}
+        },
+        "side": "LEFT",
+        "face": "FRONT",
+        "local": "OMBRO"
+    },
+    "Ombro Esquerdo Traseiro": {
+        "coords": {
+            "tl": {"x":199,"y":87},
+            "br": {"x":198,"y":110}
+        },
+        "side": "LEFT",
+        "face": "BACK",
+        "local": "OMBRO"
+    },
+    "Coxa Frontal Direita": {
+        "coords": {
+            "tl": {"x":48,"y":206},
+            "br": {"x":73,"y":241}
+        },
+        "side": "RIGHT",
+        "face": "FRONT",
+        "local": "COXA"
+    },
+    "Coxa Frontal Esquerda": {
+        "coords": {
+            "tl": {"x":81,"y":211},
+            "br": {"x":111,"y":255}
+        },
+        "side": "LEFT",
+        "face": "FRONT",
+        "local": "COXA"
+    },
+    "Joelho Direito": {
+        "coords": {
+            "tl": {"x":54,"y":263},
+            "br": {"x":70,"y":273}
+        },
+        "side": "RIGHT",
+        "face": null,
+        "local": "JOELHO"
+    },
+    "Joelho Esquerdo": {
+        "coords": {
+            "tl": {"x":86,"y":265},
+            "br": {"x":100,"y":271}
+        },
+        "side": "LEFT",
+        "face": null,
+        "local": "JOELHO"
+    },
+    "Perna Frontal Direita": {
+        "coords": {
+            "tl": {"x":46,"y":273},
+            "br": {"x":73,"y":323}
+        },
+        "side": "RIGHT",
+        "face": null,
+        "local": "PERNA"
+
     }
+
 }
