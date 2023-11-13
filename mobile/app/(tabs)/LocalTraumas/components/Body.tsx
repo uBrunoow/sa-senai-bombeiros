@@ -19,24 +19,29 @@ type BodyPart = {
   coords: BodyPartCoordinates
   side: 'Direito' | 'Esquerdo' | null
   face: 'Frontal' | 'Traseiro'
+  local: string
 }
 
 type BodyProps = {
+  bodyPartValueHandler: Dispatch<SetStateAction<string | null>>
   bodyPartChangeHandler: Dispatch<SetStateAction<boolean>>
   setFace: Dispatch<SetStateAction<string | null>>
   setSide: Dispatch<SetStateAction<string | null>>
+  clickedBodyPartText: string
+  setClickedBodyPartText: Dispatch<SetStateAction<string>>
 }
 
 const castedBodyCoordinates = bodyCoordinates as Record<string, BodyPart>
 
 export default function Body({
+  bodyPartValueHandler,
   bodyPartChangeHandler,
   setFace,
   setSide,
+  clickedBodyPartText,
+  setClickedBodyPartText,
 }: BodyProps) {
-  const [clickedBodyPartText, setClickedBodyPartText] = useState(
-    'Nenhuma selecionada',
-  )
+  // const [localTraumas, setLocalTraumas] = useState<ILocalTraumas[]>([])
 
   function getClickBodyPlace(clickCoord: Coordinate) {
     for (const bodyPart in castedBodyCoordinates) {
@@ -47,6 +52,7 @@ export default function Body({
       const currPartCoords = currPart.coords
       const currPartFace = currPart.face
       const currPartSide = currPart.side
+      const currPartValue = currPart.local
 
       if (
         ![
@@ -60,6 +66,7 @@ export default function Body({
 
         setFace(currPartFace)
         setSide(currPartSide)
+        bodyPartValueHandler(currPartValue)
 
         return {
           success: true,
@@ -70,6 +77,7 @@ export default function Body({
 
     setFace(null)
     setSide(null)
+    bodyPartValueHandler(null)
 
     return {
       success: false,
@@ -88,6 +96,8 @@ export default function Body({
     } else {
       setClickedBodyPartText(clickResult.payload)
     }
+
+    console.log(clickCoordinates)
   }
 
   const [isMaiorQueCincoAnos, setIsMaiorQueCincoAnos] = useState(false)
@@ -103,6 +113,12 @@ export default function Body({
       } else {
         setIsMaiorQueCincoAnos(false)
       }
+
+      // const localTraumasData = await findManyLocalTraumas(reportId)
+
+      // setLocalTraumas(localTraumasData.localTraumas)
+
+      // console.log(localTraumasData)
     }
     findReportData()
   }, [reportId])
