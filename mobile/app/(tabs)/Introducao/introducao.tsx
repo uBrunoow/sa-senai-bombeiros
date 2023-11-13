@@ -137,6 +137,8 @@ export default function Introducao() {
     (state: RootState) => state.signsAndSymptoms.signsAndSymptomsId,
   )
 
+  // const [checkboxTest, setCheckboxTest] = useState(false)
+
   const [reportDateTime, setReportDateTime] = useState('')
   const [name, setName] = useState(' ')
   const [age, setAge] = useState(0)
@@ -864,6 +866,49 @@ export default function Introducao() {
             onPress={() => handleSubmitIntroduction()}
             isLoading={buttonLoading}
           />
+
+          {/* <ManyCheckboxes
+            title="Teste"
+            options={[
+              {
+                key: 'test1',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+              {
+                key: 'test2',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+              {
+                key: 'test3',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+              {
+                key: 'test4',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+              {
+                key: 'test5',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+              {
+                key: 'test6',
+                value: 'test',
+                state: checkboxTest,
+                setState: setCheckboxTest,
+              },
+            ]}
+            maxOptions={5}
+          /> */}
           <Footer />
         </>
       )}

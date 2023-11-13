@@ -4,7 +4,6 @@ import bodyCoordinates from './../utils/bodyCoordinates.json'
 import findReports from '@src/api/reports/findReport'
 import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
-import findManyLocalTraumas from '@src/api/reports/localTraumas/findManyLocalTraumas'
 
 type Coordinate = {
   x: number
@@ -42,7 +41,7 @@ export default function Body({
   clickedBodyPartText,
   setClickedBodyPartText,
 }: BodyProps) {
-  const [localTraumas, setLocalTraumas] = useState([])
+  // const [localTraumas, setLocalTraumas] = useState<ILocalTraumas[]>([])
 
   function getClickBodyPlace(clickCoord: Coordinate) {
     for (const bodyPart in castedBodyCoordinates) {
@@ -115,11 +114,11 @@ export default function Body({
         setIsMaiorQueCincoAnos(false)
       }
 
-      const localTraumasData = await findManyLocalTraumas(reportId)
+      // const localTraumasData = await findManyLocalTraumas(reportId)
 
-      setLocalTraumas(localTraumasData.localTraumas)
+      // setLocalTraumas(localTraumasData.localTraumas)
 
-      console.log(localTraumasData)
+      // console.log(localTraumasData)
     }
     findReportData()
   }, [reportId])
@@ -145,12 +144,6 @@ export default function Body({
       </TouchableOpacity>
       <Text className="text-md font-bold">Parte selecionada:</Text>
       <Text className="text-2xl font-bold">{clickedBodyPartText}</Text>
-      <View>
-        <Text>{JSON.stringify(localTraumas)}</Text>
-        {localTraumas?.map((trauma, i) => (
-          <Text key={i}>{JSON.stringify(trauma)}</Text>
-        ))}
-      </View>
     </View>
   )
 }

@@ -46,7 +46,9 @@ export default function Login() {
       const response = await loginUser(data.email, data.password)
 
       if (response && response.user) {
-        dispatch(saveToken(response.token, response.user.id))
+        dispatch(
+          saveToken(response.token, response.user.id, response.expirationDate),
+        )
         navigation.navigate('ocorrencia' as never)
       } else {
         setLoginError('Invalid email or password')

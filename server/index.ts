@@ -91,6 +91,7 @@ import { suspectProblemsDeleteRoutes } from './src/routes/reports/SuspectProblem
 import { findManyTraumasRoutes } from './src/routes/reports/LocalTraumas/findMany'
 import { registerTraumasRoutes } from './src/routes/reports/LocalTraumas/register'
 import { updateTraumasRoutes } from './src/routes/reports/LocalTraumas/update'
+import { deleteTraumasRoutes } from './src/routes/reports/LocalTraumas/delete'
 
 // Cinematic Avaliation
 import { registerCinematicAvaliationRoutes } from './src/routes/reports/CinematicAvaliation/registerCinematicAvaliation'
@@ -100,6 +101,8 @@ import {
   cinematicAvaliationFindRoutes,
 } from './src/routes/reports/CinematicAvaliation/findCinematicAvaliation'
 import { cinematicAvaliationDeleteRoutes } from './src/routes/reports/CinematicAvaliation/deleteCinematicAvaliation'
+import { checkTokenExpiration } from './src/utils/checkTokenExpiration'
+import { refreshRoutes } from './src/routes/users/refreashToken'
 
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
@@ -183,6 +186,7 @@ app.register(suspectProblemsDeleteRoutes)
 app.register(findManyTraumasRoutes)
 app.register(registerTraumasRoutes)
 app.register(updateTraumasRoutes)
+app.register(deleteTraumasRoutes)
 
 // CINEMATIC AVALIATION
 app.register(registerCinematicAvaliationRoutes)
@@ -190,6 +194,10 @@ app.register(updateCinematicAvaliationRoutes)
 app.register(cinematicAvaliationFindRoutes)
 app.register(cinematicAvaliationFindOneRoutes)
 app.register(cinematicAvaliationDeleteRoutes)
+
+// UTILS
+app.register(refreshRoutes)
+app.register(checkTokenExpiration)
 
 app
   .listen({
