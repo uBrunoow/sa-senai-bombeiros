@@ -41,7 +41,8 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid  },
+    getValues,
   } = useForm<IUser>({
     // resolver: zodResolver(schema),
   });
@@ -96,6 +97,20 @@ export default function Register() {
     setShowConfirmPassword((prev) => !prev);
   };
 
+  const isFormValid = () => {
+    const values = getValues();
+  
+    return (
+      Object.keys(errors).length === 0 &&
+      gender &&
+      isActive !== null &&
+      values.email.trim() &&
+      values.name.trim() &&
+      values.password.trim() &&
+      values.confirmPassword.trim()
+    );
+  };
+
   return (
 
 
@@ -104,6 +119,8 @@ export default function Register() {
         <div className='background-image'>
           <Image src={hexagon} alt="" className='hexagon-image'/>
           <Image src={detail} alt="" className='detail-image'/>
+          <div className='blur-image-2'></div>
+
         </div>
         <Image src={firefighter} alt="" className='firefighter-image'/>
         <div className='blur-image'></div>
@@ -274,7 +291,15 @@ export default function Register() {
               />
               {errors.confirmPassword && <p>{(errors.confirmPassword as FieldError).message}</p>}
 
-              <Button type='submit' variant="contained" color="error" className='form-register-button'>Avançar</Button>
+              <Button 
+                type='submit' 
+                variant="contained" 
+                color="error" 
+                disabled={!isFormValid()}
+                className='form-register-button'
+              >
+                Avançar
+              </Button>
             </Stack>
           </form>
         </div>
