@@ -1,7 +1,11 @@
-export const saveToken = (token: string, userId: number) => {
+export const saveToken = (
+  token: string,
+  userId: number,
+  refreshToken: string,
+) => {
   return {
     type: 'SAVE_TOKEN',
-    payload: { token, userId },
+    payload: { token, userId, refreshToken },
   }
 }
 

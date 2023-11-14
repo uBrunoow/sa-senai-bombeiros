@@ -92,6 +92,9 @@ export async function reportsDeleteRoutes(
         },
       })
 
+      // localStorage.removeItem('token')
+      // localStorage.removeItem('refreshToken')
+
       return res.send({ msg: `🔴 Ocorrência com o id ${id} foi deletado.` })
     } catch (error) {
       console.error('Erro ao deletar report:', error)
