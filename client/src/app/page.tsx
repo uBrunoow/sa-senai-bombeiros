@@ -14,7 +14,8 @@ import {
   InputAdornment,
   FormLabel,  
   FormControlLabel, 
-  Radio
+  Radio,
+  CircularProgress
 } from '@mui/material';
 import { useForm, SubmitHandler, FieldError } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -58,6 +59,7 @@ export default function Register() {
   };
 
   const { enqueueSnackbar } = useSnackbar();
+  const [buttonLoading, setButtonLoading] = useState(false)
 
   const onSubmit: SubmitHandler<IUser> = async (userData) => {
     const dataToSend = {
@@ -65,8 +67,9 @@ export default function Register() {
       gender: gender,
       isActive: isActive,
     };
-  
+
     try {
+      setButtonLoading(true)
       const response = await registerUser(dataToSend);
   
       if (response?.status === 200) {
@@ -84,6 +87,8 @@ export default function Register() {
     } catch (error) {
       console.error('Error during registration:', error);
       enqueueSnackbar('Erro de conexão', { variant: 'error' });
+    } finally {
+      setButtonLoading(false)
     }
   };
 
@@ -298,8 +303,14 @@ export default function Register() {
                 disabled={!isFormValid()}
                 className='form-register-button'
               >
-                Avançar
+                {buttonLoading ? (
+                  <CircularProgress sx={{ width: '20px', height: '20px' }} color="inherit"  />
+                  ): (
+                  <span>Avançar</span>
+                )}
+                
               </Button>
+              <span className='alert-text'>(Todos os campos com * são obrigatórios)</span>
             </Stack>
           </form>
         </div>

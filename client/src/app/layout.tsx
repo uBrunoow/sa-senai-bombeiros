@@ -20,7 +20,12 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={inter.className} style={{ height: '100vh'}}>
-        <SnackbarProvider>
+        <SnackbarProvider 
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+        >
           {children}
         </SnackbarProvider>
       </body>
