@@ -26,21 +26,21 @@
       font-size: 12px;
     }
     .title {
-      font-size: 18px;
+      font-size: 15px;
       margin-bottom: 5px;
     }
     .sub-subtitle {
-      font-size: 15px;
+      font-size: 12px;
       color: #707070;
       margin-top: -5px
     }
     .logo-img {
-      width: 80px;
-      height: 80px; 
+      width: 50px;
+      height: 50px; 
     }
     .logo-img-medicina {
-      width: 70px;
-      height: 70px; 
+      width: 50px;
+      height: 50px; 
     }
     .header {
       border-bottom: 1px solid rgba(0, 0, 0, 0.486);
@@ -48,8 +48,8 @@
       align-items: center;
       justify-content: space-between;
       flex-direction: row;
-      padding: 20px 15px;
-      margin-bottom: 20px;
+      padding: 15px;
+      margin-bottom: 10px;
     }
     .flex {
       display: flex;
@@ -65,17 +65,26 @@
       padding: 5px 15px;
       font-weight: bold;
     }
+    .table-header p {
+      font-size: 12px;
+    }
     .table {
       width: 100%;
       border: 1px solid black;
     }
     .infos-gerais {
       display: flex;
-      align-items: center;
       justify-content: start;
       flex-wrap: wrap;
       width: 100%;
-      gap: 20px;
+      gap: 5px;
+    }
+    .infos-gerais p {
+      color: var(--PRETO, #202020);
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal; 
     }
     .info-paciente h1 {
       color: var(--PRETO, #202020);
@@ -86,9 +95,16 @@
     }
     .info-paciente p {
       color: var(--PRETO, #202020);
-      font-size: 15px;
+      font-size: 12px;
       font-style: normal;
       font-weight: 600;
+      line-height: normal; 
+    }
+    .info-paciente span {
+      color: var(--PRETO, #202020);
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
       line-height: normal; 
     }
     main {
@@ -98,25 +114,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px;
+      padding: 5px;
     }
     .logo-img-2 {
-      width: 116px;
-      height: 116px;
+      width: 100px;
+      height: 100px;
     }
     .reports {
       display: flex;
-      width: 150px;
-      height: 50px;
+      height: 100%;
       justify-content: center;
       align-items: center;
-      border-radius: 7px;
       border: 1px solid var(--PRETO, #202020);
       background: var(--WHITE, #FFF); 
+      padding: 5px;
     }
     .reports p {
       color: var(--PRETO, #202020);
-      font-size: 15px;
+      font-size: 12px;
       font-style: normal;
       font-weight: 900;
       line-height: normal; 
@@ -160,6 +175,51 @@
       align-items: center;
       justify-content: center;
     }
+    table, th, td {
+      border:1px solid black;
+      border-collapse: collapse;
+    }
+    th {
+      background: var(--light-light-grey, #D9D9D9); 
+      font-size: 14px;
+      text-align: left;
+      padding-left: 10px;
+    }
+    td {
+      font-size: 14px;
+    }
+    .glasgow-table {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 5px;
+    }
+    .glasgow-value {
+      border-radius: 7px;
+      border: 1px solid #000;
+      background: var(--WHITE, #FFF); 
+      padding: 5px 7px;
+      font-weight: bold;
+    }
+    .table-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 20px;
+    }
+
+    @media print {
+      th, td {
+        border:1px solid black !important;
+        border-collapse: collapse !important;
+      }
+
+      th {
+        width: 38%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -182,10 +242,10 @@
       <div class="content-info">
         <div class="info-paciente">
           <h1>Dados do relatório</h1>
-          <p>Nome:</p>
-          <p>Idade:</p>
-          <p>Sexo:</p>
-          <p>Data:</p>
+          <p>Nome: <span>El Mano Angemessiano</span></p>
+          <p>Idade: <span>0.7 anos</span></p>
+          <p>Sexo: <span>M de Mano</span></p>
+          <p>Data: <span>31/07/2023</span></p>
         </div>
         <img class="logo-img-2" src="../../src/public/logo-pdf.png" alt="">
       </div>
@@ -222,9 +282,134 @@
                 </div>
                 <span class="subtext">Hipoglicemia</span>
               </div>
+              <div class="reports problems ">
+                <div class="suspectProblems">
+                  <p>Diabetes</p>
+                  <i class='bx bx-check'></i>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        <div class="table"> 
+          <div class="table-header">
+            <p>Sinais e Sintomas</p>
+          </div>
+          <div class="content-info height">
+            <div class="infos-gerais">
+              <div class="reports suspectProblems">
+                <p>Abdomen Rígido ou sensivel</p>
+              </div>
+              <div class="reports problems ">
+                <p>Amnésia</p>
+              </div>
+              <div class="reports problems ">
+                <p>Afundamento de Crânio</p>
+              </div>
+              <div class="reports problems ">
+                <p>Náuseas e Vômitos</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table"> 
+          <div class="table-header">
+            <p>Avaliação do paciente (Glasgow)  </p>
+          </div>
+          <div class="content-info height" style="padding: 0;">
+            <div class="infos-gerais">
+              <table style="width:100%">
+                <tr>
+                  <th>Abertura Ocular</th>
+                  <td>
+                    <div class="glasgow-table">
+                      Espontânea
+                      <div class="glasgow-value">
+                        4
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Abertura Verbal</th>
+                  <td>
+                    <div class="glasgow-table">
+                      Orientado
+                      <div class="glasgow-value">
+                        4
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Abertura Ocular</th>
+                  <td>
+                    <div class="glasgow-table">
+                      Nenhum
+                      <div class="glasgow-value">
+                        4
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <div>
+                      Total 
+                      <span>gcs(3-15)</span>
+                    </div>
+                  </th>
+                  <td>
+                    <div class="glasgow-table">
+                      Nenhum
+                      <div class="glasgow-value">
+                        4
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <div class="table"> 
+            <div class="table-header">
+              <p>Vítima Era</p>
+            </div>
+            <div class="content-info height">
+              <div class="infos-gerais">
+                <p>Pedestre</p>
+              </div>
+            </div>
+          </div>
+          <div class="table"> 
+            <div class="table-header">
+              <p>Forma de Condução</p>
+            </div>
+            <div class="content-info height">
+              <div class="infos-gerais">
+                <p>Semi-sentada</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table"> 
+          <div class="table-header">
+            <p>Decisão Transporte</p>
+          </div>
+          <div class="content-info height">
+            <div class="infos-gerais">
+              <i class='bx bxs-happy'></i>
+              <p>Estável</p>
+            </div>
+          </div>
+        </div>
+
       </section>
       <section>
         <div class="table"> 
