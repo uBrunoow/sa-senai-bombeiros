@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    body { 
+      font-family: Arial, sans-serif;
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto;
+      border: 1px solid black;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust:exact !important;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .subtitle {
+      font-size: 12px;
+    }
+    .title {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+    .sub-subtitle {
+      font-size: 15px;
+      color: #707070;
+      margin-top: -5px
+    }
+    .logo-img {
+      width: 80px;
+      height: 80px; 
+    }
+    .logo-img-medicina {
+      width: 70px;
+      height: 70px; 
+    }
+    .header {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.486);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+      padding: 20px 15px;
+      margin-bottom: 20px;
+    }
+    .flex {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      flex-direction: row;
+      gap: 15px;
+    }
+    .table-header {
+      background: #000;
+      color: #fff;
+      width: 100%;
+      padding: 5px 15px;
+      font-weight: bold;
+    }
+    .table {
+      width: 100%;
+      border: 1px solid black;
+    }
+    .infos-gerais {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      flex-wrap: wrap;
+      width: 100%;
+      gap: 20px;
+    }
+    .info-paciente h1 {
+      color: var(--PRETO, #202020);
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal; 
+    }
+    .info-paciente p {
+      color: var(--PRETO, #202020);
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal; 
+    }
+    main {
+      padding: 10px;
+    }
+    .content-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+    }
+    .logo-img-2 {
+      width: 116px;
+      height: 116px;
+    }
+    .reports {
+      display: flex;
+      width: 150px;
+      height: 50px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 7px;
+      border: 1px solid var(--PRETO, #202020);
+      background: var(--WHITE, #FFF); 
+    }
+    .reports p {
+      color: var(--PRETO, #202020);
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal; 
+    }
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .container  section {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .height {
+      height: 100%;
+      align-items: start !important;
+    }
+    .suspectProblems {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .subtext {
+      color: var(--PRETO, #202020);
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: normal;
+    }
+    .problems {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="flex">
+      <img class="logo-img" src="../../src/public/logo-pdf.png" alt="Imagem" />
+      <div>
+        <h1 class="title">Bombeiros voluntários <span class="subtitle">Relatório de ocorrência</span></h1>
+        <p class="sub-subtitle">Associação de Serviços Sociais Voluntários de Guaramirim</p>
+      </div>
+    </div>
+    <img class="logo-img-medicina" src="../../src/public/logo_medicina 2.png" alt="Imagem" />
+  </header>
+
+  <main>
+    <div class="table"> 
+      <div class="table-header">
+        <p>Informações básicas</p>
+      </div>
+      <div class="content-info">
+        <div class="info-paciente">
+          <h1>Dados do relatório</h1>
+          <p>Nome:</p>
+          <p>Idade:</p>
+          <p>Sexo:</p>
+          <p>Data:</p>
+        </div>
+        <img class="logo-img-2" src="../../src/public/logo-pdf.png" alt="">
+      </div>
+    </div>
+    <div class="container">
+      <section>
+        <div class="table"> 
+          <div class="table-header">
+            <p>Tipo de ocorrência  (pré-hospitalar)</p>
+          </div>
+          <div class="content-info height">
+            <div class="infos-gerais">
+              <div class="reports">
+                <p>Afogamento</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table"> 
+          <div class="table-header">
+            <p>Problemas Encontrados Suspeitos</p>
+          </div>
+          <div class="content-info height">
+            <div class="infos-gerais">
+              <div class="reports suspectProblems">
+                <p>Psiquiatrico</p>
+                <i class='bx bx-check'></i>
+              </div>
+              <div class="reports problems ">
+                <div class="suspectProblems">
+                  <p>Diabetes</p>
+                  <i class='bx bx-check'></i>
+                </div>
+                <span class="subtext">Hipoglicemia</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="table"> 
+          <div class="table-header">
+            <p>Tipo de ocorrência  (pré-hospitalar)</p>
+          </div>
+          <div class="content-info">
+            <div class="infos-gerais">
+              <div class="preHospitalarMethod">
+                <p>Afogamento</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
