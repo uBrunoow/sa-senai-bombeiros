@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import bodyCoordinates from './../utils/bodyCoordinates.json'
+import bodyCoordinates from './../utils/bodyCoordinates'
 import findReports from '@src/api/reports/findReport'
 import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
@@ -8,18 +8,6 @@ import { useSelector } from 'react-redux'
 type Coordinate = {
   x: number
   y: number
-}
-
-type BodyPartCoordinates = {
-  tl: Coordinate
-  br: Coordinate
-}
-
-type BodyPart = {
-  coords: BodyPartCoordinates
-  side: 'Direito' | 'Esquerdo' | null
-  face: 'Frontal' | 'Traseiro'
-  local: string
 }
 
 type BodyProps = {
@@ -31,7 +19,7 @@ type BodyProps = {
   setClickedBodyPartText: Dispatch<SetStateAction<string>>
 }
 
-const castedBodyCoordinates = bodyCoordinates as Record<string, BodyPart>
+const castedBodyCoordinates = bodyCoordinates
 
 export default function Body({
   bodyPartValueHandler,
@@ -41,13 +29,14 @@ export default function Body({
   clickedBodyPartText,
   setClickedBodyPartText,
 }: BodyProps) {
-  // const [localTraumas, setLocalTraumas] = useState<ILocalTraumas[]>([])
-
   function getClickBodyPlace(clickCoord: Coordinate) {
     for (const bodyPart in castedBodyCoordinates) {
-      const currPart = (castedBodyCoordinates as Record<string, BodyPart>)[
-        bodyPart
-      ]
+      const currPart = (
+        castedBodyCoordinates as Record<
+          string,
+          (typeof castedBodyCoordinates)[keyof typeof castedBodyCoordinates]
+        >
+      )[bodyPart]
 
       const currPartCoords = currPart.coords
       const currPartFace = currPart.face
@@ -113,12 +102,6 @@ export default function Body({
       } else {
         setIsMaiorQueCincoAnos(false)
       }
-
-      // const localTraumasData = await findManyLocalTraumas(reportId)
-
-      // setLocalTraumas(localTraumasData.localTraumas)
-
-      // console.log(localTraumasData)
     }
     findReportData()
   }, [reportId])
