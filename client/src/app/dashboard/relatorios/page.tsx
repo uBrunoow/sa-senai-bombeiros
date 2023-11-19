@@ -1,8 +1,8 @@
+import Header from '@/app/components/Header/Header'
+import { Box } from '@mui/material'
 import React from 'react'
-import './dashboard.css'
-import { Box, Container } from '@mui/material'
-import Header from '../components/Header/Header'
-function Dashboard() {
+
+function page() {
   return (
     <Box sx={{ display: 'flex' }}>
       <Header />
@@ -14,10 +14,10 @@ function Dashboard() {
           padding: '10px',
         }}
       >
-        aaaaa
+        relatorios
       </Box>
     </Box>
   )
 }
 
-export default Dashboard
+export default page

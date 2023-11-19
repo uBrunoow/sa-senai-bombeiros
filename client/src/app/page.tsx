@@ -124,7 +124,7 @@ export default function Register() {
             <div>
               <div className="title-register">
                 <User color="red" height={40} width={40} />
-                <h1>Register</h1>
+                <h1>Login</h1>
               </div>
               <form onSubmit={handleSubmit(onSubmit)} className="form-register">
                 <Stack spacing={2} sx={{ width: '100%' }}>

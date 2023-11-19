@@ -1,12 +1,14 @@
-import { IBase } from "./IBase";
+import { IBase } from './IBase'
 
-interface IUser extends IBase{
-  email: string;
-  name: string;
-  gender: string;
-  isActive: boolean | null;
-  password: string;
-  confirmPassword: string;
+interface IUser extends IBase {
+  id: number
+  email: string
+  name: string
+  gender: string
+  isActive: boolean
+  password: string
+  confirmPassword: string
+  Reports: any[]
 }
 
-export default IUser;
+export default IUser
