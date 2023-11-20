@@ -77,16 +77,25 @@ function Usuarios() {
 
   const [sortOption, setSortOption] = useState('')
 
-  const handleSortChange = (event) => {
+  const handleSortChange = (event: any) => {
     setSortOption(event.target.value)
   }
 
   const getSortingFunction = (option: string) => {
     switch (option) {
       case 'recent':
-        return (a: IUser, b: IUser) => b.createdAt - a.createdAt
+        return (a: IUser, b: IUser) => {
+          const dateA = new Date(a.createdAt)
+          const dateB = new Date(b.createdAt)
+          return dateB.getTime() - dateA.getTime()
+        }
+
       case 'oldest':
-        return (a: IUser, b: IUser) => a.createdAt - b.createdAt
+        return (a: IUser, b: IUser) => {
+          const dateA = new Date(a.createdAt)
+          const dateB = new Date(b.createdAt)
+          return dateA.getTime() - dateB.getTime()
+        }
       case 'gender':
         return (a: IUser, b: IUser) => a.gender.localeCompare(b.gender)
       case 'mostOccurrences':
@@ -94,7 +103,7 @@ function Usuarios() {
       case 'leastOccurrences':
         return (a: IUser, b: IUser) => a.Reports.length - b.Reports.length
       default:
-        return (a: IUser, b: IUser) => 0
+        return () => 0
     }
   }
 
@@ -181,6 +190,7 @@ function Usuarios() {
               onChange={handleSortChange}
               displayEmpty
               inputProps={{ 'aria-label': 'Sort by' }}
+              className="order-by"
             >
               <MenuItem value="" disabled>
                 Ordenar por

@@ -39,3 +39,7 @@
   background:  green;
   width: 35% !important;
 }
+
+.order-by div {
+  padding: 10px
+}
