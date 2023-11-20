@@ -9,7 +9,6 @@ import {
   Box,
   Breadcrumbs,
   Button,
-  IconButton,
   Link,
   MenuItem,
   Modal,
@@ -30,7 +29,7 @@ import { Clear, Edit } from '@mui/icons-material'
 import { convertToSimNao } from '@/utils/formatIsActive'
 import NovoBombeiro from '@/app/components/modal/novoBombeiro'
 import EditBombeiro from '@/app/components/modal/editBombeiro'
-import { id } from 'date-fns/locale'
+import { formatRole } from '@/utils/formatRoles'
 function Usuarios() {
   const [users, setUsers] = useState([])
   const [filterText, setFilterText] = useState('')
@@ -39,7 +38,7 @@ function Usuarios() {
   const [openModal, setOpenModal] = useState(false)
   const [openEditModal, setOpenEditModal] = useState<{
     open: boolean
-    id: IUser
+    id?: IUser
   }>({
     open: false,
   })
@@ -262,7 +261,9 @@ function Usuarios() {
                       {convertToSimNao(user.isActive)}
                     </TableCell>
                     <TableCell align="center">{user.Reports.length}</TableCell>
-                    <TableCell align="center">{user.role}</TableCell>
+                    <TableCell align="center">
+                      {formatRole(user.role)}
+                    </TableCell>
                     <TableCell align="center">
                       {formatDate(user.createdAt)}
                     </TableCell>

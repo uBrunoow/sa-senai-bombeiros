@@ -19,14 +19,13 @@ import React, { useEffect, useState } from 'react'
 import '@/styles/register.css'
 import { useSnackbar } from 'notistack'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import registerUser from '@/api/registerUser'
 import findUniqueUser from '@/api/findUniqueUser'
 import IUser from '@/interfaces/IUser'
 import updateUser from '@/api/updateUser'
 
 interface EditBombeiroProps {
   handleClose: () => void
-  userId: number
+  userId: number | undefined
 }
 function EditBombeiro({ handleClose, userId }: EditBombeiroProps) {
   const [gender, setGender] = useState('')
@@ -106,7 +105,10 @@ function EditBombeiro({ handleClose, userId }: EditBombeiroProps) {
   const handleToggleConfirmPassword = () => {
     setShowConfirmPassword((prev) => !prev)
   }
-  const handleRoleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleRoleChange = (
+    event: React.ChangeEvent<{ value: unknown }>,
+    child: React.ReactNode,
+  ) => {
     setRole(event.target.value as string)
   }
 
