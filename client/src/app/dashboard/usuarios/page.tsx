@@ -39,16 +39,13 @@ function Usuarios() {
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await findUsers()
-
-      console.log(response.allUsers)
-
       setUsers(response.allUsers)
     }
 
     fetchUsers()
   }, [])
 
-  const filteredUsers = users.filter((user: IUser) =>
+  const filteredUsers = users?.filter((user: IUser) =>
     user.name.toLowerCase().includes(filterText.toLowerCase()),
   )
 
