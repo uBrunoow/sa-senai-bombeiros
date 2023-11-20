@@ -24,7 +24,10 @@ export type TBodyCoordinates = {
     | 'Coxa Frontal Esquerda'
     | 'Joelho Direito'
     | 'Joelho Esquerdo'
-    | 'Perna Frontal Direita']: {
+    | 'Perna Frontal Direita'
+    | 'Perna Frontal Esquerda'
+    | 'Pé Esquerdo'
+    | 'Pé Direito']: {
     coords: {
       tl: {
         x: number
@@ -50,5 +53,6 @@ export type TBodyCoordinates = {
       | 'PEITO'
       | 'PERNA'
       | 'PESCOCO'
+      | 'PE'
   }
 }

@@ -1,15 +1,10 @@
 import { FastifyInstance } from 'fastify'
 import { prisma } from '../../lib/prisma'
 import { reportsUpdateSchema } from '../../schemas/reportSchemas'
-import { authenticateToken } from '../../utils/authMiddleware'
 
 export async function reportsUpdateRoutes(app: FastifyInstance) {
-  // app.addHook('preHandler', authenticateToken)
-  app.put(
-    '/api/reports/update/:id',
-    { preHandler: authenticateToken },
-    async (req, res) => {
-      const authenticatedUserId = req.user.userId
+  app.put('/api/reports/update/:id', async (req, res) => {
+    try {
       const { id } = req.params as { id: string }
 
       const {
@@ -117,16 +112,13 @@ export async function reportsUpdateRoutes(app: FastifyInstance) {
         data: updatedReportData,
       })
 
-      if (authenticatedUserId !== updatedReport.ownerId) {
-        return res
-          .status(403)
-          .send({ msg: 'Sem permissão para atualizar este relatório' })
-      }
-
       return res.send({
         msg: '🟢 Usuário atualizado com sucesso.',
         updatedReport,
       })
-    },
-  )
+    } catch (error) {
+      console.log('Erro ao atualizar report: ', error)
+      res.send({ msg: 'Deu ruim' })
+    }
+  })
 }
