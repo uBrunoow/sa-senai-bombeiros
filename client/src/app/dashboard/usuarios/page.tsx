@@ -30,11 +30,25 @@ import { convertToSimNao } from '@/utils/formatIsActive'
 import NovoBombeiro from '@/app/components/modal/novoBombeiro'
 import EditBombeiro from '@/app/components/modal/editBombeiro'
 import { formatRole } from '@/utils/formatRoles'
+import findUniqueUser from '@/api/findUniqueUser'
+import id from 'date-fns/locale/id'
+import Cookies from 'js-cookie'
+
+type UserType = {
+  user: {
+    role: string
+  }
+}
 function Usuarios() {
   const [users, setUsers] = useState([])
+  const [myUser, setMyUser] = useState<UserType>({
+    user: {
+      role: '',
+    },
+  })
   const [filterText, setFilterText] = useState('')
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(20)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
   const [openModal, setOpenModal] = useState(false)
   const [openEditModal, setOpenEditModal] = useState<{
     open: boolean
@@ -43,14 +57,24 @@ function Usuarios() {
     open: false,
   })
 
+  const uniqueUserId = Cookies.get('userId')
+  const userId = Number(uniqueUserId)
+
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await findUsers()
       setUsers(response.allUsers)
     }
 
+    const fetchUniqueUser = async () => {
+      const response = await findUniqueUser(userId)
+      setMyUser(response)
+      console.log(response)
+    }
+
     fetchUsers()
-  }, [])
+    fetchUniqueUser()
+  }, [userId])
 
   const filteredUsers = users?.filter((user: IUser) =>
     user.name.toLowerCase().includes(filterText.toLowerCase()),
@@ -213,21 +237,39 @@ function Usuarios() {
               <MenuItem value="mostOccurrences">Mais ocorrências</MenuItem>
               <MenuItem value="leastOccurrences">Menos ocorrências</MenuItem>
             </Select>
-            <Button
-              type="submit"
-              variant="contained"
-              color="success"
-              className="form-filter-button type-new"
-              onClick={handleOpenModal}
-            >
-              <Typography
-                variant="button"
-                fontSize="small"
-                sx={{ fontWeight: '800' }}
+            {myUser && myUser.user.role === 'Admin' ? (
+              <Button
+                type="submit"
+                variant="contained"
+                color="success"
+                className="form-filter-button type-new"
+                onClick={handleOpenModal}
               >
-                Cadastrar novo bombeiro
-              </Typography>
-            </Button>
+                <Typography
+                  variant="button"
+                  fontSize="small"
+                  sx={{ fontWeight: '800' }}
+                >
+                  Cadastrar novo bombeiro
+                </Typography>
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                variant="contained"
+                color="success"
+                className="form-filter-button type-new"
+                disabled
+              >
+                <Typography
+                  variant="button"
+                  fontSize="small"
+                  sx={{ fontWeight: '800' }}
+                >
+                  Cadastrar novo bombeiro
+                </Typography>
+              </Button>
+            )}
           </Box>
         </Box>
         <TableContainer component={Paper}>
@@ -268,11 +310,17 @@ function Usuarios() {
                       {formatDate(user.createdAt)}
                     </TableCell>
                     <TableCell align="right">
-                      <Button
-                        onClick={() => handleOpenEditModal(user.id as id)}
-                      >
-                        <Edit />
-                      </Button>
+                      {myUser && myUser.user.role === 'Admin' ? (
+                        <Button
+                          onClick={() => handleOpenEditModal(user.id as id)}
+                        >
+                          <Edit />
+                        </Button>
+                      ) : (
+                        <Button disabled>
+                          <Edit />
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -301,7 +349,9 @@ function Usuarios() {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
+            minWidth: '400px',
+            maxWidth: '700px',
+            width: '100%',
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
@@ -322,7 +372,9 @@ function Usuarios() {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
+            minWidth: '400px',
+            maxWidth: '700px',
+            width: '100%',
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,

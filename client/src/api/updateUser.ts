@@ -1,7 +1,7 @@
 import IUser from '@/interfaces/IUser'
 import { api } from '@/lib/api'
 
-const updateUser = async (dataToSend: IUser, userId: number) => {
+const updateUser = async (dataToSend: IUser, userId?: number) => {
   try {
     const response = await api.put(`/api/users/update/${userId}`, dataToSend, {
       headers: {

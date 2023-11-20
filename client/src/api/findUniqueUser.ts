@@ -1,6 +1,6 @@
 import { api } from '@/lib/api'
 
-const findUniqueUser = async (userId: number | undefined) => {
+const findUniqueUser = async (userId: number) => {
   try {
     const response = await api.get(`/api/users/${userId}`)
     return response.data

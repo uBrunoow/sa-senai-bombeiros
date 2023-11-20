@@ -1,9 +1,12 @@
 'use client'
 
+import AuthChecker from '@/middleware/authChecker'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { SnackbarProvider } from 'notistack'
+import store from '@/redux/stores/store'
+import { Provider } from 'react-redux'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,14 +23,16 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={inter.className} style={{ height: '100vh' }}>
-        <SnackbarProvider
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-        >
-          {children}
-        </SnackbarProvider>
+        <Provider store={store}>
+          <SnackbarProvider
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+          >
+            <AuthChecker>{children}</AuthChecker>
+          </SnackbarProvider>
+        </Provider>
       </body>
     </html>
   )

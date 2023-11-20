@@ -1,8 +1,27 @@
+'use client'
+
 import React from 'react'
-import { ListItemIcon, MenuItem, MenuList, Typography } from '@mui/material'
+import {
+  Link,
+  ListItemIcon,
+  MenuItem,
+  MenuList,
+  Typography,
+} from '@mui/material'
 import { Home, Person, Assignment, Settings, Logout } from '@mui/icons-material'
 import '../../dashboard/dashboard.css'
+import { useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
 function Header() {
+  const router = useRouter()
+  const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' })
+
+    router.push('/')
+  }
+
   return (
     <header className="aside-header">
       <nav className="aside-navbar">
@@ -15,14 +34,20 @@ function Header() {
                 gap: '5px',
               }}
             >
-              <Home fontSize="large" />
-              <Typography
+              <Home fontSize="medium" />
+              <Link
+                href="/dashboard"
                 variant="button"
-                fontSize="large"
-                sx={{ fontWeight: '500', textTransform: 'capitalize' }}
+                fontSize="medium"
+                color="#707070"
+                sx={{
+                  fontWeight: '500',
+                  textTransform: 'capitalize',
+                  textDecoration: 'none',
+                }}
               >
                 Home
-              </Typography>
+              </Link>
             </ListItemIcon>
           </MenuItem>
           <MenuItem>
@@ -33,32 +58,20 @@ function Header() {
                 gap: '5px',
               }}
             >
-              <Person fontSize="large" />
-              <Typography
+              <Person fontSize="medium" />
+              <Link
+                href="/dashboard/usuarios"
                 variant="button"
-                fontSize="large"
-                sx={{ fontWeight: '500', textTransform: 'capitalize' }}
+                fontSize="medium"
+                color="#707070"
+                sx={{
+                  fontWeight: '500',
+                  textTransform: 'capitalize',
+                  textDecoration: 'none',
+                }}
               >
                 Usuários
-              </Typography>
-            </ListItemIcon>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '5px',
-              }}
-            >
-              <Assignment fontSize="large" />
-              <Typography
-                variant="button"
-                fontSize="large"
-                sx={{ fontWeight: '500', textTransform: 'capitalize' }}
-              >
-                Relatórios
-              </Typography>
+              </Link>
             </ListItemIcon>
           </MenuItem>
         </MenuList>
@@ -71,10 +84,10 @@ function Header() {
                 gap: '5px',
               }}
             >
-              <Settings fontSize="large" />
+              <Settings fontSize="medium" />
               <Typography
                 variant="button"
-                fontSize="large"
+                fontSize="medium"
                 sx={{ fontWeight: '500', textTransform: 'capitalize' }}
               >
                 Configurações
@@ -88,11 +101,12 @@ function Header() {
                 alignItems: 'center',
                 gap: '5px',
               }}
+              onClick={handleLogout}
             >
-              <Logout fontSize="large" />
+              <Logout fontSize="medium" />
               <Typography
                 variant="button"
-                fontSize="large"
+                fontSize="medium"
                 sx={{ fontWeight: '500', textTransform: 'capitalize' }}
               >
                 Sair

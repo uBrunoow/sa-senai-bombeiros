@@ -23,6 +23,8 @@ import IUser from '@/interfaces/IUser'
 import { useSnackbar } from 'notistack'
 import loginUser from '@/api/loginUser'
 import { useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
+import { saveToken } from '@/redux/actions/authActions'
 
 // const schema: any = z.object({
 //   email: z.string().email({ message: 'Email inválido' }),
@@ -36,6 +38,7 @@ import { useRouter } from 'next/navigation'
 
 export default function Register() {
   const router = useRouter()
+  const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
@@ -68,6 +71,14 @@ export default function Register() {
       if (response?.status === 200) {
         enqueueSnackbar('Usuário logado com sucesso', { variant: 'success' })
         router.push('/dashboard')
+
+        dispatch(
+          saveToken(
+            response.data.token,
+            response.data.user.id,
+            response.data.refreshToken,
+          ),
+        )
       } else {
         if (response?.status === 422) {
           enqueueSnackbar('Credenciais inválidas.', { variant: 'info' })

@@ -72,6 +72,7 @@ function EditBombeiro({ handleClose, userId }: EditBombeiroProps) {
       if (response?.status === 200) {
         console.log('Usuário editado com sucesso.', response)
         enqueueSnackbar('Updated successful', { variant: 'success' })
+        window.location.reload()
       } else {
         if (response?.status === 422) {
           enqueueSnackbar('Credenciais inválidas', { variant: 'error' })
@@ -119,7 +120,11 @@ function EditBombeiro({ handleClose, userId }: EditBombeiroProps) {
       </Typography>
       <Divider sx={{ margin: '20px 0' }} />
       {uniqueUser && (
-        <form onSubmit={handleSubmit(onSubmit)} className="form-register">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="form-register"
+          style={{ width: '100%' }}
+        >
           <Stack spacing={2} sx={{ width: '100%' }}>
             <TextField
               id="emailId"

@@ -54,6 +54,7 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
       if (response?.status === 200) {
         console.log('Usuário registrado com sucesso.', response)
         enqueueSnackbar('Registration successful', { variant: 'success' })
+        window.location.reload()
       } else {
         if (response?.status === 422) {
           enqueueSnackbar('Credenciais inválidas', { variant: 'error' })
@@ -95,9 +96,14 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
         Cadastrar um novo bombeiro
       </Typography>
       <Divider sx={{ margin: '20px 0' }} />
-      <form onSubmit={handleSubmit(onSubmit)} className="form-register">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="form-register"
+        style={{ width: '100%' }}
+      >
         <Stack spacing={2} sx={{ width: '100%' }}>
           <TextField
+            required
             id="emailId"
             label="E-mail"
             type="text"
@@ -107,6 +113,7 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
             {...register('email')}
           />
           <TextField
+            required
             id="nameId"
             label="Nome completo"
             type="text"
@@ -116,7 +123,9 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
           />
 
           <FormControl fullWidth sx={{ width: '100%' }}>
-            <InputLabel id="role-label">Cargo</InputLabel>
+            <InputLabel required id="role-label">
+              Cargo
+            </InputLabel>
             <Select
               labelId="role-label"
               id="role"
@@ -134,7 +143,9 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
             </Select>
           </FormControl>
 
-          <FormLabel component="legend">Selecione um gênero:</FormLabel>
+          <FormLabel required component="legend">
+            Selecione um gênero:
+          </FormLabel>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <div>
               <FormControlLabel
@@ -169,7 +180,9 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
             </div>
           </div>
 
-          <FormLabel component="legend">O usuário é ativo?</FormLabel>
+          <FormLabel required component="legend">
+            O usuário é ativo?
+          </FormLabel>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <div>
               <FormControlLabel
@@ -204,6 +217,7 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
           </div>
 
           <TextField
+            required
             className="input-register"
             id="senhaId"
             label="Senha"
@@ -230,6 +244,7 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
             }}
           />
           <TextField
+            required
             className="input-register"
             id="confirmaSenhaId"
             label="Confirmar Senha"
