@@ -131,7 +131,7 @@ export default function LocalTraumas() {
             >
               <View className="border-lg mx-auto flex h-[42px] w-full flex-row justify-between rounded-[7px] border-width1 border-black p-[10px]">
                 <Text>Selecione</Text>
-                <Text>{tipoFerimento || 'Nenhum'}</Text>
+                <Text className="font-bold">{tipoFerimento || 'Nenhum'}</Text>
               </View>
             </TouchableOpacity>
           </View>
