@@ -8,6 +8,13 @@ interface IUser extends IBase {
   isActive: boolean
   password: string
   confirmPassword: string
+  role:
+    | 'segundoTenente'
+    | 'primeiroTenente'
+    | 'Capitao'
+    | 'Major'
+    | 'TenenteCoronel'
+    | 'Admin'
   Reports: any[]
 }
 

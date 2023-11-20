@@ -26,15 +26,23 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Clear } from '@mui/icons-material'
+import { Clear, Edit } from '@mui/icons-material'
 import { convertToSimNao } from '@/utils/formatIsActive'
 import NovoBombeiro from '@/app/components/modal/novoBombeiro'
+import EditBombeiro from '@/app/components/modal/editBombeiro'
+import { id } from 'date-fns/locale'
 function Usuarios() {
   const [users, setUsers] = useState([])
   const [filterText, setFilterText] = useState('')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(20)
   const [openModal, setOpenModal] = useState(false)
+  const [openEditModal, setOpenEditModal] = useState<{
+    open: boolean
+    id: IUser
+  }>({
+    open: false,
+  })
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -70,6 +78,14 @@ function Usuarios() {
 
   const handleCloseModal = () => {
     setOpenModal(false)
+  }
+
+  const handleOpenEditModal = (id: IUser) => {
+    setOpenEditModal({ open: true, id })
+  }
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal({ open: false })
   }
 
   const [sortOption, setSortOption] = useState('')
@@ -224,6 +240,7 @@ function Usuarios() {
                 <TableCell align="center">Gênero</TableCell>
                 <TableCell align="center">Ativo</TableCell>
                 <TableCell align="center">N° de ocorrências</TableCell>
+                <TableCell align="center">Cargo</TableCell>
                 <TableCell align="center">Created at</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
@@ -245,10 +262,17 @@ function Usuarios() {
                       {convertToSimNao(user.isActive)}
                     </TableCell>
                     <TableCell align="center">{user.Reports.length}</TableCell>
+                    <TableCell align="center">{user.role}</TableCell>
                     <TableCell align="center">
                       {formatDate(user.createdAt)}
                     </TableCell>
-                    <TableCell align="center"></TableCell>
+                    <TableCell align="right">
+                      <Button
+                        onClick={() => handleOpenEditModal(user.id as id)}
+                      >
+                        <Edit />
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -283,6 +307,30 @@ function Usuarios() {
           }}
         >
           <NovoBombeiro handleClose={handleCloseModal} />
+        </Box>
+      </Modal>
+      <Modal
+        open={openEditModal.open}
+        onClose={handleCloseEditModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <EditBombeiro
+            handleClose={handleCloseEditModal}
+            userId={openEditModal.id}
+          />
         </Box>
       </Modal>
     </Box>

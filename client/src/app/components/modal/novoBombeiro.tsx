@@ -2,11 +2,15 @@ import { Clear, Visibility, VisibilityOff } from '@mui/icons-material'
 import {
   Button,
   Divider,
+  FormControl,
   FormControlLabel,
   FormLabel,
   IconButton,
   InputAdornment,
+  InputLabel,
+  MenuItem,
   Radio,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -26,6 +30,7 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
   const [isActive, setIsActive] = useState<boolean>(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [role, setRole] = useState('')
 
   const {
     register,
@@ -40,6 +45,7 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
       ...userData,
       gender,
       isActive,
+      role,
     }
 
     try {
@@ -79,6 +85,9 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
   const handleToggleConfirmPassword = () => {
     setShowConfirmPassword((prev) => !prev)
   }
+  const handleRoleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setRole(event.target.value as string)
+  }
 
   return (
     <>
@@ -105,6 +114,25 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
             sx={{ width: '100%' }}
             {...register('name')}
           />
+
+          <FormControl fullWidth sx={{ width: '100%' }}>
+            <InputLabel id="role-label">Cargo</InputLabel>
+            <Select
+              labelId="role-label"
+              id="role"
+              value={role}
+              label="Cargo"
+              {...register('role')}
+              onChange={handleRoleChange}
+            >
+              <MenuItem value="segundoTenente">Segundo Tenente</MenuItem>
+              <MenuItem value="primeiroTenente">Primeiro Tenente</MenuItem>
+              <MenuItem value="Capitao">Capitão</MenuItem>
+              <MenuItem value="Major">Major</MenuItem>
+              <MenuItem value="TenenteCoronel">Tenente-Coronel</MenuItem>
+              <MenuItem value="Admin">Admin</MenuItem>
+            </Select>
+          </FormControl>
 
           <FormLabel component="legend">Selecione um gênero:</FormLabel>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
