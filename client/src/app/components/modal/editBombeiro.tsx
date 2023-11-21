@@ -22,11 +22,11 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import findUniqueUser from '@/api/findUniqueUser'
 import IUser from '@/interfaces/IUser'
 import updateUser from '@/api/updateUser'
-import SkeletonBody from '../Skeleton/skeleton'
+import { SkeletonBody } from '../Skeleton/skeleton'
 
 interface EditBombeiroProps {
   handleClose: () => void
-  userId: number | undefined
+  userId: number
 }
 function EditBombeiro({ handleClose, userId }: EditBombeiroProps) {
   const [gender, setGender] = useState('')

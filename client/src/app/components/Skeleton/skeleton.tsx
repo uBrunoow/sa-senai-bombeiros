@@ -1,6 +1,5 @@
 import { Box, Skeleton } from '@mui/material'
 import React from 'react'
-
 export const SkeletonBody = () => {
   return (
     <>

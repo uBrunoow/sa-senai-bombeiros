@@ -32,11 +32,8 @@ import EditBombeiro from '@/app/components/modal/editBombeiro'
 import { formatRole } from '@/utils/formatRoles'
 import findUniqueUser from '@/api/findUniqueUser'
 import Cookies from 'js-cookie'
-import id from 'date-fns/locale/id'
 import { SkeletonTable } from '@/app/components/Skeleton/skeleton'
-import { setUsersData } from '@/redux/actions/dataActions'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/redux/stores/store'
+import id from 'date-fns/locale/id'
 
 type UserType = {
   user: {
@@ -44,23 +41,19 @@ type UserType = {
   }
 }
 function Usuarios() {
-  const myUser = useSelector((state: RootState) => state.usersData)
-
-  console.log('my user', myUser)
-
   const [users, setUsers] = useState([])
-  // const [myUser, setMyUser] = useState<UserType>({
-  //   user: {
-  //     role: '',
-  //   },
-  // })
+  const [myUser, setMyUser] = useState<UserType>({
+    user: {
+      role: '',
+    },
+  })
   const [filterText, setFilterText] = useState('')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [openModal, setOpenModal] = useState(false)
   const [openEditModal, setOpenEditModal] = useState<{
     open: boolean
-    id?: IUser
+    id: IUser
   }>({
     open: false,
   })
@@ -82,6 +75,13 @@ function Usuarios() {
       }
     }
 
+    const fetchUniqueUser = async () => {
+      const response = await findUniqueUser(userId)
+      setMyUser(response)
+      console.log(response)
+    }
+
+    fetchUniqueUser()
     fetchUsers()
   }, [userId])
 

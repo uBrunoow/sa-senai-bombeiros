@@ -36,6 +36,9 @@ export async function userFindOneRoutes(
       where: {
         id: parseInt(id),
       },
+      include: {
+        Reports: {},
+      },
     })
 
     // Se não existir usuário retorna um erro
