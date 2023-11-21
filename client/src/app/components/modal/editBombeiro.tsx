@@ -22,6 +22,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import findUniqueUser from '@/api/findUniqueUser'
 import IUser from '@/interfaces/IUser'
 import updateUser from '@/api/updateUser'
+import SkeletonBody from '../Skeleton/skeleton'
 
 interface EditBombeiroProps {
   handleClose: () => void
@@ -34,6 +35,7 @@ function EditBombeiro({ handleClose, userId }: EditBombeiroProps) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [uniqueUser, setUniqueUser] = useState<IUser | null>(null)
   const [role, setRole] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     register,
@@ -44,14 +46,21 @@ function EditBombeiro({ handleClose, userId }: EditBombeiroProps) {
 
   useEffect(() => {
     const fetchUniqueUser = async () => {
-      const response = await findUniqueUser(userId)
+      try {
+        setIsLoading(true)
+        const response = await findUniqueUser(userId)
 
-      setUniqueUser(response)
+        setUniqueUser(response)
 
-      setValue('email', response.user.email)
-      setValue('name', response.user.name)
-      setGender(response.user.gender || '')
-      setIsActive(response.user.isActive || false)
+        setValue('email', response.user.email)
+        setValue('name', response.user.name)
+        setGender(response.user.gender || '')
+        setIsActive(response.user.isActive || false)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     fetchUniqueUser()
@@ -119,7 +128,7 @@ function EditBombeiro({ handleClose, userId }: EditBombeiroProps) {
         Editar o bombeiro n° {userId}
       </Typography>
       <Divider sx={{ margin: '20px 0' }} />
-      {uniqueUser && (
+      {uniqueUser && !isLoading ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="form-register"
@@ -305,6 +314,8 @@ function EditBombeiro({ handleClose, userId }: EditBombeiroProps) {
             </Button>
           </Stack>
         </form>
+      ) : (
+        <SkeletonBody />
       )}
     </>
   )

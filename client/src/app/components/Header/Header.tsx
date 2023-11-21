@@ -2,16 +2,19 @@
 
 import React from 'react'
 import {
+  Divider,
   Link,
   ListItemIcon,
   MenuItem,
   MenuList,
   Typography,
 } from '@mui/material'
-import { Home, Person, Assignment, Settings, Logout } from '@mui/icons-material'
+import { Home, Person, Settings, Logout } from '@mui/icons-material'
 import '../../dashboard/dashboard.css'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
+import Image from 'next/image'
+import logoNoar from '@/public/logo_pequena 3.png'
 function Header() {
   const router = useRouter()
   const dispatch = useDispatch()
@@ -26,6 +29,38 @@ function Header() {
     <header className="aside-header">
       <nav className="aside-navbar">
         <MenuList sx={{ width: '100%' }}>
+          <MenuItem
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px',
+              justifyContent: 'center',
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                justifyContent: 'center',
+              }}
+            >
+              <Link
+                href="/dashboard"
+                variant="button"
+                fontSize="medium"
+                color="#707070"
+                sx={{
+                  fontWeight: '500',
+                  textTransform: 'capitalize',
+                  textDecoration: 'none',
+                }}
+              >
+                <Image src={logoNoar} alt="" width={100} height={100} />
+              </Link>
+            </ListItemIcon>
+          </MenuItem>
+          <Divider />
           <MenuItem>
             <ListItemIcon
               sx={{
@@ -76,24 +111,6 @@ function Header() {
           </MenuItem>
         </MenuList>
         <MenuList sx={{ width: '100%' }}>
-          <MenuItem>
-            <ListItemIcon
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '5px',
-              }}
-            >
-              <Settings fontSize="medium" />
-              <Typography
-                variant="button"
-                fontSize="medium"
-                sx={{ fontWeight: '500', textTransform: 'capitalize' }}
-              >
-                Configurações
-              </Typography>
-            </ListItemIcon>
-          </MenuItem>
           <MenuItem>
             <ListItemIcon
               sx={{

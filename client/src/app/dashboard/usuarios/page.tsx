@@ -31,8 +31,12 @@ import NovoBombeiro from '@/app/components/modal/novoBombeiro'
 import EditBombeiro from '@/app/components/modal/editBombeiro'
 import { formatRole } from '@/utils/formatRoles'
 import findUniqueUser from '@/api/findUniqueUser'
-import id from 'date-fns/locale/id'
 import Cookies from 'js-cookie'
+import id from 'date-fns/locale/id'
+import { SkeletonTable } from '@/app/components/Skeleton/skeleton'
+import { setUsersData } from '@/redux/actions/dataActions'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/redux/stores/store'
 
 type UserType = {
   user: {
@@ -40,12 +44,16 @@ type UserType = {
   }
 }
 function Usuarios() {
+  const myUser = useSelector((state: RootState) => state.usersData)
+
+  console.log('my user', myUser)
+
   const [users, setUsers] = useState([])
-  const [myUser, setMyUser] = useState<UserType>({
-    user: {
-      role: '',
-    },
-  })
+  // const [myUser, setMyUser] = useState<UserType>({
+  //   user: {
+  //     role: '',
+  //   },
+  // })
   const [filterText, setFilterText] = useState('')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -56,24 +64,25 @@ function Usuarios() {
   }>({
     open: false,
   })
+  const [isLoading, setIsLoading] = useState(false)
 
   const uniqueUserId = Cookies.get('userId')
   const userId = Number(uniqueUserId)
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await findUsers()
-      setUsers(response.allUsers)
-    }
-
-    const fetchUniqueUser = async () => {
-      const response = await findUniqueUser(userId)
-      setMyUser(response)
-      console.log(response)
+      try {
+        setIsLoading(true)
+        const response = await findUsers()
+        setUsers(response.allUsers)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     fetchUsers()
-    fetchUniqueUser()
   }, [userId])
 
   const filteredUsers = users?.filter((user: IUser) =>
@@ -294,34 +303,44 @@ function Usuarios() {
                     key={user.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell component="th" scope="row">
-                      {user.name}
-                    </TableCell>
-                    <TableCell align="center">{user.email}</TableCell>
-                    <TableCell align="center">{user.gender}</TableCell>
-                    <TableCell align="center">
-                      {convertToSimNao(user.isActive)}
-                    </TableCell>
-                    <TableCell align="center">{user.Reports.length}</TableCell>
-                    <TableCell align="center">
-                      {formatRole(user.role)}
-                    </TableCell>
-                    <TableCell align="center">
-                      {formatDate(user.createdAt)}
-                    </TableCell>
-                    <TableCell align="right">
-                      {myUser && myUser.user.role === 'Admin' ? (
-                        <Button
-                          onClick={() => handleOpenEditModal(user.id as id)}
-                        >
-                          <Edit />
-                        </Button>
-                      ) : (
-                        <Button disabled>
-                          <Edit />
-                        </Button>
-                      )}
-                    </TableCell>
+                    {!isLoading ? (
+                      <>
+                        <TableCell component="th" scope="row">
+                          {user.name}
+                        </TableCell>
+                        <TableCell align="center">{user.email}</TableCell>
+                        <TableCell align="center">{user.gender}</TableCell>
+                        <TableCell align="center">
+                          {convertToSimNao(user.isActive)}
+                        </TableCell>
+                        <TableCell align="center">
+                          {user.Reports.length}
+                        </TableCell>
+                        <TableCell align="center">
+                          {formatRole(user.role)}
+                        </TableCell>
+                        <TableCell align="center">
+                          {formatDate(user.createdAt)}
+                        </TableCell>
+                        <TableCell align="right">
+                          {myUser && myUser.user.role === 'Admin' ? (
+                            <Button
+                              onClick={() => handleOpenEditModal(user.id as id)}
+                            >
+                              <Edit />
+                            </Button>
+                          ) : (
+                            <Button disabled>
+                              <Edit />
+                            </Button>
+                          )}
+                        </TableCell>
+                      </>
+                    ) : (
+                      <TableCell colSpan={8}>
+                        <SkeletonTable />
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
             </TableBody>

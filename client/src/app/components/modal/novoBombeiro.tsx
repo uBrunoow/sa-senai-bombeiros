@@ -1,6 +1,7 @@
 import { Clear, Visibility, VisibilityOff } from '@mui/icons-material'
 import {
   Button,
+  CircularProgress,
   Divider,
   FormControl,
   FormControlLabel,
@@ -31,6 +32,7 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [role, setRole] = useState('')
+  const [buttonIsLoading, setButtonIsLoading] = useState(false)
 
   const {
     register,
@@ -49,6 +51,7 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
     }
 
     try {
+      setButtonIsLoading(true)
       const response = await registerUser(dataToSend)
 
       if (response?.status === 200) {
@@ -70,6 +73,8 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
     } catch (error) {
       console.error('Error during registration:', error)
       enqueueSnackbar('Erro de conexão', { variant: 'error' })
+    } finally {
+      setButtonIsLoading(false)
     }
   }
 
@@ -281,14 +286,24 @@ function NovoBombeiro({ handleClose }: NovoBombeiroProps) {
           >
             <Clear />
           </IconButton>
-          <Button
-            type="submit"
-            variant="contained"
-            color="error"
-            className="form-register-button"
-          >
-            <span>Avançar</span>
-          </Button>
+          {!buttonIsLoading ? (
+            <Button
+              type="submit"
+              variant="contained"
+              color="error"
+              className="form-register-button"
+            >
+              <span>Avançar</span>
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="error"
+              className="form-register-button"
+            >
+              <CircularProgress size={25} color="inherit" />
+            </Button>
+          )}
         </Stack>
       </form>
     </>
