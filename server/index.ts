@@ -2,6 +2,8 @@ import jwt from '@fastify/jwt'
 import fastify from 'fastify'
 import cors from '@fastify/cors'
 import bcrypt from 'fastify-bcrypt' // Importe o plugin aqui
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUI from '@fastify/swagger-ui'
 
 // Users
 import { userRegisterRoutes } from './src/routes/users/registerRoutes'
@@ -116,6 +118,29 @@ app.register(jwt, {
 
 app.register(bcrypt)
 
+app.register(fastifySwagger)
+
+app.register(fastifySwaggerUI, {
+  routePrefix: '/documentation',
+  uiConfig: {
+    docExpansion: 'full',
+    deepLinking: false,
+  },
+  uiHooks: {
+    onRequest: function (request, reply, next) {
+      next()
+    },
+    preHandler: function (request, reply, next) {
+      next()
+    },
+  },
+  staticCSP: true,
+  transformStaticCSP: (header) => header,
+  transformSpecification: (swaggerObject, request, reply) => {
+    return swaggerObject
+  },
+  transformSpecificationClone: true,
+})
 // USER
 app.register(userRegisterRoutes)
 app.register(userLoginRoutes)
