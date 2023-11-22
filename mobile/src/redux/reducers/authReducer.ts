@@ -31,12 +31,14 @@ const authReducer = (state = initialState, action: AuthAction): AuthState => {
         token: action.payload.token,
         userId: action.payload.userId,
         refreshToken: action.payload.refreshToken,
+
       }
 
     case 'LOGOUT':
       AsyncStorage.removeItem('authToken')
       AsyncStorage.removeItem('userId')
       AsyncStorage.removeItem('refreshToken')
+
 
       return {
         ...state,

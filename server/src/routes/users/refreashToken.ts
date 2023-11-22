@@ -30,8 +30,16 @@ export async function refreshRoutes(app: FastifyInstance) {
         },
       )
 
+      const currentDate = Date.now()
+      const expirationDate = currentDate + 2 * 60 * 1000
+      const expiresInMinutes = Math.floor(
+        (expirationDate - currentDate) / (60 * 1000),
+      )
+
       return res.send({
         token: newAccessToken,
+        expirationDate,
+        expiresInMinutes,
       })
     } catch (error) {
       console.error('Erro ao renovar o token:', error)

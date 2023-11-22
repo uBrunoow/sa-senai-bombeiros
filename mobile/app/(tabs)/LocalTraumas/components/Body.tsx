@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import bodyCoordinates from './../utils/bodyCoordinates.json'
+import bodyCoordinates from './../utils/bodyCoordinates'
 import findReports from '@src/api/reports/findReport'
 import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
@@ -10,43 +10,38 @@ type Coordinate = {
   y: number
 }
 
-type BodyPartCoordinates = {
-  tl: Coordinate
-  br: Coordinate
-}
-
-type BodyPart = {
-  coords: BodyPartCoordinates
-  side: 'Direito' | 'Esquerdo' | null
-  face: 'Frontal' | 'Traseiro'
-}
-
 type BodyProps = {
+  bodyPartValueHandler: Dispatch<SetStateAction<string | null>>
   bodyPartChangeHandler: Dispatch<SetStateAction<boolean>>
   setFace: Dispatch<SetStateAction<string | null>>
   setSide: Dispatch<SetStateAction<string | null>>
+  clickedBodyPartText: string
+  setClickedBodyPartText: Dispatch<SetStateAction<string>>
 }
 
-const castedBodyCoordinates = bodyCoordinates as Record<string, BodyPart>
+const castedBodyCoordinates = bodyCoordinates
 
 export default function Body({
+  bodyPartValueHandler,
   bodyPartChangeHandler,
   setFace,
   setSide,
+  clickedBodyPartText,
+  setClickedBodyPartText,
 }: BodyProps) {
-  const [clickedBodyPartText, setClickedBodyPartText] = useState(
-    'Nenhuma selecionada',
-  )
-
   function getClickBodyPlace(clickCoord: Coordinate) {
     for (const bodyPart in castedBodyCoordinates) {
-      const currPart = (castedBodyCoordinates as Record<string, BodyPart>)[
-        bodyPart
-      ]
+      const currPart = (
+        castedBodyCoordinates as Record<
+          string,
+          (typeof castedBodyCoordinates)[keyof typeof castedBodyCoordinates]
+        >
+      )[bodyPart]
 
       const currPartCoords = currPart.coords
       const currPartFace = currPart.face
       const currPartSide = currPart.side
+      const currPartValue = currPart.local
 
       if (
         ![
@@ -60,6 +55,7 @@ export default function Body({
 
         setFace(currPartFace)
         setSide(currPartSide)
+        bodyPartValueHandler(currPartValue)
 
         return {
           success: true,
@@ -70,6 +66,7 @@ export default function Body({
 
     setFace(null)
     setSide(null)
+    bodyPartValueHandler(null)
 
     return {
       success: false,
@@ -88,6 +85,8 @@ export default function Body({
     } else {
       setClickedBodyPartText(clickResult.payload)
     }
+
+    console.log(clickCoordinates)
   }
 
   const [isMaiorQueCincoAnos, setIsMaiorQueCincoAnos] = useState(false)

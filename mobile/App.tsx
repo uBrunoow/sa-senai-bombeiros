@@ -34,7 +34,6 @@ function AuthChecker({ children }: any) {
         if (token !== null && userId !== null) {
           console.log('Token found:', token)
           console.log('User id found:', userId)
-
           dispatch({
             type: 'SAVE_TOKEN',
             payload: { token, userId: Number(userId) },

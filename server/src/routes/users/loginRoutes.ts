@@ -37,6 +37,9 @@ export async function userLoginRoutes(
       return res.status(401).send({ msg: '🔴 Credenciais inválidas' })
     }
 
+    const currentDate = Date.now()
+    const expirationDate = currentDate + 2 * 60 * 1000
+
     // Realizar o JWT Token
     const token = app.jwt.sign(
       {
@@ -62,6 +65,7 @@ export async function userLoginRoutes(
     return res.send({
       token,
       refreshToken,
+      expirationDate,
       user: { id: user.id, email: user.email },
       login: { msg: '🟢 Usuário logado com sucesso.' },
     })

@@ -1,16 +1,27 @@
+import { ILocalTraumas } from '@src/interfaces/IReport'
 import { api } from '@src/lib/api'
 
 const registerLocalTrauma = async (
-  reportId: number,
+  ReportOwnerId: number,
   bodyPart?: string,
+  tipoTrauma?: string,
   side?: string,
   face?: string,
-) => {
+): Promise<{ localTraumas?: ILocalTraumas }> => {
   try {
+    console.log({
+      ReportOwnerId,
+      tipoTrauma,
+      bodyPart,
+      side,
+      face,
+    })
+
     const response = await api.post(
-      `/api/local-trauma`,
+      `/api/local-traumas`,
       {
-        reportId,
+        ReportOwnerId,
+        tipoTrauma,
         bodyPart,
         side,
         face,
@@ -29,7 +40,7 @@ const registerLocalTrauma = async (
     return response.data
   } catch (error) {
     console.error('Erro ao criar local traumas: ', error)
-    return []
+    return {}
   }
 }
 
