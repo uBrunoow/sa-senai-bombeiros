@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Checkbox } from 'native-base'
 import { setSuspectProblemsData } from '@src/redux/actions/dataActions'
 import findSuspectProblems from '@src/api/reports/suspectProblems/findSuspectProblems'
+import { formatCheckbox } from '@app/(tabs)/Introducao/utils/formatCheckbox'
 
 type CheckboxStates = {
   AEREO?: boolean
@@ -334,7 +335,9 @@ export default function AvalPacienteGroup() {
                   handleTransporteCheckboxChange(key as keyof CheckboxStates)
                 }
               >
-                <Text className="text-lg text-slate-800">{key}</Text>
+                <Text className="text-lg text-slate-800">
+                  {formatCheckbox(key)}
+                </Text>
               </Checkbox>
             ))}
           </View>
@@ -358,7 +361,9 @@ export default function AvalPacienteGroup() {
                   handleDiabetesCheckboxChange(key as keyof CheckboxStates)
                 }
               >
-                <Text className="text-lg text-slate-800">{key}</Text>
+                <Text className="text-lg text-slate-800">
+                  {formatCheckbox(key)}
+                </Text>
               </Checkbox>
             ))}
           </View>
@@ -382,7 +387,9 @@ export default function AvalPacienteGroup() {
                   handleObstericoCheckboxChange(key as keyof CheckboxStates)
                 }
               >
-                <Text className="text-lg text-slate-800">{key}</Text>
+                <Text className="text-lg text-slate-800">
+                  {formatCheckbox(key)}
+                </Text>
               </Checkbox>
             ))}
           </View>
@@ -409,7 +416,9 @@ export default function AvalPacienteGroup() {
                     )
                   }
                 >
-                  <Text className="text-lg text-slate-800">{key}</Text>
+                  <Text className="text-lg text-slate-800">
+                    {formatCheckbox(key)}
+                  </Text>
                 </Checkbox>
               ),
             )}
