@@ -1,92 +1,958 @@
 import { View, Text, Pressable } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import * as Print from 'expo-print'
 import * as Sharing from 'expo-sharing'
+import { RootState } from '@src/redux/stores/stores'
+import { useSelector } from 'react-redux'
+import { Asset } from 'expo-asset'
+import findReports from '@src/api/reports/findReport'
+import { IReport } from '@src/interfaces/IReport'
 
+interface DownloadedReport {
+  msg: string
+  report: IReport
+}
 const DownloadPdfModal = () => {
+  const reportId = useSelector((state: RootState) => state.report.reportId)
+  const logoImage = Asset.fromModule(
+    require('../../src/public/logo-pdf.png'),
+  ).uri
+  const logoMedicinaImage = Asset.fromModule(
+    require('../../src/public/logo-medicina.png'),
+  ).uri
+  const Multiply = Asset.fromModule(
+    require('../../src/public/Multiply.png'),
+  ).uri
+  const BodyImage = Asset.fromModule(
+    require('../../src/public/body-image.png'),
+  ).uri
+
+  const [reportsForDownload, setReportsForDownload] =
+    useState<DownloadedReport>({ report: {} })
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetchReportsForDownload = async () => {
+      try {
+        setLoading(true)
+        const response = await findReports(reportId)
+
+        setReportsForDownload(response)
+      } catch (error) {
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchReportsForDownload()
+  }, [reportId])
+
   const generatePDF = async () => {
     try {
       const htmlContent = `
-        <html>
-          <head>
-            <style>
-              body { font-family: Arial, sans-serif; }
-              
-              *{
-                padding:0;
-                margin:0;
-              }
-
-              .subtitle {
-                font-size: 12px;
-              }
-              .title {
-                font-size: 18px;
-              }
-              .sub-subtitle {
-                font-size: 15px;
-                color: #707070;
-                margin-top: -5px
-              }
-              .logo-img {
-                width: 50px;
-                height: 50px;
-              }
-              .header {
-                border-bottom: 1px solid black;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                flex-direction: row;
-                margin-bottom: 20px;
-              }
-              .flex {
-                display: flex;
-                align-items: center;
-                justify-content: start;
-                flex-direction: row;
-                gap: 15px;
-              }
-              .table-header {
-                background-color: #000;
-                color: #fff;
-                width: 100vw;
-                padding: 5px 15px;
-              }
-              .table {
-                border: 1px solid black;
-              }
-            </style>
-          </head>
-          <body>
-            <header class="header">
-              <div class="flex">
-                <img class="logo-img" src="" alt="Imagem de cabeçalho" />
-                <div>
-                  <h1 class="title">Bombeiros voluntários <span class="subtitle">Relatório de ocorrência</span></h1>
-                  <p class="sub-subtitle">Associação de Serviços Sociais Voluntários de Guaramirim</p>
-                </div>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <style>
+          body { 
+            font-family: Arial, sans-serif;
+            max-width: 1040px;
+            width: 100%;
+            margin: 0 auto;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust:exact !important;
+          }
+      
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+      
+          .subtitle {
+            font-size: 12px;
+          }
+          .title {
+            font-size: 15px;
+            margin-bottom: 5px;
+          }
+          .sub-subtitle {
+            font-size: 12px;
+            color: #707070;
+            margin-top: -5px
+          }
+          .logo-img {
+            width: 50px;
+            height: 50px; 
+          }
+          .logo-img-medicina {
+            width: 50px;
+            height: 50px; 
+          }
+          .header {
+            -moz-border-bottom: 1px solid rgba(0, 0, 0, 0.486);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.486);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: row;
+            padding: 15px;
+            margin-bottom: 10px;
+          }
+          .flex {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            flex-direction: row;
+            gap: 15px;
+          }
+          .table-header {
+            background: #000;
+            color: #fff;
+            width: 100%;
+            padding: 5px 15px;
+            font-weight: bold;
+          }
+          .table-subheader {
+            background: #fff;
+            color: #000;
+            width: 100%;
+            padding: 5px 15px;
+            font-weight: bold;
+            border-bottom: 1px solid black;
+          }
+          .table-header p {
+            font-size: 12px;
+          }
+          .table {
+            width: 100%;
+            border: 1px solid black;
+          }
+          .infos-gerais {
+            display: flex;
+            justify-content: start;
+            flex-wrap: wrap;
+            width: 100%;
+            gap: 5px;
+          }
+          .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+          }
+          .infos-gerais p {
+            color: var(--PRETO, #202020);
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 900;
+            line-height: normal; 
+          }
+          .info-paciente h1 {
+            color: var(--PRETO, #202020);
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 900;
+            line-height: normal; 
+          }
+          .info-paciente p {
+            color: var(--PRETO, #202020);
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal; 
+          }
+          .info-paciente span {
+            color: var(--PRETO, #202020);
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal; 
+          }
+          main {
+            padding: 10px;
+          }
+          .content-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px;
+          }
+          .content-info-anamneses {
+            display: flex;
+            padding: 17px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 37px;
+            border-top: 1px solid var(--PRETO, #202020);
+            background: var(--light-light-grey, #D9D9D9);
+          }
+          .logo-img-2 {
+            width: 100px;
+            height: 100px;
+          }
+          .reports {
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--PRETO, #202020);
+            background: var(--WHITE, #FFF); 
+            padding: 5px;
+          }
+          .reports p {
+            color: var(--PRETO, #202020);
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 900;
+            line-height: normal;
+            width: 100%;
+          }
+          .container {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            width: 100%;
+            gap: 20px;
+            margin-top: 20px;
+          }
+          .container  section {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+          }
+          .height {
+            height: 100%;
+            align-items: start !important;
+          }
+          .suspectProblems {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+          }
+          .subtext {
+            color: var(--PRETO, #202020);
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: normal;
+          }
+          .problems {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          }
+          table, th, td {
+            border:1px solid black;
+            border-collapse: collapse;
+          }
+          th {
+            background: var(--light-light-grey, #D9D9D9); 
+            font-size: 12px;
+            text-align: left;
+            padding-left: 10px;
+          }
+          td {
+            font-size: 14px;
+          }
+          .glasgow-table {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 5px;
+          }
+          .glasgow-value {
+            border: 1px solid #000;
+            background: var(--WHITE, #FFF); 
+            padding: 5px 7px;
+            font-weight: bold;
+          }
+          .table-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 20px;
+          }
+      
+          .page {
+            min-height:1000px;
+          }
+      
+          .radioType {
+            background-color: black;
+            border-radius: 50%;
+            height: 15px;
+            width: 15px;
+          }
+      
+          .cinematic {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 5px;
+          }
+      
+          .image-body {
+            width: 138px;
+            height: 310px;
+          }
+      
+          .local-trauma {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
+          }
+      
+          .queimaduras th{
+            background: #000 !important;
+            color: #fff;
+            padding: 0;
+          }
+      
+          .queimaduras td {
+            width: 50px;
+          }
+      
+          .infos-anamnese {
+            display: flex;
+            padding: 10px;
+            align-items: center; 
+            background: #fff;
+            font-size: 12px;
+          }
+      
+          .divider-anamnese {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            border-bottom: 1px dashed rgba(29, 29, 29, 0.664);
+          }
+      
+          @media print {
+      
+            * {
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+      
+            th, td {
+              border:1px solid black !important;
+              border-collapse: collapse !important;
+            }
+      
+            th {
+              width: 38%;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="page">
+          <header class="header">
+            <div class="flex">
+            <img class="logo-img" src="${logoImage}" alt="Imagem" />
+              <div>
+                <h1 class="title">Bombeiros voluntários <span class="subtitle">Relatório de ocorrência</span></h1>
+                <p class="sub-subtitle">Associação de Serviços Sociais Voluntários de Guaramirim</p>
               </div>
-              <img class="logo-img" src="" alt="Imagem secundária de cabeçalho" />
-            </header>
-
-            <main>
-              <div class="table"> 
-                <div class="table-header">
-                  <p>Informações básicas</p>
-                </div>
-                <div>
+            </div>
+            <img class="logo-img-medicina" src="${logoMedicinaImage}" alt="Medicina Imagem" />
+          </header>
+        
+          <main>
+            <div class="table"> 
+              <div class="table-header">
+                <p>Informações básicas</p>
+              </div>
+              <div class="content-info">
+                <div class="info-paciente">
                   <h1>Dados do relatório</h1>
-                  <p>Nome:</p>
-                  <p>Idade:</p>
-                  <p>Sexo:</p>
-                  <p>Data:</p>
+                  <p>Nome: <span>${reportsForDownload.report.name}</span></p>
+                  <p>Idade: <span>${reportsForDownload.report.age}</span></p>
+                  <p>Sexo: <span>${reportsForDownload.report.gender}</span></p>
+                  <p>Data: <span>${reportsForDownload.report.reportDate}</span></p>
                 </div>
+                <img class="logo-img-2" src="${logoImage}" alt="logo img grande">
               </div>
-            </main>
-          </body>
-        </html>
+            </div>
+            <div class="container">
+              <section>
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Tipo de ocorrência  (pré-hospitalar)</p>
+                  </div>
+                  <div class="content-info height">
+                    <div class="infos-gerais">
+                      <div class="reports">
+                        <p>Afogamento</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Problemas Encontrados Suspeitos</p>
+                  </div>
+                  <div class="content-info height">
+                    <div class="infos-gerais">
+                      <div class="reports suspectProblems">
+                        <p>Psiquiatrico</p>
+                        <i class='bx bx-check'></i>
+                      </div>
+                      <div class="reports problems ">
+                        <div class="suspectProblems">
+                          <p>Diabetes</p>
+                          <i class='bx bx-check'></i>
+                        </div>
+                        <span class="subtext">Hipoglicemia</span>
+                      </div>
+                      <div class="reports problems ">
+                        <div class="suspectProblems">
+                          <p>Diabetes</p>
+                          <i class='bx bx-check'></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Sinais e Sintomas</p>
+                  </div>
+                  <div class="content-info height">
+                    <div class="infos-gerais">
+                      <div class="reports suspectProblems">
+                        <p>Abdomen Rígido ou sensivel</p>
+                      </div>
+                      <div class="reports problems ">
+                        <p>Amnésia</p>
+                      </div>
+                      <div class="reports problems ">
+                        <p>Afundamento de Crânio</p>
+                      </div>
+                      <div class="reports problems ">
+                        <p>Náuseas e Vômitos</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Avaliação do paciente (Glasgow)  </p>
+                  </div>
+                  <div class="content-info height" style="padding: 0;">
+                    <div class="infos-gerais">
+                      <table style="width:100%">
+                        <tr>
+                          <th>Abertura Ocular</th>
+                          <td>
+                            <div class="glasgow-table">
+                              Espontânea
+                              <div class="glasgow-value">
+                                4
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>Abertura Verbal</th>
+                          <td>
+                            <div class="glasgow-table">
+                              Orientado
+                              <div class="glasgow-value">
+                                4
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>Abertura Ocular</th>
+                          <td>
+                            <div class="glasgow-table">
+                              Nenhum
+                              <div class="glasgow-value">
+                                4
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>
+                            <div>
+                              Total 
+                              <span>gcs(3-15)</span>
+                            </div>
+                          </th>
+                          <td>
+                            <div class="glasgow-table">
+                              Nenhum
+                              <div class="glasgow-value">
+                                4
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+        
+                <div class="table-wrapper">
+                  <div class="table"> 
+                    <div class="table-header">
+                      <p>Vítima Era</p>
+                    </div>
+                    <div class="content-info height">
+                      <div class="infos-gerais">
+                        <p>Pedestre</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="table"> 
+                    <div class="table-header">
+                      <p>Forma de Condução</p>
+                    </div>
+                    <div class="content-info height">
+                      <div class="infos-gerais">
+                        <p>Semi-sentada</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Decisão Transporte</p>
+                  </div>
+                  <div class="content-info height">
+                    <div class="infos-gerais">
+                      <i class='bx bxs-happy'></i>
+                      <p>Estável</p>
+                    </div>
+                  </div>
+                </div>
+        
+              </section>
+              <section>
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Localização dos traumas</p>
+                  </div>
+                  <div class="content-info">
+                    <div class="infos-gerais">
+                      <div class="local-trauma">
+                        <img class="image-body" src="${BodyImage}" alt="">
+                        <img src="${Multiply}" alt="" style="width: 50px; height: 50px;">
+                        <img class="image-body" src="${BodyImage}" alt="">
+                      </div>
+                      <div class="reports">
+                        <p>Esviceração</p>
+                      </div>
+                      <div class="reports">
+                        <p>Esviceração</p>
+                      </div>
+                      <div class="reports">
+                        <p>Esviceração</p>
+                      </div>
+                      <div class="reports">
+                        <p>Esviceração</p>
+                      </div>
+                      <div class="reports">
+                        <p>Esviceração</p>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+      
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Ferimento/ Fraturas/ Entorses/ Luxação/ Contusão  </p>
+                  </div>
+                  <div class="content-info height" style="padding: 0;">
+                    <div class="infos-gerais">
+                      <table style="width:100%">
+                        <tr>
+                          <th>Local</th>
+                          <th>Lado</th>
+                          <th>Face</th>
+                          <th>Tipo</th>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>1</td>
+                          <td>1</td>
+                          <td>1</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="table"> 
+                  <div class="content-info height" style="padding: 0;">
+                    <div class="infos-gerais">
+                      <table style="width:100%">
+                        <tr class="queimaduras">
+                          <th style="width: 50px;">QUEIMD.</th>
+                          <th>CABEÇA</th>
+                          <th>PESCOÇO</th>
+                          <th>T.ANT</th>
+                          <th>T.POS</th>
+                        </tr>
+                        <tr  class="queimaduras">
+                          <td>1° grau</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr  class="queimaduras">
+                          <td>2° grau</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr  class="queimaduras">
+                          <td>3° grau</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr  class="queimaduras">
+                          <th>GENIT.</th>
+                          <th>M.I.D</th>
+                          <th>M.I.E</th>
+                          <th>M.S.D</th>
+                          <th>M.S.E</th>
+                        </tr>
+                        <tr  class="queimaduras">
+                          <td>1° grau</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr  class="queimaduras">
+                          <td>2° grau</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr  class="queimaduras">
+                          <td>3° grau</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </main>
+        </div>
+      
+        <div class="page">
+          <main>
+            <div class="container">
+              <section>
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Sinais vitais</p>
+                  </div>
+                  <div class="content-info height" style="padding: 0;">
+                    <div class="infos-gerais">
+                      <table style="width:100%">
+                        <tr>
+                          <th>Pressão arterial</th>
+                          <td>
+                            <div class="glasgow-table">
+                              2 mmHg
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>Pulso</th>
+                          <td>
+                            <div class="glasgow-table">
+                              90 B.C.P.M
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>Saturação</th>
+                          <td>
+                            <div class="glasgow-table">
+                              100%
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>
+                            Temperatura
+                          </th>
+                          <td>
+                            <div class="glasgow-table">
+                              36.5°C
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>
+                            Perfusão
+                          </th>
+                          <td>
+                            <div class="glasgow-table">
+                              > 2 seg
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>
+                            Respiração
+                          </th>
+                          <td>
+                            <div class="glasgow-table">
+                              ??? M.R.M
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Procedimentos Efetuados</p>
+                  </div>
+                  <div class="content-info height">
+                    <div class="infos-gerais">
+                      <div class="reports suspectProblems">
+                        <p>Aspiração</p>
+                      </div>
+                      <div class="reports problems ">
+                        <p>Cânula de Guedel</p>
+                      </div>
+                      <div class="reports problems ">
+                        <p>Avaliação Inicial</p>
+                      </div>
+                      <div class="reports problems ">
+                        <p>Desobstrução de V.A</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Materiais Utilizados Deixado no Hospital</p>
+                  </div>
+                  <div class="content-info height" style="padding: 0;">
+                    <div class="infos-gerais">
+                      <table style="width:100%">
+                        <tr>
+                          <th>Material</th>
+                          <th>Quant</th>
+                          <th>Material</th>
+                          <th>Quant</th>
+                        </tr>
+                        <tr>
+                          <td>Ataduras (12)</td>
+                          <td>1000x</td>
+                          <td>Manta Aluminizada</td>
+                          <td>1x</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Observações Importantes</p>
+                  </div>
+                  <div class="content-info height">
+                    <div class="infos-gerais">
+                      <div class="reports suspectProblems">
+                        <p>Vítima pode conter possível envolvimento com trafico de drogas, provas incriminadoras foram encontradas próximas ao local, indicamos acompanhamento policial para o paciente. </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              
+              <section>
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Objetos recolhidos</p>
+                  </div>
+                  <div class="content-info height">
+                    <div class="infos-gerais">
+                      <div class="reports suspectProblems">
+                        <p>Tesoura, Arma de Fogo, Celular, Carteira, Faca, Vassoura, Esfera, Faca, Teclado, Piano, Bicicleta, Pandeiro, garrafa plástica.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Procedimentos Efetuados</p>
+                  </div>
+                  <div class="content-info height">
+                    <div class="infos-gerais">
+                      <div class="reports suspectProblems">
+                        <p>Aspiração</p>
+                      </div>
+                      <div class="reports problems ">
+                        <p>Cânula de Guedel</p>
+                      </div>
+                      <div class="reports problems ">
+                        <p>Avaliação Inicial</p>
+                      </div>
+                      <div class="reports problems ">
+                        <p>Desobstrução de V.A</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Materiais Utilizados Deixado no Hospital</p>
+                  </div>
+                  <div class="content-info height" style="padding: 0;">
+                    <div class="infos-gerais">
+                      <table style="width:100%">
+                        <tr>
+                          <th>Material</th>
+                          <th>Quant</th>
+                          <th>Material</th>
+                          <th>Quant</th>
+                        </tr>
+                        <tr>
+                          <td>Ataduras (12)</td>
+                          <td>1000x</td>
+                          <td>Manta Aluminizada</td>
+                          <td>1x</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Avaliação de cinemática</p>
+                  </div>
+                  <div class="content-info height">
+                    <div class="infos-gerais grid">
+                      <div class="reports cinematic">
+                        <div class="radioType"></div>
+                        <p>Volante Torcido</p>
+                      </div>
+                      <div class="reports cinematic ">
+                        <div class="radioType"></div>
+                        <p>Encontrado de Capacete</p>
+                      </div>
+                      <div class="reports cinematic ">
+                        <div class="radioType"></div>
+                        <p>Para-brisas Avariado</p>
+                      </div>
+                      <div class="reports cinematic ">
+                        <div class="radioType"></div>
+                        <p>Encontrado de Cinto</p>
+                      </div>
+                      <div class="reports cinematic ">
+                        <div class="radioType"></div>
+                        <p>Distúrbio de Comportamento</p>
+                      </div>
+                      <div class="reports cinematic ">
+                        <div class="radioType"></div>
+                        <p>Painel Avariado</p>
+                      </div>
+                      <div class="reports cinematic ">
+                        <div class="radioType"></div>
+                        <p>Caminhando na Cena</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </main>
+        </div>
+      
+        <div class="page">
+          <main>
+            <div class="container">
+              <section>
+                <div class="table"> 
+                  <div class="table-header">
+                    <p>Anamnese de Emergência Médica</p>
+                  </div>
+                  <div class="table-subheader">
+                    <p>O Que Aconteceu? (Sinais e Sintomas)</p>
+                  </div>
+                  <div class="content-info-anamneses height">
+                    <div class="infos-anamnese">
+                      O caba tava morrenu quando o chegamos, provavelmente era uma virose ou algo do tipo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae tincidunt urna, maecenas leo lorem, dapibus tempus purus id. Ele foi encontrado agonizando em sua residência.
+                    </div>
+                    <div class="divider-anamnese">
+                      <div class="infos-anamnese">Já aconteceu outras vezes?</div>
+                      <div class="infos-anamnese">SIM</div>
+                    </div>
+                    <div class="divider-anamnese">
+                      <div class="infos-anamnese">A quanto tempo isso aconteceu?:</div>
+                      <div class="infos-anamnese">5 anos atrás</div>
+                    </div>
+                    <div class="divider-anamnese">
+                      <div class="infos-anamnese">Possuí algum problema de saúde?</div>
+                      <div class="infos-anamnese">Vitma é asmática</div>
+                    </div>
+                    <div class="divider-anamnese">
+                      <div class="infos-anamnese">Faz uso de medicação?</div>
+                      <div class="infos-anamnese">SIM | paracetamol</div>
+                      <div class="infos-anamnese">Última medicação</div>
+                      <div class="infos-anamnese">15:30</div>
+                    </div>
+                    <div class="divider-anamnese">
+                      <div class="infos-anamnese">Alguma alergia?:</div>
+                      <div class="infos-anamnese">SIM | Pelo de Macaco</div>
+                      <div class="infos-anamnese">Ingeriu Algum Liquido?:</div>
+                      <div class="infos-anamnese">SIM | 14:35</div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </main>
+        </div>
+      </body>
+      </html>
       `
 
       const { uri } = await Print.printToFileAsync({ html: htmlContent })
@@ -104,7 +970,7 @@ const DownloadPdfModal = () => {
       try {
         await Sharing.shareAsync(generatedPdfUri, {
           mimeType: 'application/pdf',
-          dialogTitle: 'Download PDF',
+          dialogTitle: `Ocorrência n° ${reportId} PDF`,
         })
         console.log('Download concluído com sucesso!')
       } catch (error) {
@@ -119,25 +985,19 @@ const DownloadPdfModal = () => {
         <AntDesign name="download" size={50} color="black" />
       </View>
       <Text className="mt-3 text-center text-[20px] font-bold">
-        Você está finalizando sua ocorrência. Deseja fazer download dela ou
-        apenas salvar?
+        Você está finalizando sua ocorrência. Deseja fazer download dela?
       </Text>
       <Text className=" mt-3 text-center text-[#979797b0]">
-        (Caso clique em DOWNLOAD irá gerar um pdf, caso clique em SALVAR os
-        dados da report serão salvos)
+        (Caso clique em DOWNLOAD irá gerar um pdf contendo todos os dados
+        inseridos no aplicativo.)
       </Text>
       <View className="w-full flex-row">
-        <Pressable className="ml-[-4px] mt-10 w-5/6 items-center justify-center rounded-[7px] bg-[#F23030] p-3">
-          <Text className="text-[18px] font-bold uppercase text-white">
-            SALVAR
-          </Text>
-        </Pressable>
         <Pressable
-          className="mx-2 mt-10 items-center justify-center rounded-[7px] border-2 border-[#F23030] bg-[#fff] p-3"
+          className="mt-10 w-full items-center justify-center rounded-[7px] bg-[#F23030] p-3"
           onPress={handleDownloadPDF}
         >
           <Text className="text-[18px] font-bold uppercase text-white">
-            <AntDesign name="download" size={28} color="#F23030" />
+            <AntDesign name="download" size={28} color="#fff" />
           </Text>
         </Pressable>
       </View>
