@@ -69,6 +69,10 @@ function EditBombeiro({ handleClose, userId }: EditBombeiroProps) {
   const { enqueueSnackbar } = useSnackbar()
 
   const onSubmit: SubmitHandler<IUser> = async (userData) => {
+    if (!role) {
+      userData.role = 'semCargo'
+    }
+
     const dataToSend = {
       ...userData,
       gender,

@@ -362,4 +362,5 @@ enum Roles {
   Major
   TenenteCoronel
   Admin
+  semCargo
 }

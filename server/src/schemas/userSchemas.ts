@@ -25,6 +25,7 @@ export const updateSchema = z.object({
       'Major',
       'TenenteCoronel',
       'Admin',
+      'semCargo',
     ])
     .optional(),
   isActive: z.boolean().optional(),
@@ -47,6 +48,7 @@ export const registerSchema = z.object({
     'Major',
     'TenenteCoronel',
     'Admin',
+    'semCargo',
   ]),
   isActive: z.boolean(),
   password: z.string(),

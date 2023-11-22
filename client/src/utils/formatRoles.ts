@@ -12,6 +12,8 @@ export const formatRole = (role: string) => {
       return 'Tenente Coronel'
     case 'Admin':
       return 'Admin'
+    case 'semCargo':
+      return 'Sem Cargo'
     default:
       return role
   }

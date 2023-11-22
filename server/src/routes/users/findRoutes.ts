@@ -10,7 +10,11 @@ export async function userFindRoutes(
   app.get('/api/users', async (req, res) => {
     const allUsers = await prisma.user.findMany({
       include: {
-        Reports: {},
+        Reports: {
+          select: {
+            createdAt: true,
+          },
+        },
       },
     })
     return res.send({

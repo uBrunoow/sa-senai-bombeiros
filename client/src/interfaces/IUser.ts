@@ -15,6 +15,7 @@ interface IUser extends IBase {
     | 'Major'
     | 'TenenteCoronel'
     | 'Admin'
+    | 'semCargo'
   Reports: any[]
 }
 
