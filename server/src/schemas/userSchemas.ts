@@ -17,6 +17,17 @@ export const updateSchema = z.object({
   password: z.string().optional(),
   name: z.string().optional(),
   gender: z.string().optional(),
+  role: z
+    .enum([
+      'segundoTenente',
+      'primeiroTenente',
+      'Capitao',
+      'Major',
+      'TenenteCoronel',
+      'Admin',
+      'semCargo',
+    ])
+    .optional(),
   isActive: z.boolean().optional(),
 })
 
@@ -30,6 +41,15 @@ export const registerSchema = z.object({
     .email(),
   name: z.string(),
   gender: z.string(),
+  role: z.enum([
+    'segundoTenente',
+    'primeiroTenente',
+    'Capitao',
+    'Major',
+    'TenenteCoronel',
+    'Admin',
+    'semCargo',
+  ]),
   isActive: z.boolean(),
   password: z.string(),
   confirmPassword: z.string(),

@@ -22,6 +22,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react": "~18.0.27",
     "axios": "^1.4.0",
+    "base-64": "^1.0.0",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.7",
     "expo": "~48.0.15",
