@@ -26,7 +26,6 @@ import {
 
 type RootStackParamList = {
   home: undefined
-  // ... outras telas
 }
 
 export default function Header() {

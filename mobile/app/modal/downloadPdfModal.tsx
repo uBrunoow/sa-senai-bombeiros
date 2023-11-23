@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import * as Print from 'expo-print'
@@ -981,26 +981,41 @@ const DownloadPdfModal = () => {
 
   return (
     <View className="w-[320px]">
-      <View className="mx-auto">
-        <AntDesign name="download" size={50} color="black" />
-      </View>
-      <Text className="mt-3 text-center text-[20px] font-bold">
-        Você está finalizando sua ocorrência. Deseja fazer download dela?
-      </Text>
-      <Text className=" mt-3 text-center text-[#979797b0]">
-        (Caso clique em DOWNLOAD irá gerar um pdf contendo todos os dados
-        inseridos no aplicativo.)
-      </Text>
-      <View className="w-full flex-row">
-        <Pressable
-          className="mt-10 w-full items-center justify-center rounded-[7px] bg-[#F23030] p-3"
-          onPress={handleDownloadPDF}
-        >
-          <Text className="text-[18px] font-bold uppercase text-white">
-            <AntDesign name="download" size={28} color="#fff" />
+      {loading ? (
+        <View className="mx-auto h-[120px] w-[320px] items-center justify-center">
+          <ActivityIndicator size="large" color="#ff0000" />
+          <Text className="mt-3 text-center text-lg font-bold uppercase">
+            Carregando...
           </Text>
-        </Pressable>
-      </View>
+          <Text className=" mt-3 text-center text-[#979797b0]">
+            (Coletando todas as informações inseridas anteriormente na
+            ocorrência.)
+          </Text>
+        </View>
+      ) : (
+        <>
+          <View className="mx-auto">
+            <AntDesign name="download" size={50} color="black" />
+          </View>
+          <Text className="mt-3 text-center text-[20px] font-bold">
+            Você está finalizando sua ocorrência. Deseja fazer download dela?
+          </Text>
+          <Text className=" mt-3 text-center text-[#979797b0]">
+            (Caso clique em DOWNLOAD irá gerar um pdf contendo todos os dados
+            inseridos no aplicativo.)
+          </Text>
+          <View className="w-full flex-row">
+            <Pressable
+              className="mt-10 w-full items-center justify-center rounded-[7px] bg-[#F23030] p-3"
+              onPress={handleDownloadPDF}
+            >
+              <Text className="text-[18px] font-bold uppercase text-white">
+                <AntDesign name="download" size={28} color="#fff" />
+              </Text>
+            </Pressable>
+          </View>
+        </>
+      )}
     </View>
   )
 }
