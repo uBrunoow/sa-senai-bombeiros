@@ -14,6 +14,9 @@ import {
   getRespostaMotoraGlasgowText,
   getRespostaVerbalGlasgowText,
 } from '@src/utils/getGlasgowText'
+import { getTransportationIcon } from '@src/utils/getTransportationIcon'
+import { formatAnyValue } from '@src/utils/formatAnyValue'
+import { verifyCinematicAvaliation } from '@src/utils/verifyCinematicAvaliation'
 
 interface DownloadedReport {
   msg: string
@@ -65,7 +68,13 @@ const DownloadPdfModal = () => {
     return eyeOpening + verbalResponse + motorResponse
   }
 
+  console.log(JSON.stringify(reportsForDownload.report, null, 2))
+
   const generatePDF = async () => {
+    const transportationIcon = getTransportationIcon(
+      reportsForDownload.report.Finalization[0]?.transportation,
+    )
+
     try {
       const htmlContent = `
       <html lang="en">
@@ -317,7 +326,13 @@ const DownloadPdfModal = () => {
             height: 15px;
             width: 15px;
           }
-      
+          .noRadio {
+            background-color: black;
+            border-radius: 50%;
+            height: 15px;
+            width: 15px;
+            border: 1px solid black;
+          }
           .cinematic {
             display: flex;
             align-items: center;
@@ -325,7 +340,9 @@ const DownloadPdfModal = () => {
             gap: 8px;
             padding: 5px;
           }
-      
+          .cinematic p {
+            width: 70%;
+          }
           .image-body {
             width: 138px;
             height: 310px;
@@ -403,11 +420,17 @@ const DownloadPdfModal = () => {
               <div class="content-info">
                 <div class="info-paciente">
                   <h1>Dados do relatório</h1>
-                  <p>Nome: <span>${reportsForDownload.report.name}</span></p>
-                  <p>Idade: <span>${reportsForDownload.report.age}</span></p>
-                  <p>Sexo: <span>${reportsForDownload.report.gender}</span></p>
-                  <p>Data: <span>${formatDate(
-                    reportsForDownload.report.reportDate,
+                  <p>Nome: <span>${formatAnyValue(
+                    reportsForDownload.report.name,
+                  )}</span></p>
+                  <p>Idade: <span>${formatAnyValue(
+                    reportsForDownload.report.age,
+                  )}</span></p>
+                  <p>Sexo: <span>${formatAnyValue(
+                    reportsForDownload.report.gender,
+                  )}</span></p>
+                  <p>Data: <span>${formatAnyValue(
+                    formatDate(reportsForDownload.report.reportDate),
                   )}</span></p>
                 </div>
                 <img class="logo-img-2" src="${logoImage}" alt="logo img grande">
@@ -427,7 +450,7 @@ const DownloadPdfModal = () => {
                           .map(
                             (description, index) => `
                         <div class="reports" key="${method.id}-${index}">
-                          <p>${description}</p>
+                          <p>${formatAnyValue(description)}</p>
                         </div>
                       `,
                           )
@@ -461,7 +484,9 @@ const DownloadPdfModal = () => {
                               ${suspectProblems.problemaSuspeitoTransporte
                                 .map(
                                   (transporte, subIndex) => `
-                                    <span class="subtext" key=${subIndex}>${transporte}</span>
+                                    <span class="subtext" key=${subIndex}>${formatAnyValue(
+                                    transporte,
+                                  )}</span>
                                   `,
                                 )
                                 .join('')}
@@ -485,7 +510,9 @@ const DownloadPdfModal = () => {
                               ${suspectProblems.problemaSuspeitoDiabetes
                                 .map(
                                   (diabetes, subIndex) => `
-                                    <span class="subtext" key=${subIndex}>${diabetes}</span>
+                                    <span class="subtext" key=${subIndex}>${formatAnyValue(
+                                    diabetes,
+                                  )}</span>
                                   `,
                                 )
                                 .join('')}
@@ -511,7 +538,9 @@ const DownloadPdfModal = () => {
                               ${suspectProblems.problemaSuspeitoObstetrico
                                 .map(
                                   (obstetrico, subIndex) => `
-                                    <span class="subtext" key=${subIndex}>${obstetrico}</span>
+                                    <span class="subtext" key=${subIndex}>${formatAnyValue(
+                                    obstetrico,
+                                  )}</span>
                                   `,
                                 )
                                 .join('')}
@@ -537,7 +566,9 @@ const DownloadPdfModal = () => {
                               ${suspectProblems.problemaSuspeitoRespiratorio
                                 .map(
                                   (respiratorio, subIndex) => `
-                                    <span class="subtext" key=${subIndex}>${respiratorio}</span>
+                                    <span class="subtext" key=${subIndex}>${formatAnyValue(
+                                    respiratorio,
+                                  )}</span>
                                   `,
                                 )
                                 .join('')}
@@ -572,7 +603,9 @@ const DownloadPdfModal = () => {
                             <p>Outro</p>
                             <i class='bx bx-check'></i>
                             <div class="wrapper-subtext">
-                              <span class="subtext" >${suspectProblems.Another}</span>
+                              <span class="subtext" >${formatAnyValue(
+                                suspectProblems.Another,
+                              )}</span>
                             </div>
                           </div>
                           `
@@ -595,8 +628,10 @@ const DownloadPdfModal = () => {
                       symptom.symptomsDescription
                         .map(
                           (description, index) => `
-                        <div class="reports suspectProblems" key="${symptom.id}-${index}">
-                          <p>${description}</p>
+                        <div class="reports suspectProblems" key="${
+                          symptom.id
+                        }-${index}">
+                          <p>${formatAnyValue(description)}</p>
                         </div>
                       `,
                         )
@@ -617,15 +652,17 @@ const DownloadPdfModal = () => {
                           <th>Abertura Ocular</th>
                           <td>
                             <div class="glasgow-table">
-                              ${getAberturaOcularGlasgowText(
-                                reportsForDownload.report.Glasglow[0]
-                                  .eyeOpeningOwnerId,
+                              ${formatAnyValue(
+                                getAberturaOcularGlasgowText(
+                                  reportsForDownload.report.Glasglow[0]
+                                    .eyeOpeningOwnerId,
+                                ),
                               )}
                               <div class="glasgow-value">
-                                ${
+                                ${formatAnyValue(
                                   reportsForDownload.report.Glasglow[0]
-                                    .eyeOpeningOwnerId
-                                }
+                                    .eyeOpeningOwnerId,
+                                )}
                               </div>
                             </div>
                           </td>
@@ -634,15 +671,17 @@ const DownloadPdfModal = () => {
                           <th>Resposta Verbal</th>
                           <td>
                             <div class="glasgow-table">
-                            ${getRespostaVerbalGlasgowText(
-                              reportsForDownload.report.Glasglow[0]
-                                .verbalResponseOwnerId,
+                            ${formatAnyValue(
+                              getRespostaVerbalGlasgowText(
+                                reportsForDownload.report.Glasglow[0]
+                                  .verbalResponseOwnerId,
+                              ),
                             )}
                             <div class="glasgow-value">
-                              ${
+                              ${formatAnyValue(
                                 reportsForDownload.report.Glasglow[0]
-                                  .verbalResponseOwnerId
-                              }
+                                  .verbalResponseOwnerId,
+                              )}
                             </div>
                           </td>
                         </tr>
@@ -650,15 +689,17 @@ const DownloadPdfModal = () => {
                           <th>Resposta Motora</th>
                           <td>
                             <div class="glasgow-table">
-                            ${getRespostaMotoraGlasgowText(
-                              reportsForDownload.report.Glasglow[0]
-                                .motorResponseOwnerId,
+                            ${formatAnyValue(
+                              getRespostaMotoraGlasgowText(
+                                reportsForDownload.report.Glasglow[0]
+                                  .motorResponseOwnerId,
+                              ),
                             )}
                             <div class="glasgow-value">
-                              ${
+                              ${formatAnyValue(
                                 reportsForDownload.report.Glasglow[0]
-                                  .motorResponseOwnerId
-                              }
+                                  .motorResponseOwnerId,
+                              )}
                             </div>
                           </td>
                         </tr>
@@ -673,7 +714,7 @@ const DownloadPdfModal = () => {
                             <div class="glasgow-table">
                               ----------------------
                               <div class="glasgow-value">
-                                ${calculateGlasgowTotal()}
+                                ${formatAnyValue(calculateGlasgowTotal())}
                               </div>
                             </div>
                           </td>
@@ -712,8 +753,11 @@ const DownloadPdfModal = () => {
                   </div>
                   <div class="content-info height">
                     <div class="infos-gerais">
-                      <i class='bx bxs-happy'></i>
-                      <p>Estável</p>
+                      ${formatAnyValue(transportationIcon)}
+                      <p>${formatAnyValue(
+                        reportsForDownload.report.Finalization[0]
+                          ?.transportation,
+                      )}</p>
                     </div>
                   </div>
                 </div>
@@ -859,13 +903,14 @@ const DownloadPdfModal = () => {
                           <th>Pressão arterial</th>
                           <td>
                             <div class="glasgow-table">
-                              ${
-                                reportsForDownload.report.systolicBloodPressure
-                              } 
+                              ${formatAnyValue(
+                                reportsForDownload.report.systolicBloodPressure,
+                              )} 
                               X 
-                              ${
-                                reportsForDownload.report.diastolicBloodPressure
-                              }
+                              ${formatAnyValue(
+                                reportsForDownload.report
+                                  .diastolicBloodPressure,
+                              )}
                               mmHg
                             </div>
                           </td>
@@ -874,7 +919,9 @@ const DownloadPdfModal = () => {
                           <th>Pulso</th>
                           <td>
                             <div class="glasgow-table">
-                            ${reportsForDownload.report.bodyPulse} B.C.P.M
+                            ${formatAnyValue(
+                              reportsForDownload.report.bodyPulse,
+                            )} B.C.P.M
                             </div>
                           </td>
                         </tr>
@@ -882,7 +929,9 @@ const DownloadPdfModal = () => {
                           <th>Saturação</th>
                           <td>
                             <div class="glasgow-table">
-                            ${reportsForDownload.report.saturation}%
+                            ${formatAnyValue(
+                              reportsForDownload.report.saturation,
+                            )}%
                             </div>
                           </td>
                         </tr>
@@ -892,7 +941,9 @@ const DownloadPdfModal = () => {
                           </th>
                           <td>
                             <div class="glasgow-table">
-                            ${reportsForDownload.report.bodyTemp}°C
+                            ${formatAnyValue(
+                              reportsForDownload.report.bodyTemp,
+                            )}°C
                             </div>
                           </td>
                         </tr>
@@ -902,7 +953,9 @@ const DownloadPdfModal = () => {
                           </th>
                           <td>
                             <div class="glasgow-table">
-                            ${reportsForDownload.report.perfusion}
+                            ${formatAnyValue(
+                              reportsForDownload.report.perfusion,
+                            )}
                             </div>
                           </td>
                         </tr>
@@ -912,7 +965,9 @@ const DownloadPdfModal = () => {
                           </th>
                           <td>
                             <div class="glasgow-table">
-                            ${reportsForDownload.report.breathing} M.R.M
+                            ${formatAnyValue(
+                              reportsForDownload.report.breathing,
+                            )} M.R.M
                             </div>
                           </td>
                         </tr>
@@ -974,9 +1029,10 @@ const DownloadPdfModal = () => {
                   <div class="content-info height">
                     <div class="infos-gerais">
                       <div class="reports suspectProblems">
-                        <p>${
-                          reportsForDownload.report.Finalization[0].finalRemarks
-                        }</p>
+                        <p>${formatAnyValue(
+                          reportsForDownload.report.Finalization[0]
+                            .finalRemarks,
+                        )}</p>
                       </div>
                     </div>
                   </div>
@@ -991,10 +1047,10 @@ const DownloadPdfModal = () => {
                   <div class="content-info height">
                     <div class="infos-gerais">
                       <div class="reports suspectProblems">
-                        <p>${
+                        <p>${formatAnyValue(
                           reportsForDownload.report.Finalization[0]
-                            .CollectedObjects
-                        }</p>
+                            .CollectedObjects,
+                        )}</p>
                       </div>
                     </div>
                   </div>
@@ -1010,7 +1066,9 @@ const DownloadPdfModal = () => {
                         <p>Aspiração</p>
                       </div>
                       <div class="reports problems ">
-                        <p>Cânula de Guedel</p>
+                        <p>Cânula de Guedel</p>  const transportationIcon = getTransportationIcon(
+                          reportsForDownload.report.Finalization[0]?.transportation,
+                        )
                       </div>
                       <div class="reports problems ">
                         <p>Avaliação Inicial</p>
@@ -1053,31 +1111,52 @@ const DownloadPdfModal = () => {
                   <div class="content-info height">
                     <div class="infos-gerais grid">
                       <div class="reports cinematic">
-                        <div class="radioType"></div>
+                        ${verifyCinematicAvaliation(
+                          reportsForDownload.report.CinematicAvaliation[0]
+                            .twistedSteering,
+                        )}
                         <p>Volante Torcido</p>
                       </div>
                       <div class="reports cinematic ">
-                        <div class="radioType"></div>
+                      ${verifyCinematicAvaliation(
+                        reportsForDownload.report.CinematicAvaliation[0]
+                          .foundWithHelmet,
+                      )}
                         <p>Encontrado de Capacete</p>
                       </div>
                       <div class="reports cinematic ">
-                        <div class="radioType"></div>
+                      ${verifyCinematicAvaliation(
+                        reportsForDownload.report.CinematicAvaliation[0]
+                          .damagedPanel,
+                      )}
                         <p>Para-brisas Avariado</p>
                       </div>
                       <div class="reports cinematic ">
-                        <div class="radioType"></div>
+                      ${verifyCinematicAvaliation(
+                        reportsForDownload.report.CinematicAvaliation[0]
+                          .foundWithSeatbelt,
+                      )}
                         <p>Encontrado de Cinto</p>
                       </div>
                       <div class="reports cinematic ">
-                        <div class="radioType"></div>
+                      ${verifyCinematicAvaliation(
+                        reportsForDownload.report.CinematicAvaliation[0]
+                          .comportamentalDisturb,
+                      )}
                         <p>Distúrbio de Comportamento</p>
                       </div>
                       <div class="reports cinematic ">
-                        <div class="radioType"></div>
+                      ${verifyCinematicAvaliation(
+                        reportsForDownload.report.CinematicAvaliation[0]
+                          .damagedWindshield,
+                      )}
                         <p>Painel Avariado</p>
                       </div>
                       <div class="reports cinematic ">
-                        <div class="radioType"></div>
+                      ${verifyCinematicAvaliation(
+                        reportsForDownload.report.CinematicAvaliation[0]
+                          .walkingInTheScene,
+                      )}
                         <p>Caminhando na Cena</p>
                       </div>
                     </div>
