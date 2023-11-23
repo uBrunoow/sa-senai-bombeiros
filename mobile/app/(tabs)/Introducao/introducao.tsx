@@ -25,10 +25,8 @@ import updateSymptomsMethod from '@src/api/reports/symptoms/updateSymtoms'
 import findSymptomsByReport from '@src/api/reports/symptoms/findSymptoms'
 import { determineCompletness } from './utils/determineCompletness'
 import { saveIntroductionCompletness } from '@src/redux/reducers/completnessReducer'
-import { RouteProp, useNavigation } from '@react-navigation/core'
-import { StackNavigationProp } from '@react-navigation/stack'
-import { setIntroductionData } from '@src/redux/actions/dataActions'
 import { useNavigation } from '@react-navigation/core'
+import { setIntroductionData } from '@src/redux/actions/dataActions'
 import { formatCheckbox } from './utils/formatCheckbox'
 
 type CheckboxStates = {
