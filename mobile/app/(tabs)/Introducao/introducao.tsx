@@ -25,6 +25,9 @@ import updateSymptomsMethod from '@src/api/reports/symptoms/updateSymtoms'
 import findSymptomsByReport from '@src/api/reports/symptoms/findSymptoms'
 import { determineCompletness } from './utils/determineCompletness'
 import { saveIntroductionCompletness } from '@src/redux/reducers/completnessReducer'
+import { RouteProp, useNavigation } from '@react-navigation/core'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { setIntroductionData } from '@src/redux/actions/dataActions'
 import { useNavigation } from '@react-navigation/core'
 import { formatCheckbox } from './utils/formatCheckbox'
 
@@ -703,6 +706,12 @@ export default function Introducao() {
         symptomsEmpty,
       )
 
+      const introduction = {
+        response,
+        preHospitalarMethodResponse,
+        symptomsResponse,
+      }
+
       if (
         response &&
         response.updatedReport &&
@@ -712,6 +721,7 @@ export default function Introducao() {
         symptomsResponse.updatedSymptom
       ) {
         navigation.navigate('ocorrencia' as never)
+        dispatch(setIntroductionData(introduction))
         dispatch(saveIntroductionCompletness(introductionCompletness))
         toast.show({
           description: 'Informações de Introdução salvas com sucesso.',

@@ -50,6 +50,7 @@ import registerPreHospitalarMethods from '@src/api/reports/preHospitalarMethod/r
 import registerSymptoms from '@src/api/reports/symptoms/registerSymptoms'
 import { RouteProp } from '@react-navigation/core'
 import { StackNavigationProp } from '@react-navigation/stack'
+import DownloadPdfModal from '@app/modal/downloadPdfModal'
 
 type RootStackParamList = {
   ocorrencia: undefined
@@ -383,6 +384,18 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
     setShowModal(false)
   }
 
+  const [showPDFModal, setShowPDFModal] = useState(false)
+
+  const handlePDFModal = () => {
+    setShowPDFModal(true)
+  }
+
+  const introduction = useSelector(
+    (state: RootState) => state.introductionData.introduction,
+  )
+
+  console.log(introduction)
+
   return (
     <ScrollView
       className="flex-1"
@@ -478,7 +491,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
               />
             </TouchableOpacity>
             <Pressable onPress={() => navigation.navigate(`home`)}>
-              <MainButton innerText="FINALIZAR" onPress={() => ''} />
+              <MainButton innerText="FINALIZAR" onPress={handlePDFModal} />
             </Pressable>
             <Button title="Logout" onPress={handleLogout} />
             {showModal && (
@@ -524,6 +537,29 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
                         </>
                       )}
                     </View>
+                  </View>
+                </View>
+              </Modal>
+            )}
+            {showPDFModal && (
+              <Modal
+                transparent={true}
+                animationType="fade"
+                visible={showPDFModal}
+                onRequestClose={() => setShowPDFModal(false)}
+              >
+                <View className="flex-1 items-center justify-center bg-[#0000007f]">
+                  <View
+                    style={s.modalContent}
+                    className="relative rounded-[7px] bg-white p-4 "
+                  >
+                    <DownloadPdfModal />
+                    <Pressable
+                      onPress={() => setShowPDFModal(false)}
+                      className="absolute right-1 top-1 z-50"
+                    >
+                      <AntDesign name="closecircle" size={24} color="red" />
+                    </Pressable>
                   </View>
                 </View>
               </Modal>

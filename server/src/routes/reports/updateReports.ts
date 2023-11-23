@@ -3,7 +3,6 @@ import { prisma } from '../../lib/prisma'
 import { reportsUpdateSchema } from '../../schemas/reportSchemas'
 
 export async function reportsUpdateRoutes(app: FastifyInstance) {
-  // app.addHook('preHandler', authenticateToken)
   app.put('/api/reports/update/:id', async (req, res) => {
     const { id } = req.params as { id: string }
 

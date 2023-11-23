@@ -12,7 +12,7 @@ import Title from '@app/components/Title'
 import registerLocalTrauma from '@src/api/reports/localTraumas/registerLocalTraumas'
 import { useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
-import { ILocalTraumas } from '@src/interfaces/IReport'
+import { ILocalTrauma } from '@src/interfaces/IReport'
 import findManyLocalTraumas from '@src/api/reports/localTraumas/findManyLocalTraumas'
 import MainButton from '@app/components/MainButton'
 import CreatedTraumas from './components/CreatedTraumas'
@@ -20,7 +20,7 @@ import CreatedTraumas from './components/CreatedTraumas'
 export default function LocalTraumas() {
   const { bottom, top } = useSafeAreaInsets()
 
-  const [localTraumas, setLocalTraumas] = useState<ILocalTraumas[]>([])
+  const [localTraumas, setLocalTraumas] = useState<ILocalTrauma[]>([])
   const [side, setSide] = useState<string | null>(null)
   const [face, setFace] = useState<string | null>(null)
   const [bodyPart, setBodyPart] = useState<string | null>(null)
