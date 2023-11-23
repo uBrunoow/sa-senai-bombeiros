@@ -47,7 +47,7 @@ export default function Login() {
 
       if (response && response.user) {
         dispatch(
-          saveToken(response.token, response.user.id, response.expirationDate),
+          saveToken(response.token, response.user.id, response.refreshToken),
         )
         navigation.navigate('ocorrencia' as never)
       } else {

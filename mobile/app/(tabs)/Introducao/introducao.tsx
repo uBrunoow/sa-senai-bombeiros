@@ -18,7 +18,7 @@ import InputNumeric from '@app/components/inputNumeric'
 import findReports from '@src/api/reports/findReport'
 import InputCpf from '@app/components/inputCpf'
 import InputTelefone from '@app/components/inputTelefone'
-import { Checkbox, useToast } from 'native-base'
+import { Button, Checkbox, useToast } from 'native-base'
 import updatePreHospitalarMethod from '@src/api/reports/preHospitalarMethod/updatePreHospitalarMethods'
 import findPreHospitalarMethodByReport from '@src/api/reports/preHospitalarMethod/findPreHospitalarMethodByReport'
 import updateSymptomsMethod from '@src/api/reports/symptoms/updateSymtoms'
@@ -28,85 +28,89 @@ import { saveIntroductionCompletness } from '@src/redux/reducers/completnessRedu
 import { RouteProp, useNavigation } from '@react-navigation/core'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { setIntroductionData } from '@src/redux/actions/dataActions'
+import { useNavigation } from '@react-navigation/core'
+import { formatCheckbox } from './utils/formatCheckbox'
 
 type CheckboxStates = {
-  AFOGAMENTO?: boolean
-  AGRESSAO?: boolean
-  ATROPELAMENTO?: boolean
-  CAUSADO_POR_ANIMAIS?: boolean
-  CHOQUE_ELETRICO?: boolean
-  COM_MEIO_DE_TRANSPORTE?: boolean
-  DESABAMENTO?: boolean
-  DESMORONAMENTO?: boolean
-  DOMESTICO?: boolean
-  EMERGENCIA_MEDICA?: boolean
-  ESPORTIVO?: boolean
-  INTOXICACAO?: boolean
-  QUEDA_BICICLETA?: boolean
-  QUEDA_MOTO?: boolean
-  QUEDA_MENOR_QUE_2M?: boolean
-  QUEDA_MAIOR_QUE_2M?: boolean
-  QUEDA_PROPRIA_ALTURA?: boolean
-  TENTATIVA_DE_SUICIDIO?: boolean
-  TRABALHO?: boolean
-  TRANSFERENCIA?: boolean
+  AFOGAMENTO: boolean
+  AGRESSAO: boolean
+  ATROPELAMENTO: boolean
+  CAUSADO_POR_ANIMAIS: boolean
+  CHOQUE_ELETRICO: boolean
+  COM_MEIO_DE_TRANSPORTE: boolean
+  DESABAMENTO: boolean
+  DESMORONAMENTO: boolean
+  DOMESTICO: boolean
+  EMERGENCIA_MEDICA: boolean
+  ESPORTIVO: boolean
+  INTOXICACAO: boolean
+  QUEDA_BICICLETA: boolean
+  QUEDA_MOTO: boolean
+  QUEDA_MENOR_QUE_2M: boolean
+  QUEDA_MAIOR_QUE_2M: boolean
+  QUEDA_PROPRIA_ALTURA: boolean
+  TENTATIVA_DE_SUICIDIO: boolean
+  TRABALHO: boolean
+  TRANSFERENCIA: boolean
+  [key: string]: boolean
 }
 
 type SymptomsCheckboxStates = {
-  ABD_SENSIVEL_RIGIDO?: boolean
-  AFUNDAMENTO_DE_CRANIO?: boolean
-  AGITACAO?: boolean
-  AMNESIA?: boolean
-  ANGINA_DE_PEITO?: boolean
-  APINEIA?: boolean
-  BRADICARDIA?: boolean
-  BRADIPNEIA?: boolean
-  BRONCO_ASPIRANDO?: boolean
-  CEFALIA?: boolean
-  CIANOSE_LABIOS?: boolean
-  CIANOSE_EXTREMIDADES?: boolean
-  CONVULSAO?: boolean
-  DECORTICACAO?: boolean
-  DEFORMIDADE?: boolean
-  DESCEREBRACAO?: boolean
-  DESMAIO?: boolean
-  DESVIO_DE_TRAQUEIA?: boolean
-  DISPNEIA?: boolean
-  DOR_LOCAL?: boolean
-  EDEMA_GENERALIZADO?: boolean
-  EDEMA_LOCALIZADO?: boolean
-  ENFISEMA_SUBCUTANEO?: boolean
-  ESTASE_DA_JUGULAR?: boolean
-  FACE_PALIDA?: boolean
-  HEMORRAGIA_INTERNA?: boolean
-  HEMORRAGIA_EXTERNA?: boolean
-  HIPERTENSAO?: boolean
-  HIPOTENSAO?: boolean
-  NAUSEAS_VOMITOS?: boolean
-  NASORAGIA?: boolean
-  OBITO?: boolean
-  OTORREIA?: boolean
-  OTORRAGIA?: boolean
-  OVACE?: boolean
-  PARADA_CARDIACA?: boolean
-  PARADA_RESPIRATORIA?: boolean
-  PRIAPRISMO?: boolean
-  PRURIDO_NA_PELE?: boolean
-  ANISOCORIA_NAO_REAGENTE?: boolean
-  ANISOCORIA_REAGENTE?: boolean
-  ISOCORIA_NAO_REAGENTE?: boolean
-  ISOCORIA_REAGENTE?: boolean
-  MIDRIASE_NAO_REAGENTE?: boolean
-  MIDRIASE_REAGENTE?: boolean
-  MIOSE_NAO_REAGENTE?: boolean
-  MIOSE_REAGENTE?: boolean
-  SEDE?: boolean
-  SINAL_DE_BATTLE?: boolean
-  SINAL_DE_GUAXINIM?: boolean
-  SUDORESE?: boolean
-  TAQUIPNEIA?: boolean
-  TAQUICARDIA?: boolean
-  TONTURA?: boolean
+  ABD_SENSIVEL_RIGIDO: boolean
+  AFUNDAMENTO_DE_CRANIO: boolean
+  AGITACAO: boolean
+  AMNESIA: boolean
+  ANGINA_DE_PEITO: boolean
+  APINEIA: boolean
+  BRADICARDIA: boolean
+  BRADIPNEIA: boolean
+  BRONCO_ASPIRANDO: boolean
+  CEFALIA: boolean
+  CIANOSE_LABIOS: boolean
+  CIANOSE_EXTREMIDADES: boolean
+  CONVULSAO: boolean
+  DECORTICACAO: boolean
+  DEFORMIDADE: boolean
+  DESCEREBRACAO: boolean
+  DESMAIO: boolean
+  DESVIO_DE_TRAQUEIA: boolean
+  DISPNEIA: boolean
+  DOR_LOCAL: boolean
+  EDEMA_GENERALIZADO: boolean
+  EDEMA_LOCALIZADO: boolean
+  ENFISEMA_SUBCUTANEO: boolean
+  ESTASE_DA_JUGULAR: boolean
+  FACE_PALIDA: boolean
+  HEMORRAGIA_INTERNA: boolean
+  HEMORRAGIA_EXTERNA: boolean
+  HIPERTENSAO: boolean
+  HIPOTENSAO: boolean
+  NAUSEAS_VOMITOS: boolean
+  NASORAGIA: boolean
+  OBITO: boolean
+  OTORREIA: boolean
+  OTORRAGIA: boolean
+  OVACE: boolean
+  PARADA_CARDIACA: boolean
+  PARADA_RESPIRATORIA: boolean
+  PRIAPRISMO: boolean
+  PRURIDO_NA_PELE: boolean
+  ANISOCORIA_NAO_REAGENTE: boolean
+  ANISOCORIA_REAGENTE: boolean
+  ISOCORIA_NAO_REAGENTE: boolean
+  ISOCORIA_REAGENTE: boolean
+  MIDRIASE_NAO_REAGENTE: boolean
+  MIDRIASE_REAGENTE: boolean
+  MIOSE_NAO_REAGENTE: boolean
+  MIOSE_REAGENTE: boolean
+  SEDE: boolean
+  SINAL_DE_BATTLE: boolean
+  SINAL_DE_GUAXINIM: boolean
+  SUDORESE: boolean
+  TAQUIPNEIA: boolean
+  TAQUICARDIA: boolean
+  TONTURA: boolean
+  [key: string]: boolean
 }
 
 type RemoveMetaPropertiesType = {
@@ -739,6 +743,50 @@ export default function Introducao() {
     }
   }
 
+  const handleShowMore = (category: 'preHospitalar' | 'signsAndSymptoms') => {
+    if (category === 'preHospitalar') {
+      setShowMorePreHospitalar(true)
+    } else if (category === 'signsAndSymptoms') {
+      setShowMoreSignsAndSymptoms(true)
+    }
+  }
+
+  const handleShowLess = (category: 'preHospitalar' | 'signsAndSymptoms') => {
+    if (category === 'preHospitalar') {
+      setShowMorePreHospitalar(false)
+    } else if (category === 'signsAndSymptoms') {
+      setShowMoreSignsAndSymptoms(false)
+    }
+  }
+
+  const [showMorePreHospitalar, setShowMorePreHospitalar] =
+    useState<boolean>(false)
+  const [showMoreSignsAndSymptoms, setShowMoreSignsAndSymptoms] =
+    useState<boolean>(false)
+
+  const renderCheckboxes = (
+    checkboxes: Record<string, boolean>,
+    showMore: boolean,
+    handleCheckboxChange: (key: string) => void,
+  ) => {
+    const visibleCheckboxes = showMore
+      ? checkboxes
+      : Object.fromEntries(Object.entries(checkboxes).slice(0, 5))
+
+    return Object.entries(visibleCheckboxes).map(([key, isChecked]) => (
+      <Checkbox
+        key={key}
+        size="md"
+        colorScheme="danger"
+        value={key}
+        isChecked={isChecked}
+        onChange={() => handleCheckboxChange(key)}
+      >
+        <Text className="text-lg text-slate-800">{formatCheckbox(key)}</Text>
+      </Checkbox>
+    ))
+  }
+
   return (
     <ScrollView
       className="flex-1"
@@ -827,44 +875,48 @@ export default function Introducao() {
 
             <View>
               <Title iconName="hospital-user" title="Pré-Hospitalar" />
-              {Object.entries(preHospitalarMethodCheckboxState).map(
-                ([key, isChecked]) => (
-                  <Checkbox
-                    key={key}
-                    size="md"
-                    colorScheme="danger"
-                    value={key}
-                    isChecked={isChecked}
-                    onChange={() =>
-                      handlePreHospitalarMethodCheckboxChange(
-                        key as keyof CheckboxStates,
-                      )
-                    }
-                  >
-                    <Text className="text-lg text-slate-800">{key}</Text>
-                  </Checkbox>
-                ),
+              {renderCheckboxes(
+                preHospitalarMethodCheckboxState,
+                showMorePreHospitalar,
+                handlePreHospitalarMethodCheckboxChange,
+              )}
+              {!showMorePreHospitalar ? (
+                <Button
+                  onPress={() => handleShowMore('preHospitalar')}
+                  style={{ backgroundColor: 'red', marginVertical: 10 }}
+                >
+                  <Text className="text-white">Ver Mais</Text>
+                </Button>
+              ) : (
+                <Button
+                  onPress={() => handleShowLess('preHospitalar')}
+                  style={{ backgroundColor: 'red', marginVertical: 10 }}
+                >
+                  <Text className="text-white">Ver Menos</Text>
+                </Button>
               )}
             </View>
             <View>
               <Title iconName="info-circle" title="Sinais e sintomas" />
-              {Object.entries(signsAndSymptomsCheckboxState).map(
-                ([key, isChecked]) => (
-                  <Checkbox
-                    key={key}
-                    size="md"
-                    colorScheme="danger"
-                    value={key}
-                    isChecked={isChecked}
-                    onChange={() =>
-                      handleSignsAndSymptomsCheckboxChange(
-                        key as keyof SymptomsCheckboxStates,
-                      )
-                    }
-                  >
-                    <Text className="text-lg text-slate-800">{key}</Text>
-                  </Checkbox>
-                ),
+              {renderCheckboxes(
+                signsAndSymptomsCheckboxState,
+                showMoreSignsAndSymptoms,
+                handleSignsAndSymptomsCheckboxChange,
+              )}
+              {!showMoreSignsAndSymptoms ? (
+                <Button
+                  onPress={() => handleShowMore('signsAndSymptoms')}
+                  style={{ backgroundColor: 'red', marginVertical: 10 }}
+                >
+                  <Text className="text-white">Ver Mais</Text>
+                </Button>
+              ) : (
+                <Button
+                  onPress={() => handleShowLess('signsAndSymptoms')}
+                  style={{ backgroundColor: 'red', marginVertical: 10 }}
+                >
+                  <Text className="text-white">Ver Menos</Text>
+                </Button>
               )}
             </View>
           </View>
@@ -875,48 +927,6 @@ export default function Introducao() {
             isLoading={buttonLoading}
           />
 
-          {/* <ManyCheckboxes
-            title="Teste"
-            options={[
-              {
-                key: 'test1',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-              {
-                key: 'test2',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-              {
-                key: 'test3',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-              {
-                key: 'test4',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-              {
-                key: 'test5',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-              {
-                key: 'test6',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-            ]}
-            maxOptions={5}
-          /> */}
           <Footer />
         </>
       )}
