@@ -8,6 +8,12 @@ import { useSelector } from 'react-redux'
 import { Asset } from 'expo-asset'
 import findReports from '@src/api/reports/findReport'
 import { IReport } from '@src/interfaces/IReport'
+import { formatDate } from '@src/utils/formatDate'
+import {
+  getAberturaOcularGlasgowText,
+  getRespostaMotoraGlasgowText,
+  getRespostaVerbalGlasgowText,
+} from '@src/utils/getGlasgowText'
 
 interface DownloadedReport {
   msg: string
@@ -47,6 +53,17 @@ const DownloadPdfModal = () => {
 
     fetchReportsForDownload()
   }, [reportId])
+
+  const calculateGlasgowTotal = () => {
+    const glasgowData = reportsForDownload.report.Glasglow[0]
+
+    const eyeOpening = glasgowData.eyeOpeningOwnerId
+    const verbalResponse = glasgowData.verbalResponseOwnerId
+    const motorResponse = glasgowData.motorResponseOwnerId
+
+    // Retorne a soma dos valores
+    return eyeOpening + verbalResponse + motorResponse
+  }
 
   const generatePDF = async () => {
     try {
@@ -244,6 +261,12 @@ const DownloadPdfModal = () => {
             font-weight: 300;
             line-height: normal;
           }
+          .wrapper-subtext {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: start;
+          }
           .problems {
             display: flex;
             flex-direction: column;
@@ -383,7 +406,9 @@ const DownloadPdfModal = () => {
                   <p>Nome: <span>${reportsForDownload.report.name}</span></p>
                   <p>Idade: <span>${reportsForDownload.report.age}</span></p>
                   <p>Sexo: <span>${reportsForDownload.report.gender}</span></p>
-                  <p>Data: <span>${reportsForDownload.report.reportDate}</span></p>
+                  <p>Data: <span>${formatDate(
+                    reportsForDownload.report.reportDate,
+                  )}</span></p>
                 </div>
                 <img class="logo-img-2" src="${logoImage}" alt="logo img grande">
               </div>
@@ -396,9 +421,18 @@ const DownloadPdfModal = () => {
                   </div>
                   <div class="content-info height">
                     <div class="infos-gerais">
-                      <div class="reports">
-                        <p>Afogamento</p>
-                      </div>
+                    ${reportsForDownload.report.PreHospitalMethods.map(
+                      (method) =>
+                        method.preHospitalarMethodDescription
+                          .map(
+                            (description, index) => `
+                        <div class="reports" key="${method.id}-${index}">
+                          <p>${description}</p>
+                        </div>
+                      `,
+                          )
+                          .join(''),
+                    ).join('')}
                     </div>
                   </div>
                 </div>
@@ -409,23 +443,144 @@ const DownloadPdfModal = () => {
                   </div>
                   <div class="content-info height">
                     <div class="infos-gerais">
-                      <div class="reports suspectProblems">
-                        <p>Psiquiatrico</p>
-                        <i class='bx bx-check'></i>
-                      </div>
-                      <div class="reports problems ">
-                        <div class="suspectProblems">
-                          <p>Diabetes</p>
-                          <i class='bx bx-check'></i>
+                    ${reportsForDownload.report.SuspectProblems.map(
+                      (suspectProblems, index) =>
+                        `
+                        <div class="reports problems" key=${index}>
+                    
+                          ${
+                            suspectProblems.problemaSuspeitoTransporte &&
+                            suspectProblems.problemaSuspeitoTransporte.length >
+                              0
+                              ? `
+                            <div class="suspectProblems">
+                              <p>Transporte</p>
+                              <i class='bx bx-check'></i>
+                            </div>
+                            <div class="wrapper-subtext">
+                              ${suspectProblems.problemaSuspeitoTransporte
+                                .map(
+                                  (transporte, subIndex) => `
+                                    <span class="subtext" key=${subIndex}>${transporte}</span>
+                                  `,
+                                )
+                                .join('')}
+                            </div>
+                          `
+                              : ''
+                          }
                         </div>
-                        <span class="subtext">Hipoglicemia</span>
-                      </div>
-                      <div class="reports problems ">
-                        <div class="suspectProblems">
-                          <p>Diabetes</p>
-                          <i class='bx bx-check'></i>
+                        
+                        <div class="reports problems" key=${index}>
+                    
+                          ${
+                            suspectProblems.problemaSuspeitoDiabetes &&
+                            suspectProblems.problemaSuspeitoDiabetes.length > 0
+                              ? `
+                            <div class="suspectProblems">
+                              <p>Diabetes</p>
+                              <i class='bx bx-check'></i>
+                            </div>
+                            <div class="wrapper-subtext">
+                              ${suspectProblems.problemaSuspeitoDiabetes
+                                .map(
+                                  (diabetes, subIndex) => `
+                                    <span class="subtext" key=${subIndex}>${diabetes}</span>
+                                  `,
+                                )
+                                .join('')}
+                            </div>
+                          `
+                              : ''
+                          }
+
                         </div>
-                      </div>
+
+                        <div class="reports problems" key=${index}>
+                    
+                          ${
+                            suspectProblems.problemaSuspeitoObstetrico &&
+                            suspectProblems.problemaSuspeitoObstetrico.length >
+                              0
+                              ? `
+                            <div class="suspectProblems">
+                              <p>Obstetrício</p>
+                              <i class='bx bx-check'></i>
+                            </div>
+                            <div class="wrapper-subtext">
+                              ${suspectProblems.problemaSuspeitoObstetrico
+                                .map(
+                                  (obstetrico, subIndex) => `
+                                    <span class="subtext" key=${subIndex}>${obstetrico}</span>
+                                  `,
+                                )
+                                .join('')}
+                            </div>
+                          `
+                              : ''
+                          }
+
+                        </div>
+
+                        <div class="reports problems" key=${index}>
+                    
+                          ${
+                            suspectProblems.problemaSuspeitoRespiratorio &&
+                            suspectProblems.problemaSuspeitoRespiratorio
+                              .length > 0
+                              ? `
+                            <div class="suspectProblems">
+                              <p>Respiratório</p>
+                              <i class='bx bx-check'></i>
+                            </div>
+                            <div class="wrapper-subtext">
+                              ${suspectProblems.problemaSuspeitoRespiratorio
+                                .map(
+                                  (respiratorio, subIndex) => `
+                                    <span class="subtext" key=${subIndex}>${respiratorio}</span>
+                                  `,
+                                )
+                                .join('')}
+                            </div>
+                          `
+                              : ''
+                          }
+                        
+                        </div>
+
+                        <div class="reports problems" key=${index}>
+                    
+                          ${
+                            suspectProblems.problemaSuspeitoPsiquiatrico
+                              ? `
+                            <div class="suspectProblems">
+                              <p>Psiquiátrico</p>
+                              <i class='bx bx-check'></i>
+                            </div>
+                          `
+                              : ''
+                          }
+
+                        </div> 
+
+                        <div class="reports problems" key=${index}>
+
+                          ${
+                            suspectProblems.Another !== ''
+                              ? `
+                          <div class="suspectProblems">
+                            <p>Outro</p>
+                            <i class='bx bx-check'></i>
+                            <div class="wrapper-subtext">
+                              <span class="subtext" >${suspectProblems.Another}</span>
+                            </div>
+                          </div>
+                          `
+                              : ''
+                          }
+                        </div>
+                      `,
+                    ).join('')}
                     </div>
                   </div>
                 </div>
@@ -436,18 +591,17 @@ const DownloadPdfModal = () => {
                   </div>
                   <div class="content-info height">
                     <div class="infos-gerais">
-                      <div class="reports suspectProblems">
-                        <p>Abdomen Rígido ou sensivel</p>
-                      </div>
-                      <div class="reports problems ">
-                        <p>Amnésia</p>
-                      </div>
-                      <div class="reports problems ">
-                        <p>Afundamento de Crânio</p>
-                      </div>
-                      <div class="reports problems ">
-                        <p>Náuseas e Vômitos</p>
-                      </div>
+                    ${reportsForDownload.report.Symptoms.map((symptom) =>
+                      symptom.symptomsDescription
+                        .map(
+                          (description, index) => `
+                        <div class="reports suspectProblems" key="${symptom.id}-${index}">
+                          <p>${description}</p>
+                        </div>
+                      `,
+                        )
+                        .join(''),
+                    ).join('')}
                     </div>
                   </div>
                 </div>
@@ -463,32 +617,48 @@ const DownloadPdfModal = () => {
                           <th>Abertura Ocular</th>
                           <td>
                             <div class="glasgow-table">
-                              Espontânea
+                              ${getAberturaOcularGlasgowText(
+                                reportsForDownload.report.Glasglow[0]
+                                  .eyeOpeningOwnerId,
+                              )}
                               <div class="glasgow-value">
-                                4
+                                ${
+                                  reportsForDownload.report.Glasglow[0]
+                                    .eyeOpeningOwnerId
+                                }
                               </div>
                             </div>
                           </td>
                         </tr>
                         <tr>
-                          <th>Abertura Verbal</th>
+                          <th>Resposta Verbal</th>
                           <td>
                             <div class="glasgow-table">
-                              Orientado
-                              <div class="glasgow-value">
-                                4
-                              </div>
+                            ${getRespostaVerbalGlasgowText(
+                              reportsForDownload.report.Glasglow[0]
+                                .verbalResponseOwnerId,
+                            )}
+                            <div class="glasgow-value">
+                              ${
+                                reportsForDownload.report.Glasglow[0]
+                                  .verbalResponseOwnerId
+                              }
                             </div>
                           </td>
                         </tr>
                         <tr>
-                          <th>Abertura Ocular</th>
+                          <th>Resposta Motora</th>
                           <td>
                             <div class="glasgow-table">
-                              Nenhum
-                              <div class="glasgow-value">
-                                4
-                              </div>
+                            ${getRespostaMotoraGlasgowText(
+                              reportsForDownload.report.Glasglow[0]
+                                .motorResponseOwnerId,
+                            )}
+                            <div class="glasgow-value">
+                              ${
+                                reportsForDownload.report.Glasglow[0]
+                                  .motorResponseOwnerId
+                              }
                             </div>
                           </td>
                         </tr>
@@ -501,9 +671,9 @@ const DownloadPdfModal = () => {
                           </th>
                           <td>
                             <div class="glasgow-table">
-                              Nenhum
+                              ----------------------
                               <div class="glasgow-value">
-                                4
+                                ${calculateGlasgowTotal()}
                               </div>
                             </div>
                           </td>
@@ -689,7 +859,14 @@ const DownloadPdfModal = () => {
                           <th>Pressão arterial</th>
                           <td>
                             <div class="glasgow-table">
-                              2 mmHg
+                              ${
+                                reportsForDownload.report.systolicBloodPressure
+                              } 
+                              X 
+                              ${
+                                reportsForDownload.report.diastolicBloodPressure
+                              }
+                              mmHg
                             </div>
                           </td>
                         </tr>
@@ -697,7 +874,7 @@ const DownloadPdfModal = () => {
                           <th>Pulso</th>
                           <td>
                             <div class="glasgow-table">
-                              90 B.C.P.M
+                            ${reportsForDownload.report.bodyPulse} B.C.P.M
                             </div>
                           </td>
                         </tr>
@@ -705,7 +882,7 @@ const DownloadPdfModal = () => {
                           <th>Saturação</th>
                           <td>
                             <div class="glasgow-table">
-                              100%
+                            ${reportsForDownload.report.saturation}%
                             </div>
                           </td>
                         </tr>
@@ -715,7 +892,7 @@ const DownloadPdfModal = () => {
                           </th>
                           <td>
                             <div class="glasgow-table">
-                              36.5°C
+                            ${reportsForDownload.report.bodyTemp}°C
                             </div>
                           </td>
                         </tr>
@@ -725,7 +902,7 @@ const DownloadPdfModal = () => {
                           </th>
                           <td>
                             <div class="glasgow-table">
-                              > 2 seg
+                            ${reportsForDownload.report.perfusion}
                             </div>
                           </td>
                         </tr>
@@ -735,7 +912,7 @@ const DownloadPdfModal = () => {
                           </th>
                           <td>
                             <div class="glasgow-table">
-                              ??? M.R.M
+                            ${reportsForDownload.report.breathing} M.R.M
                             </div>
                           </td>
                         </tr>
@@ -797,7 +974,9 @@ const DownloadPdfModal = () => {
                   <div class="content-info height">
                     <div class="infos-gerais">
                       <div class="reports suspectProblems">
-                        <p>Vítima pode conter possível envolvimento com trafico de drogas, provas incriminadoras foram encontradas próximas ao local, indicamos acompanhamento policial para o paciente. </p>
+                        <p>${
+                          reportsForDownload.report.Finalization[0].finalRemarks
+                        }</p>
                       </div>
                     </div>
                   </div>
@@ -812,7 +991,10 @@ const DownloadPdfModal = () => {
                   <div class="content-info height">
                     <div class="infos-gerais">
                       <div class="reports suspectProblems">
-                        <p>Tesoura, Arma de Fogo, Celular, Carteira, Faca, Vassoura, Esfera, Faca, Teclado, Piano, Bicicleta, Pandeiro, garrafa plástica.</p>
+                        <p>${
+                          reportsForDownload.report.Finalization[0]
+                            .CollectedObjects
+                        }</p>
                       </div>
                     </div>
                   </div>
