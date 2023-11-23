@@ -65,6 +65,12 @@ const Finalizacao = () => {
   const [isCheckedSemiDeitada, setIsCheckedSemiDeitada] = useState(false)
   const [isCheckedSentada, setIsCheckedSentada] = useState(false)
 
+  const handleCheckboxChange = (checkboxName: string) => {
+    setIsCheckedDeitada(checkboxName === 'DEITADA')
+    setIsCheckedSemiDeitada(checkboxName === 'SEMI-DEITADA')
+    setIsCheckedSentada(checkboxName === 'SENTADA')
+  }
+
   const handleObservacoesChange = (newValue: string) => {
     setObservacoesFinais(newValue)
   }
@@ -375,6 +381,7 @@ const Finalizacao = () => {
                     isChecked={isCheckedDeitada}
                     onChange={() => {
                       setIsCheckedDeitada((prev) => !prev)
+                      handleCheckboxChange('DEITADA')
                     }}
                   >
                     <Text className="text-lg text-slate-800">Deitada</Text>
@@ -387,6 +394,7 @@ const Finalizacao = () => {
                     isChecked={isCheckedSemiDeitada}
                     onChange={() => {
                       setIsCheckedSemiDeitada((prev) => !prev)
+                      handleCheckboxChange('SEMI-DEITADA')
                     }}
                   >
                     <Text className="text-lg text-slate-800">Semi-deitada</Text>
@@ -399,6 +407,7 @@ const Finalizacao = () => {
                     isChecked={isCheckedSentada}
                     onChange={() => {
                       setIsCheckedSentada((prev) => !prev)
+                      handleCheckboxChange('SENTADA')
                     }}
                   >
                     <Text className="text-lg text-slate-800">Sentada</Text>

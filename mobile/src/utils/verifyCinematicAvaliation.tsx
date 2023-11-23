@@ -1,7 +1,7 @@
 export const verifyCinematicAvaliation = (value: boolean) => {
   if (value === true) {
-    return <div className="radioType"></div>
+    return '<div class="radioType"></div>'
   } else {
-    return <div className="noRadio"></div>
+    return '<div class="noRadio"></div>'
   }
 }

@@ -18,9 +18,13 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import {
   clearAnamnesisId,
+  clearCinematicAvaliationId,
   clearFinalizationId,
   clearGestacionalAnamnesisId,
+  clearGlasgowId,
+  clearPreHospitalarMethodId,
   clearReportId,
+  clearSignsAndSymptomsId,
   clearSuspectProblemsId,
 } from '@src/redux/actions/reportActions'
 
@@ -57,6 +61,10 @@ export default function Header() {
         dispatch(clearGestacionalAnamnesisId())
         dispatch(clearFinalizationId())
         dispatch(clearSuspectProblemsId())
+        dispatch(clearGlasgowId())
+        dispatch(clearCinematicAvaliationId())
+        dispatch(clearPreHospitalarMethodId())
+        dispatch(clearSignsAndSymptomsId())
         setExcluirOcorrenciaAbrir(false)
         navigation.navigate('home')
       }

@@ -17,6 +17,7 @@ import {
 import { getTransportationIcon } from '@src/utils/getTransportationIcon'
 import { formatAnyValue } from '@src/utils/formatAnyValue'
 import { verifyCinematicAvaliation } from '@src/utils/verifyCinematicAvaliation'
+import { convertTrue } from '@src/utils/convertTrue'
 
 interface DownloadedReport {
   msg: string
@@ -71,6 +72,11 @@ const DownloadPdfModal = () => {
   console.log(JSON.stringify(reportsForDownload.report, null, 2))
 
   const generatePDF = async () => {
+    console.log(
+      verifyCinematicAvaliation(
+        reportsForDownload.report.CinematicAvaliation[0].foundWithSeatbelt,
+      ),
+    )
     const transportationIcon = getTransportationIcon(
       reportsForDownload.report.Finalization[0]?.transportation,
     )
@@ -327,7 +333,7 @@ const DownloadPdfModal = () => {
             width: 15px;
           }
           .noRadio {
-            background-color: black;
+            background-color: white;
             border-radius: 50%;
             height: 15px;
             width: 15px;
@@ -379,6 +385,24 @@ const DownloadPdfModal = () => {
             justify-content: space-between;
             width: 100%;
             border-bottom: 1px dashed rgba(29, 29, 29, 0.664);
+          }
+
+          .finalRemarks-anamnese {
+            width: 100%;
+          }
+          .finalRemarks-anamnese p {
+            width: 100%;
+            padding: 10 0px;
+          }
+
+          .finalRemarks-anamnese h5 {
+            padding: 10 0px;
+            border-bottom: 1px solid black;
+            width: 100%;
+          }
+
+          .width {
+            width: 100%;
           }
       
           @media print {
@@ -741,7 +765,10 @@ const DownloadPdfModal = () => {
                     </div>
                     <div class="content-info height">
                       <div class="infos-gerais">
-                        <p>Semi-sentada</p>
+                        <p>${
+                          reportsForDownload.report.Finalization[0]
+                            .conduction[0]
+                        }</p>
                       </div>
                     </div>
                   </div>
@@ -1179,32 +1206,69 @@ const DownloadPdfModal = () => {
                     <p>O Que Aconteceu? (Sinais e Sintomas)</p>
                   </div>
                   <div class="content-info-anamneses height">
-                    <div class="infos-anamnese">
-                      O caba tava morrenu quando o chegamos, provavelmente era uma virose ou algo do tipo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae tincidunt urna, maecenas leo lorem, dapibus tempus purus id. Ele foi encontrado agonizando em sua residência.
+                    <div class="infos-anamnese width">
+                    <div class="finalRemarks-anamnese">
+                        <h5>Observações Finais</h5>
+                        <p>
+                          ${reportsForDownload.report.Anamnesis[0].FinalRemarks}
+                        </p>
+                        <h5>Sinais e sintomas</h5>
+                        <p>
+                          ${
+                            reportsForDownload.report.Anamnesis[0]
+                              .SignsAndSymptoms
+                          }
+                        </p>
+                    </div>
                     </div>
                     <div class="divider-anamnese">
                       <div class="infos-anamnese">Já aconteceu outras vezes?</div>
-                      <div class="infos-anamnese">SIM</div>
+                      <div class="infos-anamnese">
+                        ${convertTrue(
+                          reportsForDownload.report.Anamnesis[0].HappenedTimes,
+                        )}
+                      </div>
                     </div>
                     <div class="divider-anamnese">
                       <div class="infos-anamnese">A quanto tempo isso aconteceu?:</div>
-                      <div class="infos-anamnese">5 anos atrás</div>
+                      <div class="infos-anamnese">
+                        ${reportsForDownload.report.Anamnesis[0].SinceHappened}
+                      </div>
                     </div>
                     <div class="divider-anamnese">
                       <div class="infos-anamnese">Possuí algum problema de saúde?</div>
-                      <div class="infos-anamnese">Vitma é asmática</div>
+                      <div class="infos-anamnese">
+                          ${convertTrue(
+                            reportsForDownload.report.Anamnesis[0]
+                              .HealthProblem,
+                          )}
+                      </div>
                     </div>
                     <div class="divider-anamnese">
                       <div class="infos-anamnese">Faz uso de medicação?</div>
-                      <div class="infos-anamnese">SIM | paracetamol</div>
+                      <div class="infos-anamnese">${convertTrue(
+                        reportsForDownload.report.Anamnesis[0].Medication,
+                      )} | ${
+        reportsForDownload.report.Anamnesis[0].MedicationWhich
+      }</div>
                       <div class="infos-anamnese">Última medicação</div>
-                      <div class="infos-anamnese">15:30</div>
+                      <div class="infos-anamnese">
+                      ${reportsForDownload.report.Anamnesis[0].HourMedication}
+                      </div>
                     </div>
                     <div class="divider-anamnese">
                       <div class="infos-anamnese">Alguma alergia?:</div>
-                      <div class="infos-anamnese">SIM | Pelo de Macaco</div>
+                      <div class="infos-anamnese">${
+                        reportsForDownload.report.Anamnesis[0].Allergies
+                      } | ${
+        reportsForDownload.report.Anamnesis[0].AllergiesWhich
+      }</div>
                       <div class="infos-anamnese">Ingeriu Algum Liquido?:</div>
-                      <div class="infos-anamnese">SIM | 14:35</div>
+                      <div class="infos-anamnese">${
+                        reportsForDownload.report.Anamnesis[0].IngestedFood
+                      } | ${
+        reportsForDownload.report.Anamnesis[0].WhatTimeFood
+      }</div>
                     </div>
                   </div>
                 </div>
