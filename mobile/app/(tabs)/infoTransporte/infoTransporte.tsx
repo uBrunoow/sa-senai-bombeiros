@@ -1,16 +1,24 @@
-import { ScrollView, View, SafeAreaView } from 'react-native'
+import { ScrollView, SafeAreaView, View } from 'react-native'
 import React, { useState } from 'react'
-import Options from '@app/components/optionsIntroducao'
+import Options from '@app/components/PickOne'
 import { styles as s } from '../../styles/boxShadow'
 import InputLowPadding from '@app/components/InputLowPadding'
 import Header from '../../components/Header'
 import Title from '../../components/Title'
 import Footer from '@app/components/Footer'
+import InputNumeric from '@app/components/inputNumeric'
 
 export default function InfoTransporte() {
-  const [IRPS, setIRPS] = useState(' ')
-  const handleIRPS = (selectedIRPS: 'Male' | 'Female') => {
-    setIRPS(selectedIRPS)
+  const [numberUSB, setNumberUSB] = useState(0)
+  const [numberOcorr, setNumberOcorr] = useState(0)
+  const [forwardingAgent, setForwardingAgent] = useState('')
+  const [HcH, setHcH] = useState('')
+  const [kmFinal, setKmFinal] = useState(0)
+  const [code, setCode] = useState<'IR' | 'PS' | null>(null)
+  const [codeSUS, setCodeSUS] = useState(0)
+
+  const handleIRPS = (selectedIRPS: 'IR' | 'PS' | null) => {
+    setCode(selectedIRPS)
   }
   return (
     <SafeAreaView>
@@ -19,38 +27,72 @@ export default function InfoTransporte() {
         <Title iconName="ambulance" title="Informações de Transporte" />
         <View style={s.boxShadow} className="mx-auto">
           <View className="flex-row">
-            <View className="w-3/6">
-              <InputLowPadding title="Número USB."></InputLowPadding>
+            <View className="w-2/6">
+              <InputNumeric
+                title="N° USB"
+                size="big"
+                value={numberUSB}
+                onChangeText={(e) => setNumberUSB(e)}
+              />
             </View>
-            <View className="w-3/6">
+            <View className="w-2/6">
               <Options
-                title="Código"
-                Option1="IR"
-                Option2="PS"
-                selectedOption={IRPS}
+                title={'Código'}
+                selectedOptionValue={code}
                 onSelectOption={handleIRPS}
+                leftOption={{
+                  key: 'IR',
+                  value: 'IR',
+                }}
+                rightOption={{
+                  key: 'PS',
+                  value: 'PS',
+                }}
               />
             </View>
           </View>
 
           <View className="flex-row">
             <View className="w-2/6">
-              <InputLowPadding title="N° Ocorr."></InputLowPadding>
+              <InputNumeric
+                title="N° Ocorr."
+                size="big"
+                value={numberOcorr}
+                onChangeText={(e) => setNumberOcorr(e)}
+              />
             </View>
             <View className="w-4/6">
-              <InputLowPadding title="Despachante"></InputLowPadding>
+              <InputLowPadding
+                title="Despachante"
+                value={forwardingAgent}
+                onChangeText={(e) => setForwardingAgent(e)}
+              ></InputLowPadding>
             </View>
           </View>
 
           <View className="flex-row">
             <View className="w-2/6">
-              <InputLowPadding title="H. CH."></InputLowPadding>
+              <InputLowPadding
+                title="H. CH"
+                value={HcH}
+                onChangeText={(e) => setHcH(e)}
+              ></InputLowPadding>
             </View>
             <View className="w-2/6">
-              <InputLowPadding title="KM final"></InputLowPadding>
+              <InputNumeric
+                title="KM Final"
+                size="big"
+                value={kmFinal}
+                onChangeText={(e) => setKmFinal(e)}
+              />
             </View>
             <View className="w-2/6">
-              <InputLowPadding title="Cód. SIA/SUS"></InputLowPadding>
+              <InputNumeric
+                title="Cód. SIA/SUS"
+                size="big"
+                value={codeSUS}
+                onChangeText={(e) => setCodeSUS(e)}
+              />
             </View>
           </View>
         </View>

@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { View, ScrollView, Text, ActivityIndicator } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import {
+  View,
+  ScrollView,
+  Text,
+  ActivityIndicator,
+  SafeAreaView,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
 import Title from '@app/components/Title'
@@ -129,7 +134,6 @@ type RemoveMetaPropertiesType = {
 export default function Introducao() {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const { bottom, top } = useSafeAreaInsets()
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
   const ownerId = useSelector((state: RootState) => state.auth.userId)
@@ -786,148 +790,147 @@ export default function Introducao() {
   }
 
   return (
-    <ScrollView
-      className="flex-1"
-      contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
-    >
-      {loading ? (
-        <View className="mx-auto h-screen w-[320px] items-center justify-center">
-          <ActivityIndicator size="large" color="#ff0000" />
-          <Text className="mt-3 text-center text-lg font-bold uppercase">
-            Carregando...
-          </Text>
-        </View>
-      ) : (
-        <>
-          <Header />
-          <Title iconName="suitcase" title="Introdução" />
-          <View style={s.boxShadow} className="mx-auto">
-            <View className="w-full flex-1 flex-row items-center">
-              <View className="w-3/6 p-2">
-                <InputDatePicker
-                  reportDate={reportDateTime}
-                  setReportDate={setReportDateTime}
-                />
-              </View>
-              <View className="h-full w-3/6 items-center justify-center">
-                <Options
-                  title="Sexo"
-                  Option1="Masc."
-                  Option2="Fem."
-                  selectedOption={gender}
-                  onSelectOption={handleSelectGender}
-                />
-              </View>
-            </View>
-            <View className="mx-auto flex-1 flex-row">
-              <InputLowPadding
-                title="Nome"
-                size="regular"
-                alignText="left"
-                value={name}
-                placeholder={name || ''}
-                onChangeText={(e) => setName(e)}
-              />
-              <InputNumeric
-                title="Idade"
-                size="small"
-                value={age}
-                onChangeText={(e) => setAge(e)}
-              />
-            </View>
-            <View className="mx-auto flex-1 flex-row">
-              <InputCpf
-                title="RG/CPF"
-                placeholder="___.___.___-__"
-                value={cpf}
-                onChangeText={(e) => setCpf(e)}
-              />
-              <InputTelefone
-                title="Fone"
-                placeholder="(__) _____-____"
-                value={phone}
-                onChangeText={(e) => setPhone(e)}
-              />
-            </View>
-            <InputLowPadding
-              title="Local da Ocorrência"
-              value={reportPlace}
-              onChangeText={(e) => setReportPlace(e)}
-            />
-            <View className="mx-auto flex-1 flex-row">
-              <InputLowPadding
-                title="Acompanhante"
-                size="regular"
-                alignText="left"
-                value={followUp}
-                placeholder={followUp || ''}
-                onChangeText={(e) => setFollowUp(e)}
-              />
-              <InputNumeric
-                title="Idade"
-                size="small"
-                value={followUpAge}
-                onChangeText={(e) => setFollowUpAge(e)}
-              />
-            </View>
-
-            <View>
-              <Title iconName="hospital-user" title="Pré-Hospitalar" />
-              {renderCheckboxes(
-                preHospitalarMethodCheckboxState,
-                showMorePreHospitalar,
-                handlePreHospitalarMethodCheckboxChange,
-              )}
-              {!showMorePreHospitalar ? (
-                <Button
-                  onPress={() => handleShowMore('preHospitalar')}
-                  style={{ backgroundColor: 'red', marginVertical: 10 }}
-                >
-                  <Text className="text-white">Ver Mais</Text>
-                </Button>
-              ) : (
-                <Button
-                  onPress={() => handleShowLess('preHospitalar')}
-                  style={{ backgroundColor: 'red', marginVertical: 10 }}
-                >
-                  <Text className="text-white">Ver Menos</Text>
-                </Button>
-              )}
-            </View>
-            <View>
-              <Title iconName="info-circle" title="Sinais e sintomas" />
-              {renderCheckboxes(
-                signsAndSymptomsCheckboxState,
-                showMoreSignsAndSymptoms,
-                handleSignsAndSymptomsCheckboxChange,
-              )}
-              {!showMoreSignsAndSymptoms ? (
-                <Button
-                  onPress={() => handleShowMore('signsAndSymptoms')}
-                  style={{ backgroundColor: 'red', marginVertical: 10 }}
-                >
-                  <Text className="text-white">Ver Mais</Text>
-                </Button>
-              ) : (
-                <Button
-                  onPress={() => handleShowLess('signsAndSymptoms')}
-                  style={{ backgroundColor: 'red', marginVertical: 10 }}
-                >
-                  <Text className="text-white">Ver Menos</Text>
-                </Button>
-              )}
-            </View>
+    <SafeAreaView>
+      <ScrollView>
+        {loading ? (
+          <View className="mx-auto h-screen w-[320px] items-center justify-center">
+            <ActivityIndicator size="large" color="#ff0000" />
+            <Text className="mt-3 text-center text-lg font-bold uppercase">
+              Carregando...
+            </Text>
           </View>
+        ) : (
+          <>
+            <Header />
+            <Title iconName="suitcase" title="Introdução" />
+            <View style={s.boxShadow} className="mx-auto">
+              <View className="w-full flex-1 flex-row items-center">
+                <View className="w-3/6 p-2">
+                  <InputDatePicker
+                    reportDate={reportDateTime}
+                    setReportDate={setReportDateTime}
+                  />
+                </View>
+                <View className="h-full w-3/6 items-center justify-center">
+                  <Options
+                    title="Sexo"
+                    Option1="Masc."
+                    Option2="Fem."
+                    selectedOption={gender}
+                    onSelectOption={handleSelectGender}
+                  />
+                </View>
+              </View>
+              <View className="mx-auto flex-1 flex-row">
+                <InputLowPadding
+                  title="Nome"
+                  size="regular"
+                  alignText="left"
+                  value={name}
+                  placeholder={name || ''}
+                  onChangeText={(e) => setName(e)}
+                />
+                <InputNumeric
+                  title="Idade"
+                  size="small"
+                  value={age}
+                  onChangeText={(e) => setAge(e)}
+                />
+              </View>
+              <View className="mx-auto flex-1 flex-row">
+                <InputCpf
+                  title="RG/CPF"
+                  placeholder="___.___.___-__"
+                  value={cpf}
+                  onChangeText={(e) => setCpf(e)}
+                />
+                <InputTelefone
+                  title="Fone"
+                  placeholder="(__) _____-____"
+                  value={phone}
+                  onChangeText={(e) => setPhone(e)}
+                />
+              </View>
+              <InputLowPadding
+                title="Local da Ocorrência"
+                value={reportPlace}
+                onChangeText={(e) => setReportPlace(e)}
+              />
+              <View className="mx-auto flex-1 flex-row">
+                <InputLowPadding
+                  title="Acompanhante"
+                  size="regular"
+                  alignText="left"
+                  value={followUp}
+                  placeholder={followUp || ''}
+                  onChangeText={(e) => setFollowUp(e)}
+                />
+                <InputNumeric
+                  title="Idade"
+                  size="small"
+                  value={followUpAge}
+                  onChangeText={(e) => setFollowUpAge(e)}
+                />
+              </View>
 
-          <MainButton
-            innerText="SALVAR"
-            onPress={() => handleSubmitIntroduction()}
-            isLoading={buttonLoading}
-          />
+              <View>
+                <Title iconName="hospital-user" title="Pré-Hospitalar" />
+                {renderCheckboxes(
+                  preHospitalarMethodCheckboxState,
+                  showMorePreHospitalar,
+                  handlePreHospitalarMethodCheckboxChange,
+                )}
+                {!showMorePreHospitalar ? (
+                  <Button
+                    onPress={() => handleShowMore('preHospitalar')}
+                    style={{ backgroundColor: 'red', marginVertical: 10 }}
+                  >
+                    <Text className="text-white">Ver Mais</Text>
+                  </Button>
+                ) : (
+                  <Button
+                    onPress={() => handleShowLess('preHospitalar')}
+                    style={{ backgroundColor: 'red', marginVertical: 10 }}
+                  >
+                    <Text className="text-white">Ver Menos</Text>
+                  </Button>
+                )}
+              </View>
+              <View>
+                <Title iconName="info-circle" title="Sinais e sintomas" />
+                {renderCheckboxes(
+                  signsAndSymptomsCheckboxState,
+                  showMoreSignsAndSymptoms,
+                  handleSignsAndSymptomsCheckboxChange,
+                )}
+                {!showMoreSignsAndSymptoms ? (
+                  <Button
+                    onPress={() => handleShowMore('signsAndSymptoms')}
+                    style={{ backgroundColor: 'red', marginVertical: 10 }}
+                  >
+                    <Text className="text-white">Ver Mais</Text>
+                  </Button>
+                ) : (
+                  <Button
+                    onPress={() => handleShowLess('signsAndSymptoms')}
+                    style={{ backgroundColor: 'red', marginVertical: 10 }}
+                  >
+                    <Text className="text-white">Ver Menos</Text>
+                  </Button>
+                )}
+              </View>
+            </View>
 
-          <Footer />
-        </>
-      )}
-    </ScrollView>
+            <MainButton
+              innerText="SALVAR"
+              onPress={() => handleSubmitIntroduction()}
+              isLoading={buttonLoading}
+            />
+
+            <Footer />
+          </>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   )
 }

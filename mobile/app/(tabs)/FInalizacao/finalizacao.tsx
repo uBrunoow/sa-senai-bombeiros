@@ -22,7 +22,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
 import findUser from '@src/api/users/findUser'
 import FInalizacaoModal from '@app/modal/FInalizacaoModal'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { styles as s } from '@app/styles/boxShadow'
 import Cinematica from './components/Cinematica'
 import findFinalization from '@src/api/reports/finalization/findFinalization'
@@ -171,8 +170,6 @@ const Finalizacao = () => {
 
     fetchUserData()
   }, [ownerId, finalizationId])
-
-  const { bottom, top } = useSafeAreaInsets()
 
   const handleModalClose = () => {
     setChangeResponsable(false)
@@ -323,11 +320,8 @@ const Finalizacao = () => {
   }
 
   return (
-    <>
-      <ScrollView
-        className="flex-1"
-        contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
-      >
+    <SafeAreaView>
+      <ScrollView>
         {loading ? (
           <View className="mx-auto h-screen w-[320px] items-center justify-center">
             <ActivityIndicator size="large" color="#ff0000" />
@@ -568,7 +562,7 @@ const Finalizacao = () => {
           </View>
         )}
       </ScrollView>
-    </>
+    </SafeAreaView>
   )
 }
 

@@ -46,10 +46,11 @@ export default function Login() {
       const response = await loginUser(data.email, data.password)
 
       if (response && response.user) {
+        console.log(response)
         dispatch(
           saveToken(response.token, response.user.id, response.refreshToken),
         )
-        navigation.navigate('ocorrencia' as never)
+        navigation.navigate('home' as never)
       } else {
         setLoginError('Invalid email or password')
       }

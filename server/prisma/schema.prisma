@@ -51,6 +51,7 @@ model Report {
   Symptoms                 Symptoms[]
   LocalTraumas             trauma[]
   CinematicAvaliation      CinematicAvaliation[]
+  InfoTransporte           InfoTransporte[]
   owner                    User                       @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId                  Int
 }
@@ -363,4 +364,17 @@ enum Roles {
   TenenteCoronel
   Admin
   semCargo
+}
+
+model InfoTransporte {
+  id              Int     @id @default(autoincrement())
+  numberUSB       Int?
+  numberOcorr     Int?
+  forwardingAgent String?
+  HcH             String?
+  kmFinal         Int?
+  code            String?
+  codeSUS         Int?
+  ReportOwnerId   Int
+  reportOwner     Report  @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }

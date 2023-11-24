@@ -25,6 +25,7 @@ import signsAndSymptomsReducer from '../reducers/signsAndSymptomsReducer'
 import IntroductionReducerData, {
   IntroductionDataState,
 } from '../reducers/introductionData'
+import infoTransportReducer from '../reducers/infoTransportReducer'
 
 export interface RootState {
   auth: {
@@ -70,6 +71,7 @@ export interface RootState {
     gesAnamnesisCompletness: number
     introductionCompletness: number
     infoPacienteCompletness: number
+    localTraumasCompletness: number
   }
 
   preHospitalarMethod: {
@@ -81,6 +83,10 @@ export interface RootState {
   }
 
   introductionData: IntroductionDataState
+
+  infoTransport: {
+    infoTransportId: number
+  }
 }
 const store = configureStore({
   reducer: {
@@ -109,6 +115,7 @@ const store = configureStore({
       IntroductionDataState,
       AnyAction
     >,
+    infoTransport: infoTransportReducer,
   },
   middleware: [thunk],
 })

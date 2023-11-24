@@ -84,6 +84,11 @@ export async function reportsDeleteRoutes(
             ReportOwnerId: parseInt(id),
           },
         }),
+        prisma.infoTransporte.deleteMany({
+          where: {
+            ReportOwnerId: parseInt(id),
+          },
+        }),
       ])
 
       await prisma.report.delete({

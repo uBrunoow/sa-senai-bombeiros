@@ -15,6 +15,9 @@ export const saveIntroductionCompletness = createAction<number | null>(
 export const saveInfoPacienteCompletness = createAction<number | null>(
   'SAVE_INFO_PACIENTE_COMPLETNESS',
 )
+export const saveLocalTraumasCompletness = createAction<number | null>(
+  'SAVE_LOCAL_TRAUMAS',
+)
 
 interface CompletnessState {
   anamnesisCompletness: number | null
@@ -22,6 +25,7 @@ interface CompletnessState {
   gesAnamnesisCompletness: number | null
   introductionCompletness: number | null
   infoPacienteCompletness: number | null
+  localTraumasCompletness: number | null
 }
 
 const initialCompletnessState: CompletnessState = {
@@ -30,6 +34,7 @@ const initialCompletnessState: CompletnessState = {
   gesAnamnesisCompletness: null,
   introductionCompletness: null,
   infoPacienteCompletness: null,
+  localTraumasCompletness: null,
 }
 
 const completnessReducer = createReducer(initialCompletnessState, {
@@ -59,6 +64,12 @@ const completnessReducer = createReducer(initialCompletnessState, {
     action: PayloadAction<number>,
   ) => {
     state.infoPacienteCompletness = action.payload
+  },
+  [saveLocalTraumasCompletness.type]: (
+    state,
+    action: PayloadAction<number>,
+  ) => {
+    state.localTraumasCompletness = action.payload
   },
 })
 

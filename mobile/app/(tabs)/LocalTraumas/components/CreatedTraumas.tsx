@@ -1,11 +1,11 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import { styles as s } from '@app/styles/boxShadow'
-import { ILocalTraumas } from '@src/interfaces/IReport'
+import { ILocalTrauma } from '@src/interfaces/IReport'
 import classNames from 'classnames'
 import deleteLocalTraumas from '@src/api/reports/localTraumas/deleteLocalTraumas'
 
 type CreatedTraumasProps = {
-  localTraumas: ILocalTraumas[]
+  localTraumas: ILocalTrauma[]
 }
 
 export default function CreatedTraumas({ localTraumas }: CreatedTraumasProps) {
