@@ -7,6 +7,10 @@ import Header from '../../components/Header'
 import Title from '../../components/Title'
 import Footer from '@app/components/Footer'
 import InputNumeric from '@app/components/inputNumeric'
+import MainButton from '@app/components/MainButton'
+import updateTransport from '@src/api/reports/infoTransport/updateTransport'
+import { useSelector } from 'react-redux'
+import { RootState } from '@src/redux/stores/stores'
 
 export default function InfoTransporte() {
   const [numberUSB, setNumberUSB] = useState(0)
@@ -20,6 +24,32 @@ export default function InfoTransporte() {
   const handleIRPS = (selectedIRPS: 'IR' | 'PS' | null) => {
     setCode(selectedIRPS)
   }
+
+  const dataToSend = {
+    numberUSB,
+    numberOcorr,
+    forwardingAgent,
+    HcH,
+    kmFinal,
+    code,
+    codeSUS,
+  }
+
+  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
+  const InfoTransoportId = useSelector(
+    (state: RootState) => state.infoTransport.infoTransportId,
+  )
+
+  const handleSubmitTransport = async () => {
+    const response = await updateTransport(
+      ReportOwnerId,
+      InfoTransoportId,
+      dataToSend,
+    )
+
+    console.log(response)
+  }
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -96,6 +126,11 @@ export default function InfoTransporte() {
             </View>
           </View>
         </View>
+        <MainButton
+          innerText="SALVAR"
+          // isLoading={buttonLoading}
+          onPress={() => handleSubmitTransport()}
+        />
         <Footer />
       </ScrollView>
     </SafeAreaView>
