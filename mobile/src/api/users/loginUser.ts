@@ -15,11 +15,26 @@ const loginUser = async (email: string, password: string) => {
       },
     )
 
-    const data = response.data
-    return data
-  } catch (error) {
-    console.error('Erro ao enviar os usuários:', error)
-    return null
+    return {
+      status: response.status,
+      data: response.data,
+    }
+  } catch (error: any) {
+    if (error.response) {
+      return {
+        status: error.response.status,
+        data: error.response.data,
+      }
+    } else if (error.request) {
+      console.error('No response received:', error.request)
+    } else {
+      console.error('Error setting up the request:', error.message)
+    }
+
+    return {
+      status: 500,
+      data: null,
+    }
   }
 }
 

@@ -1,4 +1,10 @@
-import { View, ScrollView, TouchableOpacity, Pressable } from 'react-native'
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Pressable,
+  ActivityIndicator,
+} from 'react-native'
 import React, { useState } from 'react'
 import loginUser from '@src/api/users/loginUser'
 import Header from '@app/components/Header'
@@ -6,7 +12,7 @@ import Footer from '@app/components/Footer'
 import { useDispatch } from 'react-redux'
 import { saveToken } from '@src/redux/actions/authActions'
 import { styles as s } from '@app/styles/boxShadow'
-import { Stack, FormControl, Input, Text } from 'native-base'
+import { Stack, FormControl, Input, Text, useToast } from 'native-base'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useForm, Controller } from 'react-hook-form'
 import { ZodError } from 'zod'
@@ -39,17 +45,56 @@ export default function Login() {
     },
   })
 
+  const toast = useToast()
+
   const handleLoginUser = async (data: FormDataType) => {
     try {
       setButtonLoading(true)
 
       const response = await loginUser(data.email, data.password)
 
-      if (response && response.user) {
+      console.log(response.status)
+
+      if (response.status === 401) {
+        toast.show({
+          description: 'Credenciais inválidas.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#ff0000' },
+        })
+      } else if (response.status === 500) {
+        toast.show({
+          description: 'Erro inesperado.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#ff0000' },
+        })
+      } else if (response.status === 200) {
+        toast.show({
+          description: 'Usuário logado com sucesso.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#0AC800' },
+        })
+      } else {
+        toast.show({
+          description: 'Erro de conexão.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#0AC800' },
+        })
+      }
+
+      if (response && response.data.user) {
+        console.log(response)
         dispatch(
-          saveToken(response.token, response.user.id, response.refreshToken),
+          saveToken(
+            response.data.token,
+            response.data.user.id,
+            response.data.refreshToken,
+          ),
         )
-        navigation.navigate('ocorrencia' as never)
+        navigation.navigate('home' as never)
       } else {
         setLoginError('Invalid email or password')
       }
@@ -155,15 +200,20 @@ export default function Login() {
                 </FormControl.ErrorMessage>
               </Stack>
             </FormControl>
-
-            <TouchableOpacity className="rounded-lg bg-red-700 p-3">
-              <Text
-                className="text-center text-xl font-bold text-white"
+            {buttonLoading ? (
+              <TouchableOpacity className="rounded-lg bg-red-700 p-3">
+                <ActivityIndicator size="large" color="#ffffff" />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                className="rounded-lg bg-red-700 p-3"
                 onPress={handleSubmit(handleLoginUser)}
               >
-                SALVAR
-              </Text>
-            </TouchableOpacity>
+                <Text className="text-center text-xl font-bold text-white">
+                  SALVAR
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
         <Footer />

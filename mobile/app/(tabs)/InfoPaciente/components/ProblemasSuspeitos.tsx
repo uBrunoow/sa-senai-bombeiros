@@ -203,6 +203,7 @@ export default function AvalPacienteGroup() {
         setPsiquiatricoButtonSelected(problemaSuspeitoPsiquiatrico)
 
         const anotherResponse = response.suspectProblems.Another
+
         setAnother(anotherResponse)
       }
       console.log(response)

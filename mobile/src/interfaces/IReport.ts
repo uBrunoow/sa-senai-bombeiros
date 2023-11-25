@@ -2,6 +2,16 @@
 import { IBase } from './Base'
 import { IUser } from './IUser'
 
+export interface IInfoTransporte extends IBase {
+  numberUSB?: number
+  numberOcorr?: number
+  forwardingAgent?: string
+  HcH?: string
+  kmFinal?: number
+  code?: 'IR' | 'PS' | null
+  codeSUS?: number
+}
+
 export interface ISymptom extends IBase {
   id: number
   symptomsDescription: string[]
@@ -149,5 +159,6 @@ export interface IReport extends IBase {
   Finalization: IFinalization[]
   SuspectProblems: ISuspectProblems[]
   LocalTraumas: ILocalTrauma[]
+  InfoTransport: IInfoTransporte[]
   owner: IUser
 }

@@ -50,7 +50,7 @@ const InputClock = (props: InputClockProps) => {
       <View className="w-full">
         <Pressable onPress={toggleDatePicker}>
           <TextInput
-            className="w-[95%] rounded-lg border py-2 pl-2"
+            className="m-auto w-[85%] rounded-lg border py-2 pl-2"
             placeholder="00:00"
             editable={false}
             value={timeMedication}

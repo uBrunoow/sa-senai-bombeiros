@@ -33,7 +33,7 @@ export default function Grouper(props: Grouperprops) {
       style={styles.boxShadow}
       className=" m-auto mb-5 w-5/6 flex-row rounded-[7px] bg-white p-3 shadow-lg"
     >
-      <View className="b-black w-5/6">
+      <View className="w-5/6 bg-transparent">
         <Text className="mb-7 text-[18px] font-bold uppercase">
           {props.title}
         </Text>

@@ -61,9 +61,9 @@ const DownloadPdfModal = () => {
   const calculateGlasgowTotal = () => {
     const glasgowData = reportsForDownload.report.Glasglow[0]
 
-    const eyeOpening = glasgowData.eyeOpeningOwnerId
-    const verbalResponse = glasgowData.verbalResponseOwnerId
-    const motorResponse = glasgowData.motorResponseOwnerId
+    const eyeOpening = glasgowData?.eyeOpeningOwnerId
+    const verbalResponse = glasgowData?.verbalResponseOwnerId
+    const motorResponse = glasgowData?.motorResponseOwnerId
 
     // Retorne a soma dos valores
     return eyeOpening + verbalResponse + motorResponse
@@ -72,11 +72,6 @@ const DownloadPdfModal = () => {
   console.log(JSON.stringify(reportsForDownload.report, null, 2))
 
   const generatePDF = async () => {
-    console.log(
-      verifyCinematicAvaliation(
-        reportsForDownload.report.CinematicAvaliation[0].foundWithSeatbelt,
-      ),
-    )
     const transportationIcon = getTransportationIcon(
       reportsForDownload.report.Finalization[0]?.transportation,
     )
@@ -453,9 +448,15 @@ const DownloadPdfModal = () => {
                   <p>Sexo: <span>${formatAnyValue(
                     reportsForDownload.report.gender,
                   )}</span></p>
-                  <p>Data: <span>${formatAnyValue(
-                    formatDate(reportsForDownload.report.reportDate),
-                  )}</span></p>
+                  <p>Data: <span>
+                  ${
+                    reportsForDownload.report.reportDate
+                      ? formatAnyValue(
+                          formatDate(reportsForDownload.report.reportDate),
+                        )
+                      : ''
+                  }
+                  </span></p>
                 </div>
                 <img class="logo-img-2" src="${logoImage}" alt="logo img grande">
               </div>
@@ -679,13 +680,13 @@ const DownloadPdfModal = () => {
                               ${formatAnyValue(
                                 getAberturaOcularGlasgowText(
                                   reportsForDownload.report.Glasglow[0]
-                                    .eyeOpeningOwnerId,
+                                    ?.eyeOpeningOwnerId,
                                 ),
                               )}
                               <div class="glasgow-value">
                                 ${formatAnyValue(
                                   reportsForDownload.report.Glasglow[0]
-                                    .eyeOpeningOwnerId,
+                                    ?.eyeOpeningOwnerId,
                                 )}
                               </div>
                             </div>
@@ -698,13 +699,13 @@ const DownloadPdfModal = () => {
                             ${formatAnyValue(
                               getRespostaVerbalGlasgowText(
                                 reportsForDownload.report.Glasglow[0]
-                                  .verbalResponseOwnerId,
+                                  ?.verbalResponseOwnerId,
                               ),
                             )}
                             <div class="glasgow-value">
                               ${formatAnyValue(
                                 reportsForDownload.report.Glasglow[0]
-                                  .verbalResponseOwnerId,
+                                  ?.verbalResponseOwnerId,
                               )}
                             </div>
                           </td>
@@ -716,13 +717,13 @@ const DownloadPdfModal = () => {
                             ${formatAnyValue(
                               getRespostaMotoraGlasgowText(
                                 reportsForDownload.report.Glasglow[0]
-                                  .motorResponseOwnerId,
+                                  ?.motorResponseOwnerId,
                               ),
                             )}
                             <div class="glasgow-value">
                               ${formatAnyValue(
                                 reportsForDownload.report.Glasglow[0]
-                                  .motorResponseOwnerId,
+                                  ?.motorResponseOwnerId,
                               )}
                             </div>
                           </td>
@@ -765,10 +766,10 @@ const DownloadPdfModal = () => {
                     </div>
                     <div class="content-info height">
                       <div class="infos-gerais">
-                        <p>${
+                        <p>${formatAnyValue(
                           reportsForDownload.report.Finalization[0]
-                            .conduction[0]
-                        }</p>
+                            ?.conduction[0],
+                        )}</p>
                       </div>
                     </div>
                   </div>
@@ -931,12 +932,13 @@ const DownloadPdfModal = () => {
                           <td>
                             <div class="glasgow-table">
                               ${formatAnyValue(
-                                reportsForDownload.report.systolicBloodPressure,
+                                reportsForDownload.report
+                                  ?.systolicBloodPressure,
                               )} 
                               X 
                               ${formatAnyValue(
                                 reportsForDownload.report
-                                  .diastolicBloodPressure,
+                                  ?.diastolicBloodPressure,
                               )}
                               mmHg
                             </div>
@@ -947,7 +949,7 @@ const DownloadPdfModal = () => {
                           <td>
                             <div class="glasgow-table">
                             ${formatAnyValue(
-                              reportsForDownload.report.bodyPulse,
+                              reportsForDownload.report?.bodyPulse,
                             )} B.C.P.M
                             </div>
                           </td>
@@ -957,7 +959,7 @@ const DownloadPdfModal = () => {
                           <td>
                             <div class="glasgow-table">
                             ${formatAnyValue(
-                              reportsForDownload.report.saturation,
+                              reportsForDownload.report?.saturation,
                             )}%
                             </div>
                           </td>
@@ -969,7 +971,7 @@ const DownloadPdfModal = () => {
                           <td>
                             <div class="glasgow-table">
                             ${formatAnyValue(
-                              reportsForDownload.report.bodyTemp,
+                              reportsForDownload.report?.bodyTemp,
                             )}°C
                             </div>
                           </td>
@@ -981,7 +983,7 @@ const DownloadPdfModal = () => {
                           <td>
                             <div class="glasgow-table">
                             ${formatAnyValue(
-                              reportsForDownload.report.perfusion,
+                              reportsForDownload.report?.perfusion,
                             )}
                             </div>
                           </td>
@@ -993,7 +995,7 @@ const DownloadPdfModal = () => {
                           <td>
                             <div class="glasgow-table">
                             ${formatAnyValue(
-                              reportsForDownload.report.breathing,
+                              reportsForDownload.report?.breathing,
                             )} M.R.M
                             </div>
                           </td>
@@ -1058,7 +1060,7 @@ const DownloadPdfModal = () => {
                       <div class="reports suspectProblems">
                         <p>${formatAnyValue(
                           reportsForDownload.report.Finalization[0]
-                            .finalRemarks,
+                            ?.finalRemarks,
                         )}</p>
                       </div>
                     </div>
@@ -1076,7 +1078,7 @@ const DownloadPdfModal = () => {
                       <div class="reports suspectProblems">
                         <p>${formatAnyValue(
                           reportsForDownload.report.Finalization[0]
-                            .CollectedObjects,
+                            ?.CollectedObjects,
                         )}</p>
                       </div>
                     </div>
@@ -1093,9 +1095,7 @@ const DownloadPdfModal = () => {
                         <p>Aspiração</p>
                       </div>
                       <div class="reports problems ">
-                        <p>Cânula de Guedel</p>  const transportationIcon = getTransportationIcon(
-                          reportsForDownload.report.Finalization[0]?.transportation,
-                        )
+                        <p>Cânula de Guedel</p>
                       </div>
                       <div class="reports problems ">
                         <p>Avaliação Inicial</p>
@@ -1140,49 +1140,49 @@ const DownloadPdfModal = () => {
                       <div class="reports cinematic">
                         ${verifyCinematicAvaliation(
                           reportsForDownload.report.CinematicAvaliation[0]
-                            .twistedSteering,
+                            ?.twistedSteering,
                         )}
                         <p>Volante Torcido</p>
                       </div>
                       <div class="reports cinematic ">
                       ${verifyCinematicAvaliation(
                         reportsForDownload.report.CinematicAvaliation[0]
-                          .foundWithHelmet,
+                          ?.foundWithHelmet,
                       )}
                         <p>Encontrado de Capacete</p>
                       </div>
                       <div class="reports cinematic ">
                       ${verifyCinematicAvaliation(
                         reportsForDownload.report.CinematicAvaliation[0]
-                          .damagedPanel,
+                          ?.damagedPanel,
                       )}
                         <p>Para-brisas Avariado</p>
                       </div>
                       <div class="reports cinematic ">
                       ${verifyCinematicAvaliation(
                         reportsForDownload.report.CinematicAvaliation[0]
-                          .foundWithSeatbelt,
+                          ?.foundWithSeatbelt,
                       )}
                         <p>Encontrado de Cinto</p>
                       </div>
                       <div class="reports cinematic ">
                       ${verifyCinematicAvaliation(
                         reportsForDownload.report.CinematicAvaliation[0]
-                          .comportamentalDisturb,
+                          ?.comportamentalDisturb,
                       )}
                         <p>Distúrbio de Comportamento</p>
                       </div>
                       <div class="reports cinematic ">
                       ${verifyCinematicAvaliation(
                         reportsForDownload.report.CinematicAvaliation[0]
-                          .damagedWindshield,
+                          ?.damagedWindshield,
                       )}
                         <p>Painel Avariado</p>
                       </div>
                       <div class="reports cinematic ">
                       ${verifyCinematicAvaliation(
                         reportsForDownload.report.CinematicAvaliation[0]
-                          .walkingInTheScene,
+                          ?.walkingInTheScene,
                       )}
                         <p>Caminhando na Cena</p>
                       </div>
@@ -1210,14 +1210,17 @@ const DownloadPdfModal = () => {
                     <div class="finalRemarks-anamnese">
                         <h5>Observações Finais</h5>
                         <p>
-                          ${reportsForDownload.report.Anamnesis[0].FinalRemarks}
+                          ${formatAnyValue(
+                            reportsForDownload.report.Anamnesis[0]
+                              ?.FinalRemarks,
+                          )}
                         </p>
                         <h5>Sinais e sintomas</h5>
                         <p>
-                          ${
+                          ${formatAnyValue(
                             reportsForDownload.report.Anamnesis[0]
-                              .SignsAndSymptoms
-                          }
+                              ?.SignsAndSymptoms,
+                          )}
                         </p>
                     </div>
                     </div>
@@ -1225,14 +1228,16 @@ const DownloadPdfModal = () => {
                       <div class="infos-anamnese">Já aconteceu outras vezes?</div>
                       <div class="infos-anamnese">
                         ${convertTrue(
-                          reportsForDownload.report.Anamnesis[0].HappenedTimes,
+                          reportsForDownload.report.Anamnesis[0]?.HappenedTimes,
                         )}
                       </div>
                     </div>
                     <div class="divider-anamnese">
                       <div class="infos-anamnese">A quanto tempo isso aconteceu?:</div>
                       <div class="infos-anamnese">
-                        ${reportsForDownload.report.Anamnesis[0].SinceHappened}
+                        ${formatAnyValue(
+                          reportsForDownload.report.Anamnesis[0]?.SinceHappened,
+                        )}
                       </div>
                     </div>
                     <div class="divider-anamnese">
@@ -1240,35 +1245,37 @@ const DownloadPdfModal = () => {
                       <div class="infos-anamnese">
                           ${convertTrue(
                             reportsForDownload.report.Anamnesis[0]
-                              .HealthProblem,
+                              ?.HealthProblem,
                           )}
                       </div>
                     </div>
                     <div class="divider-anamnese">
                       <div class="infos-anamnese">Faz uso de medicação?</div>
                       <div class="infos-anamnese">${convertTrue(
-                        reportsForDownload.report.Anamnesis[0].Medication,
+                        reportsForDownload.report.Anamnesis[0]?.Medication,
                       )} | ${
-        reportsForDownload.report.Anamnesis[0].MedicationWhich
+        reportsForDownload.report.Anamnesis[0]?.MedicationWhich
       }</div>
                       <div class="infos-anamnese">Última medicação</div>
                       <div class="infos-anamnese">
-                      ${reportsForDownload.report.Anamnesis[0].HourMedication}
+                      ${formatAnyValue(
+                        reportsForDownload.report.Anamnesis[0]?.HourMedication,
+                      )}
                       </div>
                     </div>
                     <div class="divider-anamnese">
                       <div class="infos-anamnese">Alguma alergia?:</div>
-                      <div class="infos-anamnese">${
-                        reportsForDownload.report.Anamnesis[0].Allergies
-                      } | ${
-        reportsForDownload.report.Anamnesis[0].AllergiesWhich
-      }</div>
+                      <div class="infos-anamnese">${formatAnyValue(
+                        reportsForDownload.report.Anamnesis[0]?.Allergies,
+                      )} | ${formatAnyValue(
+        reportsForDownload.report.Anamnesis[0]?.AllergiesWhich,
+      )}</div>
                       <div class="infos-anamnese">Ingeriu Algum Liquido?:</div>
-                      <div class="infos-anamnese">${
-                        reportsForDownload.report.Anamnesis[0].IngestedFood
-                      } | ${
-        reportsForDownload.report.Anamnesis[0].WhatTimeFood
-      }</div>
+                      <div class="infos-anamnese">${formatAnyValue(
+                        reportsForDownload.report.Anamnesis[0]?.IngestedFood,
+                      )} | ${formatAnyValue(
+        reportsForDownload.report.Anamnesis[0]?.WhatTimeFood,
+      )}</div>
                     </div>
                   </div>
                 </div>
