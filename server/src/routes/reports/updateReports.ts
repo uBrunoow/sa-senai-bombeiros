@@ -4,7 +4,8 @@ import { reportsUpdateSchema } from '../../schemas/reportSchemas'
 
 export async function reportsUpdateRoutes(app: FastifyInstance) {
   app.put('/api/reports/update/:id', async (req, res) => {
-    const { id } = req.params as { id: string }
+    try {
+      const { id } = req.params as { id: string }
 
     const {
       age,
@@ -110,9 +111,13 @@ export async function reportsUpdateRoutes(app: FastifyInstance) {
       data: updatedReportData,
     })
 
-    return res.send({
-      msg: '🟢 Usuário atualizado com sucesso.',
-      updatedReport,
-    })
+      return res.send({
+        msg: '🟢 Usuário atualizado com sucesso.',
+        updatedReport,
+      })
+    } catch (error) {
+      console.log('Erro ao atualizar report: ', error)
+      res.send({ msg: 'Deu ruim' })
+    }
   })
 }

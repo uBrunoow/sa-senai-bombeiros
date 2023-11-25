@@ -39,8 +39,8 @@ const bodyCoordinates: TBodyCoordinates = {
   },
   'Antebraço direito Traseiro': {
     coords: {
-      tl: { x: 265, y: 159 },
-      br: { x: 287, y: 185 },
+      tl: { x: 276, y: 149 },
+      br: { x: 299, y: 184 },
     },
     side: 'RIGHT',
     face: 'BACK',
@@ -48,8 +48,8 @@ const bodyCoordinates: TBodyCoordinates = {
   },
   'Braço esquerdo frontal': {
     coords: {
-      tl: { x: 109, y: 122 },
-      br: { x: 130, y: 146 },
+      tl: { x: 113, y: 113 },
+      br: { x: 133, y: 143 },
     },
     side: 'LEFT',
     face: 'FRONT',
@@ -75,8 +75,8 @@ const bodyCoordinates: TBodyCoordinates = {
   },
   'Braço direito traseiro': {
     coords: {
-      tl: { x: 260, y: 107 },
-      br: { x: 280, y: 140 },
+      tl: { x: 2273, y: 106 },
+      br: { x: 295, y: 142 },
     },
     side: 'RIGHT',
     face: 'BACK',
@@ -84,8 +84,8 @@ const bodyCoordinates: TBodyCoordinates = {
   },
   'Pecoço frontal': {
     coords: {
-      tl: { x: 1, y: 1 },
-      br: { x: 1, y: 1 },
+      tl: { x: 59, y: 71 },
+      br: { x: 103, y: 84 },
     },
     side: null,
     face: 'FRONT',
@@ -93,8 +93,8 @@ const bodyCoordinates: TBodyCoordinates = {
   },
   'Pescoço traseiro': {
     coords: {
-      tl: { x: 211, y: 78 },
-      br: { x: 249, y: 87 },
+      tl: { x: 208, y: 68 },
+      br: { x: 256, y: 81 },
     },
     side: null,
     face: 'BACK',
@@ -147,8 +147,8 @@ const bodyCoordinates: TBodyCoordinates = {
   },
   'Ombro Esquerdo Traseiro': {
     coords: {
-      tl: { x: 199, y: 87 },
-      br: { x: 198, y: 110 },
+      tl: { x: 191, y: 87 },
+      br: { x: 209, y: 103 },
     },
     side: 'LEFT',
     face: 'BACK',
@@ -196,8 +196,35 @@ const bodyCoordinates: TBodyCoordinates = {
       br: { x: 73, y: 323 },
     },
     side: 'RIGHT',
-    face: null,
+    face: 'FRONT',
     local: 'PERNA',
+  },
+  'Perna Frontal Esquerda': {
+    coords: {
+      tl: { x: 84, y: 284 },
+      br: { x: 107, y: 335 },
+    },
+    side: 'LEFT',
+    face: 'FRONT',
+    local: 'PERNA',
+  },
+  'Pé Esquerdo': {
+    coords: {
+      tl: { x: 84, y: 284 },
+      br: { x: 107, y: 335 },
+    },
+    side: 'LEFT',
+    face: 'FRONT',
+    local: 'PE',
+  },
+  'Pé Direito': {
+    coords: {
+      tl: { x: 84, y: 284 },
+      br: { x: 107, y: 335 },
+    },
+    side: 'LEFT',
+    face: 'FRONT',
+    local: 'PE',
   },
 }
 

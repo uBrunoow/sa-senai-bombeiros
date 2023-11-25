@@ -1,4 +1,4 @@
-import { View, ScrollView, SafeAreaView } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView } from 'react-native'
 import React from 'react'
 import Header from '../../components/Header'
 import Title from '../../components/Title'
@@ -6,6 +6,7 @@ import Footer from '../../components/Footer'
 import { styles as s } from '../../styles/boxShadow'
 import Subtitle from '@app/components/Subtitle'
 import InputLowPadding from '@app/components/InputLowPadding'
+import UsageTable from './components/UsageTable'
 
 export default function Ocorrencia() {
   return (
@@ -72,6 +73,25 @@ export default function Ocorrencia() {
               outro
             </Text>
           </View>
+          <UsageTable rows={[
+            {
+              material: "Mano",
+              quantity: 1,
+              sizes: [
+                "gg",
+                "md",
+                "m",
+              ]
+            },
+            {
+              material: "Manin",
+              quantity: 11,
+            },
+            {
+              material: "Man",
+              quantity: 2,
+            },
+          ]} />
           <Footer />
         </View>
       </ScrollView>
