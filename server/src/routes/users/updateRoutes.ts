@@ -11,10 +11,11 @@ export async function userUpdateRoutes(
     const { id } = req.params as { id: string } // Buscar o id do usuário
 
     // Faz uma requisição do body para pegar o email senha e nome
-    const { email, password, name } = updateSchema.parse(req.body)
+    const { email, password, name, gender, isActive, role } =
+      updateSchema.parse(req.body)
 
     // Validação dos dados recebidos
-    if (!email && !password && !name) {
+    if (!email && !password && !name && !role && !isActive) {
       return res
         .status(400)
         .send({ message: '🔴 Nenhuma informação foi fornecida' })
@@ -38,6 +39,15 @@ export async function userUpdateRoutes(
       email?: string
       password?: string
       name?: string
+      gender?: string
+      isActive?: boolean
+      role?:
+        | 'segundoTenente'
+        | 'primeiroTenente'
+        | 'Capitao'
+        | 'Major'
+        | 'TenenteCoronel'
+        | 'Admin'
     } = {}
 
     // Se tiver um email, atualizar o email
@@ -55,6 +65,16 @@ export async function userUpdateRoutes(
     // Se tiver um nome, atualizar o nome
     if (name) {
       updatedUserData.name = name
+    }
+
+    if (gender) {
+      updatedUserData.gender = gender
+    }
+
+    if (!isActive && isActive !== undefined) updatedUserData.isActive = false
+
+    if (role !== undefined) {
+      updatedUserData.role = role
     }
 
     // Atualizar o usuário buscando pelo ID

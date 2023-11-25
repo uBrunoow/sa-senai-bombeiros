@@ -1,6 +1,5 @@
-import { View, ScrollView, StyleSheet } from 'react-native'
+import { View, ScrollView, StyleSheet, SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Header from '@app/components/Header'
 import Title from '@app/components/Title'
 import Footer from '@app/components/Footer'
@@ -24,8 +23,6 @@ export default function Anamnese() {
   const anamnesisId = useSelector(
     (state: RootState) => state.anamnesis.anamnesisId,
   )
-
-  const { bottom, top } = useSafeAreaInsets()
 
   const [sinaisESintomas, setSinaisESintomas] = useState('')
   const [outrasVezes, setOutrasVezes] = useState(false)
@@ -184,128 +181,132 @@ export default function Anamnese() {
   }
 
   return (
-    <ScrollView
-      className="flex-1"
-      contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
-    >
-      {loading ? (
-        <Loader />
-      ) : (
-        <View>
-          <Header />
-          <View className="justfy-between aling-items mb-4 flex-1 px-[21.5px]">
-            <Title iconName="question-circle" title="Anamnese de Emergência" />
-            <View
-              className=" mx-auto mb-12 rounded-[14px] bg-white py-[30px] shadow-md"
-              style={styles.boxShadow}
-            >
-              <View className="justfy-between aling-items w-347 h-1041 flex-1">
-                <InputFull
-                  title="Sinais e Sintomas"
-                  isBig={true}
-                  value={sinaisESintomas}
-                  onChangeText={(e) => setSinaisESintomas(e)}
-                />
-                {/* <View className="just-between aling-items flex-1"> */}
-                <YesOrNo
-                  Question="Aconteceu outras vezes?"
-                  selectedOption={outrasVezes ? 'SIM' : 'NÃO'}
-                  onSelectOption={handleOutrasVezesChange}
-                />
-                {/* </View> */}
-                {outrasVezes && (
+    <SafeAreaView>
+      <ScrollView>
+        {loading ? (
+          <Loader />
+        ) : (
+          <View>
+            <Header />
+            <View className="justfy-between aling-items mb-4 flex-1 px-[21.5px]">
+              <Title
+                iconName="question-circle"
+                title="Anamnese de Emergência"
+              />
+              <View
+                className=" mx-auto mb-12 rounded-[14px] bg-white py-[30px] shadow-md"
+                style={styles.boxShadow}
+              >
+                <View className="justfy-between aling-items w-347 h-1041 flex-1">
                   <InputFull
-                    title="A quanto tempo isso aconteceu?"
-                    value={tempoAconteceu}
-                    placeholder={tempoAconteceu || ''}
-                    onChangeText={(e) => setTempoAconteceu(e)}
+                    title="Sinais e Sintomas"
+                    isBig={true}
+                    value={sinaisESintomas}
+                    onChangeText={(e) => setSinaisESintomas(e)}
                   />
-                )}
-                {/* <View className="just-between aling-items flex-1"> */}
-                <YesOrNo
-                  Question="Possui algum problema de saúde?"
-                  selectedOption={problemaSaude ? 'SIM' : 'NÃO'}
-                  onSelectOption={handleProblemaSaudeChange}
-                />
-                {/* </View> */}
-                {problemaSaude && (
-                  <InputFull
-                    title="Quais?"
-                    value={quaisProblemas}
-                    placeholder={quaisProblemas || ''}
-                    onChangeText={(e) => setQuaisProblemas(e)}
-                  />
-                )}
-                {/* <View className="just-between aling-items flex-1"> */}
-                <YesOrNo
-                  Question="Faz uso de medicação?"
-                  selectedOption={usoMedicacao ? 'SIM' : 'NÃO'}
-                  onSelectOption={handleUsoMedicacaoChange}
-                />
-                {/* </View> */}
-                {usoMedicacao && (
-                  <>
-                    <InputFull
-                      title="Quais?"
-                      value={quaisMedicacoes}
-                      placeholder={quaisMedicacoes || ''}
-                      onChangeText={(e) => setQuaisMedicacoes(e)}
-                    />
-                    <InputClock
-                      title="Horário Ultima Med."
-                      initialValue={horasMedicacao}
-                      onChange={(newValue) => setHorasMedicacao(newValue)}
-                    />
-                  </>
-                )}
-                {/* <View className="just-between aling-items flex-1"> */}
-                <YesOrNo
-                  Question="Tem alguma alergia?"
-                  selectedOption={alergia ? 'SIM' : 'NÃO'}
-                  onSelectOption={handleAlergiaChange}
-                />
-                {/* </View> */}
-                {alergia && (
-                  <InputFull
-                    title="Quais?"
-                    value={quaisAlergias}
-                    placeholder={quaisAlergias || ''}
-                    onChangeText={(e) => setQuaisAlergias(e)}
-                  />
-                )}
-                <View className="w-92 h-67 flex-1">
+                  {/* <View className="just-between aling-items flex-1"> */}
                   <YesOrNo
-                    Question="Ingeriu alimento/líquido nas últimas 6 horas?"
-                    selectedOption={ingeriuAlimento ? 'SIM' : 'NÃO'}
-                    onSelectOption={handleIngeriuAlimentoChange}
+                    Question="Aconteceu outras vezes?"
+                    selectedOption={outrasVezes ? 'SIM' : 'NÃO'}
+                    onSelectOption={handleOutrasVezesChange}
                   />
-                  {ingeriuAlimento && (
-                    <InputClock
-                      title="Que horas?"
-                      initialValue={horasIngeriuAlimento}
-                      onChange={(newValue) => setHorasIngeriuAlimento(newValue)}
+                  {/* </View> */}
+                  {outrasVezes && (
+                    <InputFull
+                      title="A quanto tempo isso aconteceu?"
+                      value={tempoAconteceu}
+                      placeholder={tempoAconteceu || ''}
+                      onChangeText={(e) => setTempoAconteceu(e)}
                     />
                   )}
+                  {/* <View className="just-between aling-items flex-1"> */}
+                  <YesOrNo
+                    Question="Possui algum problema de saúde?"
+                    selectedOption={problemaSaude ? 'SIM' : 'NÃO'}
+                    onSelectOption={handleProblemaSaudeChange}
+                  />
+                  {/* </View> */}
+                  {problemaSaude && (
+                    <InputFull
+                      title="Quais?"
+                      value={quaisProblemas}
+                      placeholder={quaisProblemas || ''}
+                      onChangeText={(e) => setQuaisProblemas(e)}
+                    />
+                  )}
+                  {/* <View className="just-between aling-items flex-1"> */}
+                  <YesOrNo
+                    Question="Faz uso de medicação?"
+                    selectedOption={usoMedicacao ? 'SIM' : 'NÃO'}
+                    onSelectOption={handleUsoMedicacaoChange}
+                  />
+                  {/* </View> */}
+                  {usoMedicacao && (
+                    <>
+                      <InputFull
+                        title="Quais?"
+                        value={quaisMedicacoes}
+                        placeholder={quaisMedicacoes || ''}
+                        onChangeText={(e) => setQuaisMedicacoes(e)}
+                      />
+                      <InputClock
+                        title="Horário Ultima Med."
+                        initialValue={horasMedicacao}
+                        onChange={(newValue) => setHorasMedicacao(newValue)}
+                      />
+                    </>
+                  )}
+                  {/* <View className="just-between aling-items flex-1"> */}
+                  <YesOrNo
+                    Question="Tem alguma alergia?"
+                    selectedOption={alergia ? 'SIM' : 'NÃO'}
+                    onSelectOption={handleAlergiaChange}
+                  />
+                  {/* </View> */}
+                  {alergia && (
+                    <InputFull
+                      title="Quais?"
+                      value={quaisAlergias}
+                      placeholder={quaisAlergias || ''}
+                      onChangeText={(e) => setQuaisAlergias(e)}
+                    />
+                  )}
+                  <View className="w-92 h-67 flex-1">
+                    <YesOrNo
+                      Question="Ingeriu alimento/líquido nas últimas 6 horas?"
+                      selectedOption={ingeriuAlimento ? 'SIM' : 'NÃO'}
+                      onSelectOption={handleIngeriuAlimentoChange}
+                    />
+                    {ingeriuAlimento && (
+                      <InputClock
+                        title="Que horas?"
+                        initialValue={horasIngeriuAlimento}
+                        onChange={(newValue) =>
+                          setHorasIngeriuAlimento(newValue)
+                        }
+                      />
+                    )}
+                  </View>
+                  <InputFull
+                    title="Observações Finais"
+                    isBig={true}
+                    placeholder={observacoesFinais || ''}
+                    value={observacoesFinais}
+                    onChangeText={(e) => setObservacoesFinais(e)}
+                  />
                 </View>
-                <InputFull
-                  title="Observações Finais"
-                  isBig={true}
-                  placeholder={observacoesFinais || ''}
-                  value={observacoesFinais}
-                  onChangeText={(e) => setObservacoesFinais(e)}
-                />
               </View>
+              <MainButton
+                innerText="SALVAR"
+                isLoading={buttonLoading}
+                onPress={() => handleSubmitAnamnesis()}
+              />
             </View>
-            <MainButton
-              innerText="SALVAR"
-              isLoading={buttonLoading}
-              onPress={() => handleSubmitAnamnesis()}
-            />
+            <Footer />
           </View>
-          <Footer />
-        </View>
-      )}
-    </ScrollView>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 

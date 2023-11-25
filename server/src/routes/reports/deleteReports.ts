@@ -84,6 +84,11 @@ export async function reportsDeleteRoutes(
             ReportOwnerId: parseInt(id),
           },
         }),
+        prisma.infoTransporte.deleteMany({
+          where: {
+            ReportOwnerId: parseInt(id),
+          },
+        }),
       ])
 
       await prisma.report.delete({
@@ -91,6 +96,9 @@ export async function reportsDeleteRoutes(
           id: parseInt(id),
         },
       })
+
+      // localStorage.removeItem('token')
+      // localStorage.removeItem('refreshToken')
 
       return res.send({ msg: `🔴 Ocorrência com o id ${id} foi deletado.` })
     } catch (error) {

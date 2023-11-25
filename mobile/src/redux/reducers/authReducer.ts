@@ -3,19 +3,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 interface AuthState {
   token: string
   userId: number | null
-  expirationDate: number | null
+  refreshToken: string
 }
 
 const initialState: AuthState = {
   token: '',
   userId: null,
-  expirationDate: null,
+  refreshToken: '',
 }
 
 type AuthAction =
   | {
       type: 'SAVE_TOKEN'
-      payload: { token: string; userId: number; expirationDate?: number }
+      payload: { token: string; userId: number; refreshToken: string }
     }
   | { type: 'LOGOUT' }
 
@@ -23,32 +23,26 @@ const authReducer = (state = initialState, action: AuthAction): AuthState => {
   switch (action.type) {
     case 'SAVE_TOKEN':
       AsyncStorage.setItem('authToken', action.payload.token)
+      AsyncStorage.setItem('refreshToken', action.payload.refreshToken)
       AsyncStorage.setItem('userId', action.payload.userId.toString())
-
-      if (action.payload.expirationDate !== undefined) {
-        AsyncStorage.setItem(
-          'expirationDate',
-          action.payload.expirationDate.toString(),
-        )
-      }
 
       return {
         ...state,
         token: action.payload.token,
         userId: action.payload.userId,
-        expirationDate: action.payload.expirationDate || null,
+        refreshToken: action.payload.refreshToken,
       }
 
     case 'LOGOUT':
       AsyncStorage.removeItem('authToken')
       AsyncStorage.removeItem('userId')
-      AsyncStorage.removeItem('expirationDate')
+      AsyncStorage.removeItem('refreshToken')
 
       return {
         ...state,
         token: '',
         userId: null,
-        expirationDate: null,
+        refreshToken: '',
       }
 
     default:

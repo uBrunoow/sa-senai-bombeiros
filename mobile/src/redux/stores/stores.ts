@@ -22,6 +22,10 @@ import CinematicaReducerData, {
 import completnessReducer from '../reducers/completnessReducer'
 import preHospitalarMethodReducer from '../reducers/preHospitalarMethodReducer'
 import signsAndSymptomsReducer from '../reducers/signsAndSymptomsReducer'
+import IntroductionReducerData, {
+  IntroductionDataState,
+} from '../reducers/introductionData'
+import infoTransportReducer from '../reducers/infoTransportReducer'
 
 export interface RootState {
   auth: {
@@ -67,6 +71,8 @@ export interface RootState {
     gesAnamnesisCompletness: number
     introductionCompletness: number
     infoPacienteCompletness: number
+    localTraumasCompletness: number
+    infoTransportCompletness: number
   }
 
   preHospitalarMethod: {
@@ -75,6 +81,12 @@ export interface RootState {
 
   signsAndSymptoms: {
     signsAndSymptomsId: number
+  }
+
+  introductionData: IntroductionDataState
+
+  infoTransport: {
+    infoTransportId: number
   }
 }
 const store = configureStore({
@@ -100,6 +112,11 @@ const store = configureStore({
     completness: completnessReducer,
     preHospitalarMethod: preHospitalarMethodReducer,
     signsAndSymptoms: signsAndSymptomsReducer,
+    introductionData: IntroductionReducerData as Reducer<
+      IntroductionDataState,
+      AnyAction
+    >,
+    infoTransport: infoTransportReducer,
   },
   middleware: [thunk],
 })

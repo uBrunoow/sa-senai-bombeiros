@@ -70,7 +70,7 @@ export default function InputLowPadding(props: InputProps) {
             fontSize: 16,
             paddingLeft: 10,
           }}
-          value={inputValue}
+          value={props.value || inputValue}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
           keyboardType={'default'}

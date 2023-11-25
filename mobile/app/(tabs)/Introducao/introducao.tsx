@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { View, ScrollView, Text, ActivityIndicator } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import {
+  View,
+  ScrollView,
+  Text,
+  ActivityIndicator,
+  SafeAreaView,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
 import Title from '@app/components/Title'
@@ -18,94 +23,97 @@ import InputNumeric from '@app/components/inputNumeric'
 import findReports from '@src/api/reports/findReport'
 import InputCpf from '@app/components/inputCpf'
 import InputTelefone from '@app/components/inputTelefone'
-import { Checkbox, useToast } from 'native-base'
+import { Button, Checkbox, useToast } from 'native-base'
 import updatePreHospitalarMethod from '@src/api/reports/preHospitalarMethod/updatePreHospitalarMethods'
 import findPreHospitalarMethodByReport from '@src/api/reports/preHospitalarMethod/findPreHospitalarMethodByReport'
 import updateSymptomsMethod from '@src/api/reports/symptoms/updateSymtoms'
 import findSymptomsByReport from '@src/api/reports/symptoms/findSymptoms'
 import { determineCompletness } from './utils/determineCompletness'
 import { saveIntroductionCompletness } from '@src/redux/reducers/completnessReducer'
-import { RouteProp, useNavigation } from '@react-navigation/core'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { useNavigation } from '@react-navigation/core'
+import { setIntroductionData } from '@src/redux/actions/dataActions'
+import { formatCheckbox } from './utils/formatCheckbox'
 
 type CheckboxStates = {
-  AFOGAMENTO?: boolean
-  AGRESSAO?: boolean
-  ATROPELAMENTO?: boolean
-  CAUSADO_POR_ANIMAIS?: boolean
-  CHOQUE_ELETRICO?: boolean
-  COM_MEIO_DE_TRANSPORTE?: boolean
-  DESABAMENTO?: boolean
-  DESMORONAMENTO?: boolean
-  DOMESTICO?: boolean
-  EMERGENCIA_MEDICA?: boolean
-  ESPORTIVO?: boolean
-  INTOXICACAO?: boolean
-  QUEDA_BICICLETA?: boolean
-  QUEDA_MOTO?: boolean
-  QUEDA_MENOR_QUE_2M?: boolean
-  QUEDA_MAIOR_QUE_2M?: boolean
-  QUEDA_PROPRIA_ALTURA?: boolean
-  TENTATIVA_DE_SUICIDIO?: boolean
-  TRABALHO?: boolean
-  TRANSFERENCIA?: boolean
+  AFOGAMENTO: boolean
+  AGRESSAO: boolean
+  ATROPELAMENTO: boolean
+  CAUSADO_POR_ANIMAIS: boolean
+  CHOQUE_ELETRICO: boolean
+  COM_MEIO_DE_TRANSPORTE: boolean
+  DESABAMENTO: boolean
+  DESMORONAMENTO: boolean
+  DOMESTICO: boolean
+  EMERGENCIA_MEDICA: boolean
+  ESPORTIVO: boolean
+  INTOXICACAO: boolean
+  QUEDA_BICICLETA: boolean
+  QUEDA_MOTO: boolean
+  QUEDA_MENOR_QUE_2M: boolean
+  QUEDA_MAIOR_QUE_2M: boolean
+  QUEDA_PROPRIA_ALTURA: boolean
+  TENTATIVA_DE_SUICIDIO: boolean
+  TRABALHO: boolean
+  TRANSFERENCIA: boolean
+  [key: string]: boolean
 }
 
 type SymptomsCheckboxStates = {
-  ABD_SENSIVEL_RIGIDO?: boolean
-  AFUNDAMENTO_DE_CRANIO?: boolean
-  AGITACAO?: boolean
-  AMNESIA?: boolean
-  ANGINA_DE_PEITO?: boolean
-  APINEIA?: boolean
-  BRADICARDIA?: boolean
-  BRADIPNEIA?: boolean
-  BRONCO_ASPIRANDO?: boolean
-  CEFALIA?: boolean
-  CIANOSE_LABIOS?: boolean
-  CIANOSE_EXTREMIDADES?: boolean
-  CONVULSAO?: boolean
-  DECORTICACAO?: boolean
-  DEFORMIDADE?: boolean
-  DESCEREBRACAO?: boolean
-  DESMAIO?: boolean
-  DESVIO_DE_TRAQUEIA?: boolean
-  DISPNEIA?: boolean
-  DOR_LOCAL?: boolean
-  EDEMA_GENERALIZADO?: boolean
-  EDEMA_LOCALIZADO?: boolean
-  ENFISEMA_SUBCUTANEO?: boolean
-  ESTASE_DA_JUGULAR?: boolean
-  FACE_PALIDA?: boolean
-  HEMORRAGIA_INTERNA?: boolean
-  HEMORRAGIA_EXTERNA?: boolean
-  HIPERTENSAO?: boolean
-  HIPOTENSAO?: boolean
-  NAUSEAS_VOMITOS?: boolean
-  NASORAGIA?: boolean
-  OBITO?: boolean
-  OTORREIA?: boolean
-  OTORRAGIA?: boolean
-  OVACE?: boolean
-  PARADA_CARDIACA?: boolean
-  PARADA_RESPIRATORIA?: boolean
-  PRIAPRISMO?: boolean
-  PRURIDO_NA_PELE?: boolean
-  ANISOCORIA_NAO_REAGENTE?: boolean
-  ANISOCORIA_REAGENTE?: boolean
-  ISOCORIA_NAO_REAGENTE?: boolean
-  ISOCORIA_REAGENTE?: boolean
-  MIDRIASE_NAO_REAGENTE?: boolean
-  MIDRIASE_REAGENTE?: boolean
-  MIOSE_NAO_REAGENTE?: boolean
-  MIOSE_REAGENTE?: boolean
-  SEDE?: boolean
-  SINAL_DE_BATTLE?: boolean
-  SINAL_DE_GUAXINIM?: boolean
-  SUDORESE?: boolean
-  TAQUIPNEIA?: boolean
-  TAQUICARDIA?: boolean
-  TONTURA?: boolean
+  ABD_SENSIVEL_RIGIDO: boolean
+  AFUNDAMENTO_DE_CRANIO: boolean
+  AGITACAO: boolean
+  AMNESIA: boolean
+  ANGINA_DE_PEITO: boolean
+  APINEIA: boolean
+  BRADICARDIA: boolean
+  BRADIPNEIA: boolean
+  BRONCO_ASPIRANDO: boolean
+  CEFALIA: boolean
+  CIANOSE_LABIOS: boolean
+  CIANOSE_EXTREMIDADES: boolean
+  CONVULSAO: boolean
+  DECORTICACAO: boolean
+  DEFORMIDADE: boolean
+  DESCEREBRACAO: boolean
+  DESMAIO: boolean
+  DESVIO_DE_TRAQUEIA: boolean
+  DISPNEIA: boolean
+  DOR_LOCAL: boolean
+  EDEMA_GENERALIZADO: boolean
+  EDEMA_LOCALIZADO: boolean
+  ENFISEMA_SUBCUTANEO: boolean
+  ESTASE_DA_JUGULAR: boolean
+  FACE_PALIDA: boolean
+  HEMORRAGIA_INTERNA: boolean
+  HEMORRAGIA_EXTERNA: boolean
+  HIPERTENSAO: boolean
+  HIPOTENSAO: boolean
+  NAUSEAS_VOMITOS: boolean
+  NASORAGIA: boolean
+  OBITO: boolean
+  OTORREIA: boolean
+  OTORRAGIA: boolean
+  OVACE: boolean
+  PARADA_CARDIACA: boolean
+  PARADA_RESPIRATORIA: boolean
+  PRIAPRISMO: boolean
+  PRURIDO_NA_PELE: boolean
+  ANISOCORIA_NAO_REAGENTE: boolean
+  ANISOCORIA_REAGENTE: boolean
+  ISOCORIA_NAO_REAGENTE: boolean
+  ISOCORIA_REAGENTE: boolean
+  MIDRIASE_NAO_REAGENTE: boolean
+  MIDRIASE_REAGENTE: boolean
+  MIOSE_NAO_REAGENTE: boolean
+  MIOSE_REAGENTE: boolean
+  SEDE: boolean
+  SINAL_DE_BATTLE: boolean
+  SINAL_DE_GUAXINIM: boolean
+  SUDORESE: boolean
+  TAQUIPNEIA: boolean
+  TAQUICARDIA: boolean
+  TONTURA: boolean
+  [key: string]: boolean
 }
 
 type RemoveMetaPropertiesType = {
@@ -126,7 +134,6 @@ type RemoveMetaPropertiesType = {
 export default function Introducao() {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const { bottom, top } = useSafeAreaInsets()
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
   const ownerId = useSelector((state: RootState) => state.auth.userId)
@@ -701,6 +708,12 @@ export default function Introducao() {
         symptomsEmpty,
       )
 
+      const introduction = {
+        response,
+        preHospitalarMethodResponse,
+        symptomsResponse,
+      }
+
       if (
         response &&
         response.updatedReport &&
@@ -710,6 +723,7 @@ export default function Introducao() {
         symptomsResponse.updatedSymptom
       ) {
         navigation.navigate('ocorrencia' as never)
+        dispatch(setIntroductionData(introduction))
         dispatch(saveIntroductionCompletness(introductionCompletness))
         toast.show({
           description: 'Informações de Introdução salvas com sucesso.',
@@ -731,187 +745,192 @@ export default function Introducao() {
     }
   }
 
+  const handleShowMore = (category: 'preHospitalar' | 'signsAndSymptoms') => {
+    if (category === 'preHospitalar') {
+      setShowMorePreHospitalar(true)
+    } else if (category === 'signsAndSymptoms') {
+      setShowMoreSignsAndSymptoms(true)
+    }
+  }
+
+  const handleShowLess = (category: 'preHospitalar' | 'signsAndSymptoms') => {
+    if (category === 'preHospitalar') {
+      setShowMorePreHospitalar(false)
+    } else if (category === 'signsAndSymptoms') {
+      setShowMoreSignsAndSymptoms(false)
+    }
+  }
+
+  const [showMorePreHospitalar, setShowMorePreHospitalar] =
+    useState<boolean>(false)
+  const [showMoreSignsAndSymptoms, setShowMoreSignsAndSymptoms] =
+    useState<boolean>(false)
+
+  const renderCheckboxes = (
+    checkboxes: Record<string, boolean>,
+    showMore: boolean,
+    handleCheckboxChange: (key: string) => void,
+  ) => {
+    const visibleCheckboxes = showMore
+      ? checkboxes
+      : Object.fromEntries(Object.entries(checkboxes).slice(0, 5))
+
+    return Object.entries(visibleCheckboxes).map(([key, isChecked]) => (
+      <Checkbox
+        key={key}
+        size="md"
+        colorScheme="danger"
+        value={key}
+        isChecked={isChecked}
+        onChange={() => handleCheckboxChange(key)}
+      >
+        <Text className="text-lg text-slate-800">{formatCheckbox(key)}</Text>
+      </Checkbox>
+    ))
+  }
+
   return (
-    <ScrollView
-      className="flex-1"
-      contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
-    >
-      {loading ? (
-        <View className="mx-auto h-screen w-[320px] items-center justify-center">
-          <ActivityIndicator size="large" color="#ff0000" />
-          <Text className="mt-3 text-center text-lg font-bold uppercase">
-            Carregando...
-          </Text>
-        </View>
-      ) : (
-        <>
-          <Header />
-          <Title iconName="suitcase" title="Introdução" />
-          <View style={s.boxShadow} className="mx-auto">
-            <View className="w-full flex-1 flex-row items-center">
-              <View className="w-3/6 p-2">
-                <InputDatePicker
-                  reportDate={reportDateTime}
-                  setReportDate={setReportDateTime}
-                />
-              </View>
-              <View className="h-full w-3/6 items-center justify-center">
-                <Options
-                  title="Sexo"
-                  Option1="Masc."
-                  Option2="Fem."
-                  selectedOption={gender}
-                  onSelectOption={handleSelectGender}
-                />
-              </View>
-            </View>
-            <View className="mx-auto flex-1 flex-row">
-              <InputLowPadding
-                title="Nome"
-                size="regular"
-                alignText="left"
-                value={name}
-                placeholder={name || ''}
-                onChangeText={(e) => setName(e)}
-              />
-              <InputNumeric
-                title="Idade"
-                size="small"
-                value={age}
-                onChangeText={(e) => setAge(e)}
-              />
-            </View>
-            <View className="mx-auto flex-1 flex-row">
-              <InputCpf
-                title="RG/CPF"
-                placeholder="___.___.___-__"
-                value={cpf}
-                onChangeText={(e) => setCpf(e)}
-              />
-              <InputTelefone
-                title="Fone"
-                placeholder="(__) _____-____"
-                value={phone}
-                onChangeText={(e) => setPhone(e)}
-              />
-            </View>
-            <InputLowPadding
-              title="Local da Ocorrência"
-              value={reportPlace}
-              onChangeText={(e) => setReportPlace(e)}
-            />
-            <View className="mx-auto flex-1 flex-row">
-              <InputLowPadding
-                title="Acompanhante"
-                size="regular"
-                alignText="left"
-                value={followUp}
-                placeholder={followUp || ''}
-                onChangeText={(e) => setFollowUp(e)}
-              />
-              <InputNumeric
-                title="Idade"
-                size="small"
-                value={followUpAge}
-                onChangeText={(e) => setFollowUpAge(e)}
-              />
-            </View>
-
-            <View>
-              <Title iconName="hospital-user" title="Pré-Hospitalar" />
-              {Object.entries(preHospitalarMethodCheckboxState).map(
-                ([key, isChecked]) => (
-                  <Checkbox
-                    key={key}
-                    size="md"
-                    colorScheme="danger"
-                    value={key}
-                    isChecked={isChecked}
-                    onChange={() =>
-                      handlePreHospitalarMethodCheckboxChange(
-                        key as keyof CheckboxStates,
-                      )
-                    }
-                  >
-                    <Text className="text-lg text-slate-800">{key}</Text>
-                  </Checkbox>
-                ),
-              )}
-            </View>
-            <View>
-              <Title iconName="info-circle" title="Sinais e sintomas" />
-              {Object.entries(signsAndSymptomsCheckboxState).map(
-                ([key, isChecked]) => (
-                  <Checkbox
-                    key={key}
-                    size="md"
-                    colorScheme="danger"
-                    value={key}
-                    isChecked={isChecked}
-                    onChange={() =>
-                      handleSignsAndSymptomsCheckboxChange(
-                        key as keyof SymptomsCheckboxStates,
-                      )
-                    }
-                  >
-                    <Text className="text-lg text-slate-800">{key}</Text>
-                  </Checkbox>
-                ),
-              )}
-            </View>
+    <SafeAreaView>
+      <ScrollView>
+        {loading ? (
+          <View className="mx-auto h-screen w-[320px] items-center justify-center">
+            <ActivityIndicator size="large" color="#ff0000" />
+            <Text className="mt-3 text-center text-lg font-bold uppercase">
+              Carregando...
+            </Text>
           </View>
+        ) : (
+          <>
+            <Header />
+            <Title iconName="suitcase" title="Introdução" />
+            <View style={s.boxShadow} className="mx-auto">
+              <View className="w-full flex-1 flex-row items-center">
+                <View className="w-3/6 p-2">
+                  <InputDatePicker
+                    reportDate={reportDateTime}
+                    setReportDate={setReportDateTime}
+                  />
+                </View>
+                <View className="h-full w-3/6 items-center justify-center">
+                  <Options
+                    title="Sexo"
+                    Option1="Masc."
+                    Option2="Fem."
+                    selectedOption={gender}
+                    onSelectOption={handleSelectGender}
+                  />
+                </View>
+              </View>
+              <View className="mx-auto flex-1 flex-row">
+                <InputLowPadding
+                  title="Nome"
+                  size="regular"
+                  alignText="left"
+                  value={name}
+                  placeholder={name || ''}
+                  onChangeText={(e) => setName(e)}
+                />
+                <InputNumeric
+                  title="Idade"
+                  size="small"
+                  value={age}
+                  onChangeText={(e) => setAge(e)}
+                />
+              </View>
+              <View className="mx-auto flex-1 flex-row">
+                <InputCpf
+                  title="RG/CPF"
+                  placeholder="___.___.___-__"
+                  value={cpf}
+                  onChangeText={(e) => setCpf(e)}
+                />
+                <InputTelefone
+                  title="Fone"
+                  placeholder="(__) _____-____"
+                  value={phone}
+                  onChangeText={(e) => setPhone(e)}
+                />
+              </View>
+              <InputLowPadding
+                title="Local da Ocorrência"
+                value={reportPlace}
+                onChangeText={(e) => setReportPlace(e)}
+              />
+              <View className="mx-auto flex-1 flex-row">
+                <InputLowPadding
+                  title="Acompanhante"
+                  size="regular"
+                  alignText="left"
+                  value={followUp}
+                  placeholder={followUp || ''}
+                  onChangeText={(e) => setFollowUp(e)}
+                />
+                <InputNumeric
+                  title="Idade"
+                  size="small"
+                  value={followUpAge}
+                  onChangeText={(e) => setFollowUpAge(e)}
+                />
+              </View>
 
-          <MainButton
-            innerText="SALVAR"
-            onPress={() => handleSubmitIntroduction()}
-            isLoading={buttonLoading}
-          />
+              <View>
+                <Title iconName="hospital-user" title="Pré-Hospitalar" />
+                {renderCheckboxes(
+                  preHospitalarMethodCheckboxState,
+                  showMorePreHospitalar,
+                  handlePreHospitalarMethodCheckboxChange,
+                )}
+                {!showMorePreHospitalar ? (
+                  <Button
+                    onPress={() => handleShowMore('preHospitalar')}
+                    style={{ backgroundColor: 'red', marginVertical: 10 }}
+                  >
+                    <Text className="text-white">Ver Mais</Text>
+                  </Button>
+                ) : (
+                  <Button
+                    onPress={() => handleShowLess('preHospitalar')}
+                    style={{ backgroundColor: 'red', marginVertical: 10 }}
+                  >
+                    <Text className="text-white">Ver Menos</Text>
+                  </Button>
+                )}
+              </View>
+              <View>
+                <Title iconName="info-circle" title="Sinais e sintomas" />
+                {renderCheckboxes(
+                  signsAndSymptomsCheckboxState,
+                  showMoreSignsAndSymptoms,
+                  handleSignsAndSymptomsCheckboxChange,
+                )}
+                {!showMoreSignsAndSymptoms ? (
+                  <Button
+                    onPress={() => handleShowMore('signsAndSymptoms')}
+                    style={{ backgroundColor: 'red', marginVertical: 10 }}
+                  >
+                    <Text className="text-white">Ver Mais</Text>
+                  </Button>
+                ) : (
+                  <Button
+                    onPress={() => handleShowLess('signsAndSymptoms')}
+                    style={{ backgroundColor: 'red', marginVertical: 10 }}
+                  >
+                    <Text className="text-white">Ver Menos</Text>
+                  </Button>
+                )}
+              </View>
+            </View>
 
-          {/* <ManyCheckboxes
-            title="Teste"
-            options={[
-              {
-                key: 'test1',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-              {
-                key: 'test2',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-              {
-                key: 'test3',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-              {
-                key: 'test4',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-              {
-                key: 'test5',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-              {
-                key: 'test6',
-                value: 'test',
-                state: checkboxTest,
-                setState: setCheckboxTest,
-              },
-            ]}
-            maxOptions={5}
-          /> */}
-          <Footer />
-        </>
-      )}
-    </ScrollView>
+            <MainButton
+              innerText="SALVAR"
+              onPress={() => handleSubmitIntroduction()}
+              isLoading={buttonLoading}
+            />
+
+            <Footer />
+          </>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   )
 }

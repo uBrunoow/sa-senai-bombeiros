@@ -5,7 +5,9 @@ import { Provider, useDispatch } from 'react-redux'
 import store from './src/redux/stores/stores'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NativeBaseProvider } from 'native-base'
+import { LogBox } from 'react-native'
 
+LogBox.ignoreLogs(['In React 18, SSRProvider is not necessary and is a noop.'])
 export default function App() {
   return (
     <Provider store={store}>
@@ -28,15 +30,16 @@ function AuthChecker({ children }: any) {
       try {
         const token = await AsyncStorage.getItem('authToken')
         const userId = await AsyncStorage.getItem('userId')
-        const expirationDate = await AsyncStorage.getItem('expirationDate')
+        const refreshToken = await AsyncStorage.getItem('refreshToken')
 
-        if (token !== null && userId !== null) {
+        if (token !== null || (refreshToken !== null && userId !== null)) {
           console.log('Token found:', token)
           console.log('User id found:', userId)
-          console.log('Expiration Date:', expirationDate)
+          console.log('Refresh token found:', refreshToken)
+
           dispatch({
             type: 'SAVE_TOKEN',
-            payload: { token, userId: Number(userId) },
+            payload: { token, userId: Number(userId), refreshToken },
           })
         } else {
           console.log('Token or userId not found. The user is not logged in.')

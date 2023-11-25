@@ -1,7 +1,9 @@
 import jwt from '@fastify/jwt'
 import fastify from 'fastify'
 import cors from '@fastify/cors'
-import bcrypt from 'fastify-bcrypt' // Importe o plugin aqui
+import bcrypt from 'fastify-bcrypt'
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUI from '@fastify/swagger-ui'
 
 // Users
 import { userRegisterRoutes } from './src/routes/users/registerRoutes'
@@ -103,6 +105,13 @@ import {
 import { cinematicAvaliationDeleteRoutes } from './src/routes/reports/CinematicAvaliation/deleteCinematicAvaliation'
 import { checkTokenExpiration } from './src/utils/checkTokenExpiration'
 import { refreshRoutes } from './src/routes/users/refreashToken'
+import { registerTransportRoutes } from './src/routes/reports/InfoTransporte/registerTransport'
+import { updateTransportRoutes } from './src/routes/reports/InfoTransporte/updateTransport'
+import {
+  transportFindOneRoutes,
+  transportFindRoutes,
+} from './src/routes/reports/InfoTransporte/findTransport'
+import { transportDeleteRoutes } from './src/routes/reports/InfoTransporte/deleteTransport'
 
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
@@ -116,6 +125,29 @@ app.register(jwt, {
 
 app.register(bcrypt)
 
+app.register(fastifySwagger)
+
+app.register(fastifySwaggerUI, {
+  routePrefix: '/documentation',
+  uiConfig: {
+    docExpansion: 'full',
+    deepLinking: false,
+  },
+  uiHooks: {
+    onRequest: function (request, reply, next) {
+      next()
+    },
+    preHandler: function (request, reply, next) {
+      next()
+    },
+  },
+  staticCSP: true,
+  transformStaticCSP: (header) => header,
+  transformSpecification: (swaggerObject, request, reply) => {
+    return swaggerObject
+  },
+  transformSpecificationClone: true,
+})
 // USER
 app.register(userRegisterRoutes)
 app.register(userLoginRoutes)
@@ -194,6 +226,13 @@ app.register(updateCinematicAvaliationRoutes)
 app.register(cinematicAvaliationFindRoutes)
 app.register(cinematicAvaliationFindOneRoutes)
 app.register(cinematicAvaliationDeleteRoutes)
+
+// INFO TRANSPORTE
+app.register(registerTransportRoutes)
+app.register(updateTransportRoutes)
+app.register(transportFindRoutes)
+app.register(transportFindOneRoutes)
+app.register(transportDeleteRoutes)
 
 // UTILS
 app.register(refreshRoutes)

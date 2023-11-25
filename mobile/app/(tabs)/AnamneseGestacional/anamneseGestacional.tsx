@@ -1,9 +1,8 @@
-import { ScrollView, View } from 'react-native'
+import { SafeAreaView, ScrollView, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
 import Title from '@app/components/Title'
 import Footer from '@app/components/Footer'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import MainButton from '@app/components/MainButton'
 import YesOrNo from '@app/components/YesOrNo'
 import {
@@ -41,7 +40,6 @@ type RemoveMetaPropertiesType = {
 export default function AnamneseGestacional() {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const { bottom, top } = useSafeAreaInsets()
 
   const [PreNatal, setPreNatal] = useState(false)
   const [Complications, setComplications] = useState(false)
@@ -268,148 +266,151 @@ export default function AnamneseGestacional() {
   }
 
   return (
-    <ScrollView
-      className="flex-1"
-      contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
-    >
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <View>
-            <Header />
-            <Title iconName="baby" title="Anamnese Gestacional" />
-            <View style={s.boxShadow} className="mx-auto">
-              <GestationalPeriodStartPicker
-                gestationalPeriod={gestationalPeriod.start}
-                setGestationalPeriod={(value) =>
-                  setGestationalPeriod({
-                    ...gestationalPeriod,
-                    start: String(value),
-                  })
-                }
-                label="Começo do Período de Gestação"
-              />
-
-              <GestationalPeriodEndPicker
-                gestationalPeriod={gestationalPeriod.end}
-                setGestationalPeriod={(value) =>
-                  setGestationalPeriod({
-                    ...gestationalPeriod,
-                    end: String(value),
-                  })
-                }
-                label="Fim do Período de Gestação"
-              />
-              <YesOrNo
-                Question="Fez pré-natal?"
-                selectedOption={PreNatal ? 'SIM' : 'NÃO'}
-                onSelectOption={handlePreNatal}
-              />
-              <InputFull
-                title="Nome do médico"
-                value={doctorName}
-                onChangeText={(e) => setDoctorName(e)}
-              />
-              <YesOrNo
-                Question="Possibilidade de complicações?"
-                selectedOption={Complications ? 'SIM' : 'NÃO'}
-                onSelectOption={handleComplications}
-              />
-              <View className="flex-row px-4">
-                <InputNumeric
-                  title="Filho de número"
-                  value={NumberSon}
-                  onChangeText={(e) => setNumberSon(e)}
-                />
-                <InputClock
-                  title="Início das contrações"
-                  initialValue={horasInicioContracao}
-                  onChange={(newValue) => setHorasInicioContracao(newValue)}
-                />
-              </View>
-
-              <View className="mx-auto w-[90%] flex-row justify-evenly">
-                <InputDuration
-                  title="Duração"
-                  onChangeDuration={(minutes, seconds) =>
-                    handleDurationChange(minutes, seconds)
+    <SafeAreaView>
+      <ScrollView>
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <View>
+              <Header />
+              <Title iconName="baby" title="Anamnese Gestacional" />
+              <View style={s.boxShadow} className="mx-auto">
+                <GestationalPeriodStartPicker
+                  gestationalPeriod={gestationalPeriod.start}
+                  setGestationalPeriod={(value) =>
+                    setGestationalPeriod({
+                      ...gestationalPeriod,
+                      start: String(value),
+                    })
                   }
-                  minutes={durationMinutes}
-                  seconds={durationSeconds}
+                  label="Começo do Período de Gestação"
                 />
-                <InputInterval
-                  title="Intervalo"
-                  onChangeInterval={(hours, minutes, seconds) =>
-                    handleIntervalChange(hours, minutes, seconds)
+
+                <GestationalPeriodEndPicker
+                  gestationalPeriod={gestationalPeriod.end}
+                  setGestationalPeriod={(value) =>
+                    setGestationalPeriod({
+                      ...gestationalPeriod,
+                      end: String(value),
+                    })
                   }
-                  hours={intervalHours}
-                  minutes={intervalMinutes}
-                  seconds={intervalSeconds}
+                  label="Fim do Período de Gestação"
                 />
-              </View>
-              <YesOrNo
-                Question="Pressão no quadril/vontade de evacuar?"
-                selectedOption={HiPressure ? 'SIM' : 'NÃO'}
-                onSelectOption={handleHiPressure}
-              />
-              <YesOrNo
-                Question="Já houve ruptura da bolsa?"
-                selectedOption={BagRuptured ? 'SIM' : 'NÃO'}
-                onSelectOption={handleBagRuptured}
-              />
-              <YesOrNo
-                Question="Foi feito inspeção visual?"
-                selectedOption={VisualInspection ? 'SIM' : 'NÃO'}
-                onSelectOption={handleVisualInspection}
-              />
-              <YesOrNo
-                Question="Parto realizado?"
-                selectedOption={Childbirth ? 'SIM' : 'NÃO'}
-                onSelectOption={handleChildbirth}
-              />
-              <View>
-                <View className="mx-6 flex-row justify-around">
-                  <Options
-                    title="Sexo"
-                    Option1="Masc."
-                    Option2="Fem."
-                    selectedOption={gender}
-                    onSelectOption={handleSelectGender}
+                <YesOrNo
+                  Question="Fez pré-natal?"
+                  selectedOption={PreNatal ? 'SIM' : 'NÃO'}
+                  onSelectOption={handlePreNatal}
+                />
+                <InputFull
+                  title="Nome do médico"
+                  value={doctorName}
+                  onChangeText={(e) => setDoctorName(e)}
+                />
+                <YesOrNo
+                  Question="Possibilidade de complicações?"
+                  selectedOption={Complications ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleComplications}
+                />
+                <View className="flex-row px-4">
+                  <InputNumeric
+                    title="Filho de número"
+                    value={NumberSon}
+                    onChangeText={(e) => setNumberSon(e)}
                   />
-                  <View className="w-[10px]" />
                   <InputClock
-                    title="Horário nasc."
-                    initialValue={horarioNascimento}
-                    onChange={(newValue) => setHorarioNascimento(newValue)}
+                    title="Início das contrações"
+                    initialValue={horasInicioContracao}
+                    onChange={(newValue) => setHorasInicioContracao(newValue)}
                   />
                 </View>
-              </View>
-              <InputFull
-                title="Nome do bebê"
-                value={BabyName}
-                onChangeText={(e) => setBabyName(e)}
-              />
-              <FormControl>
-                <FormControl.Label mt={5}>Observações Finais</FormControl.Label>
-                <TextArea
-                  autoCompleteType={''}
-                  h={20}
-                  w="100%"
-                  onChange={(e) => handleObservacoesChange(e.nativeEvent.text)}
-                  value={observacoesFinais}
+
+                <View className="mx-auto w-[90%] flex-row justify-evenly">
+                  <InputDuration
+                    title="Duração"
+                    onChangeDuration={(minutes, seconds) =>
+                      handleDurationChange(minutes, seconds)
+                    }
+                    minutes={durationMinutes}
+                    seconds={durationSeconds}
+                  />
+                  <InputInterval
+                    title="Intervalo"
+                    onChangeInterval={(hours, minutes, seconds) =>
+                      handleIntervalChange(hours, minutes, seconds)
+                    }
+                    hours={intervalHours}
+                    minutes={intervalMinutes}
+                    seconds={intervalSeconds}
+                  />
+                </View>
+                <YesOrNo
+                  Question="Pressão no quadril/vontade de evacuar?"
+                  selectedOption={HiPressure ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleHiPressure}
                 />
-              </FormControl>
+                <YesOrNo
+                  Question="Já houve ruptura da bolsa?"
+                  selectedOption={BagRuptured ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleBagRuptured}
+                />
+                <YesOrNo
+                  Question="Foi feito inspeção visual?"
+                  selectedOption={VisualInspection ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleVisualInspection}
+                />
+                <YesOrNo
+                  Question="Parto realizado?"
+                  selectedOption={Childbirth ? 'SIM' : 'NÃO'}
+                  onSelectOption={handleChildbirth}
+                />
+                <View>
+                  <View className="mx-6 flex-row justify-around">
+                    <Options
+                      title="Sexo"
+                      Option1="Masc."
+                      Option2="Fem."
+                      selectedOption={gender}
+                      onSelectOption={handleSelectGender}
+                    />
+                    <View className="w-[10px]" />
+                    <InputClock
+                      title="Horário nasc."
+                      initialValue={horarioNascimento}
+                      onChange={(newValue) => setHorarioNascimento(newValue)}
+                    />
+                  </View>
+                </View>
+                <InputFull
+                  title="Nome do bebê"
+                  value={BabyName}
+                  onChangeText={(e) => setBabyName(e)}
+                />
+                <FormControl>
+                  <FormControl.Label mt={5}>
+                    Observações Finais
+                  </FormControl.Label>
+                  <TextArea
+                    autoCompleteType={''}
+                    h={20}
+                    w="100%"
+                    onChange={(e) =>
+                      handleObservacoesChange(e.nativeEvent.text)
+                    }
+                    value={observacoesFinais}
+                  />
+                </FormControl>
+              </View>
+              <MainButton
+                isLoading={buttonLoading}
+                innerText="SALVAR"
+                onPress={handleSubmitGesAnamnesis}
+              ></MainButton>
             </View>
-            <MainButton
-              isLoading={buttonLoading}
-              innerText="SALVAR"
-              onPress={handleSubmitGesAnamnesis}
-            ></MainButton>
-          </View>
-          <Footer />
-        </>
-      )}
-    </ScrollView>
+            <Footer />
+          </>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   )
 }

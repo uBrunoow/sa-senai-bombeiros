@@ -56,6 +56,8 @@ export async function reportFindOneRoutes(
         CinematicAvaliation: true,
         Finalization: true,
         SuspectProblems: true,
+        LocalTraumas: true,
+        owner: true,
       },
     })
 

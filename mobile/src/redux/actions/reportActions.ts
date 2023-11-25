@@ -98,3 +98,13 @@ export const clearSignsAndSymptomsId = () => {
     type: 'CLEAR_SIGNS_AND_SYMPTOMS_ID',
   }
 }
+export const saveInfoTransportId = (infoTransportId: number) => ({
+  type: 'SAVE_INFO_TRANSPORT',
+  payload: { infoTransportId },
+})
+
+export const clearInfoTransportId = () => {
+  return {
+    type: 'CLEAR_INFO_TRANSPORT_ID',
+  }
+}

@@ -5,6 +5,7 @@ import { Button } from 'native-base'
 type MainButtonProps = {
   innerText: String
   isLoading?: boolean
+  disabled?: boolean
   onPress: () => void
 }
 
@@ -15,6 +16,7 @@ export default function MainButton(props: MainButtonProps) {
       onPress={props.onPress}
       mb={8}
       w={'75%'}
+      disabled={props.disabled}
     >
       {props.isLoading ? (
         <ActivityIndicator size="large" color="#ffffff" />

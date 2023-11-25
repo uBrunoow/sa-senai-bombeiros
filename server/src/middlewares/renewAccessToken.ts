@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 export const renewAccessToken = async (refreshToken: string) => {
+  console.log('Renovando token com refreshToken:', refreshToken)
   try {
-    console.log('Renovando token com refreshToken:', refreshToken)
     const response = await axios.post(
-      'http://10.3.78.121:3333/api/users/refresh-token',
+      'http://192.168.0.6:3333/api/users/refresh-token',
       {
         refreshToken,
       },
