@@ -6,18 +6,25 @@ type InputProps = {
   size?: 'small' | 'regular' | 'big'
   alignText?: 'center' | 'left' | 'right'
   isBig?: boolean
-  value?: number
+  value?: string | number | null
   placeholder?: string
   // eslint-disable-next-line no-unused-vars
   onChangeText?: (text: number) => void
 }
 
 export default function InputNumeric(props: InputProps) {
-  const initialValue = props.value !== undefined ? props.value.toString() : ''
-  const [inputValue, setInputValue] = useState(initialValue)
+  const initialValue =
+    props.value !== undefined && props.value !== null
+      ? props.value.toString()
+      : ''
+  const [inputValue, setInputValue] = useState<string>(initialValue)
 
   useEffect(() => {
-    setInputValue(props.value !== undefined ? props.value.toString() : '')
+    setInputValue(
+      props.value !== undefined && props.value !== null
+        ? props.value.toString()
+        : '',
+    )
   }, [props.value])
 
   const handleWidth = () => {
@@ -40,8 +47,7 @@ export default function InputNumeric(props: InputProps) {
   }
 
   const handleTextChange = (text: string) => {
-    const numericValue = text.replace(/[^0-9]/g, '')
-
+    const numericValue = text.replace(/[^0-9.]/g, '')
     if (!isNaN(Number(numericValue))) {
       setInputValue(numericValue)
 
@@ -75,7 +81,7 @@ export default function InputNumeric(props: InputProps) {
             height: props.isBig ? 100 : 20,
             fontSize: 16,
           }}
-          value={inputValue}
+          value={inputValue.toString()}
           onChangeText={handleTextChange}
         />
       </View>

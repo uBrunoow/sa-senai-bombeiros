@@ -106,10 +106,9 @@ export default function LocalTraumas() {
 
     if (response.localTraumas) {
       dispatch(saveLocalTraumasCompletness(localTraumasCompletness))
-      navigation.navigate('ocorrencia' as never)
       setLocalTraumas([...localTraumas, response.localTraumas])
       toast.show({
-        description: 'Informações de Finalização salvas com sucesso.',
+        description: 'Locas trauma cadastrado com sucesso.',
         duration: 3000,
         placement: 'bottom',
         style: { backgroundColor: '#0AC800' },
@@ -235,6 +234,11 @@ export default function LocalTraumas() {
             </View>
           </Modal>
           <CreatedTraumas localTraumas={localTraumas} />
+          <MainButton
+            innerText="VOLTAR"
+            isLoading={false}
+            onPress={() => navigation.navigate('ocorrencia' as never)}
+          />
           <Footer />
         </View>
       </ScrollView>

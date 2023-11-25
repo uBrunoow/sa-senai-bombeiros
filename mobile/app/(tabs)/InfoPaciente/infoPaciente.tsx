@@ -122,6 +122,7 @@ export default function InfoPatient() {
     | 'reportDate'
     | 'followUp'
     | 'followUpAge'
+    | 'Another'
   > => {
     const {
       id,
@@ -138,6 +139,7 @@ export default function InfoPatient() {
       reportDate,
       followUp,
       followUpAge,
+      Another,
 
       ...withoutMeta
     } = obj
