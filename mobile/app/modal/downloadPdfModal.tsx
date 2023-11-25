@@ -448,9 +448,15 @@ const DownloadPdfModal = () => {
                   <p>Sexo: <span>${formatAnyValue(
                     reportsForDownload.report.gender,
                   )}</span></p>
-                  <p>Data: <span>${formatAnyValue(
-                    formatDate(reportsForDownload.report.reportDate),
-                  )}</span></p>
+                  <p>Data: <span>
+                  ${
+                    reportsForDownload.report.reportDate
+                      ? formatAnyValue(
+                          formatDate(reportsForDownload.report.reportDate),
+                        )
+                      : ''
+                  }
+                  </span></p>
                 </div>
                 <img class="logo-img-2" src="${logoImage}" alt="logo img grande">
               </div>

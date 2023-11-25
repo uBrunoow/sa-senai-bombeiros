@@ -273,6 +273,7 @@ model Finalization {
   transportation   String?
   CollectedObjects String?
   finalRemarks     String?
+  VictimWas        String?
   ReportOwnerId    Int
   reportOwner      Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }

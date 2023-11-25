@@ -1,17 +1,28 @@
-import { IInfoTransporte } from 'src/interfaces/IReport'
 import { api } from '@src/lib/api'
 
 const updateTransport = async (
   ReportOwnerId: number,
-  InfoTransoportId: number,
-  dataToSend?: IInfoTransporte,
+  InfoTransportId: number,
+  numberUSB?: number,
+  numberOcorr?: number,
+  forwardingAgent?: string,
+  HcH?: string,
+  kmFinal?: number,
+  code?: string | null,
+  codeSUS?: number,
 ) => {
   try {
     const response = await api.put(
-      `/api/transport/update/${InfoTransoportId}`,
+      `/api/transport/update/${InfoTransportId}`,
       {
         ReportOwnerId,
-        ...dataToSend,
+        numberUSB,
+        numberOcorr,
+        forwardingAgent,
+        HcH,
+        kmFinal,
+        code,
+        codeSUS,
       },
       {
         headers: {

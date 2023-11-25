@@ -8,6 +8,8 @@ type InputProps = {
   isBig?: boolean
   value?: string | number | null
   placeholder?: string
+  disabled?: boolean
+  numberWidth?: number
   // eslint-disable-next-line no-unused-vars
   onChangeText?: (text: number) => void
 }
@@ -57,6 +59,10 @@ export default function InputNumeric(props: InputProps) {
     }
   }
 
+  const handleMaxWidth = (numberWidth?: number) => {
+    return numberWidth !== undefined ? numberWidth * 2 : undefined
+  }
+
   return (
     <View
       style={{
@@ -80,7 +86,10 @@ export default function InputNumeric(props: InputProps) {
           style={{
             height: props.isBig ? 100 : 20,
             fontSize: 16,
+            width: props.numberWidth ? props.numberWidth : 50,
+            maxWidth: handleMaxWidth(props.numberWidth),
           }}
+          editable={props.disabled}
           value={inputValue.toString()}
           onChangeText={handleTextChange}
         />

@@ -72,6 +72,7 @@ export interface RootState {
     introductionCompletness: number
     infoPacienteCompletness: number
     localTraumasCompletness: number
+    infoTransportCompletness: number
   }
 
   preHospitalarMethod: {

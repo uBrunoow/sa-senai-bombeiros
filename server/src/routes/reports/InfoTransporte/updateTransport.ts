@@ -58,24 +58,39 @@ export async function updateTransportRoutes(app: FastifyInstance) {
     if (numberUSB) {
       updateTransportData.numberUSB = numberUSB
     }
+    if (!numberUSB && numberUSB !== undefined) updateTransportData.numberUSB = 0
+
     if (numberOcorr) {
       updateTransportData.numberOcorr = numberOcorr
     }
+    if (!numberOcorr && numberOcorr !== undefined)
+      updateTransportData.numberOcorr = 0
+
     if (forwardingAgent) {
       updateTransportData.forwardingAgent = forwardingAgent
     }
+    if (!forwardingAgent && forwardingAgent !== undefined)
+      updateTransportData.forwardingAgent = ''
+
     if (HcH) {
       updateTransportData.HcH = HcH
     }
+    if (!HcH && HcH !== undefined) updateTransportData.HcH = ''
+
     if (kmFinal) {
       updateTransportData.kmFinal = kmFinal
     }
+    if (!kmFinal && kmFinal !== undefined) updateTransportData.kmFinal = 0
+
     if (code) {
       updateTransportData.code = code
     }
+    if (!code && code !== undefined) updateTransportData.code = ''
+
     if (codeSUS) {
       updateTransportData.codeSUS = codeSUS
     }
+    if (!codeSUS && codeSUS !== undefined) updateTransportData.codeSUS = 0
 
     if (ReportOwnerId) {
       updateTransportData.ReportOwnerId = ReportOwnerId

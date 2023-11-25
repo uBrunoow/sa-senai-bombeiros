@@ -6,6 +6,7 @@ import {
   Modal,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
@@ -28,7 +29,15 @@ import findFinalization from '@src/api/reports/finalization/findFinalization'
 import updateCinematic from '@src/api/reports/cinematicAvaliation/updateCinematicAvaliation'
 import MainButton from '@app/components/MainButton'
 import updateFinalization from '@src/api/reports/finalization/updateFinalization'
-import { Checkbox, FormControl, Input, TextArea, useToast } from 'native-base'
+import {
+  CheckIcon,
+  Checkbox,
+  FormControl,
+  Input,
+  Select,
+  TextArea,
+  useToast,
+} from 'native-base'
 import { useForm, Controller } from 'react-hook-form'
 import { determineCompletness } from './utils/determineCompletness'
 import { saveFinalizationCompletness } from '@src/redux/reducers/completnessReducer'
@@ -50,6 +59,17 @@ type TransportOptions =
   | 'instavel'
   | 'possivelmente estavel'
   | 'estavel'
+
+export type VictimWasOptions =
+  | 'CICLISTA'
+  | 'CONDUTOR_MOTO'
+  | 'GESTANTE'
+  | 'PASS_MOTO'
+  | 'CONDUTOR_CARRO'
+  | 'CLINICO'
+  | 'TRAUMA'
+  | 'PASS_BCO_TRAS'
+  | 'PEDESTRE'
 const Finalizacao = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
@@ -63,6 +83,7 @@ const Finalizacao = () => {
   const [isCheckedDeitada, setIsCheckedDeitada] = useState(false)
   const [isCheckedSemiDeitada, setIsCheckedSemiDeitada] = useState(false)
   const [isCheckedSentada, setIsCheckedSentada] = useState(false)
+  const [VictimWas, setVictimWas] = useState<VictimWasOptions | null>(null)
 
   const handleCheckboxChange = (checkboxName: string) => {
     setIsCheckedDeitada(checkboxName === 'DEITADA')
@@ -122,6 +143,7 @@ const Finalizacao = () => {
           finalizationResponse.finalization.transportation
         const collectedObjectResponse =
           finalizationResponse.finalization.CollectedObjects
+        const victimWasResponse = finalizationResponse.finalization.VictimWas
 
         setIsCheckedDeitada(conductionResponse?.includes('DEITADA') || false)
         setIsCheckedSemiDeitada(
@@ -131,6 +153,7 @@ const Finalizacao = () => {
         setObservacoesFinais(finalRemarksResponse)
         setSelectedOption(transportationResponse)
         setValue('CollectedObjects', collectedObjectResponse)
+        setVictimWas(victimWasResponse)
       } catch (error) {
         console.error('Error fetching users:', error)
       } finally {
@@ -271,6 +294,7 @@ const Finalizacao = () => {
         transportation,
         CollectedObjects,
         finalRemarks,
+        VictimWas,
       )
 
       const finalizationWithoutMeta = removeMetaProperties(
@@ -319,6 +343,9 @@ const Finalizacao = () => {
     }
   }
 
+  const handleClearVictimWas = () => {
+    setVictimWas(null)
+  }
   return (
     <SafeAreaView>
       <ScrollView>
@@ -406,6 +433,57 @@ const Finalizacao = () => {
                   >
                     <Text className="text-lg text-slate-800">Sentada</Text>
                   </Checkbox>
+                </View>
+                <View>
+                  <Text className="mt-[5px] text-base font-medium">
+                    A vítima era:
+                  </Text>
+                  <View className="flex-row">
+                    <Select
+                      selectedValue={VictimWas}
+                      minWidth="200"
+                      accessibilityLabel="Choose Service"
+                      placeholder="Choose Service"
+                      _selectedItem={{
+                        bg: 'teal.600',
+                        endIcon: <CheckIcon size="5" />,
+                      }}
+                      mb={5}
+                      w={285}
+                      onValueChange={(itemValue) => setVictimWas(itemValue)}
+                      onChange={() => handleClearVictimWas()}
+                    >
+                      <Select.Item label="Ciclista" value="CICLISTA" />
+                      <Select.Item
+                        label="Condutor Moto"
+                        value="CONDUTOR_MOTO"
+                      />
+                      <Select.Item label="Gestante" value="GESTANTE" />
+                      <Select.Item
+                        label="Pass. Ban Frente"
+                        value="PASS_BAN_FRENTE"
+                      />
+                      <Select.Item label="Pass. Moto" value="PASS_MOTO" />
+                      <Select.Item
+                        label="Condutor carro"
+                        value="CONDUTOR_CARRO"
+                      />
+                      <Select.Item label="Clínico" value="CLINICO" />
+                      <Select.Item label="Trauma" value="TRAUMA" />
+                      <Select.Item
+                        label="Pass. Bco. Trás"
+                        value="PASS_BCO_TRAS"
+                      />
+                      <Select.Item label="Pedestre" value="PEDESTRE" />
+                    </Select>
+                    <TouchableOpacity
+                      disabled={!VictimWas}
+                      onPress={handleClearVictimWas}
+                      className="ml-2 flex w-1/6"
+                    >
+                      <AntDesign name="closecircle" size={24} color="red" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
 
                 <View>

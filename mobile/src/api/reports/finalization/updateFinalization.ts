@@ -1,3 +1,4 @@
+import { VictimWasOptions } from '@app/(tabs)/FInalizacao/finalizacao'
 import { api } from '@src/lib/api'
 
 const updateFinalization = async (
@@ -8,6 +9,7 @@ const updateFinalization = async (
   transportation?: string,
   CollectedObjects?: string,
   finalRemarks?: string,
+  VictimWas?: VictimWasOptions | null,
 ) => {
   try {
     const response = await api.put(
@@ -18,6 +20,7 @@ const updateFinalization = async (
         transportation,
         CollectedObjects,
         finalRemarks,
+        VictimWas,
         ReportOwnerId,
       },
       {

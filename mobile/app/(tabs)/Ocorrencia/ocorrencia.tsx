@@ -6,8 +6,8 @@ import {
   Modal,
   ActivityIndicator,
   View,
-  Pressable,
   SafeAreaView,
+  Pressable,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
@@ -24,6 +24,7 @@ import {
   clearFinalizationId,
   clearGestacionalAnamnesisId,
   clearGlasgowId,
+  clearInfoTransportId,
   clearPreHospitalarMethodId,
   clearReportId,
   clearSignsAndSymptomsId,
@@ -53,6 +54,9 @@ import { RouteProp } from '@react-navigation/core'
 import { StackNavigationProp } from '@react-navigation/stack'
 import DownloadPdfModal from '@app/modal/downloadPdfModal'
 import registerTransport from '@src/api/reports/infoTransport/registerTransport'
+import VerifyGender from '@app/modal/verifyGender'
+import findReports from '@src/api/reports/findReport'
+import WarningModal from '@app/modal/warningModal'
 
 type RootStackParamList = {
   ocorrencia: undefined
@@ -126,6 +130,9 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
   const localTraumasCompletness = useSelector(
     (state: RootState) => state.completness.localTraumasCompletness,
   )
+  const infoTransportCompletness = useSelector(
+    (state: RootState) => state.completness.infoTransportCompletness,
+  )
 
   const dispatch = useDispatch()
 
@@ -164,24 +171,50 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
     (state: RootState) => state.gestacionalAnamnesis.gestacionalAnamnesisId,
   )
 
+  const [modalAnamnesisGestacional, setModalAnamnesisGestacional] =
+    useState(false)
+  const [openWarningModal, setOpenWarningModal] = useState(false)
+  const [gestacionalAnamnesisIsLoading, setGestacionalAnamnesisIsLoading] =
+    useState(false)
+
+  const closeAnamnesisGestacionalModal = () => {
+    setModalAnamnesisGestacional(false)
+  }
+  const closeWarningModal = () => {
+    setOpenWarningModal(false)
+  }
+
   const handleClickGestacionalAnamnese = async () => {
-    if (existingGestacionalAnamnesisId) {
-      navigation.navigate('anamnese-gestacional', {
-        screen: 'anamnese-gestacional',
-        params: { gestacionalAnamnesisId: existingGestacionalAnamnesisId },
-      })
-    } else {
-      const response = await registerGesAnamnesis(ReportOwnerId)
+    try {
+      setGestacionalAnamnesisIsLoading(true)
+      const findGender = await findReports(reportId)
 
-      if (response && response.gesAnamnesis) {
-        dispatch(saveGestacionalAnamnesisId(response.gesAnamnesis.id))
-        console.log('Ges Anamnese n°: ', response.gesAnamnesis.id)
-
-        navigation.navigate('anamnese-gestacional', {
-          screen: 'anamnese-gestacional',
-          params: { gestacionalAnamnesisId: response.gesAnamnesis.id },
-        })
+      if (findGender && findGender.report.gender === null) {
+        setModalAnamnesisGestacional(true)
+      } else if (findGender && findGender.report.gender === 'Male') {
+        setOpenWarningModal(true)
+      } else if (findGender && findGender.report.gender === 'Female') {
+        if (existingGestacionalAnamnesisId) {
+          navigation.navigate('anamnese-gestacional', {
+            screen: 'anamnese-gestacional',
+            params: { gestacionalAnamnesisId: existingGestacionalAnamnesisId },
+          })
+        } else {
+          const response = await registerGesAnamnesis(ReportOwnerId)
+          if (response && response.gesAnamnesis) {
+            dispatch(saveGestacionalAnamnesisId(response.gesAnamnesis.id))
+            console.log('Ges Anamnese n°: ', response.gesAnamnesis.id)
+            navigation.navigate('anamnese-gestacional', {
+              screen: 'anamnese-gestacional',
+              params: { gestacionalAnamnesisId: response.gesAnamnesis.id },
+            })
+          }
+        }
       }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setGestacionalAnamnesisIsLoading(false)
     }
   }
 
@@ -395,6 +428,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
         dispatch(clearCinematicAvaliationId())
         dispatch(clearPreHospitalarMethodId())
         dispatch(clearSignsAndSymptomsId())
+        dispatch(clearInfoTransportId())
         setShowModal(false)
         navigation.navigate('home')
       }
@@ -483,7 +517,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
                 <Grouper
                   title="Info. de Transporte"
                   desc="Condução, condição transp..."
-                  isCompleted={0}
+                  isCompleted={infoTransportCompletness ?? 0}
                 />
               </TouchableOpacity>
               <TouchableOpacity
@@ -496,16 +530,35 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
                   isCompleted={0}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleClickGestacionalAnamnese}
-                activeOpacity={0.7}
-              >
-                <Grouper
-                  title="Anamnese Gestacional"
-                  desc="Período gestação, pré-natal..."
-                  isCompleted={gesAnamnesisCompletness ?? 0}
-                />
-              </TouchableOpacity>
+              {gestacionalAnamnesisIsLoading ? (
+                <TouchableOpacity
+                  disabled={true}
+                  activeOpacity={0.7}
+                  style={{ position: 'relative', opacity: 0.5 }}
+                >
+                  <Grouper
+                    title="Anamnese Gestacional"
+                    desc="Período gestação, pré-natal..."
+                    isCompleted={gesAnamnesisCompletness ?? 0}
+                  />
+                  <ActivityIndicator
+                    size="large"
+                    color="#ff0000"
+                    className="absolute right-[50px] top-[10px]"
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={handleClickGestacionalAnamnese}
+                  activeOpacity={0.7}
+                >
+                  <Grouper
+                    title="Anamnese Gestacional"
+                    desc="Período gestação, pré-natal..."
+                    isCompleted={gesAnamnesisCompletness ?? 0}
+                  />
+                </TouchableOpacity>
+              )}
               <TouchableOpacity
                 onPress={handleClickFinalization}
                 activeOpacity={0.7}
@@ -582,6 +635,54 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
                       <DownloadPdfModal />
                       <Pressable
                         onPress={() => setShowPDFModal(false)}
+                        className="absolute right-1 top-1 z-50"
+                      >
+                        <AntDesign name="closecircle" size={24} color="red" />
+                      </Pressable>
+                    </View>
+                  </View>
+                </Modal>
+              )}
+              {modalAnamnesisGestacional && (
+                <Modal
+                  transparent={true}
+                  animationType="fade"
+                  visible={modalAnamnesisGestacional}
+                  onRequestClose={() => setModalAnamnesisGestacional(false)}
+                >
+                  <View className="flex-1 items-center justify-center bg-[#0000007f]">
+                    <View
+                      style={s.modalContent}
+                      className="relative rounded-[7px] bg-white p-4 "
+                    >
+                      <VerifyGender
+                        closeModal={closeAnamnesisGestacionalModal}
+                      />
+                      <Pressable
+                        onPress={() => setModalAnamnesisGestacional(false)}
+                        className="absolute right-1 top-1 z-50"
+                      >
+                        <AntDesign name="closecircle" size={24} color="red" />
+                      </Pressable>
+                    </View>
+                  </View>
+                </Modal>
+              )}
+              {openWarningModal && (
+                <Modal
+                  transparent={true}
+                  animationType="fade"
+                  visible={openWarningModal}
+                  onRequestClose={() => setOpenWarningModal(false)}
+                >
+                  <View className="flex-1 items-center justify-center bg-[#0000007f]">
+                    <View
+                      style={s.modalContent}
+                      className="relative rounded-[7px] bg-white p-4 "
+                    >
+                      <WarningModal closeModal={closeWarningModal} />
+                      <Pressable
+                        onPress={() => setOpenWarningModal(false)}
                         className="absolute right-1 top-1 z-50"
                       >
                         <AntDesign name="closecircle" size={24} color="red" />

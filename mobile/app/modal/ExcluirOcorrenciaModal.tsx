@@ -1,8 +1,6 @@
 import { View, Text, Pressable } from 'react-native'
 import React from 'react'
 import { AntDesign } from '@expo/vector-icons'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { ScrollView } from 'native-base'
 
 type ExcluirOcorrenciaModalProps = {
   handleDeleteReport: () => void
