@@ -1,23 +1,64 @@
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { View, Text } from 'react-native'
 import { styles as s } from '../../../styles/boxShadow'
 import { Checkbox, Radio } from 'native-base'
+import {
+  TMaterialUtilizadoDescartavelTypes,
+  TMaterialDeixadoNoHostpitalTypes,
+  MaterialUtilizadoDescartavelDef,
+} from './../utils/usageTableMaterials'
 
 type TUsageTableProps = {
   rows: {
     material: string
     quantity: number
-    sizes?: string[]
+    sizes?: {
+      selectedSize: string
+      // selectedSize: Dispatch<SetStateAction<string>>
+      entries: string[]
+    }
   }[]
 }
 
 export default function UsageTable({ rows }: TUsageTableProps) {
-  const [selectedMaterial, setSelectedMaterial] = useState<{
-    [key: string]: boolean
-  }>({})
-  const [selectedSizes, setSelectedSizes] = useState<{
-    [key: string]: string
-  }>({})
+  // const [selectedMaterial, setSelectedMaterial] = useState<{
+  //   [key: string]: boolean
+  // }>({})
+  // const [selectedSizes, setSelectedSizes] = useState<{
+  //   [key: string]: string
+  // }>({})
+
+  const [material, setMaterial] = useState<TMaterialTypes>(usageTableDef)
+
+  const handleMaterialCheckboxChange = (key: keyof TMaterialTypes) => {
+    setMaterial((prevState) => {
+      return {
+        ...prevState,
+        [key]: {
+          ...prevState[key],
+          state: !prevState[key].state,
+        },
+      }
+    })
+  }
+
+  const handleSizeCheckboxChange = (
+    materialKey: keyof TMaterialTypes,
+    size: string,
+  ) => {
+    setMaterial((prevState) => {
+      return {
+        ...prevState,
+        [materialKey]: {
+          ...prevState[materialKey],
+          sizes: {
+            ...prevState[materialKey].sizes,
+            selectedSize: size,
+          },
+        },
+      }
+    })
+  }
 
   function handleMaterialSelection(material: TUsageTableProps['rows'][number]) {
     setSelectedMaterial({
@@ -36,8 +77,6 @@ export default function UsageTable({ rows }: TUsageTableProps) {
     })
   }
 
-  console.log('r: ', selectedSizes)
-
   return (
     <View style={s.boxShadow} className="mx-auto flex-row">
       <View className="m-2 grow-[5]">
@@ -50,16 +89,60 @@ export default function UsageTable({ rows }: TUsageTableProps) {
             <View key={i}>
               <View className="flex-row">
                 <View className="ml-4 mr-4 flex grow flex-row justify-between">
-                  <Checkbox
-                    value="Mano"
+                  {Object.entries(material).map(
+                    ([key, { state, name, sizes }]) => (
+                      <View key={key} style={{ flexDirection: 'row' }}>
+                        <Checkbox
+                          value={key}
+                          isChecked={state}
+                          onChange={() =>
+                            handleMaterialCheckboxChange(
+                              key as keyof TMaterialTypes,
+                            )
+                          }
+                        >
+                          <Text className="text-lg text-slate-800">{name}</Text>
+                        </Checkbox>
+                        {sizes && state && (
+                          <View style={{ flexDirection: 'row' }}>
+                            {sizes.entries.map((size) => (
+                              <Checkbox
+                                key={size}
+                                value={size}
+                                isChecked={size === sizes.selectedSize}
+                                onChange={() =>
+                                  handleSizeCheckboxChange(
+                                    key as keyof TMaterialTypes,
+                                    size,
+                                  )
+                                }
+                              >
+                                <Text>{size}</Text>
+                              </Checkbox>
+                            ))}
+                          </View>
+                        )}
+                      </View>
+                    ),
+                  )}
+                  {/**/}
+                  {/**/}
+                  {/**/}
+                  {/**/}
+                  {/**/}
+                  {/**/}
+                  {/**/}
+                  {/* <Checkbox
+                    value={row.material}
                     colorScheme="danger"
                     onChange={() => handleMaterialSelection(row)}
+                    isChecked={true}
                   >
                     <Text className="m-2 ml-[-2px] text-center">
                       {row.material}
                     </Text>
                   </Checkbox>
-                  {row.sizes && (
+                  {row.sizes?.entries && (
                     <Radio.Group
                       className="flex flex-col"
                       name={row.material}
@@ -67,7 +150,7 @@ export default function UsageTable({ rows }: TUsageTableProps) {
                         handleSizeSelection(row, selectedSize)
                       }}
                     >
-                      {row.sizes.map((size, i) => (
+                      {row.sizes?.entries.map((size, i) => (
                         <Radio
                           value={size}
                           key={i}
@@ -80,7 +163,7 @@ export default function UsageTable({ rows }: TUsageTableProps) {
                         </Radio>
                       ))}
                     </Radio.Group>
-                  )}
+                  )} */}
                 </View>
                 <View className="h-full w-1/3 flex-row items-center justify-center border-l-[1px]">
                   <Text
