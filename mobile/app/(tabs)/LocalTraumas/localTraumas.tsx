@@ -26,6 +26,7 @@ import { determineCompletness } from './utils/determineCompletness'
 import { useToast } from 'native-base'
 import { saveLocalTraumasCompletness } from '@src/redux/reducers/completnessReducer'
 import { useNavigation } from '@react-navigation/core'
+import Loader from '@app/components/Loader'
 
 type RemoveMetaPropertiesType = {
   id: number
@@ -45,6 +46,8 @@ export default function LocalTraumas() {
   const [clickedBodyPartText, setClickedBodyPartText] = useState(
     'Nenhuma selecionada',
   )
+  const [buttonLoading, setButtonLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const removeMetaProperties = (
     obj: RemoveMetaPropertiesType,
@@ -66,53 +69,60 @@ export default function LocalTraumas() {
   const toast = useToast()
 
   async function saveTrauma() {
-    if (!bodyPart || !side || !face) return
+    try {
+      setButtonLoading(true)
+      if (!bodyPart || !side || !face) return
 
-    setFace(null)
-    setSide(null)
-    setBodyPart(null)
-    setTipoFerimento('')
-    setBodyPartSelected(false)
-    setClickedBodyPartText('Nenhuma selecionada')
+      setFace(null)
+      setSide(null)
+      setBodyPart(null)
+      setTipoFerimento('')
+      setBodyPartSelected(false)
+      setClickedBodyPartText('Nenhuma selecionada')
 
-    const response = await registerLocalTrauma(
-      reportId,
-      bodyPart,
-      tipoFerimento,
-      side,
-      face,
-    )
+      const response = await registerLocalTrauma(
+        reportId,
+        bodyPart,
+        tipoFerimento,
+        side,
+        face,
+      )
 
-    const localTraumasWithoutMeta = removeMetaProperties(
-      response.localTraumas,
-    ) as Record<string, any>
+      const localTraumasWithoutMeta = removeMetaProperties(
+        response.localTraumas,
+      ) as Record<string, any>
 
-    let localTraumasEmpty = 0
+      let localTraumasEmpty = 0
 
-    for (const key in localTraumasWithoutMeta) {
-      if (
-        localTraumasWithoutMeta[key] === '' ||
-        localTraumasWithoutMeta[key] === 0 ||
-        localTraumasWithoutMeta[key] === false ||
-        (Array.isArray(localTraumasWithoutMeta[key]) &&
-          localTraumasWithoutMeta[key].length === 0) ||
-        localTraumasWithoutMeta[key] === null
-      ) {
-        localTraumasEmpty++
+      for (const key in localTraumasWithoutMeta) {
+        if (
+          localTraumasWithoutMeta[key] === '' ||
+          localTraumasWithoutMeta[key] === 0 ||
+          localTraumasWithoutMeta[key] === false ||
+          (Array.isArray(localTraumasWithoutMeta[key]) &&
+            localTraumasWithoutMeta[key].length === 0) ||
+          localTraumasWithoutMeta[key] === null
+        ) {
+          localTraumasEmpty++
+        }
       }
-    }
 
-    const localTraumasCompletness = determineCompletness(localTraumasEmpty)
+      const localTraumasCompletness = determineCompletness(localTraumasEmpty)
 
-    if (response.localTraumas) {
-      dispatch(saveLocalTraumasCompletness(localTraumasCompletness))
-      setLocalTraumas([...localTraumas, response.localTraumas])
-      toast.show({
-        description: 'Locas trauma cadastrado com sucesso.',
-        duration: 3000,
-        placement: 'bottom',
-        style: { backgroundColor: '#0AC800' },
-      })
+      if (response.localTraumas) {
+        dispatch(saveLocalTraumasCompletness(localTraumasCompletness))
+        setLocalTraumas([...localTraumas, response.localTraumas])
+        toast.show({
+          description: 'Locas trauma cadastrado com sucesso.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#0AC800' },
+        })
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setButtonLoading(false)
     }
   }
 
@@ -126,122 +136,134 @@ export default function LocalTraumas() {
 
   useEffect(() => {
     const findReportData = async () => {
-      const localTraumasData = await findManyLocalTraumas(reportId)
+      try {
+        setLoading(true)
+        const localTraumasData = await findManyLocalTraumas(reportId)
 
-      if (!localTraumasData.localTraumas) {
-        console.log('Nenhum dado coletado de Local Traumas')
-      } else {
-        setLocalTraumas(localTraumasData.localTraumas)
+        if (!localTraumasData.localTraumas) {
+          console.log('Nenhum dado coletado de Local Traumas')
+        } else {
+          setLocalTraumas(localTraumasData.localTraumas)
+        }
+        console.log(localTraumasData)
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setLoading(false)
       }
-
-      console.log(localTraumasData)
     }
     findReportData()
   }, [reportId])
 
   return (
     <SafeAreaView>
-      <ScrollView>
-        <View>
-          <Header />
-          <Title iconName="user-alt" title="Localização do Traumas" />
-          <View style={s.boxShadow} className="mx-auto">
-            <Body
-              bodyPartValueHandler={setBodyPart}
-              bodyPartChangeHandler={setBodyPartSelected}
-              setSide={setSide}
-              setFace={setFace}
-              clickedBodyPartText={clickedBodyPartText}
-              setClickedBodyPartText={setClickedBodyPartText}
-            />
-            <View className="mt-[34px] w-[5/6] items-center justify-center">
-              <Text className="mb-[10px] ml-[10px] text-[20px] font-medium leading-[20px]">
-                Localização do Trauma
-              </Text>
-              <View className="mb-[10px]">
-                <PickOne
-                  selectedOptionValue={side}
-                  onSelectOption={setSide}
-                  leftOption={{ key: 'Esquerdo', value: 'LEFT' }}
-                  rightOption={{ key: 'Direito', value: 'RIGHT' }}
-                  title="Lado"
-                />
-                <PickOne
-                  selectedOptionValue={face}
-                  onSelectOption={setFace}
-                  leftOption={{ key: 'Frontal', value: 'FRONT' }}
-                  rightOption={{ key: 'Traseira', value: 'BACK' }}
-                  title="Face"
-                />
-              </View>
-            </View>
-            <View className={tipoFerimentoClasses}>
-              <Text className="pb-1 pl-2 text-lg font-bold">
-                Tipo de Ferimento:
-              </Text>
-              <TouchableOpacity
-                className="border-lg rounded"
-                onPress={() => {
-                  setFerimentoModalVisible(true)
-                }}
-              >
-                <View className="border-lg mx-auto flex h-[42px] w-full flex-row justify-between rounded-[7px] border-width1 border-black p-[10px]">
-                  <Text>Selecione</Text>
-                  <Text className="font-bold">{tipoFerimento || 'Nenhum'}</Text>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ScrollView>
+          <View>
+            <Header />
+            <Title iconName="user-alt" title="Localização do Traumas" />
+            <View style={s.boxShadow} className="mx-auto">
+              <Body
+                bodyPartValueHandler={setBodyPart}
+                bodyPartChangeHandler={setBodyPartSelected}
+                setSide={setSide}
+                setFace={setFace}
+                clickedBodyPartText={clickedBodyPartText}
+                setClickedBodyPartText={setClickedBodyPartText}
+              />
+              <View className="mt-[34px] w-[5/6] items-center justify-center">
+                <Text className="mb-[10px] ml-[10px] text-[20px] font-medium leading-[20px]">
+                  Localização do Trauma
+                </Text>
+                <View className="mb-[10px]">
+                  <PickOne
+                    selectedOptionValue={side}
+                    onSelectOption={setSide}
+                    leftOption={{ key: 'Esquerdo', value: 'LEFT' }}
+                    rightOption={{ key: 'Direito', value: 'RIGHT' }}
+                    title="Lado"
+                  />
+                  <PickOne
+                    selectedOptionValue={face}
+                    onSelectOption={setFace}
+                    leftOption={{ key: 'Frontal', value: 'FRONT' }}
+                    rightOption={{ key: 'Traseira', value: 'BACK' }}
+                    title="Face"
+                  />
                 </View>
-              </TouchableOpacity>
-            </View>
+              </View>
+              <View className={tipoFerimentoClasses}>
+                <Text className="pb-1 pl-2 text-lg font-bold">
+                  Tipo de Ferimento:
+                </Text>
+                <TouchableOpacity
+                  className="border-lg rounded"
+                  onPress={() => {
+                    setFerimentoModalVisible(true)
+                  }}
+                >
+                  <View className="border-lg mx-auto flex h-[42px] w-full flex-row justify-between rounded-[7px] border-width1 border-black p-[10px]">
+                    <Text>Selecione</Text>
+                    <Text className="font-bold">
+                      {tipoFerimento || 'Nenhum'}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
 
-            <MainButton
-              innerText="SALVAR"
-              isLoading={false}
-              disabled={!bodyPart || !side || !face}
-              onPress={saveTrauma}
-            />
-          </View>
-          <Modal
-            transparent={true}
-            animationType="fade"
-            visible={modalFerimentoVisible}
-            onRequestClose={() => setFerimentoModalVisible(false)}
-          >
-            <View className="flex-1 items-center justify-center bg-[#0000007f]">
-              <AvalPacienteModal
-                handleOptionSelection={handleSetTipoFerimento}
-                setModalVisible={setFerimentoModalVisible}
-                modalTitle="Tipo de Ferimento"
-                options={[
-                  { value: 'FRATURA', description: 'Fratura' },
-                  { value: 'DIVERSOS', description: 'Ferimentos diversos' },
-                  { value: 'HEMORRAGIAS', description: 'Hemorragias' },
-                  { value: 'ESVICERACAO', description: 'Esvisceração' },
-                  { value: 'FAV_FAV', description: 'F.A.V. / F.A.F.' },
-                  { value: 'AMPUTACAO', description: 'Amputação' },
-                  {
-                    value: 'QUEIMADURA_1GRAU',
-                    description: 'Queimadura 1º Grau',
-                  },
-                  {
-                    value: 'QUEIMADURA_2GRAU',
-                    description: 'Queimadura 2º Grau',
-                  },
-                  {
-                    value: 'QUEIMADURA_3GRAU',
-                    description: 'Queimadura 3º Grau',
-                  },
-                ]}
+              <MainButton
+                innerText="SALVAR"
+                isLoading={buttonLoading}
+                disabled={!bodyPart || !side || !face}
+                onPress={saveTrauma}
               />
             </View>
-          </Modal>
-          <CreatedTraumas localTraumas={localTraumas} />
-          <MainButton
-            innerText="VOLTAR"
-            isLoading={false}
-            onPress={() => navigation.navigate('ocorrencia' as never)}
-          />
-          <Footer />
-        </View>
-      </ScrollView>
+            <Modal
+              transparent={true}
+              animationType="fade"
+              visible={modalFerimentoVisible}
+              onRequestClose={() => setFerimentoModalVisible(false)}
+            >
+              <View className="flex-1 items-center justify-center bg-[#0000007f]">
+                <AvalPacienteModal
+                  handleOptionSelection={handleSetTipoFerimento}
+                  setModalVisible={setFerimentoModalVisible}
+                  modalTitle="Tipo de Ferimento"
+                  options={[
+                    { value: 'FRATURA', description: 'Fratura' },
+                    { value: 'DIVERSOS', description: 'Ferimentos diversos' },
+                    { value: 'HEMORRAGIAS', description: 'Hemorragias' },
+                    { value: 'ESVICERACAO', description: 'Esvisceração' },
+                    { value: 'FAV_FAV', description: 'F.A.V. / F.A.F.' },
+                    { value: 'AMPUTACAO', description: 'Amputação' },
+                    {
+                      value: 'QUEIMADURA_1GRAU',
+                      description: 'Queimadura 1º Grau',
+                    },
+                    {
+                      value: 'QUEIMADURA_2GRAU',
+                      description: 'Queimadura 2º Grau',
+                    },
+                    {
+                      value: 'QUEIMADURA_3GRAU',
+                      description: 'Queimadura 3º Grau',
+                    },
+                  ]}
+                />
+              </View>
+            </Modal>
+            <CreatedTraumas localTraumas={localTraumas} />
+            <MainButton
+              innerText="VOLTAR"
+              isLoading={false}
+              onPress={() => navigation.navigate('ocorrencia' as never)}
+            />
+            <Footer />
+          </View>
+        </ScrollView>
+      )}
     </SafeAreaView>
   )
 }

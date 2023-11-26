@@ -17,7 +17,7 @@ const registerGesAnamnesis = async (ReportOwnerId: number) => {
     const data = response.data
     return data
   } catch (error) {
-    console.error('Erro ao enviar a gestacionalAnamnesis:', error)
+    console.error('Erro ao enviar a ges anamnesis:', error)
     return null
   }
 }

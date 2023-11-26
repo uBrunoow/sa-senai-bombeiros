@@ -28,7 +28,7 @@ const registerLocalTrauma = async (
 
     return response.data
   } catch (error) {
-    console.error('Erro ao criar local traumas: ', error)
+    console.error('Erro ao editar local traumas: ', error)
     return []
   }
 }

@@ -103,6 +103,7 @@ export interface IFinalization extends IBase {
   transportation: string
   CollectedObjects: string
   finalRemarks: string
+  VictimWas: string
   ReportOwnerId: number
 }
 
@@ -160,5 +161,5 @@ export interface IReport extends IBase {
   SuspectProblems: ISuspectProblems[]
   LocalTraumas: ILocalTrauma[]
   InfoTransport: IInfoTransporte[]
-  owner: IUser
+  owner?: IUser
 }

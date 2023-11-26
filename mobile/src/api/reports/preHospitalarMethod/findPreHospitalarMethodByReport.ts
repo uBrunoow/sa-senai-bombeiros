@@ -7,7 +7,7 @@ const findPreHospitalarMethodByReport = async (reportId: number | null) => {
     )
     return response.data
   } catch (error) {
-    console.error('Erro ao obter a preHospitalarMethods:', error)
+    console.error('Erro ao obter os pré hospitalares métodos:', error)
     return []
   }
 }

@@ -22,7 +22,7 @@ const updatePreHospitalarMethod = async (
     const data = response.data
     return data
   } catch (error) {
-    console.error('Erro ao editar a pre hospitalar method: ', error)
+    console.error('Erro ao editar os pré hospitalares métodos: ', error)
     return null
   }
 }

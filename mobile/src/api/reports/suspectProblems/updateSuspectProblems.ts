@@ -32,7 +32,7 @@ const updateSuspectProblems = async (
     const data = response.data
     return data
   } catch (error) {
-    console.error('Erro ao editar a suspect problems:', error)
+    console.error('Erro ao editar os problemas suspeitos:', error)
     return null
   }
 }
