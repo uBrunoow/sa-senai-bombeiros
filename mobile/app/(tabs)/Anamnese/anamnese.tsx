@@ -161,7 +161,8 @@ export default function Anamnese() {
         }
       }
 
-      const anamnesisCompletness = determineCompletness(emptyOrFalseCount)
+      const anamnesisCompletness: number | null =
+        determineCompletness(emptyOrFalseCount)
 
       if (response && response.updatedAnamnese) {
         dispatch(saveAnamnesisCompletness(anamnesisCompletness))

@@ -73,25 +73,23 @@ export default function Ocorrencia() {
               outro
             </Text>
           </View>
-          <UsageTable rows={[
-            {
-              material: "Mano",
-              quantity: 1,
-              sizes: [
-                "gg",
-                "md",
-                "m",
-              ]
-            },
-            {
-              material: "Manin",
-              quantity: 11,
-            },
-            {
-              material: "Man",
-              quantity: 2,
-            },
-          ]} />
+          <UsageTable
+            rows={[
+              {
+                material: 'Mano',
+                quantity: 1,
+                sizes: ['gg', 'md', 'm'],
+              },
+              {
+                material: 'Manin',
+                quantity: 11,
+              },
+              {
+                material: 'Man',
+                quantity: 2,
+              },
+            ]}
+          />
           <Footer />
         </View>
       </ScrollView>

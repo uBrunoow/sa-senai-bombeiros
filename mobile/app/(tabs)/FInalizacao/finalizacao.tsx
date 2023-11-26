@@ -346,6 +346,11 @@ const Finalizacao = () => {
   const handleClearVictimWas = () => {
     setVictimWas(null)
   }
+  const handleVictimChange = (itemValue: string | null) => {
+    if (itemValue !== null) {
+      setVictimWas(itemValue as VictimWasOptions)
+    }
+  }
   return (
     <SafeAreaView>
       <ScrollView>
@@ -440,7 +445,7 @@ const Finalizacao = () => {
                   </Text>
                   <View className="flex-row">
                     <Select
-                      selectedValue={VictimWas}
+                      selectedValue={VictimWas || undefined}
                       minWidth="200"
                       accessibilityLabel="Choose Service"
                       placeholder="Choose Service"
@@ -450,8 +455,9 @@ const Finalizacao = () => {
                       }}
                       mb={5}
                       w={285}
-                      onValueChange={(itemValue) => setVictimWas(itemValue)}
-                      onChange={() => handleClearVictimWas()}
+                      onValueChange={(itemValue) =>
+                        handleVictimChange(itemValue)
+                      }
                     >
                       <Select.Item label="Ciclista" value="CICLISTA" />
                       <Select.Item

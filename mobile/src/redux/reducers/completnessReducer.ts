@@ -24,7 +24,7 @@ const completnessSlice = createSlice({
   name: 'completness',
   initialState: initialCompletnessState,
   reducers: {
-    saveAnamnesisCompletness: (state, action: PayloadAction<number>) => {
+    saveAnamnesisCompletness: (state, action: PayloadAction<number | null>) => {
       state.anamnesisCompletness = action.payload
     },
     saveFinalizationCompletness: (
@@ -33,19 +33,34 @@ const completnessSlice = createSlice({
     ) => {
       state.finalizationCompletness = action.payload
     },
-    saveGesAnamnesisCompletness: (state, action: PayloadAction<number>) => {
+    saveGesAnamnesisCompletness: (
+      state,
+      action: PayloadAction<number | null>,
+    ) => {
       state.gesAnamnesisCompletness = action.payload
     },
-    saveIntroductionCompletness: (state, action: PayloadAction<number>) => {
+    saveIntroductionCompletness: (
+      state,
+      action: PayloadAction<number | null>,
+    ) => {
       state.introductionCompletness = action.payload
     },
-    saveInfoPacienteCompletness: (state, action: PayloadAction<number>) => {
+    saveInfoPacienteCompletness: (
+      state,
+      action: PayloadAction<number | null>,
+    ) => {
       state.infoPacienteCompletness = action.payload
     },
-    saveLocalTraumasCompletness: (state, action: PayloadAction<number>) => {
+    saveLocalTraumasCompletness: (
+      state,
+      action: PayloadAction<number | null>,
+    ) => {
       state.localTraumasCompletness = action.payload
     },
-    saveInfoTransportCompletness: (state, action: PayloadAction<number>) => {
+    saveInfoTransportCompletness: (
+      state,
+      action: PayloadAction<number | null>,
+    ) => {
       state.infoTransportCompletness = action.payload
     },
   },

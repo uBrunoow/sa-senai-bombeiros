@@ -62,12 +62,6 @@ function Home() {
             situações de emergência, e para ajuda-los é necessário um meio mais
             ágil de relatórios
           </Text>
-          {/* <TouchableOpacity
-            onPress={handleButtonClick}
-            className="w-2/6 rounded-md bg-red-600 px-5 py-2"
-          >
-            <Text className="text-center text-lg text-white">RELATÓRIO</Text>
-          </TouchableOpacity> */}
           <Pressable onPress={handleButtonClick}>
             {isLoading ? (
               <View className="w-[150px] rounded-md bg-red-700 px-5 py-2">
@@ -97,10 +91,22 @@ function Home() {
           >
             <Entypo name="globe" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity className="px-2">
+          <TouchableOpacity
+            className="px-2"
+            onPress={() => {
+              Linking.openURL('https://www.instagram.com/bvsc.guaramirim/')
+            }}
+          >
             <Entypo name="instagram" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity className="px-2">
+          <TouchableOpacity
+            className="px-2"
+            onPress={() => {
+              Linking.openURL(
+                'https://www.facebook.com/Bombeirosnoar/?locale=pt_BR',
+              )
+            }}
+          >
             <Entypo name="facebook" size={24} color="white" />
           </TouchableOpacity>
           {/* End footer */}
