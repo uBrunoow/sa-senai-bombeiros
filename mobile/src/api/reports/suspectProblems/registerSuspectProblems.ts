@@ -17,7 +17,7 @@ const registerSuspectProblems = async (ReportOwnerId: number) => {
     const data = response.data
     return data
   } catch (error) {
-    console.error('Erro ao enviar a registerSuspectProblems:', error)
+    console.error('Erro ao enviar os problemas suspeitos:', error)
     return null
   }
 }

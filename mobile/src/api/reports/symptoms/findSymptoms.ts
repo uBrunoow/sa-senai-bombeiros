@@ -5,7 +5,7 @@ const findSymptomsByReport = async (reportId: number | null) => {
     const response = await api.get(`/api/reports/${reportId}/symptoms`)
     return response.data
   } catch (error) {
-    console.error('Erro ao obter a preHospitalarMethods:', error)
+    console.error('Erro ao obter os sintomas:', error)
     return []
   }
 }

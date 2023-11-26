@@ -66,7 +66,7 @@ export default function SinaisInfoPaciente() {
 
   const handleInputChange = (
     field: keyof PatientInfo,
-    value: number | perfusaoInfoOption,
+    value: number | perfusaoInfoOption | null,
   ) => {
     try {
       dispatch(
@@ -175,9 +175,9 @@ export default function SinaisInfoPaciente() {
           <Text className="text-center text-base font-medium">Perfusão</Text>
           <View className="">
             <Perfusaoinfo
-              selectedOption={patientInfo.perfusion}
+              selectedOption={patientInfo.perfusion || null}
               onSelectOption={(option) =>
-                handleInputChange('perfusion', option)
+                handleInputChange('perfusion', option || null)
               }
             />
           </View>

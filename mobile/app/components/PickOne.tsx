@@ -1,28 +1,29 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 
-type OptionsProps = {
+type OptionsProps<T> = {
   title: string
-  selectedOptionValue: string | null
-  onSelectOption: Dispatch<SetStateAction<string | null>>
+  selectedOptionValue: T
+  // eslint-disable-next-line no-unused-vars
+  onSelectOption: (selectedOption: T) => void
   leftOption: {
     key: string
-    value: string
+    value: T
   }
   rightOption: {
     key: string
-    value: string
+    value: T
   }
 }
 
-export default function Options({
+export default function Options<T>({
   title,
   selectedOptionValue,
   onSelectOption,
   leftOption,
   rightOption,
-}: OptionsProps) {
-  function handleOnSelectOption(newValue: string | null) {
+}: OptionsProps<T>) {
+  function handleOnSelectOption(newValue: T) {
     if (!newValue) return
     onSelectOption(newValue)
   }

@@ -1,9 +1,9 @@
-import { ILocalTraumas } from '@src/interfaces/IReport'
+import { ILocalTrauma } from '@src/interfaces/IReport'
 import { api } from '@src/lib/api'
 
 const findManyLocalTraumas = async (
   localTraumasId: number,
-): Promise<{ localTraumas?: ILocalTraumas[] }> => {
+): Promise<{ localTraumas?: ILocalTrauma[] }> => {
   try {
     const response = await api.get(`/api/local-traumas/${localTraumasId}`)
     return response.data

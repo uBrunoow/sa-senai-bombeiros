@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { View, Text, TextInput } from 'react-native'
 import { Checkbox } from 'native-base'
 

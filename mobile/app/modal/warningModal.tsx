@@ -1,8 +1,6 @@
-import { Select, CheckIcon } from 'native-base'
 import React from 'react'
 import { View, Pressable, Text } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/core'
 
 function WarningModal({ closeModal }: any) {
   return (

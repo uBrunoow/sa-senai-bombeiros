@@ -39,7 +39,43 @@ const DownloadPdfModal = () => {
   ).uri
 
   const [reportsForDownload, setReportsForDownload] =
-    useState<DownloadedReport>({ report: {} })
+    useState<DownloadedReport>({
+      msg: '',
+      report: {
+        id: 0,
+        createdAt: '',
+        updatedAt: '',
+        reportDate: '',
+        name: '',
+        age: 0,
+        gender: '',
+        cpf: '',
+        phone: '',
+        reportPlace: '',
+        systolicBloodPressure: 0,
+        diastolicBloodPressure: 0,
+        bodyTemp: 0,
+        bodyPulse: 0,
+        breathing: 0,
+        saturation: 0,
+        perfusion: '',
+        followUp: '',
+        followUpAge: 0,
+        ownerId: 0,
+        Symptoms: [],
+        PreHospitalMethods: [],
+        Anamnesis: [],
+        GestationalAnamnesis: [],
+        Report_PreHospitalMethod: [],
+        Report_Symptoms: [],
+        Glasglow: [],
+        CinematicAvaliation: [],
+        Finalization: [],
+        SuspectProblems: [],
+        LocalTraumas: [],
+        InfoTransport: [],
+      },
+    })
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -756,7 +792,9 @@ const DownloadPdfModal = () => {
                     </div>
                     <div class="content-info height">
                       <div class="infos-gerais">
-                        <p>Pedestre</p>
+                        <p>${
+                          reportsForDownload.report.Finalization[0].VictimWas
+                        }</p>
                       </div>
                     </div>
                   </div>

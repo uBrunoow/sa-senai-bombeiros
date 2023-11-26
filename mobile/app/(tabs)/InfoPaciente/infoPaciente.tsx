@@ -34,6 +34,7 @@ type RemoveMetaPropertiesType = {
   reportDate: string
   followUp: string
   followUpAge: number
+  Another: string
 }
 export default function InfoPatient() {
   const navigation = useNavigation()
