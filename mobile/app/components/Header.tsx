@@ -84,7 +84,7 @@ export default function Header() {
           <NOARLogo height={42} width={42} />
           <Text
             style={styles.textShadow}
-            className="ml-[14px] text-[32.5px] font-black text-[#33338D]"
+            className="ml-[14px] text-[32.5px] font-black text-[#ffeedd] drop-shadow-lg"
           >
             NOAR
           </Text>
