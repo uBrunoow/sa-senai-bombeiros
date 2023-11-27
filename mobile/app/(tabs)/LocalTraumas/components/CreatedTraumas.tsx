@@ -19,6 +19,13 @@ export default function CreatedTraumas({ localTraumas }: CreatedTraumasProps) {
       ABDOMEN: 'Abdômen',
       PEITO: 'Peito',
       OMBRO: 'Ombro',
+      CABECA: 'Cabeça',
+      COXA: '',
+      JOELHO: '',
+      PERNA: '',
+      PE: '',
+      VIRILHA: '',
+      CALCANHAR: '',
     },
     tipo: {
       FRATURA: 'Fratura',
@@ -53,6 +60,8 @@ export default function CreatedTraumas({ localTraumas }: CreatedTraumasProps) {
   }
 
   async function handleDeleteLocalTrauma(id: number) {
+    console.log(id)
+
     const { success } = await deleteLocalTraumas(id)
 
     if (success) {
@@ -80,13 +89,15 @@ export default function CreatedTraumas({ localTraumas }: CreatedTraumasProps) {
           const side = tipoTraumaMapping.side[trauma.side]
           const face = tipoTraumaMapping.face[trauma.face]
 
+          console.log([trauma.bodyPart, trauma.tipo, trauma.side, trauma.face])
+          console.log([bodyPart, tipo, side, face])
+
           return (
             <View
               className="my-2 grow flex-row justify-between rounded-md border p-2"
-              key={`${i}${trauma.id}`}
+              key={i}
             >
               <View>
-                <Text>{trauma.id}</Text>
                 <View className="flex-row justify-between">
                   <Text className="mr-3 font-bold">{bodyPart}</Text>
                 </View>

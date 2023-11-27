@@ -104,6 +104,8 @@ export default function LocalTraumas() {
 
     const localTraumasCompletness = determineCompletness(localTraumasEmpty)
 
+    console.log(response.localTraumas)
+
     if (response.localTraumas) {
       dispatch(saveLocalTraumasCompletness(localTraumasCompletness))
       setLocalTraumas([...localTraumas, response.localTraumas])

@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import bodyCoordinates from './../utils/bodyCoordinates'
+import childBodyCoordinates from './../utils/childBodyCoordinates'
 import findReports from '@src/api/reports/findReport'
 import { RootState } from '@src/redux/stores/stores'
 import { useSelector } from 'react-redux'
@@ -19,7 +20,7 @@ type BodyProps = {
   setClickedBodyPartText: Dispatch<SetStateAction<string>>
 }
 
-const castedBodyCoordinates = bodyCoordinates
+let castedBodyCoordinates
 
 export default function Body({
   bodyPartValueHandler,
@@ -30,6 +31,12 @@ export default function Body({
   setClickedBodyPartText,
 }: BodyProps) {
   function getClickBodyPlace(clickCoord: Coordinate) {
+    if (isMaiorQueCincoAnos) {
+      castedBodyCoordinates = bodyCoordinates
+    } else {
+      castedBodyCoordinates = childBodyCoordinates
+    }
+
     for (const bodyPart in castedBodyCoordinates) {
       const currPart = (
         castedBodyCoordinates as Record<
@@ -89,7 +96,9 @@ export default function Body({
     console.log(clickCoordinates)
   }
 
-  const [isMaiorQueCincoAnos, setIsMaiorQueCincoAnos] = useState(false)
+  const [isMaiorQueCincoAnos, setIsMaiorQueCincoAnos] = useState<
+    boolean | null
+  >(null)
 
   const reportId = useSelector((state: RootState) => state.report.reportId)
 
@@ -109,7 +118,13 @@ export default function Body({
   return (
     <View className="mx-auto w-11/12">
       <TouchableOpacity onPress={handleClick} activeOpacity={0.7}>
-        {isMaiorQueCincoAnos ? (
+        {isMaiorQueCincoAnos === null ? (
+          <View className="mb-6 mt-4 aspect-[6/7] w-full items-center justify-center rounded-xl bg-[#00000027]">
+            <Text className="text-xl font-bold text-white drop-shadow-xl">
+              Loading...
+            </Text>
+          </View>
+        ) : isMaiorQueCincoAnos ? (
           <Image
             style={styles.bodyImage}
             source={require('./../../../../assets/anatomic-position.png')}

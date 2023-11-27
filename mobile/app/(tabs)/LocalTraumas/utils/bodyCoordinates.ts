@@ -75,7 +75,7 @@ const bodyCoordinates: TBodyCoordinates = {
   },
   'Braço direito traseiro': {
     coords: {
-      tl: { x: 2273, y: 106 },
+      tl: { x: 273, y: 106 },
       br: { x: 295, y: 142 },
     },
     side: 'RIGHT',
@@ -154,6 +154,15 @@ const bodyCoordinates: TBodyCoordinates = {
     face: 'BACK',
     local: 'OMBRO',
   },
+  'Ombro Direito Traseiro': {
+    coords: {
+      tl: { x: 271, y: 84 },
+      br: { x: 289, y: 103 },
+    },
+    side: 'RIGHT',
+    face: 'BACK',
+    local: 'OMBRO',
+  },
   'Coxa Frontal Direita': {
     coords: {
       tl: { x: 48, y: 206 },
@@ -170,6 +179,24 @@ const bodyCoordinates: TBodyCoordinates = {
     },
     side: 'LEFT',
     face: 'FRONT',
+    local: 'COXA',
+  },
+  'Coxa Traseira Esquerda': {
+    coords: {
+      tl: { x: 207, y: 212 },
+      br: { x: 234, y: 271 },
+    },
+    side: 'LEFT',
+    face: 'BACK',
+    local: 'COXA',
+  },
+  'Coxa Traseira Direita': {
+    coords: {
+      tl: { x: 242, y: 214 },
+      br: { x: 268, y: 272 },
+    },
+    side: 'RIGHT',
+    face: 'BACK',
     local: 'COXA',
   },
   'Joelho Direito': {
@@ -208,10 +235,28 @@ const bodyCoordinates: TBodyCoordinates = {
     face: 'FRONT',
     local: 'PERNA',
   },
+  'Perna Traseira Esquerda': {
+    coords: {
+      tl: { x: 214, y: 275 },
+      br: { x: 234, y: 335 },
+    },
+    side: 'LEFT',
+    face: 'FRONT',
+    local: 'PERNA',
+  },
+  'Perna Traseira Direita': {
+    coords: {
+      tl: { x: 246, y: 279 },
+      br: { x: 268, y: 337 },
+    },
+    side: 'LEFT',
+    face: 'FRONT',
+    local: 'PERNA',
+  },
   'Pé Esquerdo': {
     coords: {
-      tl: { x: 84, y: 284 },
-      br: { x: 107, y: 335 },
+      tl: { x: 88, y: 343 },
+      br: { x: 107, y: 361 },
     },
     side: 'LEFT',
     face: 'FRONT',
@@ -219,12 +264,93 @@ const bodyCoordinates: TBodyCoordinates = {
   },
   'Pé Direito': {
     coords: {
-      tl: { x: 84, y: 284 },
-      br: { x: 107, y: 335 },
+      tl: { x: 61, y: 348 },
+      br: { x: 77, y: 359 },
     },
-    side: 'LEFT',
+    side: 'RIGHT',
     face: 'FRONT',
     local: 'PE',
+  },
+  'Calcanhar Direito': {
+    coords: {
+      tl: { x: 245, y: 348 },
+      br: { x: 77, y: 359 },
+    },
+    side: 'RIGHT',
+    face: 'FRONT',
+    local: 'CALCANHAR',
+  },
+  'Calcanhar Esquerdo': {
+    coords: {
+      tl: { x: 223, y: 345 },
+      br: { x: 260, y: 361 },
+    },
+    side: 'RIGHT',
+    face: 'FRONT',
+    local: 'CALCANHAR',
+  },
+  Virilha: {
+    coords: {
+      tl: { x: 50, y: 175 },
+      br: { x: 113, y: 207 },
+    },
+    side: null,
+    face: 'FRONT',
+    local: 'VIRILHA',
+  },
+  'Cabeça Frontal': {
+    coords: {
+      tl: { x: 61, y: 30 },
+      br: { x: 103, y: 62 },
+    },
+    side: null,
+    face: 'FRONT',
+    local: 'CABECA',
+  },
+  'Cabeça Traseira': {
+    coords: {
+      tl: { x: 221, y: 30 },
+      br: { x: 260, y: 66 },
+    },
+    side: null,
+    face: 'BACK',
+    local: 'CABECA',
+  },
+  'Palma da Mão Esquerda': {
+    coords: {
+      tl: { x: 129, y: 190 },
+      br: { x: 155, y: 218 },
+    },
+    side: null,
+    face: 'FRONT',
+    local: 'MAO',
+  },
+  'Palma da Mão Direita': {
+    coords: {
+      tl: { x: 9, y: 188 },
+      br: { x: 33, y: 213 },
+    },
+    side: null,
+    face: 'FRONT',
+    local: 'MAO',
+  },
+  'Mão Direita': {
+    coords: {
+      tl: { x: 169, y: 189 },
+      br: { x: 190, y: 212 },
+    },
+    side: null,
+    face: 'BACK',
+    local: 'MAO',
+  },
+  'Mão Esquerda': {
+    coords: {
+      tl: { x: 287, y: 191 },
+      br: { x: 314, y: 217 },
+    },
+    side: null,
+    face: 'BACK',
+    local: 'MAO',
   },
 }
 

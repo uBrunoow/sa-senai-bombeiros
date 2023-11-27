@@ -86,7 +86,7 @@ export default function Header() {
           <NOARLogo height={42} width={42} />
           <Text
             style={styles.textShadow}
-            className="ml-[14px] text-[32.5px] font-black text-[#ffeedd] drop-shadow-lg"
+            className="ml-[14px] text-[32.5px] font-black text-[#fffafa] drop-shadow-lg"
           >
             NOAR
           </Text>
@@ -104,7 +104,6 @@ export default function Header() {
             </Pressable>
           </View>
         )}
-
         {excluirOcorrenciaAbrir && (
           <Modal
             transparent={true}
