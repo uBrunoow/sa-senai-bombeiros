@@ -1,22 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
 import { styles as s } from '../../../styles/boxShadow'
 import { Checkbox, Divider, Button } from 'native-base'
 import { TMaterialDeixadoNoHostpitalTypes } from './../utils/usageTableMaterials'
 import InputNumeric from '@app/components/inputNumeric'
+import { useDispatch } from 'react-redux'
+import { setMaterialDeixadoNoHostpitalData } from '@src/redux/actions/dataActions'
 
 export default function UsageTable({
   MaterialDeixadoNoHostpitalDef,
 }: {
   MaterialDeixadoNoHostpitalDef: TMaterialDeixadoNoHostpitalTypes
 }) {
-  const [materialUtilizadoDescartavel, setMaterialUtilizadoDescartavel] =
+  const dispatch = useDispatch()
+  const [materialDeixadoNoHostpital, setMaterialDeixadoNoHostpital] =
     useState<TMaterialDeixadoNoHostpitalTypes>(MaterialDeixadoNoHostpitalDef)
 
   const handleMaterialCheckboxChange = (
     key: keyof TMaterialDeixadoNoHostpitalTypes,
   ) => {
-    setMaterialUtilizadoDescartavel((prevState) => {
+    setMaterialDeixadoNoHostpital((prevState) => {
       const newState = {
         ...prevState,
         [key]: {
@@ -39,7 +42,7 @@ export default function UsageTable({
     materialKey: keyof TMaterialDeixadoNoHostpitalTypes,
     size: string,
   ) => {
-    setMaterialUtilizadoDescartavel((prevState) => {
+    setMaterialDeixadoNoHostpital((prevState) => {
       return {
         ...prevState,
         [materialKey]: {
@@ -57,7 +60,7 @@ export default function UsageTable({
     materialKey: keyof TMaterialDeixadoNoHostpitalTypes,
     newValue: number,
   ) => {
-    setMaterialUtilizadoDescartavel((prevState) => {
+    setMaterialDeixadoNoHostpital((prevState) => {
       return {
         ...prevState,
         [materialKey]: {
@@ -67,6 +70,20 @@ export default function UsageTable({
       }
     })
   }
+
+  useEffect(() => {
+    const onChangeMaterialDeixadoNoHostpital = () => {
+      const materialDeixadoNoHostpitalDataInfo = {
+        materialDeixadoNoHostpital,
+      }
+
+      dispatch(
+        setMaterialDeixadoNoHostpitalData(materialDeixadoNoHostpitalDataInfo),
+      )
+    }
+
+    onChangeMaterialDeixadoNoHostpital()
+  }, [dispatch, materialDeixadoNoHostpital])
 
   const handleShowMore = (category: 'MaterialUtilizadoDescartavel') => {
     if (category === 'MaterialUtilizadoDescartavel') {
@@ -165,7 +182,7 @@ export default function UsageTable({
           <View>
             <View className="flex grow flex-col justify-between">
               {renderCheckboxes(
-                materialUtilizadoDescartavel,
+                materialDeixadoNoHostpital,
                 showMoreMaterialUtilizadoDescartavel,
               )}
               {!showMoreMaterialUtilizadoDescartavel ? (

@@ -86,6 +86,7 @@ export default function CreatedTraumas({ localTraumas }: CreatedTraumasProps) {
               key={`${i}${trauma.id}`}
             >
               <View>
+                <Text>{trauma.id}</Text>
                 <View className="flex-row justify-between">
                   <Text className="mr-3 font-bold">{bodyPart}</Text>
                 </View>

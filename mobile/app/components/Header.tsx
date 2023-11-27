@@ -27,6 +27,7 @@ import {
   clearSignsAndSymptomsId,
   clearSuspectProblemsId,
 } from '@src/redux/actions/reportActions'
+import { clearCompletness } from '@src/redux/reducers/completnessReducer'
 
 type RootStackParamList = {
   home: undefined
@@ -65,6 +66,7 @@ export default function Header() {
         dispatch(clearCinematicAvaliationId())
         dispatch(clearPreHospitalarMethodId())
         dispatch(clearSignsAndSymptomsId())
+        dispatch(clearCompletness())
         setExcluirOcorrenciaAbrir(false)
         navigation.navigate('home')
       }

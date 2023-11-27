@@ -18,6 +18,7 @@ import { getTransportationIcon } from '@src/utils/getTransportationIcon'
 import { formatAnyValue } from '@src/utils/formatAnyValue'
 import { verifyCinematicAvaliation } from '@src/utils/verifyCinematicAvaliation'
 import { convertTrue } from '@src/utils/convertTrue'
+import { obterDescricaoTipo } from '@src/utils/convertBodyType'
 
 interface DownloadedReport {
   msg: string
@@ -50,6 +51,7 @@ const DownloadPdfModal = () => {
 
         setReportsForDownload(response)
       } catch (error) {
+        console.error(error)
       } finally {
         setLoading(false)
       }
@@ -69,7 +71,11 @@ const DownloadPdfModal = () => {
     return eyeOpening + verbalResponse + motorResponse
   }
 
-  console.log(JSON.stringify(reportsForDownload.report, null, 2))
+  // console.log(
+  //   JSON.stringify(reportsForDownload.report.LocalTraumas[0].bodyPart, null, 2),
+  // )
+
+  // reportsForDownload.report.GestationalAnamnesis[0]
 
   const generatePDF = async () => {
     const transportationIcon = getTransportationIcon(
@@ -756,7 +762,9 @@ const DownloadPdfModal = () => {
                     </div>
                     <div class="content-info height">
                       <div class="infos-gerais">
-                        <p>Pedestre</p>
+                      <p>${formatAnyValue(
+                        reportsForDownload.report.Finalization[0]?.VictimWas,
+                      )}</p>
                       </div>
                     </div>
                   </div>
@@ -803,110 +811,36 @@ const DownloadPdfModal = () => {
                         <img src="${Multiply}" alt="" style="width: 50px; height: 50px;">
                         <img class="image-body" src="${BodyImage}" alt="">
                       </div>
-                      <div class="reports">
-                        <p>Esviceração</p>
-                      </div>
-                      <div class="reports">
-                        <p>Esviceração</p>
-                      </div>
-                      <div class="reports">
-                        <p>Esviceração</p>
-                      </div>
-                      <div class="reports">
-                        <p>Esviceração</p>
-                      </div>
-                      <div class="reports">
-                        <p>Esviceração</p>
-                      </div>
+                      
                     </div>
-                    
                   </div>
                 </div>
-      
-                <div class="table"> 
+                <div class="table">
                   <div class="table-header">
-                    <p>Ferimento/ Fraturas/ Entorses/ Luxação/ Contusão  </p>
+                    <p>Ferimento/ Fraturas/ Entorses/ Luxação/ Contusão</p>
                   </div>
                   <div class="content-info height" style="padding: 0;">
                     <div class="infos-gerais">
-                      <table style="width:100%">
+                      <table style="width: 100%;">
                         <tr>
                           <th>Local</th>
                           <th>Lado</th>
                           <th>Face</th>
                           <th>Tipo</th>
                         </tr>
+                        ${reportsForDownload.report.LocalTraumas.map(
+                          (row) => `
                         <tr>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-      
-                <div class="table"> 
-                  <div class="content-info height" style="padding: 0;">
-                    <div class="infos-gerais">
-                      <table style="width:100%">
-                        <tr class="queimaduras">
-                          <th style="width: 50px;">QUEIMD.</th>
-                          <th>CABEÇA</th>
-                          <th>PESCOÇO</th>
-                          <th>T.ANT</th>
-                          <th>T.POS</th>
-                        </tr>
-                        <tr  class="queimaduras">
-                          <td>1° grau</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        <tr  class="queimaduras">
-                          <td>2° grau</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        <tr  class="queimaduras">
-                          <td>3° grau</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        <tr  class="queimaduras">
-                          <th>GENIT.</th>
-                          <th>M.I.D</th>
-                          <th>M.I.E</th>
-                          <th>M.S.D</th>
-                          <th>M.S.E</th>
-                        </tr>
-                        <tr  class="queimaduras">
-                          <td>1° grau</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        <tr  class="queimaduras">
-                          <td>2° grau</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        <tr  class="queimaduras">
-                          <td>3° grau</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
+                          <td>${row.bodyPart}</td>
+                          <td>${
+                            { LEFT: 'Esquerdo', RIGHT: 'Direito' }[row.side]
+                          }</td>
+                          <td>${
+                            { BACK: 'Traseira', FRONT: 'Frontal' }[row.face]
+                          }</td>
+                          <td>${obterDescricaoTipo(row.tipo)}</td>
+                        </tr>`,
+                        ).join('')}
                       </table>
                     </div>
                   </div>
@@ -915,7 +849,7 @@ const DownloadPdfModal = () => {
             </div>
           </main>
         </div>
-      
+
         <div class="page">
           <main>
             <div class="container">
@@ -1209,7 +1143,7 @@ const DownloadPdfModal = () => {
                     <div class="infos-anamnese width">
                     <div class="finalRemarks-anamnese">
                         <h5>Observações Finais</h5>
-                        <p>
+                        <p style="overflow: hidden;">
                           ${formatAnyValue(
                             reportsForDownload.report.Anamnesis[0]
                               ?.FinalRemarks,
@@ -1265,17 +1199,110 @@ const DownloadPdfModal = () => {
                     </div>
                     <div class="divider-anamnese">
                       <div class="infos-anamnese">Alguma alergia?:</div>
-                      <div class="infos-anamnese">${formatAnyValue(
-                        reportsForDownload.report.Anamnesis[0]?.Allergies,
-                      )} | ${formatAnyValue(
+                      <div class="infos-anamnese">${
+                        reportsForDownload.report.Anamnesis[0]?.Allergies
+                          ? 'SIM'
+                          : 'NÃO'
+                      } | ${formatAnyValue(
         reportsForDownload.report.Anamnesis[0]?.AllergiesWhich,
       )}</div>
                       <div class="infos-anamnese">Ingeriu Algum Liquido?:</div>
-                      <div class="infos-anamnese">${formatAnyValue(
-                        reportsForDownload.report.Anamnesis[0]?.IngestedFood,
-                      )} | ${formatAnyValue(
+                      <div class="infos-anamnese">${
+                        reportsForDownload.report.Anamnesis[0]?.IngestedFood
+                          ? 'SIM'
+                          : 'NÃO'
+                      } | ${formatAnyValue(
         reportsForDownload.report.Anamnesis[0]?.WhatTimeFood,
       )}</div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </main>
+        </div>
+
+        <div class="page">
+          <main>
+            <div class="container>
+              <section>
+                <div class="table" style="height: fit-content; border: 1px solid #000;"> 
+                  <div class="table-header">
+                    <p>Anamnese Gestacional</p>
+                  </div>
+                  <div class="content-info-anamneses height">
+                    <div class="divider-anamnese">
+                      <div class="infos-anamnese" style="margin-right: 30px;">Período gestacional:</div>
+                      <div class="infos-anamnese" style="overflow: hidden;">
+                        ${
+                          reportsForDownload.report.GestationalAnamnesis[0]
+                            .FinalRemarks
+                        }
+                      </div>
+                    </div>
+                    <div style="display: flex; width: 100%;">
+                      <div class="divider-anamnese">
+                        <div class="infos-anamnese">Fez pré-natal?</div>
+                        <div class="infos-anamnese">${
+                          reportsForDownload.report.GestationalAnamnesis[0]
+                            .PreNatal
+                            ? 'SIM'
+                            : 'NÃO'
+                        }</div>
+                      </div>
+                      <div style="height: 45px; width: 1px; margin: 0 20px; background-color: #000; color: #0000;">|</div>
+                      <div class="divider-anamnese">
+                        <div class="infos-anamnese">Médico:</div>
+                        <div class="infos-anamnese">${
+                          reportsForDownload.report.GestationalAnamnesis[0]
+                            .DoctorName
+                        }</div>
+                      </div>
+                    </div>
+                    <div class="divider-anamnese">
+                      <div class="infos-anamnese">Existe possiblidade de complicações?</div>
+                      <div class="infos-anamnese">${
+                        reportsForDownload.report.GestationalAnamnesis[0]
+                          .Complications
+                          ? 'SIM'
+                          : 'NÃO'
+                      }</div>
+                    </div>
+                    <div style="display: flex; width: 100%;">
+                      <div class="divider-anamnese">
+                        <div class="infos-anamnese">É o primeiro filho?</div>
+                        <div class="infos-anamnese">${
+                          reportsForDownload.report.GestationalAnamnesis[0]
+                            .NumberSon === 1
+                            ? 'SIM'
+                            : 'NÃO'
+                        }</div>
+                      </div>
+                      <div style="height: 45px; width: 1px; margin: 0 20px; background-color: #000; color: #0000;">|</div>
+                      <div class="divider-anamnese">
+                        <div class="infos-anamnese">Quantos?</div>
+                        <div class="infos-anamnese">${
+                          reportsForDownload.report.GestationalAnamnesis[0]
+                            .NumberSon
+                        }</div>
+                      </div>
+                    </div>
+                    <div class="divider-anamnese">
+                      <div class="infos-anamnese">Que horas iniciaram as contrações?</div>
+                      <div class="infos-anamnese">${
+                        reportsForDownload.report.GestationalAnamnesis[0]
+                          .ContractionSchedule
+                      }</div>
+                    </div>
+                    <div class="divider-anamnese">
+                      <div class="infos-anamnese">Ingeriu algum líquido?</div>
+                      <div class="infos-anamnese">${`${
+                        reportsForDownload.report.Anamnesis[0].IngestedFood
+                          ? 'SIM'
+                          : 'NÃO'
+                      } | ${
+                        reportsForDownload.report.Anamnesis[0].WhatTimeFood
+                      }`}</div>
                     </div>
                   </div>
                 </div>

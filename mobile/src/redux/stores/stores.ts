@@ -26,6 +26,15 @@ import IntroductionReducerData, {
   IntroductionDataState,
 } from '../reducers/introductionData'
 import infoTransportReducer from '../reducers/infoTransportReducer'
+import ProcedimentosEfetuadosReducerData, {
+  ProcedimentosEfetuadosDataState,
+} from '../reducers/procedimentosEfetuadosData'
+import MateriaisUtilizadosDescartavelReducerData, {
+  MateriaisUtilizadosDescartavelDataState,
+} from '../reducers/materiaisDescartavelData'
+import MateriaisDeixadosNoHospitalReducerData, {
+  MateriaisDeixadosNoHospitalDataState,
+} from '../reducers/materiaisDeixadosData'
 
 export interface RootState {
   auth: {
@@ -88,6 +97,10 @@ export interface RootState {
   infoTransport: {
     infoTransportId: number
   }
+
+  procedimentosEfetuadosData: ProcedimentosEfetuadosDataState
+  materialUtilizadoDescartavelData: MateriaisUtilizadosDescartavelDataState
+  materialDeixadoNoHostpitalData: MateriaisDeixadosNoHospitalDataState
 }
 const store = configureStore({
   reducer: {
@@ -117,6 +130,20 @@ const store = configureStore({
       AnyAction
     >,
     infoTransport: infoTransportReducer,
+    procedimentosEfetuadosData: ProcedimentosEfetuadosReducerData as Reducer<
+      ProcedimentosEfetuadosDataState,
+      AnyAction
+    >,
+    materialUtilizadoDescartavelData:
+      MateriaisUtilizadosDescartavelReducerData as Reducer<
+        MateriaisUtilizadosDescartavelDataState,
+        AnyAction
+      >,
+    materialDeixadoNoHostpitalData:
+      MateriaisDeixadosNoHospitalReducerData as Reducer<
+        MateriaisDeixadosNoHospitalDataState,
+        AnyAction
+      >,
   },
   middleware: [thunk],
 })

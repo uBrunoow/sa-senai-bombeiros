@@ -57,6 +57,7 @@ import registerTransport from '@src/api/reports/infoTransport/registerTransport'
 import VerifyGender from '@app/modal/verifyGender'
 import findReports from '@src/api/reports/findReport'
 import WarningModal from '@app/modal/warningModal'
+import { clearCompletness } from '@src/redux/reducers/completnessReducer'
 
 type RootStackParamList = {
   ocorrencia: undefined
@@ -429,6 +430,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
         dispatch(clearPreHospitalarMethodId())
         dispatch(clearSignsAndSymptomsId())
         dispatch(clearInfoTransportId())
+        dispatch(clearCompletness())
         setShowModal(false)
         navigation.navigate('home')
       }

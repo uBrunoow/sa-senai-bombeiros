@@ -1,4 +1,4 @@
-type UProcedimentosEfetuadosNames =
+export type UProcedimentosEfetuadosNames =
   | 'ASPIRACAO'
   | 'AVALIACAO_INICIAL'
   | 'AVALIACAO_DIRIGIDA'
@@ -29,7 +29,6 @@ type UProcedimentosEfetuadosNames =
   | 'RETIRADO_CAPACETE'
   | 'RCP'
   | 'ROLAMENTO_90'
-  | 'ROLAMENTO_180'
   | 'ROLAMENTO_180'
   | 'TOMADA_DECISAO'
   | 'TRATADO_CHOQUE'

@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, View } from 'react-native'
+import { SafeAreaView, ScrollView, View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
 import Title from '@app/components/Title'
@@ -179,6 +179,12 @@ export default function AnamneseGestacional() {
   }
   const handleChildbirth = (option: 'SIM' | 'NÃO') => {
     setChildbirth(option === 'SIM')
+
+    if (!Childbirth) {
+      setGender('')
+      setHorarioNascimento('')
+      setBabyName('')
+    }
   }
 
   const toast = useToast()
@@ -364,28 +370,36 @@ export default function AnamneseGestacional() {
                   selectedOption={Childbirth ? 'SIM' : 'NÃO'}
                   onSelectOption={handleChildbirth}
                 />
-                <View>
-                  <View className="mx-6 flex-row justify-around">
-                    <Options
-                      title="Sexo"
-                      Option1="Masc."
-                      Option2="Fem."
-                      selectedOption={gender}
-                      onSelectOption={handleSelectGender}
-                    />
-                    <View className="w-[10px]" />
-                    <InputClock
-                      title="Horário nasc."
-                      initialValue={horarioNascimento}
-                      onChange={(newValue) => setHorarioNascimento(newValue)}
+                {Childbirth ? (
+                  <View>
+                    <View className="mx-6 flex-row justify-around">
+                      <Options
+                        title="Sexo"
+                        Option1="Masc."
+                        Option2="Fem."
+                        selectedOption={gender}
+                        onSelectOption={handleSelectGender}
+                      />
+                      <View className="w-[10px]" />
+                      <InputClock
+                        title="Horário nasc."
+                        initialValue={horarioNascimento}
+                        onChange={(newValue) => {
+                          setHorarioNascimento(newValue)
+                        }}
+                      />
+                    </View>
+                    <InputFull
+                      title="Nome do bebê"
+                      value={BabyName}
+                      onChangeText={(e) => setBabyName(e)}
                     />
                   </View>
-                </View>
-                <InputFull
-                  title="Nome do bebê"
-                  value={BabyName}
-                  onChangeText={(e) => setBabyName(e)}
-                />
+                ) : (
+                  <View>
+                    <Text>Sem parto</Text>
+                  </View>
+                )}
                 <FormControl>
                   <FormControl.Label mt={5}>
                     Observações Finais

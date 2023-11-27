@@ -103,6 +103,7 @@ export interface IFinalization extends IBase {
   transportation: string
   CollectedObjects: string
   finalRemarks: string
+  VictimWas: string
   ReportOwnerId: number
 }
 

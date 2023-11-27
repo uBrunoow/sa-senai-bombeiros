@@ -1,4 +1,4 @@
-type UMaterialDescartaveisNames =
+export type UMaterialDescartaveisNames =
   | 'ATADURAS'
   | 'CATETER_TP_OCULOS'
   | 'COMPRESSORA_COMUM'
@@ -11,7 +11,7 @@ type UMaterialDescartaveisNames =
   | 'SORO_FISIOLOGICO'
   | 'TALAS_PAP'
 
-type UMaterialDeixadoNoHospitalNames =
+export type UMaterialDeixadoNoHospitalNames =
   | 'BASE_DO_ESTABILIZA'
   | 'COLAR'
   | 'COXINS_ESTABILIZA'
@@ -31,7 +31,7 @@ export type TMaterialUtilizadoDescartavelTypes = {
     sizes?: {
       selectedSize: string | null
       entries: string[]
-    }
+    } | null
   }
 }
 
@@ -44,7 +44,7 @@ export type TMaterialDeixadoNoHostpitalTypes = {
     sizes?: {
       selectedSize: string | null
       entries: string[]
-    }
+    } | null
   }
 }
 

@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
 import { styles as s } from '../../../styles/boxShadow'
 import { Checkbox, Divider, Button } from 'native-base'
 import { TMaterialUtilizadoDescartavelTypes } from './../utils/usageTableMaterials'
 import InputNumeric from '@app/components/inputNumeric'
+import { useDispatch } from 'react-redux'
+import { setMateriaisUtilizadosDescartavelData } from '@src/redux/actions/dataActions'
 
 export default function UsageTable({
   MaterialUtilizadoDescartavelDef,
 }: {
   MaterialUtilizadoDescartavelDef: TMaterialUtilizadoDescartavelTypes
 }) {
+  const dispatch = useDispatch()
   const [materialUtilizadoDescartavel, setMaterialUtilizadoDescartavel] =
     useState<TMaterialUtilizadoDescartavelTypes>(
       MaterialUtilizadoDescartavelDef,
@@ -69,6 +72,22 @@ export default function UsageTable({
       }
     })
   }
+
+  useEffect(() => {
+    const onChangeMateriaisUtilizadosDescartavel = () => {
+      const materialUtilizadoDescartavelDataInfo = {
+        materialUtilizadoDescartavel,
+      }
+
+      dispatch(
+        setMateriaisUtilizadosDescartavelData(
+          materialUtilizadoDescartavelDataInfo,
+        ),
+      )
+    }
+
+    onChangeMateriaisUtilizadosDescartavel()
+  }, [dispatch, materialUtilizadoDescartavel])
 
   const handleShowMore = (category: 'MaterialUtilizadoDescartavel') => {
     if (category === 'MaterialUtilizadoDescartavel') {
