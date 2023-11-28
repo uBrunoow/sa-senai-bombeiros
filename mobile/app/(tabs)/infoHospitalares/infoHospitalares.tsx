@@ -24,115 +24,85 @@ import {
 } from './utils/prodAccomplished'
 import { useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
+import updateInfoHospitalar from '@src/api/reports/infoHospitalar/updateInfoHospitalar'
+import MainButton from '@app/components/MainButton'
 
 export default function Ocorrencia() {
   const ProcedimentosEfetuadosData = useSelector(
     (state: RootState) =>
-      state.procedimentosEfetuadosData?.procedimentosEfetuadosDataInfo,
+      state?.procedimentosEfetuadosData?.procedimentosEfetuadosDataInfo,
   )
   const MateriaisUtilizadosDescartavelData = useSelector(
     (state: RootState) =>
-      state.materialUtilizadoDescartavelData
+      state?.materialUtilizadoDescartavelData
         ?.materialUtilizadoDescartavelDataInfo,
   )
   const MateriaisDeixadosNoHospitalData = useSelector(
     (state: RootState) =>
-      state.materialDeixadoNoHostpitalData?.materialDeixadoNoHostpitalDataInfo,
+      state?.materialDeixadoNoHostpitalData?.materialDeixadoNoHostpitalDataInfo,
   )
 
-  console.log(
-    JSON.stringify(
-      ProcedimentosEfetuadosData?.procedimentosEfetuadosDataInfo
-        ?.procedimentosEfetuados,
-      null,
-      2,
-    ),
-  )
+  // Assuming you have these functions to adapt the data
+  const adaptProcedimentosEfetuados = (data) => {
+    return Object.entries(data).map(([key, value]) => ({
+      name: value?.name,
+      state: value?.state || false,
+      sizes: value?.sizes || null,
+      LPM: value?.LPM || null,
+      options: value?.options || [''],
+    }))
+  }
 
-  const procedimentosComSizes = Object.entries(
+  const adaptMateriaisDescartaveis = (data) => {
+    return Object.entries(data).map(([key, value]) => ({
+      state: value?.state || false,
+      name: value?.name || '',
+      quantity: value?.quantity || null,
+      sizes: value?.sizes || null,
+    }))
+  }
+
+  const adaptMateriaisDeixadosNoHospital = (data) => {
+    return Object.entries(data).map(([key, value]) => ({
+      state: value?.state || false,
+      name: value?.name || '',
+      quantity: value?.quantity || null,
+      sizes: value?.sizes || null,
+    }))
+  }
+
+  // Adapt the data
+  const adaptedProcedimentosEfetuados = adaptProcedimentosEfetuados(
     ProcedimentosEfetuadosData?.procedimentosEfetuadosDataInfo
       ?.procedimentosEfetuados || {},
   )
-    .filter(
-      ([key, value]) =>
-        (value as { sizes?: string | null })?.sizes !== undefined,
-    )
-    .reduce((acc, [key, value]) => {
-      acc[key as UProcedimentosEfetuadosNames] =
-        value as TProcedimentosEfetuadosTypes[UProcedimentosEfetuadosNames]
-      return acc
-    }, {} as Partial<TProcedimentosEfetuadosTypes>)
-
-  console.log(JSON.stringify(procedimentosComSizes, null, 2))
-
-  const procedimentosComOptions = Object.entries(
-    ProcedimentosEfetuadosData?.procedimentosEfetuadosDataInfo
-      ?.procedimentosEfetuados || {},
-  )
-    .filter(
-      ([key, value]) =>
-        (value as { options?: string[] })?.options !== undefined,
-    )
-    .reduce((acc, [key, value]) => {
-      acc[key as UProcedimentosEfetuadosNames] =
-        value as TProcedimentosEfetuadosTypes[UProcedimentosEfetuadosNames]
-      return acc
-    }, {} as Partial<TProcedimentosEfetuadosTypes>)
-
-  console.log(JSON.stringify(procedimentosComOptions, null, 2))
-
-  const procedimentosComLPM = Object.entries(
-    ProcedimentosEfetuadosData?.procedimentosEfetuadosDataInfo
-      ?.procedimentosEfetuados || {},
-  )
-    .filter(([key, value]) => (value as { LPM?: number })?.LPM !== undefined)
-    .reduce((acc, [key, value]) => {
-      acc[key as UProcedimentosEfetuadosNames] =
-        value as TProcedimentosEfetuadosTypes[UProcedimentosEfetuadosNames]
-      return acc
-    }, {} as Partial<TProcedimentosEfetuadosTypes>)
-
-  console.log(JSON.stringify(procedimentosComLPM, null, 2))
-
-  const materiaisComSizes = Object.entries(
+  const adaptedMateriaisDescartaveis = adaptMateriaisDescartaveis(
     MateriaisUtilizadosDescartavelData?.materialUtilizadoDescartavelDataInfo
       ?.materialUtilizadoDescartavel || {},
   )
-    .filter(
-      ([key, value]) =>
-        (
-          value as {
-            sizes?: { selectedSize: string | null; entries: string[] } | null
-          }
-        ).sizes !== undefined,
-    )
-    .reduce((acc, [key, value]) => {
-      acc[key as UMaterialDescartaveisNames] =
-        value as TMaterialUtilizadoDescartavelTypes[UMaterialDescartaveisNames]
-      return acc
-    }, {} as Partial<TMaterialUtilizadoDescartavelTypes>)
-
-  console.log(JSON.stringify(materiaisComSizes, null, 2))
-
-  const materiaisDeixadosComSizes = Object.entries(
+  const adaptedMateriaisDeixadosNoHospital = adaptMateriaisDeixadosNoHospital(
     MateriaisDeixadosNoHospitalData?.materialDeixadoNoHostpitalDataInfo
       ?.materialDeixadoNoHostpital || {},
   )
-    .filter(
-      ([key, value]) =>
-        (
-          value as {
-            sizes?: { selectedSize: string | null; entries: string[] } | null
-          }
-        ).sizes !== undefined,
-    )
-    .reduce((acc, [key, value]) => {
-      acc[key as UMaterialDeixadoNoHospitalNames] =
-        value as TMaterialDeixadoNoHostpitalTypes[UMaterialDeixadoNoHospitalNames]
-      return acc
-    }, {} as Partial<TMaterialDeixadoNoHostpitalTypes>)
 
-  console.log(JSON.stringify(materiaisDeixadosComSizes, null, 2))
+  console.log(JSON.stringify(adaptedProcedimentosEfetuados, null, 2))
+  console.log(JSON.stringify(adaptedMateriaisDescartaveis, null, 2))
+  console.log(JSON.stringify(adaptedMateriaisDeixadosNoHospital, null, 2))
+
+  const infoHospitalarId = useSelector(
+    (state: RootState) => state.infoHospitalar.infoHospitalarId,
+  )
+  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
+
+  const handleSubmitInfoHospitalares = async () => {
+    const response = await updateInfoHospitalar(
+      infoHospitalarId,
+      ReportOwnerId,
+      adaptedProcedimentosEfetuados,
+      adaptedMateriaisDescartaveis,
+      adaptedMateriaisDeixadosNoHospital,
+    )
+  }
 
   return (
     <SafeAreaView>
@@ -167,6 +137,11 @@ export default function Ocorrencia() {
           <UsageTableHosp
             MaterialDeixadoNoHostpitalDef={MaterialDeixadoNoHostpitalDef}
           />
+          <MainButton
+            innerText={'ENVIAR'}
+            onPress={handleSubmitInfoHospitalares}
+          />
+
           <Footer />
         </View>
       </ScrollView>

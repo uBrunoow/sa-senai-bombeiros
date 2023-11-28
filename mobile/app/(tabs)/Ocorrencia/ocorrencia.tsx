@@ -34,6 +34,7 @@ import {
   saveFinalizationId,
   saveGestacionalAnamnesisId,
   saveGlasgowId,
+  saveInfoHospitalarId,
   saveInfoTransportId,
   savePreHospitalarMethodId,
   saveSignsAndSymptomsId,
@@ -58,6 +59,7 @@ import VerifyGender from '@app/modal/verifyGender'
 import findReports from '@src/api/reports/findReport'
 import WarningModal from '@app/modal/warningModal'
 import { clearCompletness } from '@src/redux/reducers/completnessReducer'
+import registerInfoHospitalar from '@src/api/reports/infoHospitalar/registerInfoHospitalar'
 
 type RootStackParamList = {
   ocorrencia: undefined
@@ -398,6 +400,28 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
     }
   }
 
+  const existingInfoHospitalarId = useSelector(
+    (state: RootState) => state.infoHospitalar.infoHospitalarId,
+  )
+
+  const handleClickInfoHospitalares = async () => {
+    if (existingInfoHospitalarId) {
+      navigation.navigate('info-hospitalares')
+    } else {
+      const infoHospitalarResponse = await registerInfoHospitalar(ReportOwnerId)
+
+      if (infoHospitalarResponse && infoHospitalarResponse.infoHospitalar) {
+        dispatch(saveInfoHospitalarId(infoHospitalarResponse.infoHospitalar.id))
+        console.log(
+          'Info Hospitalares n°: ',
+          infoHospitalarResponse.infoHospitalar.id,
+        )
+
+        navigation.navigate('info-hospitalares')
+      }
+    }
+  }
+
   const [showModal, setShowModal] = useState(false)
   const reportId = useSelector((state: RootState) => state.report.reportId)
 
@@ -523,7 +547,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate(`info-hospitalares`)}
+                onPress={handleClickInfoHospitalares}
                 activeOpacity={0.7}
               >
                 <Grouper

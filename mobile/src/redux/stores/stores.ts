@@ -35,6 +35,7 @@ import MateriaisUtilizadosDescartavelReducerData, {
 import MateriaisDeixadosNoHospitalReducerData, {
   MateriaisDeixadosNoHospitalDataState,
 } from '../reducers/materiaisDeixadosData'
+import infoHospitalarReducer from '../reducers/infoHospitalarReducer'
 
 export interface RootState {
   auth: {
@@ -101,6 +102,10 @@ export interface RootState {
   procedimentosEfetuadosData: ProcedimentosEfetuadosDataState
   materialUtilizadoDescartavelData: MateriaisUtilizadosDescartavelDataState
   materialDeixadoNoHostpitalData: MateriaisDeixadosNoHospitalDataState
+
+  infoHospitalar: {
+    infoHospitalarId: number
+  }
 }
 const store = configureStore({
   reducer: {
@@ -144,6 +149,7 @@ const store = configureStore({
         MateriaisDeixadosNoHospitalDataState,
         AnyAction
       >,
+    infoHospitalar: infoHospitalarReducer,
   },
   middleware: [thunk],
 })

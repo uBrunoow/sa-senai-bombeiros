@@ -201,7 +201,7 @@ export const ProcedimentosEfetuadosDef: TProcedimentosEfetuadosTypes = {
   },
   USO_COLAR_TAM: {
     state: false,
-    name: 'Ponte',
+    name: 'Uso colar Tamanho',
     sizes: null,
   },
   USO_KED: {

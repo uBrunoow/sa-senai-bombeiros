@@ -1,11 +1,10 @@
 import { api } from '@src/lib/api'
-
 const registerInfoHospitalar = async (ReportOwnerId: number) => {
   try {
     const response = await api.post(
       '/api/info-hospitalar',
       {
-        ReportOwnerId,
+        reportId: ReportOwnerId,
       },
       {
         headers: {

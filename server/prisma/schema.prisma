@@ -376,11 +376,6 @@ model InfoTransporte {
   reportOwner     Report  @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
-// INFOS HOSPITALARES ENGLOBA
-// PROCEDIMENTOS EFETUADOS
-// MATERIAIS DESCARTAVEIS
-// MATERIAIS DEIXADOS NO HOSPITAL
-// EQUIPE DE ATENDIMENTO
 model InfosHospitalares {
   id                          Int                           @id @default(autoincrement())
   Doctor                      String?
@@ -397,111 +392,34 @@ model InfosHospitalares {
 }
 
 model ProcedimentoEfetuados {
-  id                  Int                        @id @default(autoincrement())
+  id                  Int                @id @default(autoincrement())
   state               Boolean?
-  name                TProcedimentoEfetuadoName?
+  name                String?
   sizes               String?
   LPM                 Int?
-  options             String[]                   @default([""])
-  InfosHospitalares   InfosHospitalares?         @relation(fields: [infosHospitalaresId], references: [id])
+  options             String[]           @default([""])
+  InfosHospitalares   InfosHospitalares? @relation(fields: [infosHospitalaresId], references: [id])
   infosHospitalaresId Int?
-}
-
-enum TProcedimentoEfetuadoName {
-  ASPIRACAO
-  AVALIACAO_INICIAL
-  AVALIACAO_DIRIGIDA
-  AVALIACAO_CONTINUADA
-  CHAVE_DE_RAUTEK
-  CANULA_DE_GUEDEL
-  DESOBSTRUCAO_DE_VA
-  EMPREGO_DO_DEA
-  GERENCIAMENTO_DE_RISCOS
-  LIMPEZA_DE_FERIMENTO
-  CURATIVOS
-  COMPRESSIVO
-  ENCRAVAMENTO
-  OCULAR
-  QUEIMADURA
-  SIMPLES
-  THREE_PONTAS
-  IMOBILIZACOES
-  MEMBRO_INF_DIR
-  MEMBRO_INF_ESQ
-  MEMBRO_SUP_DIR
-  MEMBRO_SUP_ESQ
-  QUADRIL
-  CERVICAL
-  MACA_SOBRE_RODAS
-  MACA_RIGIDA
-  PONTE
-  RETIRADO_CAPACETE
-  RCP
-  ROLAMENTO_90
-  ROLAMENTO_180
-  TOMADA_DECISAO
-  TRATADO_CHOQUE
-  USO_DE_CANULA
-  USO_KED
-  USO_TTF
-  VENTILACAO_SUPORTE
-  MEIOS_AUXILIARES
-  CELESC
-  DEF_CIVIL
-  IGP_PC
-  CIT
-  ANOTHER
-  USO_COLAR_TAM
-  OXIGENOTERAPIA
-  REANIMADOR
-  SAMU
-  POLICIA
 }
 
 model MateriaisDescartaveis {
-  id                  Int                         @id @default(autoincrement())
+  id                  Int                @id @default(autoincrement())
   state               Boolean?
-  name                MateriaisDescartaveisNames?
+  name                String?
   quantity            Int?
   sizes               String[]
-  InfosHospitalares   InfosHospitalares?          @relation(fields: [infosHospitalaresId], references: [id])
+  InfosHospitalares   InfosHospitalares? @relation(fields: [infosHospitalaresId], references: [id])
   infosHospitalaresId Int?
 }
 
-enum MateriaisDescartaveisNames {
-  ATADURAS
-  KITS
-  LUVAS_DESC_PARES
-  TALAS_PAP
-  CATETER_TP_OCULOS
-  COMPRESSORA_COMUM
-  MASCARA_DESC
-  MANTA_ALUMINIZADA
-  PAS_DO_DEA
-  SONDA_DE_ASPIRACAO
-  SORO_FISIOLOGICO
-}
-
 model MateriaisDeixadosNoHospital {
-  id       Int                     @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
   state    Boolean?
-  name     MateriaisHospitalNames?
+  name     String?
   quantity Int?
 
   sizes String[]
 
   InfosHospitalares   InfosHospitalares? @relation(fields: [infosHospitalaresId], references: [id])
   infosHospitalaresId Int?
-}
-
-enum MateriaisHospitalNames {
-  COLAR
-  KED
-  TTF
-  BASE_DO_ESTABILIZA
-  COXINS_ESTABILIZA
-  MACA_RIGIDA
-  TIRANTE_ARANHA
-  TIRANTE_DE_CABECA
-  CANULA
 }

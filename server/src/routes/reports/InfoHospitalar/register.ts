@@ -41,7 +41,7 @@ export async function registerInfoHospitalarRoutes(app: FastifyInstance) {
     const newMateriaisDescartaveis = await prisma.materiaisDescartaveis.create({
       data: {
         ...MateriaisDescartaveis,
-        sizes: MateriaisDescartaveis.sizes || [],
+        sizes: MateriaisDescartaveis?.sizes || [''],
         infosHospitalaresId: newInfoHospitalar.id,
       },
     })
@@ -50,7 +50,7 @@ export async function registerInfoHospitalarRoutes(app: FastifyInstance) {
       await prisma.materiaisDeixadosNoHospital.create({
         data: {
           ...MateriaisDeixadosNoHospital,
-          sizes: MateriaisDeixadosNoHospital.sizes || [],
+          sizes: MateriaisDeixadosNoHospital?.sizes || [''],
           infosHospitalaresId: newInfoHospitalar.id,
         },
       })
