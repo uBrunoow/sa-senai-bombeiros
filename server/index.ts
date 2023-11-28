@@ -113,6 +113,8 @@ import {
 } from './src/routes/reports/InfoTransporte/findTransport'
 import { transportDeleteRoutes } from './src/routes/reports/InfoTransporte/deleteTransport'
 
+import { registerInfoHospitalarRoutes } from './src/routes/reports/InfoHospitalar/register'
+
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
 app.register(cors, {
@@ -148,6 +150,7 @@ app.register(fastifySwaggerUI, {
   },
   transformSpecificationClone: true,
 })
+
 // USER
 app.register(userRegisterRoutes)
 app.register(userLoginRoutes)
@@ -237,6 +240,9 @@ app.register(transportDeleteRoutes)
 // UTILS
 app.register(refreshRoutes)
 app.register(checkTokenExpiration)
+
+// MATERIAIS UTILIZADOS
+app.register(registerInfoHospitalarRoutes)
 
 app
   .listen({

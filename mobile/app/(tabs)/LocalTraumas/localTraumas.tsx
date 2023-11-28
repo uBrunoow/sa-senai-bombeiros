@@ -106,7 +106,7 @@ export default function LocalTraumas() {
           localTraumasEmpty++
         }
       }
-
+      
       const localTraumasCompletness = determineCompletness(localTraumasEmpty)
 
       if (response.localTraumas) {

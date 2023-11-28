@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 // import { Entypo } from '@expo/vector-icons'
 
 type InputProps = {
-  title: string
+  title?: string
   size?: 'small' | 'regular' | 'big'
   isCalendar?: boolean
   isBig?: boolean

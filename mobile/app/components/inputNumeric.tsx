@@ -10,6 +10,7 @@ type InputProps = {
   placeholder?: string
   disabled?: boolean
   numberWidth?: number
+  className?: string
   // eslint-disable-next-line no-unused-vars
   onChangeText?: (text: number) => void
 }
@@ -34,8 +35,10 @@ export default function InputNumeric(props: InputProps) {
       return 1
     } else if (props.size === 'regular') {
       return 2
+    } else if (props.size === 'big') {
+      return 3
     }
-    return 3
+    return 0
   }
 
   const handleAlignText = () => {
@@ -68,7 +71,7 @@ export default function InputNumeric(props: InputProps) {
       style={{
         flexGrow: handleWidth(),
       }}
-      className="mx-auto p-2"
+      className="p-2"
     >
       {props.title && (
         <Text

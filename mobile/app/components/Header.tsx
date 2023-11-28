@@ -28,6 +28,7 @@ import {
   clearSignsAndSymptomsId,
   clearSuspectProblemsId,
 } from '@src/redux/actions/reportActions'
+import { clearCompletness } from '@src/redux/reducers/completnessReducer'
 
 type RootStackParamList = {
   home: undefined
@@ -66,6 +67,7 @@ export default function Header() {
         dispatch(clearCinematicAvaliationId())
         dispatch(clearPreHospitalarMethodId())
         dispatch(clearSignsAndSymptomsId())
+        dispatch(clearCompletness())
         dispatch(clearInfoTransportId())
 
         setExcluirOcorrenciaAbrir(false)
@@ -87,7 +89,7 @@ export default function Header() {
           <NOARLogo height={42} width={42} />
           <Text
             style={styles.textShadow}
-            className="ml-[14px] text-[32.5px] font-black text-[#33338D]"
+            className="ml-[14px] text-[32.5px] font-black text-[#fffafa] drop-shadow-lg"
           >
             NOAR
           </Text>
@@ -105,7 +107,6 @@ export default function Header() {
             </Pressable>
           </View>
         )}
-
         {excluirOcorrenciaAbrir && (
           <Modal
             transparent={true}

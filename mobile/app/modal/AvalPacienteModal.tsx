@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-//
+
 type modalOption = {
   value: string
   description: string

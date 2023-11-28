@@ -63,6 +63,10 @@ const completnessSlice = createSlice({
     ) => {
       state.infoTransportCompletness = action.payload
     },
+
+    clearCompletness: (state) => {
+      return initialCompletnessState
+    },
   },
 })
 
@@ -74,6 +78,7 @@ export const {
   saveInfoPacienteCompletness,
   saveLocalTraumasCompletness,
   saveInfoTransportCompletness,
+  clearCompletness,
 } = completnessSlice.actions
 
 export default completnessSlice.reducer

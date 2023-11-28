@@ -20,14 +20,26 @@ export type TBodyCoordinates = {
     | 'Ombro Direito Frontal'
     | 'Ombro Esquerdo Frontal'
     | 'Ombro Esquerdo Traseiro'
+    | 'Ombro Direito Traseiro'
     | 'Coxa Frontal Direita'
     | 'Coxa Frontal Esquerda'
+    | 'Coxa Traseira Esquerda'
+    | 'Coxa Traseira Direita'
     | 'Joelho Direito'
     | 'Joelho Esquerdo'
     | 'Perna Frontal Direita'
     | 'Perna Frontal Esquerda'
+    | 'Perna Traseira Esquerda'
+    | 'Perna Traseira Direita'
     | 'Pé Esquerdo'
-    | 'Pé Direito']: {
+    | 'Pé Direito'
+    | 'Calcanhar Direito'
+    | 'Calcanhar Esquerdo'
+    | 'Virilha'
+    | 'Palma da Mão Esquerda'
+    | 'Palma da Mão Direita'
+    | 'Mão Esquerda'
+    | 'Mão Direita']: {
     coords: {
       tl: {
         x: number
@@ -54,5 +66,8 @@ export type TBodyCoordinates = {
       | 'PERNA'
       | 'PESCOCO'
       | 'PE'
+      | 'VIRILHA'
+      | 'CALCANHAR'
+      | 'MAO'
   }
 }
