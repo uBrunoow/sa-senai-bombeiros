@@ -17,7 +17,7 @@ const registerPreHospitalarMethod = async (ReportOwnerId: number) => {
     const data = response.data
     return data
   } catch (error) {
-    console.error('Erro ao enviar os pre hospitalares methods:', error)
+    console.error('Erro ao enviar os pré hospitalares métodos:', error)
     return null
   }
 }

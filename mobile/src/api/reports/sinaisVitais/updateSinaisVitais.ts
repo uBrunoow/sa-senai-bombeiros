@@ -34,7 +34,7 @@ const updateSinaisVitaisReport = async (
     const data = response.data
     return data
   } catch (error) {
-    console.error('Erro ao editar a sinais vitais report:', error)
+    console.error('Erro ao editar os sinais vitais:', error)
     return null
   }
 }

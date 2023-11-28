@@ -22,6 +22,7 @@ import {
   clearFinalizationId,
   clearGestacionalAnamnesisId,
   clearGlasgowId,
+  clearInfoTransportId,
   clearPreHospitalarMethodId,
   clearReportId,
   clearSignsAndSymptomsId,
@@ -67,6 +68,8 @@ export default function Header() {
         dispatch(clearPreHospitalarMethodId())
         dispatch(clearSignsAndSymptomsId())
         dispatch(clearCompletness())
+        dispatch(clearInfoTransportId())
+
         setExcluirOcorrenciaAbrir(false)
         navigation.navigate('home')
       }

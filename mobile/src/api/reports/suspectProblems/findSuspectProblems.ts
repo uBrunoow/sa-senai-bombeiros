@@ -5,7 +5,7 @@ const findSuspectProblems = async (suspectProblemsId: number | null) => {
     const response = await api.get(`/api/suspectProblems/${suspectProblemsId}`)
     return response.data
   } catch (error) {
-    console.error('Erro ao obter as finalizacoes:', error)
+    console.error('Erro ao obter os problemas suspeitos:', error)
     return []
   }
 }

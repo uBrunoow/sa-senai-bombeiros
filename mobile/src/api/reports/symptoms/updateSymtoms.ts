@@ -22,7 +22,7 @@ const updateSymptomsMethod = async (
     const data = response.data
     return data
   } catch (error) {
-    console.error('Erro ao editar a sintomas: ', error)
+    console.error('Erro ao editar os sintomas: ', error)
     return null
   }
 }

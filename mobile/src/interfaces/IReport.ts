@@ -161,5 +161,5 @@ export interface IReport extends IBase {
   SuspectProblems: ISuspectProblems[]
   LocalTraumas: ILocalTrauma[]
   InfoTransport: IInfoTransporte[]
-  owner: IUser
+  owner?: IUser
 }

@@ -7,7 +7,7 @@ const deleteLocalTraumas = async (
     await api.delete(`/api/local-traumas/delete/${localTraumasId}`)
     return { success: true }
   } catch (error) {
-    console.error('Erro ao obter o Local Trauma:', error)
+    console.error('Erro ao deletar o Local Trauma:', error)
     return { success: false }
   }
 }

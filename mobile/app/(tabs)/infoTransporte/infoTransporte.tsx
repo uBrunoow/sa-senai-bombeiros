@@ -16,7 +16,7 @@ import { saveInfoTransportCompletness } from '@src/redux/reducers/completnessRed
 import { useToast } from 'native-base'
 import { useNavigation } from '@react-navigation/core'
 import findTransport from '@src/api/reports/infoTransport/findTransport'
-import findUser from '@src/api/users/findUser'
+import Loader from '@app/components/Loader'
 
 type RemoveMetaPropertiesType = {
   id: number
@@ -156,97 +156,101 @@ export default function InfoTransporte() {
 
   return (
     <SafeAreaView>
-      <ScrollView>
-        <Header />
-        <View className="h-[90vh] flex-1 items-center justify-center ">
-          <>
-            <Title iconName="ambulance" title="Informações de Transporte" />
-            <View style={s.boxShadow} className="mx-auto">
-              <View className="flex-col-reverse">
-                <View className="w-6/6 h-24">
-                  <InputLowPadding
-                    title="Despachante"
-                    value={forwardingAgent}
-                    onChangeText={(e) => setForwardingAgent(e)}
-                  ></InputLowPadding>
-                </View>
-                <View className="w-6/6">
-                  <Options
-                    title={'Código'}
-                    selectedOptionValue={code}
-                    onSelectOption={handleIRPS}
-                    leftOption={{
-                      key: 'IR',
-                      value: 'IR',
-                    }}
-                    rightOption={{
-                      key: 'PS',
-                      value: 'PS',
-                    }}
-                  />
-                </View>
-              </View>
-
-              <View className="flex-row">
-                <View className="w-6/6">
-                  <InputNumeric
-                    disabled={false}
-                    title="N° Ocorr."
-                    size="big"
-                    numberWidth={85}
-                    value={numberOcorr}
-                    onChangeText={(e) => setNumberOcorr(e)}
-                  />
-                </View>
-                <View className="w-6/6">
-                  <InputNumeric
-                    title="N° USB"
-                    size="big"
-                    value={numberUSB}
-                    numberWidth={85}
-                    onChangeText={(e) => setNumberUSB(e)}
-                  />
-                </View>
-                <View className="w-6/6">
-                  <InputNumeric
-                    title="KM Final"
-                    size="big"
-                    value={kmFinal}
-                    numberWidth={85}
-                    onChangeText={(e) => setKmFinal(e)}
-                  />
-                </View>
-              </View>
-
-              <View className="flex-row">
-                <View className="w-3/6">
-                  <InputLowPadding
-                    title="H. CH"
-                    value={HcH}
-                    onChangeText={(e) => setHcH(e)}
-                  ></InputLowPadding>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ScrollView>
+          <Header />
+          <View className="h-[90vh] flex-1 items-center justify-center ">
+            <>
+              <Title iconName="ambulance" title="Informações de Transporte" />
+              <View style={s.boxShadow} className="mx-auto">
+                <View className="flex-col-reverse">
+                  <View className="w-6/6 h-24">
+                    <InputLowPadding
+                      title="Despachante"
+                      value={forwardingAgent}
+                      onChangeText={(e) => setForwardingAgent(e)}
+                    ></InputLowPadding>
+                  </View>
+                  <View className="w-6/6">
+                    <Options
+                      title={'Código'}
+                      selectedOptionValue={code}
+                      onSelectOption={handleIRPS}
+                      leftOption={{
+                        key: 'IR',
+                        value: 'IR',
+                      }}
+                      rightOption={{
+                        key: 'PS',
+                        value: 'PS',
+                      }}
+                    />
+                  </View>
                 </View>
 
-                <View className="w-3/6">
-                  <InputNumeric
-                    title="Cód. SIA/SUS"
-                    size="big"
-                    numberWidth={130}
-                    value={codeSUS}
-                    onChangeText={(e) => setCodeSUS(e)}
-                  />
+                <View className="flex-row">
+                  <View className="w-6/6">
+                    <InputNumeric
+                      disabled={false}
+                      title="N° Ocorr."
+                      size="big"
+                      numberWidth={85}
+                      value={numberOcorr}
+                      onChangeText={(e) => setNumberOcorr(e)}
+                    />
+                  </View>
+                  <View className="w-6/6">
+                    <InputNumeric
+                      title="N° USB"
+                      size="big"
+                      value={numberUSB}
+                      numberWidth={85}
+                      onChangeText={(e) => setNumberUSB(e)}
+                    />
+                  </View>
+                  <View className="w-6/6">
+                    <InputNumeric
+                      title="KM Final"
+                      size="big"
+                      value={kmFinal}
+                      numberWidth={85}
+                      onChangeText={(e) => setKmFinal(e)}
+                    />
+                  </View>
+                </View>
+
+                <View className="flex-row">
+                  <View className="w-3/6">
+                    <InputLowPadding
+                      title="H. CH"
+                      value={HcH}
+                      onChangeText={(e) => setHcH(e)}
+                    ></InputLowPadding>
+                  </View>
+
+                  <View className="w-3/6">
+                    <InputNumeric
+                      title="Cód. SIA/SUS"
+                      size="big"
+                      numberWidth={130}
+                      value={codeSUS}
+                      onChangeText={(e) => setCodeSUS(e)}
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-            <MainButton
-              innerText="SALVAR"
-              isLoading={buttonLoading}
-              onPress={() => handleSubmitTransport()}
-            />
-          </>
-        </View>
-        <Footer />
-      </ScrollView>
+              <MainButton
+                innerText="SALVAR"
+                isLoading={buttonLoading}
+                onPress={() => handleSubmitTransport()}
+              />
+            </>
+          </View>
+          <Footer />
+        </ScrollView>
+      )}
     </SafeAreaView>
   )
 }
