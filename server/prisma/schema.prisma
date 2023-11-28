@@ -392,75 +392,22 @@ model InfosHospitalares {
   ProcedimentoEfetuados       ProcedimentoEfetuados[]
   MateriaisDescartaveis       MateriaisDescartaveis[]
   MateriaisDeixadosNoHospital MateriaisDeixadosNoHospital[]
-  Report                      Report?                       @relation(fields: [reportId], references: [id])
+  Report                      Report?                       @relation(fields: [reportId], references: [id], onDelete: Cascade)
   reportId                    Int?
 }
 
-// PROCEDIMENTOS EFETUADOS ENGLOBA
-// PROCEDIMENTOS EFEUTADOS APENAS COM O NOME
-// PROCEDIMENTOS EFEUTADOS APENAS COM O LPM
-// PROCEDIMENTOS EFEUTADOS APENAS COM O OPTIONS
-// PROCEDIMENTOS EFEUTADOS APENAS COM O SIZE
-// E LINKA COM INFO HOSPITALARES
 model ProcedimentoEfetuados {
-  id                       Int                                 @id @default(autoincrement())
-  prodEfetuadosOnlyName    ProcedimentosEfetuadosOnlyName[]
-  prodEfetuadosOnlySize    ProcedimentosEfetuadosOnlySize[]
-  prodEfetuadosOnlyLPM     ProcedimentosEfetuadosOnlyLPM[]
-  prodEfetuadosOnlyOptions ProcedimentosEfetuadosOnlyOptions[]
-  InfosHospitalares        InfosHospitalares?                  @relation(fields: [infosHospitalaresId], references: [id])
-  infosHospitalaresId      Int?
+  id                  Int                        @id @default(autoincrement())
+  state               Boolean?
+  name                TProcedimentoEfetuadoName?
+  sizes               String?
+  LPM                 Int?
+  options             String[]                   @default([""])
+  InfosHospitalares   InfosHospitalares?         @relation(fields: [infosHospitalaresId], references: [id])
+  infosHospitalaresId Int?
 }
 
-model ProcedimentosEfetuadosOnlyName {
-  id                      Int                            @id @default(autoincrement())
-  state                   Boolean?
-  name                    TProcedimentoEfetuadoOnlyName?
-  infosHospitalaresId     Int?
-  ProcedimentoEfetuados   ProcedimentoEfetuados?         @relation(fields: [procedimentoEfetuadosId], references: [id])
-  procedimentoEfetuadosId Int?
-}
-
-model ProcedimentosEfetuadosOnlySize {
-  id                      Int                            @id @default(autoincrement())
-  state                   Boolean?
-  name                    TProcedimentoEfetuadoOnlySize?
-  sizes                   String?
-  infosHospitalaresId     Int?
-  ProcedimentoEfetuados   ProcedimentoEfetuados?         @relation(fields: [procedimentoEfetuadosId], references: [id])
-  procedimentoEfetuadosId Int?
-}
-
-model ProcedimentosEfetuadosOnlyLPM {
-  id                      Int                           @id @default(autoincrement())
-  state                   Boolean?
-  name                    TProcedimentoEfetuadoOnlyLPM?
-  LPM                     Int?
-  infosHospitalaresId     Int?
-  ProcedimentoEfetuados   ProcedimentoEfetuados?        @relation(fields: [procedimentoEfetuadosId], references: [id])
-  procedimentoEfetuadosId Int?
-}
-
-// PROCEDIMENTOS EFETUADOS COM APENAS OPTIONS RECEBE OPTIONS
-model ProcedimentosEfetuadosOnlyOptions {
-  id                      Int                               @id @default(autoincrement())
-  state                   Boolean?
-  name                    TProcedimentoEfetuadoOnlyOptions?
-  options                 Option[]
-  infosHospitalaresId     Int?
-  ProcedimentoEfetuados   ProcedimentoEfetuados?            @relation(fields: [procedimentoEfetuadosId], references: [id])
-  procedimentoEfetuadosId Int?
-}
-
-model Option {
-  id             Int                               @id @default(autoincrement())
-  state          Boolean?
-  option         String?
-  procedimento   ProcedimentosEfetuadosOnlyOptions @relation(fields: [procedimentoId], references: [id])
-  procedimentoId Int
-}
-
-enum TProcedimentoEfetuadoOnlyName {
+enum TProcedimentoEfetuadoName {
   ASPIRACAO
   AVALIACAO_INICIAL
   AVALIACAO_DIRIGIDA
@@ -504,69 +451,28 @@ enum TProcedimentoEfetuadoOnlyName {
   IGP_PC
   CIT
   ANOTHER
-}
-
-enum TProcedimentoEfetuadoOnlySize {
   USO_COLAR_TAM
-}
-
-enum TProcedimentoEfetuadoOnlyLPM {
   OXIGENOTERAPIA
   REANIMADOR
-}
-
-enum TProcedimentoEfetuadoOnlyOptions {
   SAMU
   POLICIA
 }
 
-// MATERIAIS DESCARTAVEIS ENGLOBA
-// MATERIAIS DESCARTAVEIS COM SIZES
-// MATERIAIS DESCARTAVEIS SEM SIZES
-
 model MateriaisDescartaveis {
-  id                                Int                                 @id @default(autoincrement())
-  MateriaisDescartaveisWithoutSizes MateriaisDescartaveisWithoutSizes[]
-  MateriaisDescartaveisWithSizes    MateriaisDescartaveisWithSizes[]
-  InfosHospitalares                 InfosHospitalares?                  @relation(fields: [infosHospitalaresId], references: [id])
-  infosHospitalaresId               Int?
+  id                  Int                         @id @default(autoincrement())
+  state               Boolean?
+  name                MateriaisDescartaveisNames?
+  quantity            Int?
+  sizes               String[]
+  InfosHospitalares   InfosHospitalares?          @relation(fields: [infosHospitalaresId], references: [id])
+  infosHospitalaresId Int?
 }
 
-model MateriaisDescartaveisWithoutSizes {
-  id                      Int                                     @id @default(autoincrement())
-  state                   Boolean?
-  name                    MateriaisDescartaveisNamesWithoutSizes?
-  quantity                Int?
-  MateriaisDescartaveis   MateriaisDescartaveis?                  @relation(fields: [materiaisDescartaveisId], references: [id])
-  materiaisDescartaveisId Int?
-}
-
-model MateriaisDescartaveisWithSizes {
-  id                      Int                                  @id @default(autoincrement())
-  state                   Boolean?
-  name                    MateriaisDescartaveisNamesWithSizes?
-  quantity                Int?
-  sizes                   Sizes[]
-  MateriaisDescartaveis   MateriaisDescartaveis?               @relation(fields: [materiaisDescartaveisId], references: [id])
-  materiaisDescartaveisId Int?
-}
-
-model Sizes {
-  id                               Int                             @id @default(autoincrement())
-  selectedSize                     String?
-  entries                          String[]                        @default([" "])
-  MateriaisDescartaveisWithSizes   MateriaisDescartaveisWithSizes? @relation(fields: [materiaisDescartaveisWithSizesId], references: [id])
-  materiaisDescartaveisWithSizesId Int?
-}
-
-enum MateriaisDescartaveisNamesWithSizes {
+enum MateriaisDescartaveisNames {
   ATADURAS
   KITS
   LUVAS_DESC_PARES
   TALAS_PAP
-}
-
-enum MateriaisDescartaveisNamesWithoutSizes {
   CATETER_TP_OCULOS
   COMPRESSORA_COMUM
   MASCARA_DESC
@@ -577,47 +483,21 @@ enum MateriaisDescartaveisNamesWithoutSizes {
 }
 
 model MateriaisDeixadosNoHospital {
-  id                                      Int                                       @id @default(autoincrement())
-  MateriaisDeixadosNoHospitalWithoutSizes MateriaisDeixadosNoHospitalWithoutSizes[]
-  MateriaisDeixadosNoHospitalWithSizes    MateriaisDeixadosNoHospitalWithSizes[]
-  InfosHospitalares                       InfosHospitalares?                        @relation(fields: [infosHospitalaresId], references: [id])
-  infosHospitalaresId                     Int?
+  id       Int                     @id @default(autoincrement())
+  state    Boolean?
+  name     MateriaisHospitalNames?
+  quantity Int?
+
+  sizes String[]
+
+  InfosHospitalares   InfosHospitalares? @relation(fields: [infosHospitalaresId], references: [id])
+  infosHospitalaresId Int?
 }
 
-model MateriaisDeixadosNoHospitalWithoutSizes {
-  id                            Int                                 @id @default(autoincrement())
-  state                         Boolean?
-  name                          MateriaisHospitalNamesWithoutSizes?
-  quantity                      Int?
-  MateriaisDeixadosNoHospital   MateriaisDeixadosNoHospital?        @relation(fields: [materiaisDeixadosNoHospitalId], references: [id])
-  materiaisDeixadosNoHospitalId Int?
-}
-
-model MateriaisDeixadosNoHospitalWithSizes {
-  id                            Int                              @id @default(autoincrement())
-  state                         Boolean?
-  name                          MateriaisHospitalNamesWithSizes?
-  quantity                      Int?
-  sizes                         MSizes[]
-  MateriaisDeixadosNoHospital   MateriaisDeixadosNoHospital?     @relation(fields: [materiaisDeixadosNoHospitalId], references: [id])
-  materiaisDeixadosNoHospitalId Int?
-}
-
-model MSizes {
-  id                                     Int                                   @id @default(autoincrement())
-  selectedSize                           String?
-  entries                                String[]
-  MateriaisDeixadosNoHospitalWithSizes   MateriaisDeixadosNoHospitalWithSizes? @relation(fields: [materiaisDeixadosNoHospitalWithSizesId], references: [id])
-  materiaisDeixadosNoHospitalWithSizesId Int?
-}
-
-enum MateriaisHospitalNamesWithSizes {
+enum MateriaisHospitalNames {
   COLAR
   KED
   TTF
-}
-
-enum MateriaisHospitalNamesWithoutSizes {
   BASE_DO_ESTABILIZA
   COXINS_ESTABILIZA
   MACA_RIGIDA
