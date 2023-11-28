@@ -114,6 +114,11 @@ import {
 import { transportDeleteRoutes } from './src/routes/reports/InfoTransporte/deleteTransport'
 
 import { registerInfoHospitalarRoutes } from './src/routes/reports/InfoHospitalar/register'
+import { updateInfoHospitalarRoutes } from './src/routes/reports/InfoHospitalar/update'
+import {
+  infoHospitalaresFindOneRoutes,
+  infoHospitalaresFindRoutes,
+} from './src/routes/reports/InfoHospitalar/find'
 
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
@@ -243,6 +248,9 @@ app.register(checkTokenExpiration)
 
 // MATERIAIS UTILIZADOS
 app.register(registerInfoHospitalarRoutes)
+app.register(updateInfoHospitalarRoutes)
+app.register(infoHospitalaresFindRoutes)
+app.register(infoHospitalaresFindOneRoutes)
 
 app
   .listen({
