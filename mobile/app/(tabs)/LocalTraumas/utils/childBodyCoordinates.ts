@@ -116,8 +116,80 @@ const bodyCoordinates: TBodyCoordinates = {
       br: { x: 108, y: 196 },
     },
     side: null,
-    face: 'BACK',
+    face: 'FRONT',
     local: 'PEITO',
+  },
+  'Perna Frontal Direita': {
+    coords: {
+      tl: { x: 47, y: 318 },
+      br: { x: 72, y: 372 },
+    },
+    side: 'RIGHT',
+    face: 'FRONT',
+    local: 'PERNA',
+  },
+  'Perna Frontal Esquerda': {
+    coords: {
+      tl: { x: 81, y: 322 },
+      br: { x: 107, y: 371 },
+    },
+    side: 'LEFT',
+    face: 'FRONT',
+    local: 'PERNA',
+  },
+  'Perna Traseira Direita': {
+    coords: {
+      tl: { x: 245, y: 327 },
+      br: { x: 271, y: 371 },
+    },
+    side: 'RIGHT',
+    face: 'FRONT',
+    local: 'PERNA',
+  },
+  'Perna Traseira Esquerda': {
+    coords: {
+      tl: { x: 201, y: 318 },
+      br: { x: 231, y: 372 },
+    },
+    side: 'LEFT',
+    face: 'FRONT',
+    local: 'PERNA',
+  },
+  'Coxa Frontal Direita': {
+    coords: {
+      tl: { x: 42, y: 272 },
+      br: { x: 77, y: 307 },
+    },
+    side: 'RIGHT',
+    face: 'FRONT',
+    local: 'COXA',
+  },
+  'Coxa Frontal Esquerda': {
+    coords: {
+      tl: { x: 81, y: 272 },
+      br: { x: 107, y: 313 },
+    },
+    side: 'LEFT',
+    face: 'FRONT',
+    local: 'COXA',
+  },
+  'Coxa Traseira Direita': {
+    coords: {
+      tl: { x: 243, y: 272 },
+      br: { x: 271, y: 371 },
+    },
+    side: 'RIGHT',
+    face: 'FRONT',
+    local: 'COXA',
+  },
+  'Coxa Traseira Esquerda': {
+    coords: {
+      tl: { x: 201, y: 273 },
+      br: { x: 231, y: 318 },
+    },
+    side: 'LEFT',
+    face: 'FRONT',
+    local: 'COXA',
   },
 }
 

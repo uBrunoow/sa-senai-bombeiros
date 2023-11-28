@@ -58,7 +58,9 @@ export default function Body({
           clickCoord.y >= currPartCoords.tl.y,
         ].includes(false)
       ) {
-        console.log(clickCoord)
+        // console.log(clickCoord)
+        // console.log(currPart)
+        // console.log(bodyPart)
 
         setFace(currPartFace)
         setSide(currPartSide)

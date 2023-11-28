@@ -106,7 +106,7 @@ export default function LocalTraumas() {
           localTraumasEmpty++
         }
       }
-      
+
       const localTraumasCompletness = determineCompletness(localTraumasEmpty)
 
       if (response.localTraumas) {
@@ -254,7 +254,10 @@ export default function LocalTraumas() {
                 />
               </View>
             </Modal>
-            <CreatedTraumas localTraumas={localTraumas} />
+            <CreatedTraumas
+              localTraumas={localTraumas}
+              setLocalTraumas={setLocalTraumas}
+            />
             <MainButton
               innerText="VOLTAR"
               isLoading={false}
