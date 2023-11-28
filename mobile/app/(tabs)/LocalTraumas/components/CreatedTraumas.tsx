@@ -3,12 +3,18 @@ import { styles as s } from '@app/styles/boxShadow'
 import { ILocalTrauma } from '@src/interfaces/IReport'
 import classNames from 'classnames'
 import deleteLocalTraumas from '@src/api/reports/localTraumas/deleteLocalTraumas'
+import { SetStateAction, Dispatch } from 'react'
+import { useToast } from 'native-base'
 
 type CreatedTraumasProps = {
   localTraumas: ILocalTrauma[]
+  setLocalTraumas: Dispatch<SetStateAction<ILocalTrauma[]>>
 }
 
-export default function CreatedTraumas({ localTraumas }: CreatedTraumasProps) {
+export default function CreatedTraumas({
+  localTraumas,
+  setLocalTraumas,
+}: CreatedTraumasProps) {
   const tipoTraumaMapping = {
     bodyPart: {
       GLUTEOS: 'Glúteos',
@@ -20,12 +26,12 @@ export default function CreatedTraumas({ localTraumas }: CreatedTraumasProps) {
       PEITO: 'Peito',
       OMBRO: 'Ombro',
       CABECA: 'Cabeça',
-      COXA: '',
-      JOELHO: '',
-      PERNA: '',
-      PE: '',
-      VIRILHA: '',
-      CALCANHAR: '',
+      COXA: 'Coxa',
+      JOELHO: 'Joelho',
+      PERNA: 'Perna',
+      PE: 'Pé',
+      VIRILHA: 'Virilha',
+      CALCANHAR: 'Calcanhar',
     },
     tipo: {
       FRATURA: 'Fratura',
@@ -59,15 +65,29 @@ export default function CreatedTraumas({ localTraumas }: CreatedTraumasProps) {
     }),
   }
 
-  async function handleDeleteLocalTrauma(id: number) {
-    console.log(id)
+  const toast = useToast()
 
+  async function handleDeleteLocalTrauma(id: number) {
+    console.log("'id' do trauma deletado:", id)
+    if (!id) return
     const { success } = await deleteLocalTraumas(id)
 
     if (success) {
-      console.log('Deu boa')
+      setLocalTraumas(localTraumas.filter((trauma) => trauma.id !== id))
+
+      toast.show({
+        description: 'Trauma deletado com sucesso.',
+        duration: 3000,
+        placement: 'bottom',
+        style: { backgroundColor: '#F00' },
+      })
     } else {
-      console.log('Deu ruim')
+      toast.show({
+        description: 'Falha na exclusão do trauma...',
+        duration: 3000,
+        placement: 'bottom',
+        style: { backgroundColor: '#F00' },
+      })
     }
   }
 
@@ -89,8 +109,8 @@ export default function CreatedTraumas({ localTraumas }: CreatedTraumasProps) {
           const side = tipoTraumaMapping.side[trauma.side]
           const face = tipoTraumaMapping.face[trauma.face]
 
-          console.log([trauma.bodyPart, trauma.tipo, trauma.side, trauma.face])
-          console.log([bodyPart, tipo, side, face])
+          // console.log([trauma.bodyPart, trauma.tipo, trauma.side, trauma.face])
+          // console.log([bodyPart, tipo, side, face])
 
           return (
             <View

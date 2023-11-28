@@ -14,19 +14,26 @@ export const localTraumasRegister = z.object({
     'QUEIMADURA_3GRAU',
   ]),
   bodyPart: z.enum([
-    'COSTAS',
-    'PESCOCO',
-    'GLUTEOS',
-    'BRACO',
+    'ABDOMEN',
     'ANTEBRACO',
-    'PESCOCOPERNA',
-    'COXA',
+    'BRACO',
     'CABECA',
+    'COSTAS',
+    'COXA',
+    'GLUTEOS',
+    'JOELHO',
+    'OMBRO',
+    'PEITO',
+    'PERNA',
+    'PESCOCO',
+    'PE',
+    'VIRILHA',
+    'CALCANHAR',
+    'MAO',
   ]),
   side: z.enum(['LEFT', 'RIGHT']),
   face: z.enum(['BACK', 'FRONT']),
 })
-
 export const localTraumasUpdate = z.object({
   ReportOwnerId: z.number(),
   tipoTrauma: z
