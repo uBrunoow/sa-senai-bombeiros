@@ -2,6 +2,40 @@
 import { IBase } from './Base'
 import { IUser } from './IUser'
 
+export interface ProcedimentoEfetuados extends IBase{
+  state?: boolean | null;
+  name?: string | null;
+  sizes?: string | null;
+  LPM?: number | null;
+  options: string[];
+}
+
+export interface MateriaisDescartaveis extends IBase {
+  state?: boolean | null;
+  name?: string | null;
+  quantity?: number | null;
+  sizes: string[];
+}
+
+export interface MateriaisDeixadosNoHospital extends IBase {
+  state?: boolean | null;
+  name?: string | null;
+  quantity?: number | null;
+  sizes: string[];
+}
+
+export interface IInfosHospitalares extends IBase {
+  Doctor?: string;
+  S1?: string;
+  S2?: string;
+  S3?: string;
+  Demandant?: string;
+  TeamUp?: string;
+  ProcedimentoEfetuados: ProcedimentoEfetuados[];
+  MateriaisDescartaveis: MateriaisDescartaveis[];
+  MateriaisDeixadosNoHospital: MateriaisDeixadosNoHospital[];
+}
+
 export interface IInfoTransporte extends IBase {
   numberUSB?: number
   numberOcorr?: number
@@ -161,5 +195,6 @@ export interface IReport extends IBase {
   SuspectProblems: ISuspectProblems[]
   LocalTraumas: ILocalTrauma[]
   InfoTransport: IInfoTransporte[]
+  InfoHospitalar: IInfosHospitalares[]
   owner?: IUser
 }
