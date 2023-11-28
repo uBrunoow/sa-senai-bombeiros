@@ -108,3 +108,13 @@ export const clearInfoTransportId = () => {
     type: 'CLEAR_INFO_TRANSPORT_ID',
   }
 }
+export const saveInfoHospitalarId = (infoHospitalarId: number) => ({
+  type: 'SAVE_INFO_HOSPITALAR',
+  payload: { infoHospitalarId },
+})
+
+export const clearInfoHospitalarId = () => {
+  return {
+    type: 'CLEAR_INFO_HOSPITALAR_ID',
+  }
+}
