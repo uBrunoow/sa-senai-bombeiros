@@ -16,4 +16,4 @@
 
 [![GitHub forks](https://github.com/uBrunoow/sa-senai-bombeiros)]
 
-[![GitHub issues](https://github.com/uBrunoow/sa-senai-bombeiros)]
+[![GitHub issues](https://github.com/uBrunoow/sa-senai-bombeiros)](https://github.com/uBrunoow/sa-senai-bombeiros)
