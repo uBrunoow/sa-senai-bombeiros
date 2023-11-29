@@ -107,3 +107,6 @@ $ npm i
 $ npx run dev
 ```
 
+### Licença
+
+Distribuído sob a licença MIT. Consulte `LICENSE.txt` para obter mais informações.
