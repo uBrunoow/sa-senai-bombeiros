@@ -98,3 +98,12 @@ $ cd mobile
 $ npm i
 $ npx expo start
 ```
+
+> Caso queira acesse a pasta client para abrir o dashboard administrativo e execute o comando `npm run dev`:
+
+```
+$ cd client
+$ npm i
+$ npx run dev
+```
+
