@@ -6,14 +6,14 @@
 
 [![Npm package license](https://badgen.net/npm/llicense/discord.js)](https://npmjs.com/package/discord.js)
 
-[![GitHub license](https://badgen.net/github/license/uBrunoow/sa-senai-bombeiros)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+[![GitHub license](https://github.com/uBrunoow/sa-senai-bombeiros)]
 
-[![GitHub branches](https://badgen.net/github/branches/uBrunoow/sa-senai-bombeiros)](https://github.com/uBrunoow/sa-senai-bombeiros)
+[![GitHub branches](https://github.com/uBrunoow/sa-senai-bombeiros)]
 
-[![GitHub stars](https://badgen.net/github/stars/uBrunoow/sa-senai-bombeiros)](https://GitHub.com/Naereen/StrapDown.js/stargazers/)
+[![GitHub stars](https://github.com/uBrunoow/sa-senai-bombeiros)]
 
-[![GitHub contributors](https://img.shields.io/github/contributors/uBrunoow/sa-senai-bombeiros)](https://GitHub.com/Naereen/badges/graphs/contributors/)
+[![GitHub contributors](https://github.com/uBrunoow/sa-senai-bombeiros)]
 
-[![GitHub forks](https://badgen.net/github/forks/uBrunoow/sa-senai-bombeiros/)](https://GitHub.com/Naereen/StrapDown.js/network/)
+[![GitHub forks](https://github.com/uBrunoow/sa-senai-bombeiros)]
 
-[![GitHub issues](https://github.com/uBrunoow/sa-senai-bombeiros)](https://GitHub.com/Naereen/StrapDown.js/issues/)
+[![GitHub issues](https://github.com/uBrunoow/sa-senai-bombeiros)]
