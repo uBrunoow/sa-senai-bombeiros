@@ -95,7 +95,7 @@ $ npx expo start
 ```
 $ cd client
 $ npm i
-$ npx run dev
+$ npm run dev
 ```
 
 ### Licença
