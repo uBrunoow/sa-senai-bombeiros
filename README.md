@@ -9,7 +9,7 @@
 
 <h1 align="center">🔥 NOAR - Bombeiros Voluntários de Guaramirim 🔥</h1>
 <div align="center"> 
-<img align="center"  src="https://github.com/uBrunoow/sa-senai-bombeiros/blob/main/mobile/assets/icon.png"/>
+<img align="center" height="200px" width="200px" src="https://github.com/uBrunoow/sa-senai-bombeiros/blob/main/mobile/assets/icon.png"/>
 </div>
 
 <h2>Sobre o projeto</h2>
