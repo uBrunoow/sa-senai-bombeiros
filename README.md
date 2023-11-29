@@ -4,6 +4,7 @@
   <img src="https://img.shields.io/github/forks/uBrunoow/sa-senai-bombeiros?style=for-the-badge"/>
   <img src="https://img.shields.io/github/stars/uBrunoow/sa-senai-bombeiros?style=for-the-badge"/>
   <img src="https://img.shields.io/github/license/uBrunoow/sa-senai-bombeiros?style=for-the-badge"/>
+  <img src="https://img.shields.io/github/languages/top/uBrunoow/sa-senai-bombeiros?style=for-the-badge&logo=typescript"/>
 </p>
 
 <h1 align="center">🔥 NOAR - Bombeiros Voluntários de Guaramirim 🔥</h1>
