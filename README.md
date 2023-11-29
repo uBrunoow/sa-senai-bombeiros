@@ -8,11 +8,13 @@
 
 <h1 align="center">🔥 NOAR - Bombeiros Voluntários de Guaramirim 🔥</h1>
 <div align="center"> 
-<img align="center" src="https://github.com/uBrunoow/sa-senai-bombeiros/blob/main/mobile/assets/icon.png"/>
+<img align="center"  src="https://github.com/uBrunoow/sa-senai-bombeiros/blob/main/mobile/assets/icon.png"/>
+</div>
+<div>
+<img src="https://github.com/uBrunoow/sa-senai-bombeiros/blob/main/mobile/src/public/mockuuups-iphone-mockup-on-multicolored-background.jpeg"/>  
 </div>
 <p align="justify">O NOAR é uma associação de bombeiros voluntários que fazem seus relatórios de ocorrência por meio de uma extensa folha de papel com campos em sua frente e verso, contendo perguntas diversas que devem ser preenchidas durante e após a ocorrência. Porém, essa abordagem tende mais a prejudicar o desempenho no meio da ação, pois o preenchimento do documento físico é de certa forma lento, e através de uma análise, é possível observar que tornar esta folha de ocorrência digital pode tornar o preenchimento mais ágil e dinâmico, assim também agilizando o processo de salvamento de vidas, e por isso, o NOAR requisitou o desenvolvimento deste software.</p>
-> [!NOTE]
-> Highlights information that users should take into account, even when skimming.
+
 
 ### Construído com
 ### Front-end stacks
