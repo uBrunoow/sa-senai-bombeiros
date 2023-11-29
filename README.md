@@ -5,3 +5,5 @@
 [![Npm package version](https://badgen.net/npm/v/express)](https://npmjs.com/package/express)
 
 [![Npm package license](https://badgen.net/npm/llicense/discord.js)](https://npmjs.com/package/discord.js)
+
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
