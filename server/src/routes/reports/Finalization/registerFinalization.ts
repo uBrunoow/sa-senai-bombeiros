@@ -8,7 +8,9 @@ export async function registerFinalizationRoutes(app: FastifyInstance) {
       responsable,
       conduction,
       transportation,
+      CollectedObjects,
       finalRemarks,
+      VictimWas,
       ReportOwnerId,
     } = registerFinalization.parse(req.body)
 
@@ -17,7 +19,9 @@ export async function registerFinalizationRoutes(app: FastifyInstance) {
         responsable,
         conduction,
         transportation,
+        CollectedObjects,
         finalRemarks,
+        VictimWas,
         ReportOwnerId,
       },
     })

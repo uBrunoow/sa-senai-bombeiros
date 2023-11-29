@@ -6,28 +6,34 @@ type Grouperprops = {
   title: string
   desc: string
   isCompleted?: number
+  howManyItems?: number
 }
 
 export default function Grouper(props: Grouperprops) {
-  let color = '#0AC800' // Default green color
-  let icon = <Feather name="check" size={30} color="white" /> // Default icon
+  let color = '#0AC800'
+  let icon = <Feather name="check" size={30} color="white" />
 
   if (props.isCompleted === 0) {
-    color = 'white' // White color for 0
-    icon = <Feather name="check" size={30} color="white" /> // Default icon
-  } else if (props.isCompleted >= 1 && props.isCompleted <= 3) {
-    color = 'orange' // Orange color for 1 to 3
+    color = 'white'
+    icon = <Feather name="check" size={30} color="white" />
+  } else if (
+    props.isCompleted &&
+    props.isCompleted >= 1 &&
+    props.isCompleted <= 3
+  ) {
+    color = 'orange'
     icon = <AntDesign name="minus" size={40} color="white" />
   } else if (props.isCompleted === 4) {
-    icon = <Feather name="check" size={30} color="white" /> // Change icon for 4
+    icon = <Feather name="check" size={30} color="white" />
   }
 
+  const completedCount = props.isCompleted ?? 0
   return (
     <View
       style={styles.boxShadow}
       className=" m-auto mb-5 w-5/6 flex-row rounded-[7px] bg-white p-3 shadow-lg"
     >
-      <View className="b-black w-5/6">
+      <View className="w-5/6 bg-transparent">
         <Text className="mb-7 text-[18px] font-bold uppercase">
           {props.title}
         </Text>
@@ -41,7 +47,9 @@ export default function Grouper(props: Grouperprops) {
         >
           {icon}
         </View>
-        <Text className="text-center text-lg">{props.isCompleted}/4</Text>
+        <Text className="text-center text-lg">
+          {completedCount}/{props.howManyItems || 4}
+        </Text>
       </View>
     </View>
   )

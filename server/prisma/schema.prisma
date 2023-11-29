@@ -11,9 +11,10 @@ model User {
   id        Int       @id @default(autoincrement())
   email     String    @unique
   name      String?
-  gender    String?
   password  String
   isActive  Boolean
+  gender    String?
+  role      Roles?
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
   Reports   Report[]
@@ -30,92 +31,179 @@ model Report {
   cpf                      String?
   phone                    String?
   reportPlace              String?
-  bloodPressure            Int?
+  systolicBloodPressure    Int?
+  diastolicBloodPressure   Int?
   bodyTemp                 Int?
   bodyPulse                Int?
   breathing                Int?
   saturation               Int?
-  owner                    User                       @relation(fields: [ownerId], references: [id], onDelete: Restrict)
-  ownerId                  Int
-  PreHospitalMethods       PreHospitalMethod[]
-  Symptoms                 Symptoms[]
-  GestationalAnamnesis     GestationalAnamnesis[]
+  perfusion                String?
+  followUp                 String?
+  followUpAge              Int?
   Anamnesis                Anamnesis[]
-  SuspectProblems          SuspectProblems[]
+  Finalization             Finalization[]
+  GestationalAnamnesis     GestationalAnamnesis[]
   Glasglow                 Glasglow[]
+  PreHospitalMethods       PreHospitalMethod[]
   Report_PreHospitalMethod Report_PreHospitalMethod[]
   Report_Symptoms          Report_Symptoms[]
-  Finalization             Finalization[]
+  SuspectProblems          SuspectProblems[]
+  Symptoms                 Symptoms[]
+  LocalTraumas             trauma[]
+  CinematicAvaliation      CinematicAvaliation[]
+  InfoTransporte           InfoTransporte[]
+  InfosHospitalares        InfosHospitalares[]
+  owner                    User                       @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  ownerId                  Int
 }
 
-//  Tabela N para N entre relatório e método pré-hospitalar
 model Report_PreHospitalMethod {
   id                       Int               @id @default(autoincrement())
-  preHospitalMethodOwner   PreHospitalMethod @relation(fields: [PreHospitalMethodOwnerId], references: [id])
-  reportOwner              Report            @relation(fields: [ReportOwnerId], references: [id])
   PreHospitalMethodOwnerId Int
   ReportOwnerId            Int
   createdAt                DateTime?         @default(now())
   updatedAt                DateTime?         @updatedAt
+  preHospitalMethodOwner   PreHospitalMethod @relation(fields: [PreHospitalMethodOwnerId], references: [id])
+  reportOwner              Report            @relation(fields: [ReportOwnerId], references: [id])
 
   @@unique([ReportOwnerId, PreHospitalMethodOwnerId])
 }
 
-//  Tabela N para N entre relatório e sintoma
 model Report_Symptoms {
   id              Int       @id @default(autoincrement())
-  symptomsOwner   Symptoms  @relation(fields: [SymptomsOwnerId], references: [id])
-  reportOwner     Report    @relation(fields: [ReportOwnerId], references: [id])
   SymptomsOwnerId Int
   ReportOwnerId   Int
   createdAt       DateTime? @default(now())
   updatedAt       DateTime? @updatedAt
+  reportOwner     Report    @relation(fields: [ReportOwnerId], references: [id])
+  symptomsOwner   Symptoms  @relation(fields: [SymptomsOwnerId], references: [id])
 
   @@unique([ReportOwnerId, SymptomsOwnerId])
 }
 
 model PreHospitalMethod {
-  id                       Int                        @id @default(autoincrement())
-  description              String
-  reportOwner              Report                     @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
-  ReportOwnerId            Int
-  createdAt                DateTime?                  @default(now())
-  updatedAt                DateTime?                  @updatedAt
-  Report_PreHospitalMethod Report_PreHospitalMethod[]
+  id                             Int                        @id @default(autoincrement())
+  preHospitalarMethodDescription String[]                   @default([""])
+  ReportOwnerId                  Int
+  createdAt                      DateTime?                  @default(now())
+  updatedAt                      DateTime?                  @updatedAt
+  reportOwner                    Report                     @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  Report_PreHospitalMethod       Report_PreHospitalMethod[]
+}
+
+enum preHospitalarMethodDescription {
+  AFOGAMENTO
+  AGRESSAO
+  ATROPELAMENTO
+  CAUSADO_POR_ANIMAIS
+  CHOQUE_ELETRICO
+  COM_MEIO_DE_TRANSPORTE
+  DESABAMENTO
+  DESMORONAMENTO
+  DOMESTICO
+  EMERGENCIA_MEDICA
+  ESPORTIVO
+  INTOXICACAO
+  QUEDA_BICICLETA
+  QUEDA_MOTO
+  QUEDA_MENOR_QUE_2M
+  QUEDA_MAIOR_QUE_2M
+  QUEDA_PROPRIA_ALTURA
+  TENTATIVA_DE_SUICIDIO
+  TRABALHO
+  TRANSFERENCIA
 }
 
 model Symptoms {
-  id              Int               @id @default(autoincrement())
-  description     String
-  reportOwner     Report            @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
-  ReportOwnerId   Int
-  createdAt       DateTime?         @default(now())
-  updatedAt       DateTime?         @updatedAt
-  Report_Symptoms Report_Symptoms[]
+  id                  Int               @id @default(autoincrement())
+  symptomsDescription String[]          @default([""])
+  ReportOwnerId       Int
+  createdAt           DateTime?         @default(now())
+  updatedAt           DateTime?         @updatedAt
+  Report_Symptoms     Report_Symptoms[]
+  reportOwner         Report            @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+}
+
+enum symptomsDescription {
+  ABD_SENSIVEL_RIGIDO
+  AFUNDAMENTO_DE_CRANIO
+  AGITACAO
+  AMNESIA
+  ANGINA_DE_PEITO
+  APINEIA
+  BRADICARDIA
+  BRADIPNEIA
+  BRONCO_ASPIRANDO
+  CEFALIA
+  CIANOSE_LABIOS
+  CIANOSE_EXTREMIDADES
+  CONVULSAO
+  DECORTICACAO
+  DEFORMIDADE
+  DESCEREBRACAO
+  DESMAIO
+  DESVIO_DE_TRAQUEIA
+  DISPNEIA
+  DOR_LOCAL
+  EDEMA_GENERALIZADO
+  EDEMA_LOCALIZADO
+  ENFISEMA_SUBCUTANEO
+  ESTASE_DA_JUGULAR
+  FACE_PALIDA
+  HEMORRAGIA_INTERNA
+  HEMORRAGIA_EXTERNA
+  HIPERTENSAO
+  HIPOTENSAO
+  NAUSEAS_VOMITOS
+  NASORAGIA
+  OBITO
+  OTORREIA
+  OTORRAGIA
+  OVACE
+  PARADA_CARDIACA
+  PARADA_RESPIRATORIA
+  PRIAPRISMO
+  PRURIDO_NA_PELE
+  ANISOCORIA_NAO_REAGENTE
+  ANISOCORIA_REAGENTE
+  ISOCORIA_NAO_REAGENTE
+  ISOCORIA_REAGENTE
+  MIDRIASE_NAO_REAGENTE
+  MIDRIASE_REAGENTE
+  MIOSE_NAO_REAGENTE
+  MIOSE_REAGENTE
+  SEDE
+  SINAL_DE_BATTLE
+  SINAL_DE_GUAXINIM
+  SUDORESE
+  TAQUIPNEIA
+  TAQUICARDIA
+  TONTURA
 }
 
 model GestationalAnamnesis {
-  id                  Int       @id @default(autoincrement())
-  gestationalPeriod   DateTime?
-  PreNatal            Boolean?
-  DoctorName          String?
-  Complications       Boolean?
-  NumberSon           Int?
-  ContractionSchedule DateTime?
-  Duration            DateTime?
-  Interval            DateTime?
-  HiPressure          Boolean?
-  BagRuptured         Boolean?
-  VisualInspection    Boolean?
-  Childbirth          Boolean?
-  BabyGender          String?
-  BornHour            String?
-  BabyName            String?
-  FinalRemarks        String?
-  createdAt           DateTime? @default(now())
-  updatedAt           DateTime? @updatedAt
-  reportOwner         Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
-  ReportOwnerId       Int
+  id                     Int         @id @default(autoincrement())
+  PreNatal               Boolean?
+  DoctorName             String?
+  NumberSon              Int?
+  HiPressure             Boolean?
+  BagRuptured            Boolean?
+  VisualInspection       Boolean?
+  Childbirth             Boolean?
+  BornHour               String?
+  BabyName               String?
+  FinalRemarks           String?
+  ReportOwnerId          Int
+  createdAt              DateTime?   @default(now())
+  updatedAt              DateTime?   @updatedAt
+  Complications          Boolean?
+  gestationalPeriodStart DateTime?
+  gestationalPeriodEnd   DateTime?
+  ContractionSchedule    String?
+  Duration               String?
+  Interval               String?
+  BabyGender             BabyGender?
+  reportOwner            Report      @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 model Anamnesis {
@@ -133,59 +221,213 @@ model Anamnesis {
   IngestedFood       Boolean?
   WhatTimeFood       String?
   FinalRemarks       String?
+  ReportOwnerId      Int
   createdAt          DateTime? @default(now())
   updatedAt          DateTime? @updatedAt
   reportOwner        Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
-  ReportOwnerId      Int
 }
 
 model Glasglow {
   id                    Int       @id @default(autoincrement())
-  reportOwner           Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
   ReportOwnerId         Int
-  eyeOpeningOwnerId     Int
-  verbalResponseOwnerId Int
-  motorResponseOwnerId  Int
+  eyeOpeningOwnerId     Int?
+  verbalResponseOwnerId Int?
+  motorResponseOwnerId  Int?
   createdAt             DateTime? @default(now())
   updatedAt             DateTime? @updatedAt
+  reportOwner           Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 model SuspectProblems {
-  id            Int        @id @default(autoincrement())
-  Problem       Problems[]
-  Another       String
-  Report        Report?    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
-  ReportOwnerId Int?
-  createdAt     DateTime?  @default(now())
-  updatedAt     DateTime?  @updatedAt
-}
-
-model Problems {
-  id                Int              @id @default(autoincrement())
-  Name              String
-  Description       String
-  SuspectProblems   SuspectProblems? @relation(fields: [suspectProblemsId], references: [id], onDelete: Cascade)
-  suspectProblemsId Int?
-  createdAt         DateTime?        @default(now())
-  updatedAt         DateTime?        @updatedAt
+  id                           Int       @id @default(autoincrement())
+  problemaSuspeitoTransporte   String[]  @default([""])
+  problemaSuspeitoDiabetes     String[]  @default([""])
+  problemaSuspeitoObstetrico   String[]  @default([""])
+  problemaSuspeitoRespiratorio String[]  @default([""])
+  problemaSuspeitoPsiquiatrico Boolean?  @default(false)
+  Another                      String?
+  createdAt                    DateTime? @default(now())
+  updatedAt                    DateTime? @updatedAt
+  ReportOwnerId                Int
+  Report                       Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 model CinematicAvaliation {
   id                    Int       @id @default(autoincrement())
-  comportamentalDisturb Boolean
-  foundWithHelmet       Boolean
-  foundWithSeatbelt     Boolean
-  walkingInTheScene     Boolean
+  comportamentalDisturb Boolean?
+  foundWithHelmet       Boolean?
+  foundWithSeatbelt     Boolean?
+  walkingInTheScene     Boolean?
+  damagedWindshield     Boolean?
+  damagedPanel          Boolean?
+  twistedSteering       Boolean?
   createdAt             DateTime? @default(now())
   updatedAt             DateTime? @updatedAt
+  ReportOwnerId         Int
+  reportOwner           Report    @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
 }
 
 model Finalization {
-  id             Int      @id @default(autoincrement())
-  responsable    String?
-  conduction     String[]
-  transportation String?
-  finalRemarks   String?
-  reportOwner    Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
-  ReportOwnerId  Int
+  id               Int      @id @default(autoincrement())
+  responsable      String?
+  conduction       String[]
+  transportation   String?
+  CollectedObjects String?
+  finalRemarks     String?
+  VictimWas        String?
+  ReportOwnerId    Int
+  reportOwner      Report   @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+}
+
+enum BabyGender {
+  Male
+  Female
+  Other
+}
+
+enum problemaSuspeitoTransporte {
+  AEREO
+  CLINICO
+  EMERGENCIAL
+  POS_TRAUMA
+  SAMU
+  SEM_REMOCAO
+}
+
+enum problemaSuspeitoDiabetes {
+  HIPOGLICEMIA
+  HIPERGLICEMIA
+}
+
+enum problemaSuspeitoObstetrico {
+  PARTO_GESTACIONAL
+  GESTANTE
+  HEMORRAGIA_EXCESSIVA
+}
+
+enum problemaSuspeitoRespiratorio {
+  DPOC
+  INLACAO_FUMACA
+}
+
+enum localTraumaSide {
+  RIGHT
+  LEFT
+}
+
+enum localTraumaFace {
+  FRONT
+  BACK
+}
+
+enum localTraumasBodyPart {
+  ABDOMEN
+  ANTEBRACO
+  BRACO
+  CABECA
+  COSTAS
+  COXA
+  GLUTEOS
+  JOELHO
+  OMBRO
+  PEITO
+  PERNA
+  PESCOCO
+  PE
+  VIRILHA
+  CALCANHAR
+  MAO
+}
+
+enum tipoTrauma {
+  FRATURA
+  DIVERSOS
+  HEMORRAGIAS
+  ESVICERACAO
+  FAV_FAV
+  AMPUTACAO
+  QUEIMADURA_1GRAU
+  QUEIMADURA_2GRAU
+  QUEIMADURA_3GRAU
+}
+
+model trauma {
+  id            Int                  @id @default(autoincrement())
+  ReportOwnerId Int
+  reportOwner   Report               @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+  tipo          tipoTrauma
+  bodyPart      localTraumasBodyPart
+  side          localTraumaSide
+  face          localTraumaFace
+}
+
+enum Roles {
+  segundoTenente
+  primeiroTenente
+  Capitao
+  Major
+  TenenteCoronel
+  Admin
+  semCargo
+}
+
+model InfoTransporte {
+  id              Int     @id @default(autoincrement())
+  numberUSB       Int?
+  numberOcorr     Int?
+  forwardingAgent String?
+  HcH             String?
+  kmFinal         Int?
+  code            String?
+  codeSUS         Int?
+  ReportOwnerId   Int
+  reportOwner     Report  @relation(fields: [ReportOwnerId], references: [id], onDelete: Cascade)
+}
+
+model InfosHospitalares {
+  id                          Int                           @id @default(autoincrement())
+  Doctor                      String?
+  S1                          String?
+  S2                          String?
+  S3                          String?
+  Demandant                   String?
+  TeamUp                      String?
+  ProcedimentoEfetuados       ProcedimentoEfetuados[]
+  MateriaisDescartaveis       MateriaisDescartaveis[]
+  MateriaisDeixadosNoHospital MateriaisDeixadosNoHospital[]
+  Report                      Report?                       @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  reportId                    Int?
+}
+
+model ProcedimentoEfetuados {
+  id                  Int                @id @default(autoincrement())
+  state               Boolean?
+  name                String?
+  sizes               String?
+  LPM                 Int?
+  options             String[]           @default([""])
+  InfosHospitalares   InfosHospitalares? @relation(fields: [infosHospitalaresId], references: [id])
+  infosHospitalaresId Int?
+}
+
+model MateriaisDescartaveis {
+  id                  Int                @id @default(autoincrement())
+  state               Boolean?
+  name                String?
+  quantity            Int?
+  sizes               String[]
+  InfosHospitalares   InfosHospitalares? @relation(fields: [infosHospitalaresId], references: [id])
+  infosHospitalaresId Int?
+}
+
+model MateriaisDeixadosNoHospital {
+  id       Int      @id @default(autoincrement())
+  state    Boolean?
+  name     String?
+  quantity Int?
+
+  sizes String[]
+
+  InfosHospitalares   InfosHospitalares? @relation(fields: [infosHospitalaresId], references: [id])
+  infosHospitalaresId Int?
 }

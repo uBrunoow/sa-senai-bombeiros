@@ -9,48 +9,27 @@ export const styles = StyleSheet.create({
     elevation: 5, // Android
     textShadowOffset: { width: 8, height: 2 },
     backgroundColor: '#fff',
-    // width: '90%',
-    // marginLeft: 'auto',
-    // marginRight: 'auto',
-    // borderRadius: 8,
-    // padding: 16,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    width: '90%',
+    marginBottom: 50,
   },
 
-  button: {
+  TransporteButton: {
     height: 50,
     width: 70,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 7,
-    backgroundColor: '#F23030',
+    borderColor: 'transparent',
+    borderWidth: 5,
   },
 
-  buttonOrange: {
-    height: 50,
-    width: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-    backgroundColor: '#FF6B00',
-  },
-
-  buttonYellow: {
-    height: 50,
-    width: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-    backgroundColor: '#FFC700',
-  },
-
-  buttonGreen: {
-    height: 50,
-    width: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-    backgroundColor: '#11D300',
-  },
+  TransporteButtonOrange: { backgroundColor: '#FF6B00' },
+  TransporteButtonYellow: { backgroundColor: '#FFC700' },
+  TransporteButtonGreen: { backgroundColor: '#11D300' },
+  TransporteButtonRed: { backgroundColor: '#F23030' },
 
   modalContent: {
     elevation: 5, // for Android

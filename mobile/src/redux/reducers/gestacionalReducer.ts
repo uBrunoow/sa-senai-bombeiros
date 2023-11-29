@@ -30,7 +30,7 @@ const anamnesisReducer = (
       }
 
     case 'CLEAR_GESTACIONAL_ANAMNESIS_ID':
-      AsyncStorage.removeItem('anamnesisId')
+      AsyncStorage.removeItem('gestacionalAnamnesisId')
 
       return {
         ...state,

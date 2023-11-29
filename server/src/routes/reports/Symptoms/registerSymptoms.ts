@@ -4,11 +4,12 @@ import { prisma } from '../../../lib/prisma'
 
 export async function registerSymptomsRoutes(app: FastifyInstance) {
   app.post('/api/symptoms', async (req, res) => {
-    const { description, ReportOwnerId } = registerSymptoms.parse(req.body)
+    const { symptomsDescription = [''], ReportOwnerId } =
+      registerSymptoms.parse(req.body)
 
     const newSymptoms = await prisma.symptoms.create({
       data: {
-        description,
+        symptomsDescription: symptomsDescription || [''],
         ReportOwnerId,
       },
     })

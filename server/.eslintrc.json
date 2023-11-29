@@ -3,6 +3,6 @@
         "@rocketseat/eslint-config/node"
     ],
     "rules" : {
-       "linebreak-style": "warn"
+    //    "linebreak-style": "warn"
     }
 }

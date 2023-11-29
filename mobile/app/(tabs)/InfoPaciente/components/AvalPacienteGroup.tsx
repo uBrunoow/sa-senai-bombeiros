@@ -1,8 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import AvalPacienteModal from '@app/modal/AvalPacienteModal'
 import { styles as s } from '@app/styles/boxShadow'
+import { useDispatch, useSelector } from 'react-redux'
+import { setGlasgowData } from '@src/redux/actions/dataActions'
+import findGlasgow from '@src/api/reports/glasgow/findGlasgow'
+import findReports from '@src/api/reports/findReport'
+import { RootState } from '@src/redux/stores/stores'
+
 export default function AvalPacienteGroup() {
+  const dispatch = useDispatch()
   const [aberturaOcular, setAberturaOcular] = useState(0)
   const [respostaVerbal, setRespostaVerbal] = useState(0)
   const [respostaMotora, setRespostaMotora] = useState(0)
@@ -12,6 +19,7 @@ export default function AvalPacienteGroup() {
     useState(false)
   const [modalRespostaMotoraVisible, setRespostaMotoraModalVisible] =
     useState(false)
+  const [isMaiorQueCincoAnos, setIsMaiorQueCincoAnos] = useState(false)
 
   function validateGlasgow(): Boolean {
     return ![aberturaOcular, respostaVerbal, respostaMotora].includes(0)
@@ -23,28 +31,65 @@ export default function AvalPacienteGroup() {
     )
   }
 
-  console.log(
-    `${[aberturaOcular, respostaVerbal, respostaMotora]} = ${calcGlasgow()}`,
-  )
-
-  function handleAberturaOcular(valueAberturaOcular: number): void {
+  function handleAberturaOcular(valueAberturaOcular: number) {
     setAberturaOcular(valueAberturaOcular)
   }
 
-  function handleRespostaVerbal(valueRespostaVerbal: number): void {
+  function handleRespostaVerbal(valueRespostaVerbal: number) {
     setRespostaVerbal(valueRespostaVerbal)
   }
 
-  function handleRespostaMotora(valueRespostaMotora: number): void {
+  function handleRespostaMotora(valueRespostaMotora: number) {
     setRespostaMotora(valueRespostaMotora)
   }
 
+  const glasgowId = useSelector((state: RootState) => state.glasgow.glasgowId)
+
+  useEffect(() => {
+    const findGlasgowData = async () => {
+      const response = await findGlasgow(glasgowId)
+
+      const eyeOpeningOwnerId = response.glasgow.eyeOpeningOwnerId
+      const verbalResponseOwnerId = response.glasgow.verbalResponseOwnerId
+      const motorResponseOwnerId = response.glasgow.motorResponseOwnerId
+
+      setAberturaOcular(eyeOpeningOwnerId)
+      setRespostaVerbal(verbalResponseOwnerId)
+      setRespostaMotora(motorResponseOwnerId)
+    }
+    findGlasgowData()
+  }, [glasgowId])
+
+  useEffect(() => {
+    const onChangeGlasgowInfoData = () => {
+      const glasgowDataInfo = {
+        aberturaOcular,
+        respostaVerbal,
+        respostaMotora,
+      }
+      dispatch(setGlasgowData(glasgowDataInfo))
+    }
+
+    onChangeGlasgowInfoData()
+  }, [aberturaOcular, respostaVerbal, respostaMotora, dispatch])
+
+  const reportId = useSelector((state: RootState) => state.report.reportId)
+
+  useEffect(() => {
+    const findReportData = async () => {
+      const ageResponse = await findReports(reportId)
+
+      if (Number(ageResponse.report.age) >= 5) {
+        setIsMaiorQueCincoAnos(true)
+      } else {
+        setIsMaiorQueCincoAnos(false)
+      }
+    }
+    findReportData()
+  }, [reportId])
+
   return (
-    <View
-      // className="mx-auto mb-7 w-5/6 flex-col rounded-md bg-white py-5 shadow-lg "
-      className=" mx-auto w-[90%] rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
-      style={s.boxShadow}
-    >
+    <View className=" mx-auto" style={s.boxShadow}>
       <View className="flex-col px-5 py-3">
         <TouchableOpacity
           className="border-lg rounded"
@@ -64,17 +109,33 @@ export default function AvalPacienteGroup() {
             setAberturaOcularModalVisible(false)
           }}
         >
-          <AvalPacienteModal
-            handleOptionSelection={handleAberturaOcular}
-            setModalVisible={setAberturaOcularModalVisible}
-            modalTitle="Abertura Ocular"
-            options={[
-              { value: '4', description: 'Espontânea' },
-              { value: '3', description: 'Comando verbal' },
-              { value: '2', description: 'Estímulo doloroso' },
-              { value: '1', description: 'Nenhuma' },
-            ]}
-          />
+          <View className="flex-1 items-center justify-center bg-[#0000007f]">
+            {isMaiorQueCincoAnos ? (
+              <AvalPacienteModal
+                handleOptionSelection={handleAberturaOcular}
+                setModalVisible={setAberturaOcularModalVisible}
+                modalTitle="Abertura Ocular"
+                options={[
+                  { value: '4', description: 'Espontânea' },
+                  { value: '3', description: 'Comando verbal' },
+                  { value: '2', description: 'Estímulo doloroso' },
+                  { value: '1', description: 'Nenhuma' },
+                ]}
+              />
+            ) : (
+              <AvalPacienteModal
+                handleOptionSelection={handleAberturaOcular}
+                setModalVisible={setAberturaOcularModalVisible}
+                modalTitle="Abertura Ocular"
+                options={[
+                  { value: '4', description: 'Espontânea' },
+                  { value: '3', description: 'Comando verbal' },
+                  { value: '2', description: 'Estímulo doloroso' },
+                  { value: '1', description: 'Nenhuma' },
+                ]}
+              />
+            )}
+          </View>
         </Modal>
       </View>
       <View className="flex-col px-5 py-3">
@@ -96,18 +157,35 @@ export default function AvalPacienteGroup() {
             setRespostaVerbalModalVisible(false)
           }}
         >
-          <AvalPacienteModal
-            handleOptionSelection={handleRespostaVerbal}
-            setModalVisible={setRespostaVerbalModalVisible}
-            modalTitle="Resposta Verbal"
-            options={[
-              { value: '5', description: 'Orientado' },
-              { value: '4', description: 'Confuso' },
-              { value: '3', description: 'Palavras inapropriadas' },
-              { value: '2', description: 'Palavras incompreensíveis' },
-              { value: '1', description: 'Nenhuma' },
-            ]}
-          />
+          <View className="flex-1 items-center justify-center bg-[#0000007f]">
+            {isMaiorQueCincoAnos ? (
+              <AvalPacienteModal
+                handleOptionSelection={handleRespostaVerbal}
+                setModalVisible={setRespostaVerbalModalVisible}
+                modalTitle="Resposta Verbal"
+                options={[
+                  { value: '5', description: 'Orientado' },
+                  { value: '4', description: 'Confuso' },
+                  { value: '3', description: 'Palavras inapropriadas' },
+                  { value: '2', description: 'Palavras incompreensíveis' },
+                  { value: '1', description: 'Nenhuma' },
+                ]}
+              />
+            ) : (
+              <AvalPacienteModal
+                handleOptionSelection={handleRespostaVerbal}
+                setModalVisible={setRespostaVerbalModalVisible}
+                modalTitle="Resposta Verbal"
+                options={[
+                  { value: '5', description: 'Palavras e frases apropriadas' },
+                  { value: '4', description: 'Palavras inapropriadas' },
+                  { value: '3', description: 'Choro persistente e/ou gritos' },
+                  { value: '2', description: 'Sons incompreensiveis' },
+                  { value: '1', description: 'Nenuma resposta verbal' },
+                ]}
+              />
+            )}
+          </View>
         </Modal>
       </View>
       <View className="flex-col px-5 py-3">
@@ -129,19 +207,46 @@ export default function AvalPacienteGroup() {
             setRespostaMotoraModalVisible(false)
           }}
         >
-          <AvalPacienteModal
-            handleOptionSelection={handleRespostaMotora}
-            setModalVisible={setRespostaMotoraModalVisible}
-            modalTitle="Resposta Motora"
-            options={[
-              { value: '6', description: 'Obedece comandos' },
-              { value: '5', description: 'Localiza dor' },
-              { value: '4', description: 'Movimento de retirada' },
-              { value: '3', description: 'Flexão anormal' },
-              { value: '2', description: 'Extensão anormal' },
-              { value: '1', description: 'Nenhuma' },
-            ]}
-          />
+          <View className="flex-1 items-center justify-center bg-[#0000007f]">
+            {isMaiorQueCincoAnos ? (
+              <AvalPacienteModal
+                handleOptionSelection={handleRespostaMotora}
+                setModalVisible={setRespostaMotoraModalVisible}
+                modalTitle="Resposta Motora"
+                options={[
+                  { value: '6', description: 'Obedece comandos' },
+                  { value: '5', description: 'Localiza dor' },
+                  { value: '4', description: 'Movimento de retirada' },
+                  { value: '3', description: 'Flexão anormal' },
+                  { value: '2', description: 'Extensão anormal' },
+                  { value: '1', description: 'Nenhuma' },
+                ]}
+              />
+            ) : (
+              <AvalPacienteModal
+                handleOptionSelection={handleRespostaMotora}
+                setModalVisible={setRespostaMotoraModalVisible}
+                modalTitle="Resposta Motora"
+                options={[
+                  { value: '6', description: 'Obedece Prontamente' },
+                  { value: '5', description: 'Localiza dor ou estímulo tatil' },
+                  {
+                    value: '4',
+                    description: 'Retirada do segmento estimulado',
+                  },
+                  { value: '3', description: 'Flexão anormal (Decorticação)' },
+                  {
+                    value: '2',
+                    description: 'Extensão anormal (Descerebração)',
+                  },
+                  {
+                    value: '1',
+                    description: 'Ausência (Paralisia flácida, Hipotônia)',
+                  },
+                ]}
+              />
+            )}
+          </View>
         </Modal>
       </View>
       <View className=" w-full flex-row items-center justify-center gap-2 px-5 py-3">

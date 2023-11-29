@@ -6,18 +6,28 @@ type InputProps = {
   size?: 'small' | 'regular' | 'big'
   alignText?: 'center' | 'left' | 'right'
   isBig?: boolean
-  value?: number | null
+  value?: string | number | null
   placeholder?: string
+  disabled?: boolean
+  numberWidth?: number
+  className?: string
+  // eslint-disable-next-line no-unused-vars
   onChangeText?: (text: number) => void
 }
 
 export default function InputNumeric(props: InputProps) {
-  const [inputValue, setInputValue] = useState(
-    props.value !== null ? props.value.toString() : '',
-  )
+  const initialValue =
+    props.value !== undefined && props.value !== null
+      ? props.value.toString()
+      : ''
+  const [inputValue, setInputValue] = useState<string>(initialValue)
 
   useEffect(() => {
-    setInputValue(props.value !== null ? props.value.toString() : '')
+    setInputValue(
+      props.value !== undefined && props.value !== null
+        ? props.value.toString()
+        : '',
+    )
   }, [props.value])
 
   const handleWidth = () => {
@@ -25,8 +35,10 @@ export default function InputNumeric(props: InputProps) {
       return 1
     } else if (props.size === 'regular') {
       return 2
+    } else if (props.size === 'big') {
+      return 3
     }
-    return 3
+    return 0
   }
 
   const handleAlignText = () => {
@@ -40,8 +52,7 @@ export default function InputNumeric(props: InputProps) {
   }
 
   const handleTextChange = (text: string) => {
-    const numericValue = text.replace(/[^0-9]/g, '')
-
+    const numericValue = text.replace(/[^0-9.]/g, '')
     if (!isNaN(Number(numericValue))) {
       setInputValue(numericValue)
 
@@ -51,12 +62,16 @@ export default function InputNumeric(props: InputProps) {
     }
   }
 
+  const handleMaxWidth = (numberWidth?: number) => {
+    return numberWidth !== undefined ? numberWidth * 2 : undefined
+  }
+
   return (
     <View
       style={{
         flexGrow: handleWidth(),
       }}
-      className="h-full w-full flex-1 p-2"
+      className="p-2"
     >
       {props.title && (
         <Text
@@ -68,14 +83,17 @@ export default function InputNumeric(props: InputProps) {
           {props.title}
         </Text>
       )}
-      <View className="my-1 w-full rounded-lg border p-4">
+      <View className="my-1 w-[95%] rounded-lg border py-3 pl-2">
         <TextInput
           keyboardType="numeric"
           style={{
             height: props.isBig ? 100 : 20,
             fontSize: 16,
+            width: props.numberWidth ? props.numberWidth : 50,
+            maxWidth: handleMaxWidth(props.numberWidth),
           }}
-          value={inputValue}
+          editable={props.disabled}
+          value={inputValue.toString()}
           onChangeText={handleTextChange}
         />
       </View>

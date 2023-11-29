@@ -14,10 +14,12 @@ export async function reportsFindRoutes(
         PreHospitalMethods: true,
         Anamnesis: true,
         GestationalAnamnesis: true,
-        SuspectProblems: true,
         Report_PreHospitalMethod: true,
         Report_Symptoms: true,
-        _count: true,
+        Glasglow: true,
+        CinematicAvaliation: true,
+        Finalization: true,
+        SuspectProblems: true,
       },
     })
     return res.send({
@@ -51,6 +53,11 @@ export async function reportFindOneRoutes(
         Report_PreHospitalMethod: true,
         Report_Symptoms: true,
         Glasglow: true,
+        CinematicAvaliation: true,
+        Finalization: true,
+        SuspectProblems: true,
+        LocalTraumas: true,
+        owner: true,
       },
     })
 

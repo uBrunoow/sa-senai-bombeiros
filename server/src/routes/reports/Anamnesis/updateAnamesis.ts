@@ -77,45 +77,59 @@ export async function anamneseUpdateRoutes(
       FinalRemarks?: string
     } = {}
 
-    if (SignsAndSymptoms) {
+    if (SignsAndSymptoms)
       updatedAnamneseData.SignsAndSymptoms = SignsAndSymptoms
-    }
-    if (HappenedTimes) {
-      updatedAnamneseData.HappenedTimes = HappenedTimes
-    }
-    if (SinceHappened) {
-      updatedAnamneseData.SinceHappened = SinceHappened
-    }
-    if (HealthProblem) {
-      updatedAnamneseData.HealthProblem = HealthProblem
-    }
-    if (HealthProlemsWhich) {
+    if (!SignsAndSymptoms && SignsAndSymptoms !== undefined)
+      updatedAnamneseData.SignsAndSymptoms = ''
+
+    if (HappenedTimes) updatedAnamneseData.HappenedTimes = HappenedTimes
+    if (!HappenedTimes && HappenedTimes !== undefined)
+      updatedAnamneseData.HappenedTimes = false
+
+    if (SinceHappened) updatedAnamneseData.SinceHappened = SinceHappened
+    if (!SinceHappened && SinceHappened !== undefined)
+      updatedAnamneseData.SinceHappened = ''
+
+    if (HealthProblem) updatedAnamneseData.HealthProblem = HealthProblem
+    if (!HealthProblem && HealthProblem !== undefined)
+      updatedAnamneseData.HealthProblem = false
+
+    if (HealthProlemsWhich)
       updatedAnamneseData.HealthProlemsWhich = HealthProlemsWhich
-    }
-    if (Medication) {
-      updatedAnamneseData.Medication = Medication
-    }
-    if (MedicationWhich) {
-      updatedAnamneseData.MedicationWhich = MedicationWhich
-    }
-    if (HourMedication) {
-      updatedAnamneseData.HourMedication = HourMedication
-    }
-    if (Allergies) {
-      updatedAnamneseData.Allergies = Allergies
-    }
-    if (AllergiesWhich) {
-      updatedAnamneseData.AllergiesWhich = AllergiesWhich
-    }
-    if (IngestedFood) {
-      updatedAnamneseData.IngestedFood = IngestedFood
-    }
-    if (WhatTimeFood) {
-      updatedAnamneseData.WhatTimeFood = WhatTimeFood
-    }
-    if (FinalRemarks) {
-      updatedAnamneseData.FinalRemarks = FinalRemarks
-    }
+    if (!HealthProlemsWhich && HealthProlemsWhich !== undefined)
+      updatedAnamneseData.HealthProlemsWhich = ''
+
+    if (Medication) updatedAnamneseData.Medication = Medication
+    if (!Medication && Medication !== undefined)
+      updatedAnamneseData.Medication = false
+
+    if (MedicationWhich) updatedAnamneseData.MedicationWhich = MedicationWhich
+    if (!MedicationWhich && MedicationWhich !== undefined)
+      updatedAnamneseData.MedicationWhich = ''
+
+    if (HourMedication) updatedAnamneseData.HourMedication = HourMedication
+    if (!HourMedication && HourMedication !== undefined)
+      updatedAnamneseData.HourMedication = ''
+
+    if (Allergies) updatedAnamneseData.Allergies = Allergies
+    if (!Allergies && Allergies !== undefined)
+      updatedAnamneseData.Allergies = false
+
+    if (AllergiesWhich) updatedAnamneseData.AllergiesWhich = AllergiesWhich
+    if (!AllergiesWhich && AllergiesWhich !== undefined)
+      updatedAnamneseData.AllergiesWhich = ''
+
+    if (IngestedFood) updatedAnamneseData.IngestedFood = IngestedFood
+    if (!IngestedFood && IngestedFood !== undefined)
+      updatedAnamneseData.IngestedFood = false
+
+    if (WhatTimeFood) updatedAnamneseData.WhatTimeFood = WhatTimeFood
+    if (!WhatTimeFood && WhatTimeFood !== undefined)
+      updatedAnamneseData.WhatTimeFood = ''
+
+    if (FinalRemarks) updatedAnamneseData.FinalRemarks = FinalRemarks
+    if (!FinalRemarks && FinalRemarks !== undefined)
+      updatedAnamneseData.FinalRemarks = ''
 
     // Atualizar o usuário buscando pelo ID
     const updatedAnamnese = await prisma.anamnesis.update({
@@ -126,7 +140,7 @@ export async function anamneseUpdateRoutes(
     })
 
     return res.send({
-      msg: '🟢 Anamnese atualizada com sucesso.',
+      msg: '🟢 Ges Anamnese atualizada com sucesso.',
       updatedAnamnese,
     })
   })

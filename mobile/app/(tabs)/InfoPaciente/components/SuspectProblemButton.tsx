@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import { FontAwesome5 } from '@expo/vector-icons'
 import classNames from 'classnames'

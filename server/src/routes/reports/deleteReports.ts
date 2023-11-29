@@ -54,11 +54,11 @@ export async function reportsDeleteRoutes(
             ReportOwnerId: parseInt(id),
           },
         }),
-        // prisma.suspectProblems.deleteMany({
-        //   where: {
-        //     reportId: parseInt(id),
-        //   },
-        // }),
+        prisma.suspectProblems.deleteMany({
+          where: {
+            ReportOwnerId: parseInt(id),
+          },
+        }),
         prisma.glasglow.deleteMany({
           where: {
             ReportOwnerId: parseInt(id),
@@ -74,6 +74,21 @@ export async function reportsDeleteRoutes(
             ReportOwnerId: parseInt(id),
           },
         }),
+        prisma.finalization.deleteMany({
+          where: {
+            ReportOwnerId: parseInt(id),
+          },
+        }),
+        prisma.cinematicAvaliation.deleteMany({
+          where: {
+            ReportOwnerId: parseInt(id),
+          },
+        }),
+        prisma.infoTransporte.deleteMany({
+          where: {
+            ReportOwnerId: parseInt(id),
+          },
+        }),
       ])
 
       await prisma.report.delete({
@@ -81,6 +96,9 @@ export async function reportsDeleteRoutes(
           id: parseInt(id),
         },
       })
+
+      // localStorage.removeItem('token')
+      // localStorage.removeItem('refreshToken')
 
       return res.send({ msg: `🔴 Ocorrência com o id ${id} foi deletado.` })
     } catch (error) {

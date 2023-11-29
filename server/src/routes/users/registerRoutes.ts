@@ -8,19 +8,10 @@ export async function userRegisterRoutes(
   done: fastifyDoneFunction,
 ) {
   app.post('/api/users/register', async (req, res) => {
-    // Pegar as informações vindo do front-end
-    const { email, name, gender, isActive, password, confirmPassword } =
+    const { confirmPassword, email, gender, isActive, name, password, role } =
       registerSchema.parse(req.body)
 
-    // Validação de dados
-    if (
-      !email ||
-      !name ||
-      !password ||
-      !confirmPassword ||
-      !gender ||
-      !isActive
-    ) {
+    if (!confirmPassword || !email || !gender || !role || !password || !name) {
       return res.status(422).send({ msg: '🟡 Credenciais inválidas' })
     }
 
@@ -50,6 +41,7 @@ export async function userRegisterRoutes(
         name,
         gender,
         isActive,
+        role,
         password: hashedPassword,
       },
     })

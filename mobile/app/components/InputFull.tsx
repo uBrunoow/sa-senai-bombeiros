@@ -3,12 +3,14 @@ import React, { useState } from 'react'
 // import { Entypo } from '@expo/vector-icons'
 
 type InputProps = {
-  title: string
+  title?: string
   size?: 'small' | 'regular' | 'big'
   isCalendar?: boolean
   isBig?: boolean
   value?: string
   placeholder?: string
+  disabled?: boolean
+  // eslint-disable-next-line no-unused-vars
   onChangeText?: (text: string) => void
 }
 
@@ -37,20 +39,21 @@ export default function InputFull(props: InputProps) {
       style={{
         flexGrow: handleWidth(),
       }}
-      className="justfy-between m-auto my-2 w-full flex-1 items-center"
+      className="my-2 w-full flex-1 items-center"
     >
-      <Text className="text-lg font-medium">{props.title}</Text>
-      <View className="mb-4 mt-2 w-5/6 rounded-lg border">
+      <Text className="mb-2 text-lg font-medium">{props.title}</Text>
+      <View className="w-[90%] rounded-lg border">
         <TextInput
-          multiline={true}
-          numberOfLines={100}
+          editable={props.disabled}
+          multiline={props.isBig}
+          numberOfLines={props.isBig ? 100 : 1}
           style={{
             height: props.isBig ? 100 : 38,
             textAlignVertical: 'top',
             paddingVertical: 6,
             paddingHorizontal: 10,
           }}
-          value={props.value}
+          value={inputValue}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
         ></TextInput>

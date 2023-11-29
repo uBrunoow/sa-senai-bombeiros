@@ -4,12 +4,13 @@ import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 type OptionsProps = {
   title?: string
   selectedOption: string
-  onSelectOption: (option: 'MASC' | 'FEM') => void
-  Option1?: string // You need to define these props
-  Option2?: string // You need to define these props
+  // eslint-disable-next-line no-unused-vars
+  onSelectOption: (option: 'Male' | 'Female') => void
+  Option1?: string
+  Option2?: string
 }
 
-export default function Options(props: OptionsProps) {
+export default function PickOne(props: OptionsProps) {
   return (
     <View
       style={{
@@ -25,17 +26,17 @@ export default function Options(props: OptionsProps) {
       )}
       <View className="mt-3 flex-row">
         <TouchableOpacity
-          className="flex-grow"
+          className="w-[70px] items-center justify-center py-2"
           style={[
             styles.button,
-            props.selectedOption === 'MASC' ? styles.selected : null,
+            props.selectedOption === 'Male' ? styles.selected : null,
           ]}
-          onPress={() => props.onSelectOption('MASC')}
+          onPress={() => props.onSelectOption('Male')}
         >
           <Text
             className="text-center"
             style={
-              props.selectedOption === 'MASC'
+              props.selectedOption === 'Male'
                 ? styles.whiteText
                 : styles.blackText
             }
@@ -44,17 +45,17 @@ export default function Options(props: OptionsProps) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="flex-grow"
+          className="ml-1 w-[70px] items-center justify-center py-3"
           style={[
             styles.button,
-            props.selectedOption === 'FEM' ? styles.selected : null,
+            props.selectedOption === 'Female' ? styles.selected : null,
           ]}
-          onPress={() => props.onSelectOption('FEM')}
+          onPress={() => props.onSelectOption('Female')}
         >
           <Text
             className="text-center"
             style={
-              props.selectedOption === 'FEM'
+              props.selectedOption === 'Female'
                 ? styles.whiteText
                 : styles.blackText
             }

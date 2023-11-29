@@ -1,11 +1,11 @@
 import { z } from 'zod'
 
 export const registerPreHospitalarMethods = z.object({
-  description: z.string(),
+  preHospitalarMethodDescription: z.array(z.string()).optional().nullable(),
   ReportOwnerId: z.number(),
 })
 
 export const updatePreHospitalarMethods = z.object({
-  description: z.string().optional(),
-  ReportOwnerId: z.number().optional(),
+  preHospitalarMethodDescription: z.array(z.string()).optional().nullable(),
+  ReportOwnerId: z.number(),
 })

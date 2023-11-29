@@ -4,9 +4,9 @@ import { prisma } from '../../../lib/prisma'
 export async function gestacionalAnamnesisFindRoutes(app: FastifyInstance) {
   app.get('/api/gestacionalAnamnesis', async (req, res) => {
     const gestacionalAnamnesis = await prisma.gestationalAnamnesis.findMany({
-      include: {
-        reportOwner: true,
-      },
+      // include: {
+      //   reportOwner: true,
+      // },
     })
     return res.send({
       msg: `🟢 Gestacional Anamnesis localizados com sucesso.`,
@@ -23,9 +23,9 @@ export async function gestacionalAnamnesisFindOneRoutes(app: FastifyInstance) {
       where: {
         id: parseInt(id),
       },
-      include: {
-        reportOwner: true,
-      },
+      // include: {
+      //   reportOwner: true,
+      // },
     })
 
     if (!gestacionalAnamnesis) {

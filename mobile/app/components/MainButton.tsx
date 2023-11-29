@@ -1,30 +1,30 @@
 import React from 'react'
-import { ActivityIndicator, Pressable, Text, View } from 'react-native'
+import { ActivityIndicator, Text } from 'react-native'
+import { Button } from 'native-base'
 
 type MainButtonProps = {
   innerText: String
-  isLoading: boolean
+  isLoading?: boolean
+  disabled?: boolean
   onPress: () => void
 }
 
 export default function MainButton(props: MainButtonProps) {
   return (
-    <Pressable onPress={props.onPress}>
+    <Button
+      className="mx-auto rounded-md bg-red-700"
+      onPress={props.onPress}
+      mb={8}
+      w={'75%'}
+      disabled={props.disabled}
+    >
       {props.isLoading ? (
-        <View className="m-auto mb-4 w-4/6 items-center rounded-lg bg-[#900e0e] p-3">
-          <View className="h-[30px]">
-            <ActivityIndicator size="large" color="#ffffff" />
-          </View>
-        </View>
+        <ActivityIndicator size="large" color="#ffffff" />
       ) : (
-        <View className="m-auto mb-4 w-4/6 items-center rounded-lg bg-[#A00E00] p-3">
-          <View className="h-[30px]">
-            <Text className="text-xl font-bold text-white">
-              {props.innerText}
-            </Text>
-          </View>
-        </View>
+        <Text className="text-center text-xl font-bold text-white">
+          {props.innerText}
+        </Text>
       )}
-    </Pressable>
+    </Button>
   )
 }

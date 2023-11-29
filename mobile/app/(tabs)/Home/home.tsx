@@ -4,6 +4,8 @@ import {
   Linking,
   TouchableOpacity,
   SafeAreaView,
+  ActivityIndicator,
+  Pressable,
 } from 'react-native'
 import NOARLogo from '@src/public/logo-noar.svg'
 import Firefighter from '@src/public/firefighter.svg'
@@ -12,24 +14,33 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'src/redux/stores/stores'
 import registerReport from '@src/api/reports/registerReport'
 import { Entypo } from '@expo/vector-icons'
-import React from 'react'
+import React, { useState } from 'react'
 import { saveReportId } from '@src/redux/actions/reportActions'
-// import { saveReportId } from '../../src/actions/reportActions' // Importe a ação
+import { useNavigation } from '@react-navigation/core'
 
-function App({ navigation }) {
+function Home() {
+  const navigation = useNavigation()
+  const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
   const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
   const ownerId = useSelector((state: RootState) => state.auth.userId)
 
   const handleButtonClick = async () => {
-    if (isLoggedIn) {
-      const response = await registerReport(ownerId)
-      const reportId = response.report.id
-      console.log('Report de n°:', reportId)
-      dispatch(saveReportId(reportId))
-      navigation.navigate('ocorrencia')
-    } else {
-      navigation.navigate('login')
+    try {
+      setIsLoading(true)
+      if (isLoggedIn) {
+        const response = await registerReport(ownerId)
+        const reportId = response.report.id
+        console.log('Report de n°:', reportId)
+        dispatch(saveReportId(reportId))
+        navigation.navigate('ocorrencia' as never)
+      } else {
+        navigation.navigate('login' as never)
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsLoading(false)
     }
   }
   return (
@@ -51,12 +62,23 @@ function App({ navigation }) {
             situações de emergência, e para ajuda-los é necessário um meio mais
             ágil de relatórios
           </Text>
-          <TouchableOpacity
-            onPress={handleButtonClick}
-            className="w-2/6 rounded-md bg-red-600 px-5 py-2"
-          >
-            <Text className="text-center text-lg text-white">RELATÓRIO</Text>
-          </TouchableOpacity>
+          <Pressable onPress={handleButtonClick}>
+            {isLoading ? (
+              <View className="w-[150px] rounded-md bg-red-700 px-5 py-2">
+                <View className="h-[30px]">
+                  <ActivityIndicator size="large" color="#ffffff" />
+                </View>
+              </View>
+            ) : (
+              <View className="w-[150px] rounded-md bg-red-600 px-5 py-2">
+                <View className="h-[30px]">
+                  <Text className="text-center text-lg text-white">
+                    RELATÓRIO
+                  </Text>
+                </View>
+              </View>
+            )}
+          </Pressable>
           {/* End main view */}
         </View>
         {/* Footer */}
@@ -69,10 +91,22 @@ function App({ navigation }) {
           >
             <Entypo name="globe" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity className="px-2">
+          <TouchableOpacity
+            className="px-2"
+            onPress={() => {
+              Linking.openURL('https://www.instagram.com/bvsc.guaramirim/')
+            }}
+          >
             <Entypo name="instagram" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity className="px-2">
+          <TouchableOpacity
+            className="px-2"
+            onPress={() => {
+              Linking.openURL(
+                'https://www.facebook.com/Bombeirosnoar/?locale=pt_BR',
+              )
+            }}
+          >
             <Entypo name="facebook" size={24} color="white" />
           </TouchableOpacity>
           {/* End footer */}
@@ -88,4 +122,4 @@ function App({ navigation }) {
   )
 }
 
-export default App
+export default Home

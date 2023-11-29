@@ -11,11 +11,8 @@ export async function userFindRoutes(
     const allUsers = await prisma.user.findMany({
       include: {
         Reports: {
-          include: {
-            Symptoms: true,
-            PreHospitalMethods: true,
-            Anamnesis: true,
-            GestationalAnamnesis: true,
+          select: {
+            createdAt: true,
           },
         },
       },
@@ -42,6 +39,9 @@ export async function userFindOneRoutes(
     const user = await prisma.user.findUnique({
       where: {
         id: parseInt(id),
+      },
+      include: {
+        Reports: {},
       },
     })
 

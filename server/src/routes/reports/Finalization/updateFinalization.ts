@@ -11,6 +11,8 @@ export async function updateFinalizationRoutes(app: FastifyInstance) {
       conduction,
       transportation,
       finalRemarks,
+      CollectedObjects,
+      VictimWas,
       ReportOwnerId,
     } = updateFinalization.parse(req.body)
 
@@ -19,6 +21,8 @@ export async function updateFinalizationRoutes(app: FastifyInstance) {
       !conduction &&
       !transportation &&
       !finalRemarks &&
+      !CollectedObjects &&
+      !VictimWas &&
       !ReportOwnerId
     ) {
       return res
@@ -42,22 +46,47 @@ export async function updateFinalizationRoutes(app: FastifyInstance) {
       responsable?: string
       conduction?: string[]
       transportation?: string
+      CollectedObjects?: string
       finalRemarks?: string
+      VictimWas?: string
       ReportOwnerId?: number
     } = {}
 
     if (responsable) {
       updateFinalizationData.responsable = responsable
     }
+    if (!responsable && responsable !== undefined)
+      updateFinalizationData.responsable = ''
+
     if (conduction) {
       updateFinalizationData.conduction = conduction
     }
+    if (!conduction && conduction !== undefined)
+      updateFinalizationData.conduction = []
+
     if (transportation) {
       updateFinalizationData.transportation = transportation
     }
+    if (!transportation && transportation !== undefined)
+      updateFinalizationData.transportation = ''
+
+    if (CollectedObjects) {
+      updateFinalizationData.CollectedObjects = CollectedObjects
+    }
+    if (!CollectedObjects && CollectedObjects !== undefined)
+      updateFinalizationData.CollectedObjects = ''
+
     if (finalRemarks) {
       updateFinalizationData.finalRemarks = finalRemarks
     }
+    if (!finalRemarks && finalRemarks !== undefined)
+      updateFinalizationData.finalRemarks = ''
+
+    if (VictimWas) {
+      updateFinalizationData.VictimWas = VictimWas
+    }
+    if (!VictimWas && VictimWas !== undefined)
+      updateFinalizationData.VictimWas = ''
 
     const updatedFinalization = await prisma.finalization.update({
       where: {

@@ -1,122 +1,219 @@
 import {
   View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   ScrollView,
+  TouchableOpacity,
+  Pressable,
+  ActivityIndicator,
 } from 'react-native'
 import React, { useState } from 'react'
-import Icon from '@expo/vector-icons/Feather'
-import { AntDesign } from '@expo/vector-icons'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import loginUser from '@src/api/users/loginUser'
 import Header from '@app/components/Header'
 import Footer from '@app/components/Footer'
 import { useDispatch } from 'react-redux'
 import { saveToken } from '@src/redux/actions/authActions'
 import { styles as s } from '@app/styles/boxShadow'
+import { Stack, FormControl, Input, Text, useToast } from 'native-base'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useForm, Controller } from 'react-hook-form'
+import { ZodError } from 'zod'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/core'
+import Title from '@app/components/Title'
 
-export default function Login({ navigation }) {
+type FormDataType = {
+  email: string
+  password: string
+}
+
+export default function Login() {
   const dispatch = useDispatch()
+  const navigation = useNavigation()
+
+  const [buttonLoading, setButtonLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [loginError, setLoginError] = useState('')
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<FormDataType>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
+
+  const toast = useToast()
+
+  const handleLoginUser = async (data: FormDataType) => {
+    try {
+      setButtonLoading(true)
+
+      const response = await loginUser(data.email, data.password)
+
+      console.log(response.status)
+
+      if (response.status === 401) {
+        toast.show({
+          description: 'Credenciais inválidas.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#ff0000' },
+        })
+      } else if (response.status === 500) {
+        toast.show({
+          description: 'Erro inesperado.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#ff0000' },
+        })
+      } else if (response.status === 200) {
+        toast.show({
+          description: 'Usuário logado com sucesso.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#0AC800' },
+        })
+      } else {
+        toast.show({
+          description: 'Erro de conexão.',
+          duration: 3000,
+          placement: 'bottom',
+          style: { backgroundColor: '#0AC800' },
+        })
+      }
+
+      if (response && response.data.user) {
+        console.log(response)
+        dispatch(
+          saveToken(
+            response.data.token,
+            response.data.user.id,
+            response.data.refreshToken,
+          ),
+        )
+        navigation.navigate('home' as never)
+      } else {
+        setLoginError('Invalid email or password')
+      }
+
+      setValue('email', '')
+      setValue('password', '')
+    } catch (error) {
+      if (error instanceof ZodError) {
+        console.error(error.errors)
+      } else {
+        console.error(error)
+      }
+    } finally {
+      setButtonLoading(false)
+    }
+  }
+
+  console.log(loginError)
 
   const { bottom, top } = useSafeAreaInsets()
-
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleChangeEmail = (value) => {
-    setEmail(value)
-  }
-
-  const handleChangePassword = (value) => {
-    setPassword(value)
-  }
-
-  const handleLoginUser = async (e) => {
-    e.preventDefault()
-
-    const response = await loginUser(email, password)
-    if (response && response.user) {
-      dispatch(saveToken(response.token, response.user.id))
-      navigation.navigate('ocorrencia')
-    }
-
-    console.log('Id:', response.user.id)
-    setEmail('')
-    setPassword('')
-  }
-
   return (
     <ScrollView
       className="flex-1"
       contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
     >
-      <View className=" h-screen items-center justify-between ">
-        {/* Top Bar */}
+      <View className="h-screen items-center justify-between ">
         <Header />
-        {/* Div pai do conteúdo da página */}
-        <View className=" h-[370] w-[347px] shrink-0 flex-col items-center justify-between p-[10px]">
-          {/* Div do texto escrito login com o ícone de user */}
-          <View className=" flex-row items-center justify-center gap-[5px]">
-            {/* Ícone do user */}
-            <Icon name="user" size={40} color="#A00e00" />
-            {/* Título de Login */}
-            <Text className=" text-[32px] font-normal leading-[32px] text-[#202020]">
-              Login
-            </Text>
-          </View>
-          {/* Div da parte de login */}
-          <View
-            style={s.boxShadow}
-            className=" w-full rounded-[14px] bg-white px-[17px] py-[30px] shadow-md"
-          >
-            {/* Div que engloba o cpf e a senha */}
-            <View className="h-[152px] flex-col items-center justify-between ">
-              <View className="relative h-[76px] gap-[5px]">
-                <Text className=" text-[21px] font-normal leading-[21px] text-preto">
-                  E-mail
-                </Text>
-                {/* Input do texto para cpf */}
-                <TextInput
-                  className=" w-[290px] items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]"
-                  onChangeText={handleChangeEmail}
-                  value={email}
+        <View className="justify-center">
+          <Title title="Login" iconName="user" />
+          <View style={s.boxShadow} className="p-5">
+            <FormControl isRequired isInvalid={'email' in errors}>
+              <Stack w="300px" mb="15px">
+                <FormControl.Label color={'black'}>E-mail </FormControl.Label>
+                <Controller
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      className="email"
+                      onBlur={field.onBlur}
+                      placeholder="exemplo@gmail.com"
+                      onChangeText={(val) => field.onChange(val)}
+                      value={field.value}
+                    />
+                  )}
+                  name="email"
+                  rules={{
+                    required: 'Campo obrigatório',
+                  }}
                 />
-              </View>
+                <FormControl.ErrorMessage>
+                  {(errors && errors.email?.message) || loginError}
+                </FormControl.ErrorMessage>
+              </Stack>
+            </FormControl>
+            <FormControl
+              isRequired
+              isInvalid={'password' in errors}
+              position={'relative'}
+            >
+              <Stack w="300px" mb="20px">
+                <FormControl.Label color={'black'}>Senha </FormControl.Label>
+                <Controller
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <Input
+                        onBlur={field.onBlur}
+                        type={showPassword ? 'text' : 'password'}
+                        onChangeText={(val) => field.onChange(val)}
+                        value={field.value}
+                        position={'relative'}
+                      />
+                      <Pressable
+                        onPress={() => setShowPassword(!showPassword)}
+                        className="relative bottom-[32px] left-[265px]"
+                      >
+                        <Text>
+                          {showPassword ? (
+                            <MaterialCommunityIcons
+                              name="eye"
+                              size={24}
+                              color="black"
+                            />
+                          ) : (
+                            <MaterialCommunityIcons
+                              name="eye-off"
+                              size={24}
+                              color="black"
+                            />
+                          )}
+                        </Text>
+                      </Pressable>
+                    </>
+                  )}
+                  name="password"
+                  rules={{
+                    required: 'Campo obrigatório',
+                  }}
+                />
 
-              <View className="h-[76px] gap-[5px]">
-                <Text className="  text-[21px] font-normal leading-[21px] text-preto">
-                  Senha
-                </Text>
-                {/* Input do texto para senha */}
-                <View className=" relative items-center justify-center">
-                  <TextInput
-                    placeholder="***********"
-                    secureTextEntry
-                    onChangeText={handleChangePassword}
-                    value={password}
-                    className=" w-[290px] items-center justify-between rounded-[7px] border-width1 border-preto p-[10px]"
-                  />
-                  <TouchableOpacity className="absolute right-5">
-                    <AntDesign name="eye" size={24} color="black" />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-            {/* Div da linha */}
-            <View className="my-[20px] h-[1px] w-full bg-black"></View>
-            {/* Div do botão para avançar */}
-            <View className="items-center justify-center">
-              {/* Botão para avançar */}
+                <FormControl.ErrorMessage>
+                  {(errors.password && errors.password.message) || loginError}
+                </FormControl.ErrorMessage>
+              </Stack>
+            </FormControl>
+            {buttonLoading ? (
+              <TouchableOpacity className="rounded-lg bg-red-700 p-3">
+                <ActivityIndicator size="large" color="#ffffff" />
+              </TouchableOpacity>
+            ) : (
               <TouchableOpacity
-                className=" items-center justify-center rounded-[7px] bg-[#A00E00] px-[30px] py-[13px]"
-                onPress={handleLoginUser}
+                className="rounded-lg bg-red-700 p-3"
+                onPress={handleSubmit(handleLoginUser)}
               >
-                <Text className=" text-[21px] font-normal leading-[21px] text-offwhite">
-                  AVANÇAR
+                <Text className="text-center text-xl font-bold text-white">
+                  SALVAR
                 </Text>
               </TouchableOpacity>
-            </View>
+            )}
           </View>
         </View>
         <Footer />

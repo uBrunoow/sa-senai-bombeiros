@@ -1,24 +1,24 @@
 import { Platform, TextInput, Pressable, View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import DateTimePickerAndroid from '@react-native-community/datetimepicker'
-// import { Entypo } from '@expo/vector-icons'
 
 type InputClockProps = {
   title?: string
-  initialValue: string
+  initialValue?: string
+  // eslint-disable-next-line no-unused-vars
   onChange: (newValue: string) => void
 }
 
 const InputClock = (props: InputClockProps) => {
   const [date, setDate] = useState(new Date())
   const [showPicker, setShowPicker] = useState(false)
-  const [timeMedication, setTimeMedication] = useState('')
+  const [timeMedication, setTimeMedication] = useState<string | undefined>('')
 
   const toggleDatePicker = () => {
     setShowPicker(!showPicker)
   }
 
-  const onTimeChange = (event, selectedDate) => {
+  const onTimeChange = (event: any, selectedDate: Date | undefined) => {
     setShowPicker(Platform.OS === 'ios')
     if (selectedDate) {
       setDate(selectedDate)
@@ -35,8 +35,8 @@ const InputClock = (props: InputClockProps) => {
   }, [props.initialValue])
 
   return (
-    <View className="justfy-between m-auto my-2 w-5/6 flex-1 items-center ">
-      <Text className="text-lg">{props.title}</Text>
+    <View className="my-1 items-center">
+      <Text className="my-1 text-base font-medium">{props.title}</Text>
       {showPicker && (
         <>
           <DateTimePickerAndroid
@@ -47,19 +47,18 @@ const InputClock = (props: InputClockProps) => {
           />
         </>
       )}
-      <View className="mb-4  mt-2 w-5/6 rounded-lg">
-        <Pressable onPress={toggleDatePicker} className="relative ">
+      <View className="w-full">
+        <Pressable onPress={toggleDatePicker}>
           <TextInput
-            className=" realtive rounded-lg border text-black"
+            className="m-auto w-[85%] rounded-lg border py-2 pl-2"
             placeholder="00:00"
             editable={false}
             value={timeMedication}
             style={{
               textAlignVertical: 'center',
-              paddingVertical: 6,
-              paddingHorizontal: 10,
+              fontSize: 16,
             }}
-          ></TextInput>
+          />
         </Pressable>
       </View>
     </View>

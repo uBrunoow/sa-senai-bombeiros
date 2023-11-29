@@ -1,7 +1,9 @@
 import jwt from '@fastify/jwt'
 import fastify from 'fastify'
 import cors from '@fastify/cors'
-import bcrypt from 'fastify-bcrypt' // Importe o plugin aqui
+import bcrypt from 'fastify-bcrypt'
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUI from '@fastify/swagger-ui'
 
 // Users
 import { userRegisterRoutes } from './src/routes/users/registerRoutes'
@@ -28,6 +30,7 @@ import { symptomsDeleteRoutes } from './src/routes/reports/Symptoms/deleteSympto
 import {
   symptomsFindRoutes,
   symptomsFindOneRoutes,
+  symptomsByReportRoutes,
 } from './src/routes/reports/Symptoms/findSymptoms'
 import { updateSymptomsRoutes } from './src/routes/reports/Symptoms/updateSymptoms'
 
@@ -39,6 +42,7 @@ import { anamneseUpdateRoutes } from './src/routes/reports/Anamnesis/updateAname
 import { registerPreHospitalarMethodsRoutes } from './src/routes/reports/PreHospitalarMethod/registerPreHosMethod'
 import { updatePreHospitalarMethodsRoutes } from './src/routes/reports/PreHospitalarMethod/updatePreHosMethod'
 import {
+  preHospitalarMethodsFindByReportRoutes,
   preHospitalarMethodsFindOneRoutes,
   preHospitalarMethodsFindRoutes,
 } from './src/routes/reports/PreHospitalarMethod/findPreHosMethod'
@@ -76,6 +80,46 @@ import {
 } from './src/routes/reports/Finalization/findFinalization'
 import { finalizationDeleteRoutes } from './src/routes/reports/Finalization/deleteFinalization'
 
+// Problemas Suspeitos
+import { registerSuspectProblems } from './src/routes/reports/SuspectProblems/registerSuspectProblems'
+import { updateSuspectProblemsRoutes } from './src/routes/reports/SuspectProblems/updateSuspectProblems'
+import {
+  suspectProblemsFindRoutes,
+  suspectProblemsFindOneRoutes,
+} from './src/routes/reports/SuspectProblems/findSuspectProblems'
+import { suspectProblemsDeleteRoutes } from './src/routes/reports/SuspectProblems/deleteSuspectProblems'
+
+// Local Traumas
+import { findManyTraumasRoutes } from './src/routes/reports/LocalTraumas/findMany'
+import { registerTraumasRoutes } from './src/routes/reports/LocalTraumas/register'
+import { updateTraumasRoutes } from './src/routes/reports/LocalTraumas/update'
+import { deleteTraumasRoutes } from './src/routes/reports/LocalTraumas/delete'
+
+// Cinematic Avaliation
+import { registerCinematicAvaliationRoutes } from './src/routes/reports/CinematicAvaliation/registerCinematicAvaliation'
+import { updateCinematicAvaliationRoutes } from './src/routes/reports/CinematicAvaliation/updateCinematicAvaliation'
+import {
+  cinematicAvaliationFindOneRoutes,
+  cinematicAvaliationFindRoutes,
+} from './src/routes/reports/CinematicAvaliation/findCinematicAvaliation'
+import { cinematicAvaliationDeleteRoutes } from './src/routes/reports/CinematicAvaliation/deleteCinematicAvaliation'
+import { checkTokenExpiration } from './src/utils/checkTokenExpiration'
+import { refreshRoutes } from './src/routes/users/refreashToken'
+import { registerTransportRoutes } from './src/routes/reports/InfoTransporte/registerTransport'
+import { updateTransportRoutes } from './src/routes/reports/InfoTransporte/updateTransport'
+import {
+  transportFindOneRoutes,
+  transportFindRoutes,
+} from './src/routes/reports/InfoTransporte/findTransport'
+import { transportDeleteRoutes } from './src/routes/reports/InfoTransporte/deleteTransport'
+
+import { registerInfoHospitalarRoutes } from './src/routes/reports/InfoHospitalar/register'
+import { updateInfoHospitalarRoutes } from './src/routes/reports/InfoHospitalar/update'
+import {
+  infoHospitalaresFindOneRoutes,
+  infoHospitalaresFindRoutes,
+} from './src/routes/reports/InfoHospitalar/find'
+
 const app = fastify() // Dar para a const app todas as informações do Fastify
 
 app.register(cors, {
@@ -87,6 +131,30 @@ app.register(jwt, {
 })
 
 app.register(bcrypt)
+
+app.register(fastifySwagger)
+
+app.register(fastifySwaggerUI, {
+  routePrefix: '/documentation',
+  uiConfig: {
+    docExpansion: 'full',
+    deepLinking: false,
+  },
+  uiHooks: {
+    onRequest: function (request, reply, next) {
+      next()
+    },
+    preHandler: function (request, reply, next) {
+      next()
+    },
+  },
+  staticCSP: true,
+  transformStaticCSP: (header) => header,
+  transformSpecification: (swaggerObject, request, reply) => {
+    return swaggerObject
+  },
+  transformSpecificationClone: true,
+})
 
 // USER
 app.register(userRegisterRoutes)
@@ -109,6 +177,7 @@ app.register(symptomsDeleteRoutes)
 app.register(symptomsFindRoutes)
 app.register(symptomsFindOneRoutes)
 app.register(updateSymptomsRoutes)
+app.register(symptomsByReportRoutes)
 
 // ANAMNESIS
 app.register(registerAnamneseRoutes)
@@ -123,6 +192,7 @@ app.register(updatePreHospitalarMethodsRoutes)
 app.register(preHospitalarMethodsFindRoutes)
 app.register(preHospitalarMethodsFindOneRoutes)
 app.register(preHospitalarMethodsDeleteRoutes)
+app.register(preHospitalarMethodsFindByReportRoutes)
 
 // GLASGOW
 app.register(registerGlasgowRoutes)
@@ -144,6 +214,43 @@ app.register(updateFinalizationRoutes)
 app.register(finalizationFindRoutes)
 app.register(finalizationFindOneRoutes)
 app.register(finalizationDeleteRoutes)
+
+// SUSPECT PROBLEMS
+app.register(registerSuspectProblems)
+app.register(updateSuspectProblemsRoutes)
+app.register(suspectProblemsFindRoutes)
+app.register(suspectProblemsFindOneRoutes)
+app.register(suspectProblemsDeleteRoutes)
+
+// LOCAL TRAUMAS
+app.register(findManyTraumasRoutes)
+app.register(registerTraumasRoutes)
+app.register(updateTraumasRoutes)
+app.register(deleteTraumasRoutes)
+
+// CINEMATIC AVALIATION
+app.register(registerCinematicAvaliationRoutes)
+app.register(updateCinematicAvaliationRoutes)
+app.register(cinematicAvaliationFindRoutes)
+app.register(cinematicAvaliationFindOneRoutes)
+app.register(cinematicAvaliationDeleteRoutes)
+
+// INFO TRANSPORTE
+app.register(registerTransportRoutes)
+app.register(updateTransportRoutes)
+app.register(transportFindRoutes)
+app.register(transportFindOneRoutes)
+app.register(transportDeleteRoutes)
+
+// UTILS
+app.register(refreshRoutes)
+app.register(checkTokenExpiration)
+
+// MATERIAIS UTILIZADOS
+app.register(registerInfoHospitalarRoutes)
+app.register(updateInfoHospitalarRoutes)
+app.register(infoHospitalaresFindRoutes)
+app.register(infoHospitalaresFindOneRoutes)
 
 app
   .listen({

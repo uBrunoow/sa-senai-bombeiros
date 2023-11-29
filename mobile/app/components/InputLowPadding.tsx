@@ -9,6 +9,7 @@ type InputProps = {
   isBig?: boolean
   value?: string | null
   placeholder?: string
+  // eslint-disable-next-line no-unused-vars
   onChangeText?: (text: string) => void
 }
 
@@ -59,18 +60,17 @@ export default function InputLowPadding(props: InputProps) {
           {props.title}
         </Text>
       )}
-      <View className="my-1 w-full rounded-lg border p-4">
+      <View className="my-1 w-full rounded-lg border">
         <TextInput
-          multiline={true}
-          numberOfLines={100}
+          multiline={props.isBig}
+          numberOfLines={props.isBig ? 100 : 1}
           style={{
-            height: props.isBig ? 100 : 20,
-            textAlignVertical: 'top',
-            paddingVertical: 2,
-            paddingHorizontal: 2,
+            height: props.isBig ? 100 : 45,
+            textAlignVertical: 'center',
             fontSize: 16,
+            paddingLeft: 10,
           }}
-          value={props.value}
+          value={props.value || inputValue}
           onChangeText={handleTextChange}
           placeholder={props.placeholder}
           keyboardType={'default'}
