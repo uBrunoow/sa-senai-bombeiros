@@ -7,7 +7,7 @@ const registerLocalTrauma = async (
   tipoTrauma?: string,
   side?: string,
   face?: string,
-): Promise<{ localTraumas?: ILocalTrauma }> => {
+) => {
   try {
     console.log({
       ReportOwnerId,

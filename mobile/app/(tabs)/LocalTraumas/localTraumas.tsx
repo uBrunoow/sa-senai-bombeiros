@@ -30,8 +30,6 @@ import Loader from '@app/components/Loader'
 
 type RemoveMetaPropertiesType = {
   id: number
-  createdAt: string
-  updatedAt: string
   ReportOwnerId: string
 }
 
@@ -56,7 +54,7 @@ export default function LocalTraumas() {
     'id' | 'createdAt' | 'updatedAt' | 'ReportOwnerId'
   > => {
     // eslint-disable-next-line no-unused-vars
-    const { id, createdAt, updatedAt, ReportOwnerId, ...withoutMeta } = obj
+    const { id, ReportOwnerId, ...withoutMeta } = obj
     return withoutMeta
   }
 
@@ -87,6 +85,8 @@ export default function LocalTraumas() {
         side,
         face,
       )
+
+      console.log(JSON.stringify(response, null, 2))
 
       const localTraumasWithoutMeta = removeMetaProperties(
         response.localTraumas,
