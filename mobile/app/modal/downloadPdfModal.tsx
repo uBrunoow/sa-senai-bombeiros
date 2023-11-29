@@ -1181,7 +1181,7 @@ const DownloadPdfModal = () => {
                       <div class="infos-anamnese" style="overflow: hidden;">
                         ${
                           reportsForDownload.report.GestationalAnamnesis[0]
-                            .FinalRemarks
+                            ?.FinalRemarks
                         }
                       </div>
                     </div>
@@ -1190,7 +1190,7 @@ const DownloadPdfModal = () => {
                         <div class="infos-anamnese">Fez pré-natal?</div>
                         <div class="infos-anamnese">${
                           reportsForDownload.report.GestationalAnamnesis[0]
-                            .PreNatal
+                            ?.PreNatal
                             ? 'SIM'
                             : 'NÃO'
                         }</div>
@@ -1200,7 +1200,7 @@ const DownloadPdfModal = () => {
                         <div class="infos-anamnese">Médico:</div>
                         <div class="infos-anamnese">${
                           reportsForDownload.report.GestationalAnamnesis[0]
-                            .DoctorName
+                            ?.DoctorName
                         }</div>
                       </div>
                     </div>
@@ -1208,7 +1208,7 @@ const DownloadPdfModal = () => {
                       <div class="infos-anamnese">Existe possiblidade de complicações?</div>
                       <div class="infos-anamnese">${
                         reportsForDownload.report.GestationalAnamnesis[0]
-                          .Complications
+                          ?.Complications
                           ? 'SIM'
                           : 'NÃO'
                       }</div>
@@ -1218,7 +1218,7 @@ const DownloadPdfModal = () => {
                         <div class="infos-anamnese">É o primeiro filho?</div>
                         <div class="infos-anamnese">${
                           reportsForDownload.report.GestationalAnamnesis[0]
-                            .NumberSon === 1
+                            ?.NumberSon === 1
                             ? 'SIM'
                             : 'NÃO'
                         }</div>
@@ -1228,7 +1228,7 @@ const DownloadPdfModal = () => {
                         <div class="infos-anamnese">Quantos?</div>
                         <div class="infos-anamnese">${
                           reportsForDownload.report.GestationalAnamnesis[0]
-                            .NumberSon
+                            ?.NumberSon
                         }</div>
                       </div>
                     </div>
@@ -1236,17 +1236,17 @@ const DownloadPdfModal = () => {
                       <div class="infos-anamnese">Que horas iniciaram as contrações?</div>
                       <div class="infos-anamnese">${
                         reportsForDownload.report.GestationalAnamnesis[0]
-                          .ContractionSchedule
+                          ?.ContractionSchedule
                       }</div>
                     </div>
                     <div class="divider-anamnese">
                       <div class="infos-anamnese">Ingeriu algum líquido?</div>
                       <div class="infos-anamnese">${`${
-                        reportsForDownload.report.Anamnesis[0].IngestedFood
+                        reportsForDownload.report.Anamnesis[0]?.IngestedFood
                           ? 'SIM'
                           : 'NÃO'
                       } | ${
-                        reportsForDownload.report.Anamnesis[0].WhatTimeFood
+                        reportsForDownload.report.Anamnesis[0]?.WhatTimeFood
                       }`}</div>
                     </div>
                   </div>
