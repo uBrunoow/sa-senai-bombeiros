@@ -10,6 +10,9 @@
 <div align="center"> 
 <img align="center"  src="https://github.com/uBrunoow/sa-senai-bombeiros/blob/main/mobile/assets/icon.png"/>
 </div>
+
+<h2>Sobre o projeto</h2>
+
 <div>
 <img src="https://github.com/uBrunoow/sa-senai-bombeiros/blob/main/mobile/src/public/mockuuups-iphone-mockup-on-multicolored-background.jpeg"/>  
 </div>
