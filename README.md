@@ -80,3 +80,21 @@
 
 ### IDE
 <img src="https://img.shields.io/badge/VSCode-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white"/>
+
+### Como rodar
+
+> Entre na pasta da API, instale as dependências e execute o script `npm run dev`:
+
+```
+$ cd server
+$ npm i
+$ npm run dev
+```
+
+> Entre na pasta da App, instale as dependências e execute o script `npx expo start`. É importante ter um dispositivo celular conectado para rodar o app.
+
+```
+$ cd mobile
+$ npm i
+$ npx expo start
+```
