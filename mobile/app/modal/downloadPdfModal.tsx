@@ -75,6 +75,7 @@ const DownloadPdfModal = () => {
         SuspectProblems: [],
         LocalTraumas: [],
         InfoTransport: [],
+        InfoHospitalar: [],
       },
     })
   const [loading, setLoading] = useState(false)
@@ -977,52 +978,6 @@ const DownloadPdfModal = () => {
       
                 <div class="table"> 
                   <div class="table-header">
-                    <p>Procedimentos Efetuados</p>
-                  </div>
-                  <div class="content-info height">
-                    <div class="infos-gerais">
-                      <div class="reports suspectProblems">
-                        <p>Aspiração</p>
-                      </div>
-                      <div class="reports problems ">
-                        <p>Cânula de Guedel</p>
-                      </div>
-                      <div class="reports problems ">
-                        <p>Avaliação Inicial</p>
-                      </div>
-                      <div class="reports problems ">
-                        <p>Desobstrução de V.A</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-      
-                <div class="table"> 
-                  <div class="table-header">
-                    <p>Materiais Utilizados Deixado no Hospital</p>
-                  </div>
-                  <div class="content-info height" style="padding: 0;">
-                    <div class="infos-gerais">
-                      <table style="width:100%">
-                        <tr>
-                          <th>Material</th>
-                          <th>Quant</th>
-                          <th>Material</th>
-                          <th>Quant</th>
-                        </tr>
-                        <tr>
-                          <td>Ataduras (12)</td>
-                          <td>1000x</td>
-                          <td>Manta Aluminizada</td>
-                          <td>1x</td>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-      
-                <div class="table"> 
-                  <div class="table-header">
                     <p>Observações Importantes</p>
                   </div>
                   <div class="content-info height">
@@ -1051,52 +1006,6 @@ const DownloadPdfModal = () => {
                             ?.CollectedObjects,
                         )}</p>
                       </div>
-                    </div>
-                  </div>
-                </div>
-      
-                <div class="table"> 
-                  <div class="table-header">
-                    <p>Procedimentos Efetuados</p>
-                  </div>
-                  <div class="content-info height">
-                    <div class="infos-gerais">
-                      <div class="reports suspectProblems">
-                        <p>Aspiração</p>
-                      </div>
-                      <div class="reports problems ">
-                        <p>Cânula de Guedel</p>
-                      </div>
-                      <div class="reports problems ">
-                        <p>Avaliação Inicial</p>
-                      </div>
-                      <div class="reports problems ">
-                        <p>Desobstrução de V.A</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-      
-                <div class="table"> 
-                  <div class="table-header">
-                    <p>Materiais Utilizados Deixado no Hospital</p>
-                  </div>
-                  <div class="content-info height" style="padding: 0;">
-                    <div class="infos-gerais">
-                      <table style="width:100%">
-                        <tr>
-                          <th>Material</th>
-                          <th>Quant</th>
-                          <th>Material</th>
-                          <th>Quant</th>
-                        </tr>
-                        <tr>
-                          <td>Ataduras (12)</td>
-                          <td>1000x</td>
-                          <td>Manta Aluminizada</td>
-                          <td>1x</td>
-                        </tr>
-                      </table>
                     </div>
                   </div>
                 </div>
