@@ -17,6 +17,7 @@
 <img src="https://github.com/uBrunoow/sa-senai-bombeiros/blob/main/mobile/src/public/mockrocket-capture.png"/>  
 <p align="justify">O NOAR é uma associação de bombeiros voluntários que fazem seus relatórios de ocorrência por meio de uma extensa folha de papel com campos em sua frente e verso, contendo perguntas diversas que devem ser preenchidas durante e após a ocorrência. Porém, essa abordagem tende mais a prejudicar o desempenho no meio da ação, pois o preenchimento do documento físico é de certa forma lento, e através de uma análise, é possível observar que tornar esta folha de ocorrência digital pode tornar o preenchimento mais ágil e dinâmico, assim também agilizando o processo de salvamento de vidas, e por isso, o NOAR requisitou o desenvolvimento deste software.</p>
 
+> aaaaaaaaaaa
 
 ### Tecnologias utilizadas
 ### Front-end stacks
