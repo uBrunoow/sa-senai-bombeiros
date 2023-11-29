@@ -16,4 +16,4 @@
 
 [![GitHub forks](https://badgen.net/github/forks/uBrunoow/sa-senai-bombeiros/)](https://GitHub.com/Naereen/StrapDown.js/network/)
 
-[![GitHub issues](https://img.shields.io/github/issues/uBrunoow/sa-senai-bombeiros)](https://GitHub.com/Naereen/StrapDown.js/issues/)
+[![GitHub issues](https://github.com/uBrunoow/sa-senai-bombeiros)](https://GitHub.com/Naereen/StrapDown.js/issues/)
