@@ -17,6 +17,7 @@ export const reportSchema = z.object({
   perfusion: z.string().optional().nullable(),
   followUpAge: z.number().optional(),
   followUp: z.string().optional(),
+  isFinalized: z.boolean().optional().default(false),
   ownerId: z.number(),
 })
 
@@ -37,5 +38,6 @@ export const reportsUpdateSchema = z.object({
   followUpAge: z.number().optional().nullable(),
   followUp: z.string().optional().nullable(),
   perfusion: z.string().optional().nullable(),
+  isFinalized: z.boolean().optional().nullable().default(false),
   ownerId: z.number(),
 })

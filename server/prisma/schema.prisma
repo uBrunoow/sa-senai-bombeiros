@@ -40,6 +40,7 @@ model Report {
   perfusion                String?
   followUp                 String?
   followUpAge              Int?
+  isFinalized              Boolean                    @default(false)
   Anamnesis                Anamnesis[]
   Finalization             Finalization[]
   GestationalAnamnesis     GestationalAnamnesis[]

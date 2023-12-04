@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { prisma } from '../../lib/prisma'
+import { FastifyRequest } from 'fastify/types/request'
 
 export async function reportsFindRoutes(
   app: FastifyInstance,
@@ -69,5 +70,49 @@ export async function reportFindOneRoutes(
     return res.send({ msg: `🟢 Report ${id} localizada com sucesso.`, report })
   })
 
+  done()
+}
+
+export async function reportFindFilteredRoutes(
+  app: FastifyInstance,
+  opts: fastifyNullOpts,
+  done: fastifyDoneFunction,
+  req: FastifyRequest,
+) {
+  app.get('/api/reports/filtered', async (req, res) => {
+    try {
+      const perPage: number = parseInt(req.query.perPage as string) || 10
+      const page: number = parseInt(req.query.page as string) || 1
+
+      // Calculate the 'skip' value based on the pagination parameters
+      const skip = (page - 1) * perPage
+
+      const reports = await prisma.report.findMany({
+        take: perPage,
+        skip,
+        orderBy: { id: 'asc' },
+        include: {
+          Symptoms: true,
+          PreHospitalMethods: true,
+          Anamnesis: true,
+          GestationalAnamnesis: true,
+          Report_PreHospitalMethod: true,
+          Report_Symptoms: true,
+          Glasglow: true,
+          CinematicAvaliation: true,
+          Finalization: true,
+          SuspectProblems: true,
+        },
+      })
+
+      return res.send({
+        msg: `🟢 Successfully retrieved reports for page ${page}.`,
+        reports,
+      })
+    } catch (error) {
+      console.error(error)
+      return res.status(500).send({ msg: 'Internal Server Error' })
+    }
+  })
   done()
 }

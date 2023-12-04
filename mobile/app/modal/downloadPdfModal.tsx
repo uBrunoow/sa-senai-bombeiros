@@ -24,8 +24,11 @@ interface DownloadedReport {
   msg: string
   report: IReport
 }
-const DownloadPdfModal = () => {
-  const reportId = useSelector((state: RootState) => state.report.reportId)
+
+type DownloadProps = {
+  reportId: number
+}
+const DownloadPdfModal = ({ reportId }: DownloadProps) => {
   const logoImage = Asset.fromModule(
     require('../../src/public/logo-pdf.png'),
   ).uri
@@ -63,6 +66,7 @@ const DownloadPdfModal = () => {
         followUp: '',
         followUpAge: 0,
         ownerId: 0,
+        isFinalized: false,
         Symptoms: [],
         PreHospitalMethods: [],
         Anamnesis: [],

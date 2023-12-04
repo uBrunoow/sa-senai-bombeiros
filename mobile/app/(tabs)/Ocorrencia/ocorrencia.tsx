@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   Pressable,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Header from '@app/components/Header'
 import Grouper from '@app/components/Grouper'
 import Footer from '@app/components/Footer'
@@ -60,6 +60,7 @@ import findReports from '@src/api/reports/findReport'
 import WarningModal from '@app/modal/warningModal'
 import { clearCompletness } from '@src/redux/reducers/completnessReducer'
 import registerInfoHospitalar from '@src/api/reports/infoHospitalar/registerInfoHospitalar'
+import ReportFinalized from '@app/modal/ReportFinalized'
 
 type RootStackParamList = {
   ocorrencia: undefined
@@ -425,16 +426,16 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
   const [showModal, setShowModal] = useState(false)
   const reportId = useSelector((state: RootState) => state.report.reportId)
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
-      if (reportId) {
-        setShowModal(true)
-        e.preventDefault()
-      }
-    })
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
+  //     if (reportId) {
+  //       setShowModal(true)
+  //       e.preventDefault()
+  //     }
+  //   })
 
-    return unsubscribe
-  }, [navigation, reportId])
+  //   return unsubscribe
+  // }, [navigation, reportId])
 
   const [loading, setLoading] = useState(false)
 
@@ -469,10 +470,10 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
     setShowModal(false)
   }
 
-  const [showPDFModal, setShowPDFModal] = useState(false)
+  const [showFinalizationModal, setShowFinalizationModal] = useState(false)
 
-  const handlePDFModal = () => {
-    setShowPDFModal(true)
+  const handleFinalizationModal = () => {
+    setShowFinalizationModal(true)
   }
 
   const introduction = useSelector(
@@ -596,7 +597,10 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
                 />
               </TouchableOpacity>
               <Pressable onPress={() => navigation.navigate(`home`)}>
-                <MainButton innerText="FINALIZAR" onPress={handlePDFModal} />
+                <MainButton
+                  innerText="FINALIZAR"
+                  onPress={handleFinalizationModal}
+                />
               </Pressable>
               <Button title="Logout" onPress={handleLogout} />
               {showModal && (
@@ -646,25 +650,19 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
                   </View>
                 </Modal>
               )}
-              {showPDFModal && (
+              {showFinalizationModal && (
                 <Modal
                   transparent={true}
                   animationType="fade"
-                  visible={showPDFModal}
-                  onRequestClose={() => setShowPDFModal(false)}
+                  visible={showFinalizationModal}
+                  onRequestClose={() => setShowFinalizationModal(false)}
                 >
                   <View className="flex-1 items-center justify-center bg-[#0000007f]">
                     <View
                       style={s.modalContent}
                       className="relative rounded-[7px] bg-white p-4 "
                     >
-                      <DownloadPdfModal />
-                      <Pressable
-                        onPress={() => setShowPDFModal(false)}
-                        className="absolute right-1 top-1 z-50"
-                      >
-                        <AntDesign name="closecircle" size={24} color="red" />
-                      </Pressable>
+                      <ReportFinalized />
                     </View>
                   </View>
                 </Modal>
