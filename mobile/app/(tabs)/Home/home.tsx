@@ -21,19 +21,49 @@ import { useNavigation } from '@react-navigation/core'
 function Home() {
   const navigation = useNavigation()
   const [isLoading, setIsLoading] = useState(false)
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false)
   const dispatch = useDispatch()
   const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
+  const isReportIn = useSelector(
+    (state: RootState) => state.report.reportId !== null,
+  )
+  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
   const ownerId = useSelector((state: RootState) => state.auth.userId)
 
   const handleButtonClick = async () => {
     try {
       setIsLoading(true)
       if (isLoggedIn) {
-        const response = await registerReport(ownerId)
-        const reportId = response.report.id
-        console.log('Report de n°:', reportId)
-        dispatch(saveReportId(reportId))
+        // Verifica se já existe um reportId salvo no Redux
+        if (!isReportIn) {
+          // Se não existir, cria um novo relatório
+          const response = await registerReport(ownerId)
+          const reportId = response.report.id
+          console.log('Report de n°:', reportId)
+          dispatch(saveReportId(reportId))
+        } else {
+          // Se já existir, utiliza o reportId existente
+          console.log('Report de n°:', ReportOwnerId)
+          dispatch(saveReportId(ReportOwnerId))
+        }
+
+        // Navega para a página de ocorrência
         navigation.navigate('ocorrencia' as never)
+      } else {
+        // Se não estiver logado, redireciona para a página de login
+        navigation.navigate('login' as never)
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  const handleHistoryButtonClick = async () => {
+    try {
+      setIsLoading(true)
+      if (isLoggedIn) {
+        navigation.navigate('history' as never)
       } else {
         navigation.navigate('login' as never)
       }
@@ -74,6 +104,23 @@ function Home() {
                 <View className="h-[30px]">
                   <Text className="text-center text-lg text-white">
                     RELATÓRIO
+                  </Text>
+                </View>
+              </View>
+            )}
+          </Pressable>
+          <Pressable onPress={handleHistoryButtonClick}>
+            {isHistoryLoading ? (
+              <View className="w-[150px] rounded-md bg-red-700 px-5 py-2">
+                <View className="h-[30px]">
+                  <ActivityIndicator size="large" color="#ffffff" />
+                </View>
+              </View>
+            ) : (
+              <View className="w-[150px] rounded-md bg-red-600 px-5 py-2">
+                <View className="h-[30px]">
+                  <Text className="text-center text-lg text-white">
+                    HISTÓRICO
                   </Text>
                 </View>
               </View>
