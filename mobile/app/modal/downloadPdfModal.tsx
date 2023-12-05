@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import * as Print from 'expo-print'
 import * as Sharing from 'expo-sharing'
-import { RootState } from '@src/redux/stores/stores'
-import { useSelector } from 'react-redux'
 import { Asset } from 'expo-asset'
 import findReports from '@src/api/reports/findReport'
 import { IReport } from '@src/interfaces/IReport'
@@ -20,7 +18,7 @@ import { verifyCinematicAvaliation } from '@src/utils/verifyCinematicAvaliation'
 import { convertTrue } from '@src/utils/convertTrue'
 import { obterDescricaoTipo } from '@src/utils/convertBodyType'
 
-interface DownloadedReport {
+export interface DownloadedReport {
   msg: string
   report: IReport
 }

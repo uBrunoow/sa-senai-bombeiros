@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify/types/instance'
 import { prisma } from '../../../lib/prisma'
+import { FastifyRequest, FastifyReply } from 'fastify'
 
 export async function transportFindRoutes(app: FastifyInstance) {
   app.get('/api/transport', async (req, res) => {

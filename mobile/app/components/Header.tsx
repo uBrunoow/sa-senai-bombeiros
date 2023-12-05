@@ -38,6 +38,7 @@ export default function Header() {
   const navigation =
     useNavigation<StackNavigationProp<RootStackParamList, 'home'>>()
   const dispatch = useDispatch()
+  const currentMode = useSelector((state: RootState) => state.mode.mode)
 
   const [excluirOcorrenciaAbrir, setExcluirOcorrenciaAbrir] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -96,15 +97,17 @@ export default function Header() {
         </View>
         {isLoggedIn && (
           <View>
-            <Pressable
-              className="flex-row rounded-[3px] bg-red-600"
-              onPress={handleExcluirOcorrenciaAbrirModal}
-            >
-              <Feather name="x" size={24} color="white" />
-              <Text className=" px-1 font-medium uppercase text-white">
-                Apagar ocorrência
-              </Text>
-            </Pressable>
+            {currentMode === 'create' && (
+              <Pressable
+                className="flex-row rounded-[3px] bg-red-600"
+                onPress={handleExcluirOcorrenciaAbrirModal}
+              >
+                <Feather name="x" size={24} color="white" />
+                <Text className=" px-1 font-medium uppercase text-white">
+                  Apagar ocorrência
+                </Text>
+              </Pressable>
+            )}
           </View>
         )}
         {excluirOcorrenciaAbrir && (

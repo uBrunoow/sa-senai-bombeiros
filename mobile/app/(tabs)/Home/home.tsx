@@ -15,7 +15,7 @@ import { RootState } from 'src/redux/stores/stores'
 import registerReport from '@src/api/reports/registerReport'
 import { Entypo } from '@expo/vector-icons'
 import React, { useState } from 'react'
-import { saveReportId } from '@src/redux/actions/reportActions'
+import { saveReportId, setMode } from '@src/redux/actions/reportActions'
 import { useNavigation } from '@react-navigation/core'
 
 function Home() {
@@ -48,6 +48,7 @@ function Home() {
         }
 
         // Navega para a página de ocorrência
+        dispatch(setMode('create'))
         navigation.navigate('ocorrencia' as never)
       } else {
         // Se não estiver logado, redireciona para a página de login

@@ -5,6 +5,24 @@ import { AntDesign } from '@expo/vector-icons'
 import { formatDate } from '@src/utils/formatDate'
 import { formatGender } from '@src/utils/formatGender'
 import DownloadPdfModal from '@app/modal/downloadPdfModal'
+import { convertTrue } from '@src/utils/convertTrue'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@src/redux/stores/stores'
+import {
+  clearAnamnesisId,
+  clearCinematicAvaliationId,
+  clearFinalizationId,
+  clearGestacionalAnamnesisId,
+  clearGlasgowId,
+  clearInfoTransportId,
+  clearPreHospitalarMethodId,
+  clearSignsAndSymptomsId,
+  clearSuspectProblemsId,
+  saveReportId,
+  setMode,
+} from '@src/redux/actions/reportActions'
+import { useNavigation } from '@react-navigation/core'
+import { clearCompletness } from '@src/redux/reducers/completnessReducer'
 
 type HistoryProps = {
   report: {
@@ -19,10 +37,31 @@ type HistoryProps = {
 }
 
 const HistoryCard = ({ report }: HistoryProps) => {
+  const dispatch = useDispatch()
+  const navigation = useNavigation()
+  const currentMode = useSelector((state: RootState) => state.mode.mode)
+
   const [showDownloadModal, setShowDownladModal] = useState(false)
 
   const handleCloseDownloadModal = () => {
     setShowDownladModal(false)
+  }
+
+  const handleClickEdit = () => {
+    dispatch(setMode('edit'))
+    dispatch(saveReportId(report?.id))
+    dispatch(clearAnamnesisId())
+    dispatch(clearGestacionalAnamnesisId())
+    dispatch(clearFinalizationId())
+    dispatch(clearSuspectProblemsId())
+    dispatch(clearGlasgowId())
+    dispatch(clearCinematicAvaliationId())
+    dispatch(clearPreHospitalarMethodId())
+    dispatch(clearSignsAndSymptomsId())
+    dispatch(clearCompletness())
+    dispatch(clearInfoTransportId())
+
+    navigation.navigate('ocorrencia' as never)
   }
 
   return (
@@ -80,7 +119,7 @@ const HistoryCard = ({ report }: HistoryProps) => {
             </Text>
             <Text className="font-semibold capitalize text-black">
               Status:{' '}
-              {report?.isFinalized || (
+              {convertTrue(report?.isFinalized) || (
                 <Text style={{ fontStyle: 'italic', color: 'gray' }}>
                   Não inserido
                 </Text>
@@ -90,65 +129,106 @@ const HistoryCard = ({ report }: HistoryProps) => {
 
           <View className="w-full flex-row px-2 py-3">
             {report?.isFinalized === true ? (
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginRight: 5,
-                  backgroundColor: '#007bff',
-                  padding: 10,
-                  borderRadius: 5,
-                }}
-                onPress={() => setShowDownladModal(true)}
-              >
-                <AntDesign name="download" size={24} color="white" />
-                <Text style={{ marginLeft: 10, color: 'white' }}>Download</Text>
-              </TouchableOpacity>
+              <>
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginRight: 5,
+                    backgroundColor: '#007bff',
+                    padding: 10,
+                    borderRadius: 5,
+                  }}
+                  onPress={() => setShowDownladModal(true)}
+                >
+                  <AntDesign name="download" size={24} color="white" />
+                  <Text style={{ marginLeft: 10, color: 'white' }}>
+                    Download
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: '#dc3545',
+                    padding: 10,
+                    borderRadius: 5,
+                    marginRight: 5,
+                  }}
+                  onPress={() => {}}
+                >
+                  <AntDesign name="delete" size={24} color="white" />
+                  <Text style={{ marginLeft: 10, color: 'white' }}>
+                    Excluir
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: '#28a745',
+                    padding: 10,
+                    borderRadius: 5,
+                  }}
+                  onPress={handleClickEdit}
+                >
+                  <AntDesign name="edit" size={24} color="white" />
+                  <Text style={{ marginLeft: 10, color: 'white' }}>Editar</Text>
+                </TouchableOpacity>
+              </>
             ) : (
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginRight: 5,
-                  backgroundColor: '#007bff5a',
-                  padding: 10,
-                  borderRadius: 5,
-                }}
-                disabled={true}
-              >
-                <AntDesign name="download" size={24} color="white" />
-                <Text style={{ marginLeft: 10, color: 'white' }}>Download</Text>
-              </TouchableOpacity>
+              <>
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginRight: 5,
+                    backgroundColor: '#007bff5a',
+                    padding: 10,
+                    borderRadius: 5,
+                  }}
+                  disabled={true}
+                >
+                  <AntDesign name="download" size={24} color="white" />
+                  <Text style={{ marginLeft: 10, color: 'white' }}>
+                    Download
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: '#dc35465a',
+                    padding: 10,
+                    borderRadius: 5,
+                    marginRight: 5,
+                  }}
+                  disabled={true}
+                >
+                  <AntDesign name="delete" size={24} color="white" />
+                  <Text style={{ marginLeft: 10, color: 'white' }}>
+                    Excluir
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: '#28a7455a',
+                    padding: 10,
+                    borderRadius: 5,
+                  }}
+                  disabled={true}
+                >
+                  <AntDesign name="edit" size={24} color="white" />
+                  <Text style={{ marginLeft: 10, color: 'white' }}>Editar</Text>
+                </TouchableOpacity>
+              </>
             )}
-
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: '#dc3545',
-                padding: 10,
-                borderRadius: 5,
-                marginRight: 5,
-              }}
-              onPress={() => {}}
-            >
-              <AntDesign name="delete" size={24} color="white" />
-              <Text style={{ marginLeft: 10, color: 'white' }}>Excluir</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: '#28a745',
-                padding: 10,
-                borderRadius: 5,
-              }}
-              onPress={() => {}}
-            >
-              <AntDesign name="edit" size={24} color="white" />
-              <Text style={{ marginLeft: 10, color: 'white' }}>Editar</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </View>

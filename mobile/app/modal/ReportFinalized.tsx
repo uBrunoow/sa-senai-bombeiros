@@ -23,7 +23,6 @@ function ReportFinalized() {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
-  const [countdown, setCountdown] = useState(5)
 
   const reportId = useSelector((state: RootState) => state.report.reportId)
   const ownerId = useSelector((state: RootState) => state.auth.userId)
@@ -50,10 +49,6 @@ function ReportFinalized() {
   }, [ownerId, reportId, isFinalized])
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prevCountdown) => prevCountdown - 1)
-    }, 1000)
-
     const redirectTimer = setTimeout(() => {
       navigation.navigate('home' as never)
       dispatch(clearReportId())
@@ -70,7 +65,6 @@ function ReportFinalized() {
     }, 5000)
 
     return () => {
-      clearInterval(timer)
       clearTimeout(redirectTimer)
     }
   }, [navigation, dispatch])
@@ -97,9 +91,6 @@ function ReportFinalized() {
             Você finalizou sua ocorrência com sucesso. Agora você será
             redirecionado para página inicial.
           </Text>
-          <View className="mx-auto">
-            <Text style={{ fontSize: 50 }}>{countdown}</Text>
-          </View>
         </>
       )}
     </View>

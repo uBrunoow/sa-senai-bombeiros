@@ -118,3 +118,7 @@ export const clearInfoHospitalarId = () => {
     type: 'CLEAR_INFO_HOSPITALAR_ID',
   }
 }
+export const setMode = (mode: string) => ({
+  type: 'SET_MODE',
+  payload: { mode },
+})

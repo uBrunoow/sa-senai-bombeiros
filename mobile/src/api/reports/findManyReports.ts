@@ -3,7 +3,7 @@ import { api } from '@src/lib/api'
 const findManyReports = async (currentPage: number) => {
   try {
     const response = await api.get(
-      `/api/reports/filtered?page=${currentPage}?perPage=0`,
+      `/api/reports/filtered?page=${currentPage}?perPage=10`,
     )
     return response.data
   } catch (error) {

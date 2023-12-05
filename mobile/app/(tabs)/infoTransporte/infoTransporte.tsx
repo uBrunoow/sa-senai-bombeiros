@@ -50,6 +50,8 @@ export default function InfoTransporte() {
     (state: RootState) => state.infoTransport.infoTransportId,
   )
 
+  console.log(InfoTransportId)
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {

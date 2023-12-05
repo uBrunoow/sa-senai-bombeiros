@@ -21,6 +21,9 @@ export async function reportsFindRoutes(
         CinematicAvaliation: true,
         Finalization: true,
         SuspectProblems: true,
+        InfosHospitalares: true,
+        InfoTransporte: true,
+        LocalTraumas: true,
       },
     })
     return res.send({
@@ -57,8 +60,9 @@ export async function reportFindOneRoutes(
         CinematicAvaliation: true,
         Finalization: true,
         SuspectProblems: true,
+        InfosHospitalares: true,
+        InfoTransporte: true,
         LocalTraumas: true,
-        owner: true,
       },
     })
 
@@ -77,20 +81,22 @@ export async function reportFindFilteredRoutes(
   app: FastifyInstance,
   opts: fastifyNullOpts,
   done: fastifyDoneFunction,
-  req: FastifyRequest,
 ) {
-  app.get('/api/reports/filtered', async (req, res) => {
+  app.get('/api/reports/filtered', async (req: FastifyRequest, res) => {
     try {
       const perPage: number = parseInt(req.query.perPage as string) || 10
       const page: number = parseInt(req.query.page as string) || 1
 
-      // Calculate the 'skip' value based on the pagination parameters
+      if (isNaN(perPage) || isNaN(page)) {
+        return res.status(400).send({ msg: 'Invalid page or perPage value.' })
+      }
+
       const skip = (page - 1) * perPage
 
       const reports = await prisma.report.findMany({
         take: perPage,
         skip,
-        orderBy: { id: 'asc' },
+        orderBy: { id: 'desc' },
         include: {
           Symptoms: true,
           PreHospitalMethods: true,
@@ -102,6 +108,9 @@ export async function reportFindFilteredRoutes(
           CinematicAvaliation: true,
           Finalization: true,
           SuspectProblems: true,
+          InfosHospitalares: true,
+          InfoTransporte: true,
+          LocalTraumas: true,
         },
       })
 

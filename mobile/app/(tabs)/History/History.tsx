@@ -3,11 +3,10 @@ import React, { useEffect, useState } from 'react'
 import Loader from '@app/components/Loader'
 import Header from '@app/components/Header'
 import { AntDesign } from '@expo/vector-icons'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/core'
 import Footer from '@app/components/Footer'
 import { IReport } from '@src/interfaces/IReport'
-import { RootState } from '@src/redux/stores/stores'
 import findManyReports from '@src/api/reports/findManyReports'
 import HistoryCard from './components/HistoryCard'
 
@@ -62,8 +61,6 @@ const History = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const reportsPerPage = 10
 
-  const reportId = useSelector((state: RootState) => state.report.reportId)
-
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' })
 
@@ -85,7 +82,7 @@ const History = () => {
     }
 
     fetchReportsForDownload()
-  }, [reportId, currentPage])
+  }, [currentPage])
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1)
@@ -117,9 +114,9 @@ const History = () => {
             {reportsForDownload &&
               Object.entries(reportsForDownload?.reports).map(
                 ([key, report]) => (
-                  <>
-                    <HistoryCard key={key} report={report} />
-                  </>
+                  <View key={key}>
+                    <HistoryCard report={report} />
+                  </View>
                 ),
               )}
             <View className="mx-auto w-full flex-row items-center justify-center">

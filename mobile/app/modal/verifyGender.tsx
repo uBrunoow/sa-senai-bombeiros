@@ -10,16 +10,21 @@ import registerGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/register
 import { saveGestacionalAnamnesisId } from '@src/redux/actions/reportActions'
 import { styles as s } from '@app/styles/boxShadow'
 import WarningModal from './warningModal'
+import Options from '@app/components/optionsIntroducao'
+import YesOrNo from '@app/components/YesOrNo'
 
 function VerifyGender({ closeModal }: any) {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
-  const [modalGender, setModalGender] = useState<string | undefined>('')
   const [openWarningModal, setOpenWarningModal] = useState(false)
+  const [genderFem, setGenderFem] = useState(false)
 
   const closeWarningModal = () => {
     setOpenWarningModal(false)
+  }
+  const handleGenderFem = (option: 'SIM' | 'NÃO') => {
+    setGenderFem(option === 'SIM')
   }
 
   const reportId = useSelector((state: RootState) => state.report.reportId)
@@ -32,10 +37,13 @@ function VerifyGender({ closeModal }: any) {
   const handleUpdateGender = async () => {
     try {
       setLoading(true)
+
+      const convertedGender = genderFem ? 'Female' : 'Male'
+
       const response = await sendOnlyGenderToVerify(
         ownerId,
         reportId,
-        modalGender,
+        convertedGender,
       )
 
       if (response && response.updatedReport.gender === 'Male') {
@@ -82,29 +90,20 @@ function VerifyGender({ closeModal }: any) {
           <Text className="mt-3 text-center text-[20px] font-bold">
             Parece que você não inseriu o{' '}
             <Text className="font-extrabold italic text-[#ff0000]">gênero</Text>{' '}
-            do(a) paciente. Essa página só pode ser acessada por pacientes
-            mulheres
+            do(a) paciente. O paciente é mulher?
           </Text>
           <Text className=" mt-3 text-center text-[#979797b0]">
             (Insira a informação abaixo se o(a) paciente é mulher para acessar a
             página.)
           </Text>
           <View className="w-full flex-col">
-            <Select
-              selectedValue={modalGender}
-              minWidth="200"
-              accessibilityLabel="Choose Service"
-              placeholder="Choose Service"
-              _selectedItem={{
-                bg: 'teal.600',
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={5}
-              onValueChange={(itemValue) => setModalGender(itemValue)}
-            >
-              <Select.Item label="Masculino" value="Male" />
-              <Select.Item label="Feminino" value="Female" />
-            </Select>
+            <View className="w-6/6 items-center justify-center">
+              <YesOrNo
+                Question="Sexo feminino?"
+                selectedOption={genderFem ? 'SIM' : 'NÃO'}
+                onSelectOption={handleGenderFem}
+              />
+            </View>
             <Pressable
               className="mt-5 w-full items-center justify-center rounded-[7px] bg-[#F23030] p-3"
               onPress={handleUpdateGender}
