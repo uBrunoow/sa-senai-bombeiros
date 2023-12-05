@@ -15,24 +15,34 @@ import { RootState } from 'src/redux/stores/stores'
 import registerReport from '@src/api/reports/registerReport'
 import { Entypo } from '@expo/vector-icons'
 import React, { useState } from 'react'
-import { saveReportId } from '@src/redux/actions/reportActions'
+import { saveReportId, setMode } from '@src/redux/actions/reportActions'
 import { useNavigation } from '@react-navigation/core'
 
 function Home() {
   const navigation = useNavigation()
   const [isLoading, setIsLoading] = useState(false)
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false)
   const dispatch = useDispatch()
   const isLoggedIn = useSelector((state: RootState) => state.auth.token !== '')
+  const isReportIn = useSelector(
+    (state: RootState) => state.report.reportId !== null,
+  )
+  const ReportOwnerId = useSelector((state: RootState) => state.report.reportId)
   const ownerId = useSelector((state: RootState) => state.auth.userId)
 
   const handleButtonClick = async () => {
     try {
       setIsLoading(true)
       if (isLoggedIn) {
-        const response = await registerReport(ownerId)
-        const reportId = response.report.id
-        console.log('Report de n°:', reportId)
-        dispatch(saveReportId(reportId))
+        if (!isReportIn) {
+          const response = await registerReport(ownerId)
+          const reportId = response.report.id
+          dispatch(saveReportId(reportId))
+        } else {
+          dispatch(saveReportId(ReportOwnerId))
+        }
+
+        dispatch(setMode('create'))
         navigation.navigate('ocorrencia' as never)
       } else {
         navigation.navigate('login' as never)
@@ -41,6 +51,20 @@ function Home() {
       console.error(error)
     } finally {
       setIsLoading(false)
+    }
+  }
+  const handleHistoryButtonClick = async () => {
+    try {
+      setIsHistoryLoading(true)
+      if (isLoggedIn) {
+        navigation.navigate('history' as never)
+      } else {
+        navigation.navigate('login' as never)
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsHistoryLoading(false)
     }
   }
   return (
@@ -74,6 +98,23 @@ function Home() {
                 <View className="h-[30px]">
                   <Text className="text-center text-lg text-white">
                     RELATÓRIO
+                  </Text>
+                </View>
+              </View>
+            )}
+          </Pressable>
+          <Pressable onPress={handleHistoryButtonClick}>
+            {isHistoryLoading ? (
+              <View className="w-[150px] rounded-md bg-red-700 px-5 py-2">
+                <View className="h-[30px]">
+                  <ActivityIndicator size="large" color="#ffffff" />
+                </View>
+              </View>
+            ) : (
+              <View className="w-[150px] rounded-md border-width1 border-red-600 px-5 py-2">
+                <View className="h-[30px]">
+                  <Text className="text-center text-lg text-red-600">
+                    HISTÓRICO
                   </Text>
                 </View>
               </View>

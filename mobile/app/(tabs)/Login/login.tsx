@@ -53,8 +53,6 @@ export default function Login() {
 
       const response = await loginUser(data.email, data.password)
 
-      console.log(response.status)
-
       if (response.status === 401) {
         toast.show({
           description: 'Credenciais inválidas.',
@@ -86,7 +84,6 @@ export default function Login() {
       }
 
       if (response && response.data.user) {
-        console.log(response)
         dispatch(
           saveToken(
             response.data.token,
@@ -111,8 +108,6 @@ export default function Login() {
       setButtonLoading(false)
     }
   }
-
-  console.log(loginError)
 
   const { bottom, top } = useSafeAreaInsets()
   return (

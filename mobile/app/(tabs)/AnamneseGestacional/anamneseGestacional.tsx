@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, View, Text } from 'react-native'
+import { SafeAreaView, ScrollView, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@app/components/Header'
 import Title from '@app/components/Title'
@@ -370,7 +370,7 @@ export default function AnamneseGestacional() {
                   selectedOption={Childbirth ? 'SIM' : 'NÃO'}
                   onSelectOption={handleChildbirth}
                 />
-                {Childbirth ? (
+                {Childbirth && (
                   <View>
                     <View className="mx-6 flex-row justify-around">
                       <Options
@@ -394,10 +394,6 @@ export default function AnamneseGestacional() {
                       value={BabyName}
                       onChangeText={(e) => setBabyName(e)}
                     />
-                  </View>
-                ) : (
-                  <View>
-                    <Text>Sem parto</Text>
                   </View>
                 )}
                 <FormControl>

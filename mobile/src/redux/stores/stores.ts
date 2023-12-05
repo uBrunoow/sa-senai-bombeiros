@@ -36,6 +36,7 @@ import MateriaisDeixadosNoHospitalReducerData, {
   MateriaisDeixadosNoHospitalDataState,
 } from '../reducers/materiaisDeixadosData'
 import infoHospitalarReducer from '../reducers/infoHospitalarReducer'
+import modeReducer from '../reducers/modeReducer'
 
 export interface RootState {
   auth: {
@@ -106,6 +107,9 @@ export interface RootState {
   infoHospitalar: {
     infoHospitalarId: number
   }
+  mode: {
+    mode: string
+  }
 }
 const store = configureStore({
   reducer: {
@@ -150,6 +154,7 @@ const store = configureStore({
         AnyAction
       >,
     infoHospitalar: infoHospitalarReducer,
+    mode: modeReducer,
   },
   middleware: [thunk],
 })

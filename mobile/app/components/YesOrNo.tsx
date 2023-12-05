@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   selected: {
-    backgroundColor: '#A00E00',
+    backgroundColor: '#ff0000',
     borderColor: 'rgba(0, 0, 0, 0.28)',
   },
   blackText: {

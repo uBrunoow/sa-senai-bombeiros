@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import * as Print from 'expo-print'
 import * as Sharing from 'expo-sharing'
-import { RootState } from '@src/redux/stores/stores'
-import { useSelector } from 'react-redux'
 import { Asset } from 'expo-asset'
 import findReports from '@src/api/reports/findReport'
 import { IReport } from '@src/interfaces/IReport'
@@ -20,12 +18,15 @@ import { verifyCinematicAvaliation } from '@src/utils/verifyCinematicAvaliation'
 import { convertTrue } from '@src/utils/convertTrue'
 import { obterDescricaoTipo } from '@src/utils/convertBodyType'
 
-interface DownloadedReport {
+export interface DownloadedReport {
   msg: string
   report: IReport
 }
-const DownloadPdfModal = () => {
-  const reportId = useSelector((state: RootState) => state.report.reportId)
+
+type DownloadProps = {
+  reportId: number
+}
+const DownloadPdfModal = ({ reportId }: DownloadProps) => {
   const logoImage = Asset.fromModule(
     require('../../src/public/logo-pdf.png'),
   ).uri
@@ -63,6 +64,7 @@ const DownloadPdfModal = () => {
         followUp: '',
         followUpAge: 0,
         ownerId: 0,
+        isFinalized: false,
         Symptoms: [],
         PreHospitalMethods: [],
         Anamnesis: [],
@@ -104,15 +106,8 @@ const DownloadPdfModal = () => {
     const verbalResponse = glasgowData?.verbalResponseOwnerId
     const motorResponse = glasgowData?.motorResponseOwnerId
 
-    // Retorne a soma dos valores
     return eyeOpening + verbalResponse + motorResponse
   }
-
-  // console.log(
-  //   JSON.stringify(reportsForDownload.report.LocalTraumas[0].bodyPart, null, 2),
-  // )
-
-  // reportsForDownload.report.GestationalAnamnesis[0]
 
   const generatePDF = async () => {
     const transportationIcon = getTransportationIcon(
@@ -1276,7 +1271,6 @@ const DownloadPdfModal = () => {
           mimeType: 'application/pdf',
           dialogTitle: `Ocorrência n° ${reportId} PDF`,
         })
-        console.log('Download concluído com sucesso!')
       } catch (error) {
         console.error('Erro ao realizar o download do PDF:', error)
       }

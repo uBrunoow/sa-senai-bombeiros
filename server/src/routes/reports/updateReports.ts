@@ -24,6 +24,7 @@ export async function reportsUpdateRoutes(app: FastifyInstance) {
         followUp,
         followUpAge,
         perfusion,
+        isFinalized,
       } = reportsUpdateSchema.parse(req.body)
 
       const reportDateValue = reportDate ? new Date(reportDate) : null
@@ -60,6 +61,7 @@ export async function reportsUpdateRoutes(app: FastifyInstance) {
         followUp?: string | null
         followUpAge?: number | null
         perfusion?: string | null
+        isFinalized?: boolean
       } = {}
 
       if (age) updatedReportData.age = age
@@ -103,6 +105,9 @@ export async function reportsUpdateRoutes(app: FastifyInstance) {
       if (perfusion) updatedReportData.perfusion = perfusion
       if (!perfusion && perfusion !== undefined)
         updatedReportData.perfusion = ''
+      if (isFinalized) updatedReportData.isFinalized = isFinalized
+      if (!isFinalized && isFinalized !== undefined)
+        updatedReportData.isFinalized = false
 
       // Atualizar o usuário buscando pelo ID
       const updatedReport = await prisma.report.update({

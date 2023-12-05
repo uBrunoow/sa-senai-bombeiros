@@ -27,6 +27,7 @@ import { useToast } from 'native-base'
 import { saveLocalTraumasCompletness } from '@src/redux/reducers/completnessReducer'
 import { useNavigation } from '@react-navigation/core'
 import Loader from '@app/components/Loader'
+import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view'
 
 type RemoveMetaPropertiesType = {
   id: number
@@ -86,8 +87,6 @@ export default function LocalTraumas() {
         face,
       )
 
-      console.log(JSON.stringify(response, null, 2))
-
       const localTraumasWithoutMeta = removeMetaProperties(
         response.localTraumas,
       ) as Record<string, any>
@@ -140,12 +139,9 @@ export default function LocalTraumas() {
         setLoading(true)
         const localTraumasData = await findManyLocalTraumas(reportId)
 
-        if (!localTraumasData.localTraumas) {
-          console.log('Nenhum dado coletado de Local Traumas')
-        } else {
+        if (localTraumasData.localTraumas) {
           setLocalTraumas(localTraumasData.localTraumas)
         }
-        console.log(localTraumasData)
       } catch (err) {
         console.error(err)
       } finally {
@@ -161,7 +157,7 @@ export default function LocalTraumas() {
         <Loader />
       ) : (
         <ScrollView>
-          <View>
+          <ReactNativeZoomableView>
             <Header />
             <Title iconName="user-alt" title="Localização do Traumas" />
             <View style={s.boxShadow} className="mx-auto">
@@ -264,7 +260,7 @@ export default function LocalTraumas() {
               onPress={() => navigation.navigate('ocorrencia' as never)}
             />
             <Footer />
-          </View>
+          </ReactNativeZoomableView>
         </ScrollView>
       )}
     </SafeAreaView>

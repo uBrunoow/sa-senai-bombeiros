@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { prisma } from '../../lib/prisma'
+import { FastifyRequest } from 'fastify/types/request'
 
 export async function reportsFindRoutes(
   app: FastifyInstance,
@@ -9,6 +10,7 @@ export async function reportsFindRoutes(
   // Rota para pegar todos os usuários
   app.get('/api/reports', async (req, res) => {
     const reports = await prisma.report.findMany({
+      orderBy: { id: 'desc' },
       include: {
         Symptoms: true,
         PreHospitalMethods: true,
@@ -20,6 +22,9 @@ export async function reportsFindRoutes(
         CinematicAvaliation: true,
         Finalization: true,
         SuspectProblems: true,
+        InfosHospitalares: true,
+        InfoTransporte: true,
+        LocalTraumas: true,
       },
     })
     return res.send({
@@ -56,8 +61,9 @@ export async function reportFindOneRoutes(
         CinematicAvaliation: true,
         Finalization: true,
         SuspectProblems: true,
+        InfosHospitalares: true,
+        InfoTransporte: true,
         LocalTraumas: true,
-        owner: true,
       },
     })
 
@@ -69,5 +75,54 @@ export async function reportFindOneRoutes(
     return res.send({ msg: `🟢 Report ${id} localizada com sucesso.`, report })
   })
 
+  done()
+}
+
+export async function reportFindFilteredRoutes(
+  app: FastifyInstance,
+  opts: fastifyNullOpts,
+  done: fastifyDoneFunction,
+) {
+  app.get('/api/reports/filtered', async (req: FastifyRequest, res) => {
+    try {
+      const perPage: number = parseInt(req.query.perPage as string) || 10
+      const page: number = parseInt(req.query.page as string) || 1
+
+      if (isNaN(perPage) || isNaN(page)) {
+        return res.status(400).send({ msg: 'Invalid page or perPage value.' })
+      }
+
+      const skip = (page - 1) * perPage
+
+      const reports = await prisma.report.findMany({
+        take: perPage,
+        skip,
+        orderBy: { id: 'desc' },
+        include: {
+          Symptoms: true,
+          PreHospitalMethods: true,
+          Anamnesis: true,
+          GestationalAnamnesis: true,
+          Report_PreHospitalMethod: true,
+          Report_Symptoms: true,
+          Glasglow: true,
+          CinematicAvaliation: true,
+          Finalization: true,
+          SuspectProblems: true,
+          InfosHospitalares: true,
+          InfoTransporte: true,
+          LocalTraumas: true,
+        },
+      })
+
+      return res.send({
+        msg: `🟢 Successfully retrieved reports for page ${page}.`,
+        reports,
+      })
+    } catch (error) {
+      console.error(error)
+      return res.status(500).send({ msg: 'Internal Server Error' })
+    }
+  })
   done()
 }

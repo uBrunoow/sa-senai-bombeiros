@@ -9,6 +9,7 @@ import { Checkbox } from 'native-base'
 import { setSuspectProblemsData } from '@src/redux/actions/dataActions'
 import findSuspectProblems from '@src/api/reports/suspectProblems/findSuspectProblems'
 import { formatCheckbox } from '@app/(tabs)/Introducao/utils/formatCheckbox'
+import BouncyCheckbox from 'react-native-bouncy-checkbox'
 
 type CheckboxStates = {
   AEREO?: boolean

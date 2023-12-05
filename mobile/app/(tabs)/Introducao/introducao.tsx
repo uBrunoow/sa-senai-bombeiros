@@ -129,6 +129,7 @@ type RemoveMetaPropertiesType = {
   breathing: number
   saturation: number
   perfusion: string
+  isFinalized: boolean
 }
 
 export default function Introducao() {
@@ -592,6 +593,7 @@ export default function Introducao() {
     | 'breathing'
     | 'saturation'
     | 'perfusion'
+    | 'isFinalized'
   > => {
     // eslint-disable-next-line no-unused-vars
     const {
@@ -608,6 +610,7 @@ export default function Introducao() {
       breathing,
       saturation,
       perfusion,
+      isFinalized,
 
       ...withoutMeta
     } = obj
@@ -649,6 +652,7 @@ export default function Introducao() {
           reportWithoutMeta[key] === null
         ) {
           reportEmpty++
+          console.log(`Campo ${key} está vazio ou nulo.`)
         }
       }
 
@@ -707,6 +711,8 @@ export default function Introducao() {
         preHospitalarMethodEmpty,
         symptomsEmpty,
       )
+
+      console.log(reportEmpty, preHospitalarMethodEmpty, symptomsEmpty)
 
       const introduction = {
         response,

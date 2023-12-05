@@ -1,4 +1,5 @@
 import { IBase } from './IBase'
+import { IReport } from './IReport'
 
 interface IUser extends IBase {
   id: number
@@ -16,7 +17,7 @@ interface IUser extends IBase {
     | 'TenenteCoronel'
     | 'Admin'
     | 'semCargo'
-  Reports: any[]
+  Reports: IReport[]
 }
 
 export default IUser

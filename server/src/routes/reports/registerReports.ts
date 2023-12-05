@@ -21,12 +21,13 @@ export async function registerReportRoutes(app: FastifyInstance) {
       perfusion,
       followUp,
       followUpAge,
+      isFinalized,
       ownerId,
     } = reportSchema.parse(req.body)
     const reportDateValue = reportDate ? new Date(reportDate) : null
     const newReport = await prisma.report.create({
       data: {
-        age: age || 0,
+        age: age || null,
         gender: gender || null,
         name: name || '',
         reportDate: reportDateValue,
@@ -42,6 +43,7 @@ export async function registerReportRoutes(app: FastifyInstance) {
         perfusion: perfusion || '',
         followUp: followUp || '',
         followUpAge: followUpAge || 0,
+        isFinalized: isFinalized || false,
         ownerId,
       },
     })

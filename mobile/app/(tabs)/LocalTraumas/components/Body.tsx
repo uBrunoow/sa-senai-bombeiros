@@ -58,10 +58,6 @@ export default function Body({
           clickCoord.y >= currPartCoords.tl.y,
         ].includes(false)
       ) {
-        // console.log(clickCoord)
-        // console.log(currPart)
-        // console.log(bodyPart)
-
         setFace(currPartFace)
         setSide(currPartSide)
         bodyPartValueHandler(currPartValue)
@@ -94,8 +90,6 @@ export default function Body({
     } else {
       setClickedBodyPartText(clickResult.payload)
     }
-
-    console.log(clickCoordinates)
   }
 
   const [isMaiorQueCincoAnos, setIsMaiorQueCincoAnos] = useState<
@@ -123,7 +117,7 @@ export default function Body({
         {isMaiorQueCincoAnos === null ? (
           <View className="mb-6 mt-4 aspect-[6/7] w-full items-center justify-center rounded-xl bg-[#00000027]">
             <Text className="text-xl font-bold text-white drop-shadow-xl">
-              Loading...
+              Carregando...
             </Text>
           </View>
         ) : isMaiorQueCincoAnos ? (

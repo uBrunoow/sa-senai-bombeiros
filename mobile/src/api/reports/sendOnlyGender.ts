@@ -4,13 +4,13 @@ import { api } from '@src/lib/api'
 const sendOnlyGenderToVerify = async (
   ownerId: number | null,
   reportId: number,
-  modalGender?: string | null,
+  convertedGender?: 'Male' | 'Female' | null,
 ) => {
   try {
     const response = await api.put(
       `/api/reports/update/${reportId}`,
       {
-        gender: modalGender,
+        gender: convertedGender,
         ownerId,
         reportId,
       },

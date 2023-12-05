@@ -205,13 +205,11 @@ export default function Anamnese() {
                     value={sinaisESintomas}
                     onChangeText={(e) => setSinaisESintomas(e)}
                   />
-                  {/* <View className="just-between aling-items flex-1"> */}
                   <YesOrNo
                     Question="Aconteceu outras vezes?"
                     selectedOption={outrasVezes ? 'SIM' : 'NÃO'}
                     onSelectOption={handleOutrasVezesChange}
                   />
-                  {/* </View> */}
                   {outrasVezes && (
                     <InputFull
                       title="A quanto tempo isso aconteceu?"
@@ -220,13 +218,11 @@ export default function Anamnese() {
                       onChangeText={(e) => setTempoAconteceu(e)}
                     />
                   )}
-                  {/* <View className="just-between aling-items flex-1"> */}
                   <YesOrNo
                     Question="Possui algum problema de saúde?"
                     selectedOption={problemaSaude ? 'SIM' : 'NÃO'}
                     onSelectOption={handleProblemaSaudeChange}
                   />
-                  {/* </View> */}
                   {problemaSaude && (
                     <InputFull
                       title="Quais?"
@@ -235,13 +231,11 @@ export default function Anamnese() {
                       onChangeText={(e) => setQuaisProblemas(e)}
                     />
                   )}
-                  {/* <View className="just-between aling-items flex-1"> */}
                   <YesOrNo
                     Question="Faz uso de medicação?"
                     selectedOption={usoMedicacao ? 'SIM' : 'NÃO'}
                     onSelectOption={handleUsoMedicacaoChange}
                   />
-                  {/* </View> */}
                   {usoMedicacao && (
                     <>
                       <InputFull
@@ -257,13 +251,11 @@ export default function Anamnese() {
                       />
                     </>
                   )}
-                  {/* <View className="just-between aling-items flex-1"> */}
                   <YesOrNo
                     Question="Tem alguma alergia?"
                     selectedOption={alergia ? 'SIM' : 'NÃO'}
                     onSelectOption={handleAlergiaChange}
                   />
-                  {/* </View> */}
                   {alergia && (
                     <InputFull
                       title="Quais?"

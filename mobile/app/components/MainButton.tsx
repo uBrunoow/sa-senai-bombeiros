@@ -19,7 +19,7 @@ export default function MainButton(props: MainButtonProps) {
       disabled={props.disabled}
     >
       {props.isLoading ? (
-        <ActivityIndicator size="large" color="#ffffff" />
+        <ActivityIndicator size={30} color="#ffffff" />
       ) : (
         <Text className="text-center text-xl font-bold text-white">
           {props.innerText}

@@ -95,6 +95,7 @@ export default function InputNumeric(props: InputProps) {
           editable={props.disabled}
           value={inputValue.toString()}
           onChangeText={handleTextChange}
+          placeholder={props.placeholder}
         />
       </View>
     </View>
