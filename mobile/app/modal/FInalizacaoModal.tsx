@@ -47,8 +47,6 @@ const FInalizacaoModal = ({
         onClose()
         onResponsableChange(data.responsable)
       }
-
-      console.log(response)
     } catch (error) {
       console.error(error)
     } finally {

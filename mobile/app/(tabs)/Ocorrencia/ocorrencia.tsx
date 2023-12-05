@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   Pressable,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Header from '@app/components/Header'
 import Grouper from '@app/components/Grouper'
 import Footer from '@app/components/Footer'
@@ -60,7 +60,7 @@ import WarningModal from '@app/modal/warningModal'
 import { clearCompletness } from '@src/redux/reducers/completnessReducer'
 import registerInfoHospitalar from '@src/api/reports/infoHospitalar/registerInfoHospitalar'
 import ReportFinalized from '@app/modal/ReportFinalized'
-import EditOcorrenciaModal from '@app/modal/EditModal'
+import SelectAge from '@app/modal/selectAge'
 
 type RootStackParamList = {
   ocorrencia: undefined
@@ -140,8 +140,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
   const currentMode = useSelector((state: RootState) => state.mode.mode)
   const reportId = useSelector((state: RootState) => state.report.reportId)
 
-  console.log(currentMode)
-
   const dispatch = useDispatch()
 
   const handleLogout = () => {
@@ -166,8 +164,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
 
         if (response && response.anamnesis) {
           dispatch(saveAnamnesisId(response.anamnesis.id))
-          console.log('Anamnese n°: ', response.anamnesis.id)
-
           navigation.navigate('anamnese', {
             screen: 'anamnese',
             params: { anamnesisId: response.anamnesis.id },
@@ -182,7 +178,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
 
         if (anamnesisId) {
           // Se encontrar, use o ID existente
-          console.log('Anamnese n°: ', anamnesisId)
           dispatch(saveAnamnesisId(anamnesisId))
           navigation.navigate('anamnese' as never)
         } else {
@@ -190,7 +185,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
 
           if (response && response.anamnesis) {
             dispatch(saveAnamnesisId(response.anamnesis.id))
-            console.log('Anamnese n°: ', response.anamnesis.id)
 
             navigation.navigate('anamnese', {
               screen: 'anamnese',
@@ -213,12 +207,16 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
   const [openWarningModal, setOpenWarningModal] = useState(false)
   const [gestacionalAnamnesisIsLoading, setGestacionalAnamnesisIsLoading] =
     useState(false)
+  const [openAgeModal, setOpenAgeModal] = useState(false)
 
   const closeAnamnesisGestacionalModal = () => {
     setModalAnamnesisGestacional(false)
   }
   const closeWarningModal = () => {
     setOpenWarningModal(false)
+  }
+  const closeAgeModal = () => {
+    setOpenAgeModal(false)
   }
 
   const handleClickGestacionalAnamnese = async () => {
@@ -243,7 +241,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
             const response = await registerGesAnamnesis(ReportOwnerId)
             if (response && response.gesAnamnesis) {
               dispatch(saveGestacionalAnamnesisId(response.gesAnamnesis.id))
-              console.log('Ges Anamnese n°: ', response.gesAnamnesis.id)
               navigation.navigate('anamnese-gestacional', {
                 screen: 'anamnese-gestacional',
                 params: { gestacionalAnamnesisId: response.gesAnamnesis.id },
@@ -257,17 +254,14 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
 
           const response = await findReports(reportId)
           const gesAnamnesisId = response.report.GestationalAnamnesis[0]?.id
-          console.log(response)
           if (gesAnamnesisId) {
             // Se encontrar, use o ID existente
-            console.log('Ges Anamnesis n°: ', gesAnamnesisId)
             dispatch(saveGestacionalAnamnesisId(gesAnamnesisId))
             navigation.navigate('anamnese-gestacional' as never)
           } else {
             const response = await registerGesAnamnesis(reportId)
             if (response && response.gesAnamnesis) {
               dispatch(saveGestacionalAnamnesisId(response.gesAnamnesis.id))
-              console.log('Ges Anamnese n°: ', response.gesAnamnesis.id)
               navigation.navigate('anamnese-gestacional', {
                 screen: 'anamnese-gestacional',
                 params: { gestacionalAnamnesisId: response.gesAnamnesis.id },
@@ -324,12 +318,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
             ),
           )
 
-          console.log('Finalization n°: ', response.finalization.id)
-          console.log(
-            'Cinematica n°: ',
-            cinematicAvaliationResponse.cinematicAvaliation.id,
-          )
-
           navigation.navigate('finalizacao', {
             screen: 'finalizacao',
             params: {
@@ -349,10 +337,8 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
 
         if (finalizationId && cinematicId) {
           // Se encontrar, use o ID existente
-          console.log('Finalization n°: ', finalizationId)
           dispatch(saveFinalizationId(finalizationId))
           dispatch(saveCinematicAvaliationId(cinematicId))
-          console.log('Cinematic n°: ', cinematicId)
           navigation.navigate('finalizacao' as never)
         } else {
           const response = await registerFinalization(ReportOwnerId)
@@ -371,12 +357,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
               saveCinematicAvaliationId(
                 cinematicAvaliationResponse.cinematicAvaliation.id,
               ),
-            )
-
-            console.log('Finalization n°: ', response.finalization.id)
-            console.log(
-              'Cinematica n°: ',
-              cinematicAvaliationResponse.cinematicAvaliation.id,
             )
 
             navigation.navigate('finalizacao', {
@@ -403,7 +383,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
   )
 
   const handleClickInfoPaciente = async () => {
-    if (currentMode === 'edit') {
+    if (currentMode === 'create') {
       if (existingSuspectProblemsId) {
         navigation.navigate('info-paciente', {
           screen: 'info-paciente',
@@ -428,12 +408,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
           dispatch(
             saveSuspectProblemsId(suspectProblemsResponse.suspectProblems.id),
           )
-          console.log(
-            'Suspect Problems n°: ',
-            suspectProblemsResponse.suspectProblems.id,
-          )
           dispatch(saveGlasgowId(glasgowResponse.glasgow.id))
-          console.log('Glasgow n°: ', glasgowResponse.glasgow.id)
 
           navigation.navigate('info-paciente', {
             screen: 'info-paciente',
@@ -453,10 +428,8 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
 
         if (glasgowId && suspectProblemsId) {
           // Se encontrar, use o ID existente
-          console.log('Glasgow n°: ', glasgowId)
           dispatch(saveGlasgowId(glasgowId))
           dispatch(saveSuspectProblemsId(suspectProblemsId))
-          console.log('Suspect Problems n°: ', suspectProblemsId)
           navigation.navigate('info-paciente' as never)
         } else {
           const suspectProblemsResponse = await registerSuspectProblems(
@@ -474,12 +447,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
             dispatch(
               saveSuspectProblemsId(suspectProblemsResponse.suspectProblems.id),
             )
-            console.log(
-              'Suspect Problems n°: ',
-              suspectProblemsResponse.suspectProblems.id,
-            )
             dispatch(saveGlasgowId(glasgowResponse.glasgow.id))
-            console.log('Glasgow n°: ', glasgowResponse.glasgow.id)
 
             navigation.navigate('info-paciente', {
               screen: 'info-paciente',
@@ -531,12 +499,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
               preHospitalarMethodResponse.preHospitalarMethod.id,
             ),
           )
-          console.log(
-            'Pre hospitalar methods n°: ',
-            preHospitalarMethodResponse.preHospitalarMethod.id,
-          )
           dispatch(saveSignsAndSymptomsId(symptomsResponse.symptoms.id))
-          console.log('Sintomas n°: ', symptomsResponse.symptoms.id)
 
           navigation.navigate('introducao', {
             screen: 'introducao',
@@ -557,8 +520,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
 
         if (preHospitalarMethodId && symptomsId) {
           // Se encontrar, use o ID existente
-          console.log('Pre hospital Methods n°: ', preHospitalarMethodId)
-          console.log('Sintomas n°: ', symptomsId)
           dispatch(saveSignsAndSymptomsId(symptomsId))
           dispatch(savePreHospitalarMethodId(preHospitalarMethodId))
           navigation.navigate('introducao' as never)
@@ -579,12 +540,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
                 preHospitalarMethodResponse.preHospitalarMethod.id,
               ),
             )
-            console.log(
-              'Pre hospitalar methods n°: ',
-              preHospitalarMethodResponse.preHospitalarMethod.id,
-            )
             dispatch(saveSignsAndSymptomsId(symptomsResponse.symptoms.id))
-            console.log('Sintomas n°: ', symptomsResponse.symptoms.id)
 
             navigation.navigate('introducao', {
               screen: 'introducao',
@@ -618,10 +574,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
 
         if (infoTransportResponse && infoTransportResponse.infoTransport) {
           dispatch(saveInfoTransportId(infoTransportResponse.infoTransport.id))
-          console.log(
-            'Info Transport n°: ',
-            infoTransportResponse.infoTransport.id,
-          )
 
           navigation.navigate('info-transporte')
         }
@@ -634,7 +586,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
 
         if (infoTransportId) {
           // Se encontrar, use o ID existente
-          console.log('Info Transport n°: ', infoTransportId)
           dispatch(saveInfoTransportId(infoTransportId))
           navigation.navigate('info-transporte')
         } else {
@@ -644,10 +595,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
           if (infoTransportResponse && infoTransportResponse.infoTransport) {
             dispatch(
               saveInfoTransportId(infoTransportResponse.infoTransport.id),
-            )
-            console.log(
-              'Info Transport n°: ',
-              infoTransportResponse.infoTransport.id,
             )
             navigation.navigate('info-transporte')
           } else {
@@ -679,16 +626,25 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
           dispatch(
             saveInfoHospitalarId(infoHospitalarResponse.infoHospitalar.id),
           )
-          console.log(
-            'Info Hospitalares n°: ',
-            infoHospitalarResponse.infoHospitalar.id,
-          )
 
           navigation.navigate('info-hospitalares')
         }
       }
     } else {
       navigation.navigate('info-hospitalares')
+    }
+  }
+
+  const handleClickLocalTraumas = async () => {
+    setLoading(false)
+    const response = await findReports(reportId)
+    const { age } = response.report
+
+    if (age === null) {
+      // await updateAgeReport(ownerId, reportId, 777)
+      setOpenAgeModal(true)
+    } else {
+      navigation.navigate('local-traumas')
     }
   }
 
@@ -700,7 +656,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
     try {
       setLoading(true)
       const response = await deleteReport(reportId)
-      console.log(response)
       if (response.msg) {
         dispatch(clearReportId())
         dispatch(clearAnamnesisId())
@@ -732,12 +687,6 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
     setShowFinalizationModal(true)
   }
 
-  const introduction = useSelector(
-    (state: RootState) => state.introductionData.introduction,
-  )
-
-  console.log(introduction)
-
   return (
     <SafeAreaView>
       <ScrollView>
@@ -755,7 +704,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
               </View>
 
               {currentMode === 'edit' && (
-                <View className="mb-[20px] flex-row items-center justify-center p-2 ">
+                <View className="mb-[20px] flex-row items-center justify-center p-2">
                   <Text className="text-center">
                     Caso você saia dessa página sem salvar o que deseja os seus
                     dados serão perdidos *
@@ -793,7 +742,7 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate(`local-traumas`)}
+                onPress={handleClickLocalTraumas}
                 activeOpacity={0.7}
               >
                 <Grouper
@@ -976,6 +925,29 @@ const Ocorrencia: React.FC<OcorrenciaProps> = ({ navigation }) => {
                       <WarningModal closeModal={closeWarningModal} />
                       <Pressable
                         onPress={() => setOpenWarningModal(false)}
+                        className="absolute right-1 top-1 z-50"
+                      >
+                        <AntDesign name="closecircle" size={24} color="red" />
+                      </Pressable>
+                    </View>
+                  </View>
+                </Modal>
+              )}
+              {openAgeModal && (
+                <Modal
+                  transparent={true}
+                  animationType="fade"
+                  visible={openAgeModal}
+                  onRequestClose={() => setOpenAgeModal(false)}
+                >
+                  <View className="flex-1 items-center justify-center bg-[#0000007f]">
+                    <View
+                      style={s.modalContent}
+                      className="relative rounded-[7px] bg-white p-4 "
+                    >
+                      <SelectAge closeModal={closeAgeModal} />
+                      <Pressable
+                        onPress={() => setOpenAgeModal(false)}
                         className="absolute right-1 top-1 z-50"
                       >
                         <AntDesign name="closecircle" size={24} color="red" />

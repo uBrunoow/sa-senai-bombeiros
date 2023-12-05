@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { View, ActivityIndicator, Pressable, Text, Modal } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
-import { CheckIcon, Select } from 'native-base'
 import sendOnlyGenderToVerify from '@src/api/reports/sendOnlyGender'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@src/redux/stores/stores'
@@ -10,7 +9,6 @@ import registerGesAnamnesis from '@src/api/reports/gestacionalAnamnesis/register
 import { saveGestacionalAnamnesisId } from '@src/redux/actions/reportActions'
 import { styles as s } from '@app/styles/boxShadow'
 import WarningModal from './warningModal'
-import Options from '@app/components/optionsIntroducao'
 import YesOrNo from '@app/components/YesOrNo'
 
 function VerifyGender({ closeModal }: any) {
@@ -56,7 +54,6 @@ function VerifyGender({ closeModal }: any) {
           const response = await registerGesAnamnesis(ReportOwnerId)
           if (response && response.gesAnamnesis) {
             dispatch(saveGestacionalAnamnesisId(response.gesAnamnesis.id))
-            console.log('Ges Anamnese n°: ', response.gesAnamnesis.id)
 
             navigation.navigate('anamnese-gestacional' as never)
           }

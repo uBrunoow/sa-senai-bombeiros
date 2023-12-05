@@ -68,7 +68,6 @@ export default function CreatedTraumas({
   const toast = useToast()
 
   async function handleDeleteLocalTrauma(id: number) {
-    console.log("'id' do trauma deletado:", id)
     if (!id) return
     const { success } = await deleteLocalTraumas(id)
 
@@ -108,9 +107,6 @@ export default function CreatedTraumas({
           const tipo = tipoTraumaMapping.tipo[trauma.tipo]
           const side = tipoTraumaMapping.side[trauma.side]
           const face = tipoTraumaMapping.face[trauma.face]
-
-          // console.log([trauma.bodyPart, trauma.tipo, trauma.side, trauma.face])
-          // console.log([bodyPart, tipo, side, face])
 
           return (
             <View

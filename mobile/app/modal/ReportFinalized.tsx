@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ActivityIndicator } from 'react-native'
+import { View, Text, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons'
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,12 +32,7 @@ function ReportFinalized() {
     const changeFinalizedStatus = async () => {
       try {
         setLoading(true)
-        const response = await updateFinalizedReport(
-          ownerId,
-          reportId,
-          isFinalized,
-        )
-        console.log(JSON.stringify(response, null, 2))
+        await updateFinalizedReport(ownerId, reportId, isFinalized)
       } catch (error) {
         console.error(error)
       } finally {

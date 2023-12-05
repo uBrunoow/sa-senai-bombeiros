@@ -34,24 +34,17 @@ function Home() {
     try {
       setIsLoading(true)
       if (isLoggedIn) {
-        // Verifica se já existe um reportId salvo no Redux
         if (!isReportIn) {
-          // Se não existir, cria um novo relatório
           const response = await registerReport(ownerId)
           const reportId = response.report.id
-          console.log('Report de n°:', reportId)
           dispatch(saveReportId(reportId))
         } else {
-          // Se já existir, utiliza o reportId existente
-          console.log('Report de n°:', ReportOwnerId)
           dispatch(saveReportId(ReportOwnerId))
         }
 
-        // Navega para a página de ocorrência
         dispatch(setMode('create'))
         navigation.navigate('ocorrencia' as never)
       } else {
-        // Se não estiver logado, redireciona para a página de login
         navigation.navigate('login' as never)
       }
     } catch (error) {
@@ -62,7 +55,7 @@ function Home() {
   }
   const handleHistoryButtonClick = async () => {
     try {
-      setIsLoading(true)
+      setIsHistoryLoading(true)
       if (isLoggedIn) {
         navigation.navigate('history' as never)
       } else {
@@ -71,7 +64,7 @@ function Home() {
     } catch (error) {
       console.error(error)
     } finally {
-      setIsLoading(false)
+      setIsHistoryLoading(false)
     }
   }
   return (
@@ -118,9 +111,9 @@ function Home() {
                 </View>
               </View>
             ) : (
-              <View className="w-[150px] rounded-md bg-red-600 px-5 py-2">
+              <View className="w-[150px] rounded-md border-width1 border-red-600 px-5 py-2">
                 <View className="h-[30px]">
-                  <Text className="text-center text-lg text-white">
+                  <Text className="text-center text-lg text-red-600">
                     HISTÓRICO
                   </Text>
                 </View>

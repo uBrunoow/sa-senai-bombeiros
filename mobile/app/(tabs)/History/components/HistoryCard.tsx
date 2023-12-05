@@ -6,8 +6,7 @@ import { formatDate } from '@src/utils/formatDate'
 import { formatGender } from '@src/utils/formatGender'
 import DownloadPdfModal from '@app/modal/downloadPdfModal'
 import { convertTrue } from '@src/utils/convertTrue'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '@src/redux/stores/stores'
+import { useDispatch } from 'react-redux'
 import {
   clearAnamnesisId,
   clearCinematicAvaliationId,
@@ -39,13 +38,8 @@ type HistoryProps = {
 const HistoryCard = ({ report }: HistoryProps) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const currentMode = useSelector((state: RootState) => state.mode.mode)
 
   const [showDownloadModal, setShowDownladModal] = useState(false)
-
-  const handleCloseDownloadModal = () => {
-    setShowDownladModal(false)
-  }
 
   const handleClickEdit = () => {
     dispatch(setMode('edit'))
@@ -151,23 +145,6 @@ const HistoryCard = ({ report }: HistoryProps) => {
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: '#dc3545',
-                    padding: 10,
-                    borderRadius: 5,
-                    marginRight: 5,
-                  }}
-                  onPress={() => {}}
-                >
-                  <AntDesign name="delete" size={24} color="white" />
-                  <Text style={{ marginLeft: 10, color: 'white' }}>
-                    Excluir
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
                     backgroundColor: '#28a745',
                     padding: 10,
                     borderRadius: 5,
@@ -194,23 +171,6 @@ const HistoryCard = ({ report }: HistoryProps) => {
                   <AntDesign name="download" size={24} color="white" />
                   <Text style={{ marginLeft: 10, color: 'white' }}>
                     Download
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    backgroundColor: '#dc35465a',
-                    padding: 10,
-                    borderRadius: 5,
-                    marginRight: 5,
-                  }}
-                  disabled={true}
-                >
-                  <AntDesign name="delete" size={24} color="white" />
-                  <Text style={{ marginLeft: 10, color: 'white' }}>
-                    Excluir
                   </Text>
                 </TouchableOpacity>
 

@@ -10,6 +10,7 @@ export async function reportsFindRoutes(
   // Rota para pegar todos os usuários
   app.get('/api/reports', async (req, res) => {
     const reports = await prisma.report.findMany({
+      orderBy: { id: 'desc' },
       include: {
         Symptoms: true,
         PreHospitalMethods: true,

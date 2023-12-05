@@ -9,7 +9,7 @@ import {
   MenuList,
   Typography,
 } from '@mui/material'
-import { Home, Person, Settings, Logout } from '@mui/icons-material'
+import { Home, Person, Logout, Assessment } from '@mui/icons-material'
 import '../../dashboard/dashboard.css'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
@@ -106,6 +106,30 @@ function Header() {
                 }}
               >
                 Usuários
+              </Link>
+            </ListItemIcon>
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+              }}
+            >
+              <Assessment fontSize="medium" />
+              <Link
+                href="/dashboard/relatorios"
+                variant="button"
+                fontSize="medium"
+                color="#707070"
+                sx={{
+                  fontWeight: '500',
+                  textTransform: 'capitalize',
+                  textDecoration: 'none',
+                }}
+              >
+                Relatórios
               </Link>
             </ListItemIcon>
           </MenuItem>

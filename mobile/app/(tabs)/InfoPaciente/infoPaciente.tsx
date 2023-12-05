@@ -35,6 +35,7 @@ type RemoveMetaPropertiesType = {
   followUp: string
   followUpAge: number
   Another: string
+  isFinalized: boolean
 }
 export default function InfoPatient() {
   const navigation = useNavigation()
@@ -124,6 +125,7 @@ export default function InfoPatient() {
     | 'followUp'
     | 'followUpAge'
     | 'Another'
+    | 'isFinalized'
   > => {
     const {
       id,
@@ -141,6 +143,7 @@ export default function InfoPatient() {
       followUp,
       followUpAge,
       Another,
+      isFinalized,
 
       ...withoutMeta
     } = obj

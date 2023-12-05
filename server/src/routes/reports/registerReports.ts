@@ -27,7 +27,7 @@ export async function registerReportRoutes(app: FastifyInstance) {
     const reportDateValue = reportDate ? new Date(reportDate) : null
     const newReport = await prisma.report.create({
       data: {
-        age: age || 0,
+        age: age || null,
         gender: gender || null,
         name: name || '',
         reportDate: reportDateValue,

@@ -106,15 +106,8 @@ const DownloadPdfModal = ({ reportId }: DownloadProps) => {
     const verbalResponse = glasgowData?.verbalResponseOwnerId
     const motorResponse = glasgowData?.motorResponseOwnerId
 
-    // Retorne a soma dos valores
     return eyeOpening + verbalResponse + motorResponse
   }
-
-  // console.log(
-  //   JSON.stringify(reportsForDownload.report.LocalTraumas[0].bodyPart, null, 2),
-  // )
-
-  // reportsForDownload.report.GestationalAnamnesis[0]
 
   const generatePDF = async () => {
     const transportationIcon = getTransportationIcon(
@@ -1278,7 +1271,6 @@ const DownloadPdfModal = ({ reportId }: DownloadProps) => {
           mimeType: 'application/pdf',
           dialogTitle: `Ocorrência n° ${reportId} PDF`,
         })
-        console.log('Download concluído com sucesso!')
       } catch (error) {
         console.error('Erro ao realizar o download do PDF:', error)
       }

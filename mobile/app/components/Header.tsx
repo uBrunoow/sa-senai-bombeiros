@@ -57,7 +57,6 @@ export default function Header() {
     try {
       setLoading(true)
       const response = await deleteReport(reportId)
-      console.log(response)
       if (response.msg) {
         dispatch(clearReportId())
         dispatch(clearAnamnesisId())

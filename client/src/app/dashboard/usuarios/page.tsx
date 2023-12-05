@@ -325,7 +325,7 @@ function Usuarios() {
                         <TableCell align="right">
                           {myUser && myUser.user.role === 'Admin' ? (
                             <Button
-                              onClick={() => handleOpenEditModal(user.id as id)}
+                              onClick={() => handleOpenEditModal(user.id)}
                             >
                               <Edit />
                             </Button>
